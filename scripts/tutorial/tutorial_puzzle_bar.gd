@@ -22,6 +22,7 @@ func show_runner(runner: PuzzleRunner, label: String, sub: String) -> void:
 	var puzzle: BlockPuzzle = runner.puzzle
 	visible = true
 	_name.text = sub if label.is_empty() else label + (" · " + sub if not sub.is_empty() else "")
+	_name.visible = not _name.text.is_empty()
 	_count.text = "%d / %d수" % [runner.shown_moves(), puzzle.min_moves]
 	var playing: bool = runner.is_playing()
 	_undo.disabled = not playing or not puzzle.can_undo()

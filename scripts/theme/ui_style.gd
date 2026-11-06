@@ -15,6 +15,8 @@ extends Resource
 @export var bg_token: StringName = &""
 ## 비어 있으면 테두리 색을 바꾸지 않는다.
 @export var border_token: StringName = &""
+## 버튼 글자색 (비어 있으면 테마 기본). font_color · hover · pressed · focus에 같은 색.
+@export var font_token: StringName = &""
 ## 디자인 이미지 (비어 있으면 template + 토큰 색).
 @export var texture: Texture2D
 @export var texture_margins: Vector4 = Vector4.ZERO

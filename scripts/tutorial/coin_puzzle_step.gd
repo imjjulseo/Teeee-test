@@ -26,7 +26,7 @@ func start(director: TutorialDirector) -> void:
 	var def: PuzzleDef = director.book.find_board(board_id)
 	if rule:
 		_playing = true
-		director.start_rule_puzzle(def, color, true, coins, "", PackedStringArray(["coin"]), false, caption)
+		director.start_rule_puzzle(def, color, true, coins, Vector2i.ZERO, PackedStringArray(["coin"]), false, caption)
 		return
 	_playing = false
 	director.start_puzzle(def, color, false, true, coins, label, "", PackedStringArray(["coin"]), false, caption)

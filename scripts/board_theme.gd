@@ -36,15 +36,22 @@ extends Resource
 
 @export_group("Recipe")
 ## 족보 칸 하나의 크기(px).
-@export var recipe_step_size: float = 34.0
-## 이미 제거한 족보 칸의 불투명도.
-@export_range(0.0, 1.0) var recipe_done_alpha: float = 0.25
-## 족보 칸 테두리 (박스 배경과 같은 색인 칸도 구분되도록).
-@export var recipe_step_border: Color = Color("1d1f26")
+@export var recipe_step_size: float = 38.0
+## 이미 제거한 족보 칸의 불투명도 (HTML: 모은 칸은 또렷하게 = 1).
+@export_range(0.0, 1.0) var recipe_done_alpha: float = 1.0
+## 아직 모으지 않은 칸의 불투명도 (HTML .rc.tint .dot = .4). 다음 칸만 또렷하게 + 흰 테두리.
+@export_range(0.0, 1.0) var recipe_pending_alpha: float = 0.4
+## 족보 카드 바탕(HTML --panel)과 다음 색을 섞는 비율 (바탕 36%, 테두리 80%), 카드 모서리·테두리 두께, 다음 칸 흰 고리 두께.
+@export var recipe_card_bg: Color = Color(0.0745098, 0.176471, 0.211765, 1)
+@export_range(0.0, 1.0) var recipe_tint: float = 0.36
+@export_range(0.0, 1.0) var recipe_border_tint: float = 0.8
+@export var recipe_card_radius: int = 14
+@export var recipe_card_border: int = 3
+@export var recipe_next_ring: int = 5
 ## 다음에 제거할 칸의 강조 테두리.
 @export var recipe_next_border: Color = Color("ffffff")
 ## 족보 박스가 4개(능력 조건 포함)일 때의 칸 크기(px). 화면 폭에 맞추기 위해 줄인다.
-@export var recipe_step_size_compact: float = 26.0
+@export var recipe_step_size_compact: float = 30.0
 ## 시계공 "정지" 중 남은 시간 표시 색.
 @export var hud_time_stop_color: Color = Color("7fd6ff")
 ## 족보 완성 시 박스가 커졌다 돌아오는 비율.
@@ -122,11 +129,17 @@ extends Resource
 @export_group("Puzzle")
 ## 블럭 모으기 안내: 모을 블록 테두리, 목표 가운데·빈 자리·모인 자리, 설 칸, 당길 블록, 화살표.
 @export var puzzle_target_color: Color = Color(1, 1, 1, 0.9)
-@export var puzzle_goal_color: Color = Color(1, 1, 1, 0.6)
+@export var puzzle_goal_color: Color = Color(1, 0.823529, 0.247059, 0.35)
 @export var puzzle_filled_color: Color = Color("6fbf5b")
 @export var puzzle_stand_color: Color = Color("8fe3ff")
 @export var puzzle_pull_color: Color = Color("ffd23f")
-@export var puzzle_arrow_color: Color = Color("ffd23f")
+@export var puzzle_arrow_color: Color = Color(1, 1, 1, 1)
+## 퍼즐 안내 빛 (HTML tuthl · tpull · tarr): 맥박 주기(초), 모을 블록 빛·밝히기, 당길 블록 빛 진하기, 화살표 깜빡임 주기.
+@export var glow_period: float = 1.2
+@export var target_glow_color: Color = Color(1, 1, 1, 0.45)
+@export var glow_brighten: Color = Color(1, 1, 1, 0.12)
+@export var pull_glow_alpha: float = 0.6
+@export var arrow_period: float = 0.9
 ## 튜토리얼 첫 판 손가락 안내 (HTML tswipe): 한 번(초), 칸 대비 크기, 원·테두리 색.
 @export var swipe_period: float = 1.4
 @export var swipe_size: float = 0.46

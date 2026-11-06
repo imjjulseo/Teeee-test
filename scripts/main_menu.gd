@@ -10,9 +10,6 @@ signal shop_requested
 
 @export var roster: CharacterRoster
 @export var progression: ProgressionConfig
-## 빛나는 버튼의 색과 한 번 깜빡이는 시간(초).
-@export var glow_color: Color = Color(1.35, 1.2, 0.75)
-@export var glow_period: float = 0.9
 ## 저장 파일. 비어 있으면 SaveData 기본 경로 (테스트·스모크는 SaveData.path_override).
 @export var save_path: String = ""
 
@@ -85,10 +82,9 @@ func _apply_unlocks() -> void:
 	_character_button.disabled = not unlocks.is_open(MenuUnlocks.Entry.CHARACTERS)
 
 
+## 지금 누를 버튼을 노란 고리로 빛낸다 (HTML .glow, GlowRing).
 func _glow(entry: int) -> void:
-	if entry < 0 or not _buttons.has(entry as MenuUnlocks.Entry) or not is_inside_tree():
+	if entry < 0 or not _buttons.has(entry as MenuUnlocks.Entry):
+		%Glow.follow(null)
 		return
-	var button: Button = _buttons[entry as MenuUnlocks.Entry]
-	var tween: Tween = create_tween().set_loops()
-	tween.tween_property(button, "modulate", glow_color, glow_period / 2.0)
-	tween.tween_property(button, "modulate", Color.WHITE, glow_period / 2.0)
+	%Glow.follow(_buttons[entry as MenuUnlocks.Entry])

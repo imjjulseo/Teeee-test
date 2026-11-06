@@ -2,6 +2,17 @@
 
 [ext_resource type="FontFile" path="res://assets/fonts/Pretendard-SemiBold.otf" id="1_cviax"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cviax"]
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+bg_color = Color(1, 0.823529, 0.247059, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yl303"]
 content_margin_left = 20.0
 content_margin_top = 14.0
@@ -41,22 +52,52 @@ corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ufndy"]
-content_margin_left = 28.0
-content_margin_top = 20.0
-content_margin_right = 28.0
-content_margin_bottom = 20.0
-bg_color = Color(0.0862745, 0.180392, 0.215686, 0.96)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(1, 0.823529, 0.247059, 0.8)
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.0745098, 0.176471, 0.211765, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.152941, 0.313726, 0.360784, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ybqih"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.101961, 0.227451, 0.270588, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.152941, 0.313726, 0.360784, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wp64m"]
+content_margin_left = 25.0
+content_margin_top = 18.0
+content_margin_right = 25.0
+content_margin_bottom = 18.0
+bg_color = Color(0.101961, 0.227451, 0.270588, 0.92)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 24
+shadow_offset = Vector2(0, 14)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvwhf"]
 content_margin_left = 32.0
 content_margin_top = 32.0
 content_margin_right = 32.0
@@ -67,7 +108,7 @@ corner_radius_top_right = 24
 corner_radius_bottom_right = 24
 corner_radius_bottom_left = 24
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wp64m"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r625f"]
 content_margin_left = 16.0
 content_margin_right = 16.0
 bg_color = Color(0.184314, 0.435294, 0.839216, 1)
@@ -76,7 +117,7 @@ corner_radius_top_right = 28
 corner_radius_bottom_right = 28
 corner_radius_bottom_left = 28
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvwhf"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nvthg"]
 bg_color = Color(0.184314, 0.435294, 0.839216, 1)
 border_width_left = 4
 border_width_top = 4
@@ -88,16 +129,38 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r625f"]
-bg_color = Color(0, 0, 0, 0.6)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nvthg"]
-bg_color = Color(0, 0, 0, 0.7)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w0yef"]
 bg_color = Color(0, 0, 0, 0.6)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eehny"]
+bg_color = Color(0, 0, 0, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yjimd"]
+bg_color = Color(0, 0, 0, 0.6)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ungle"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+bg_color = Color(0.101961, 0.227451, 0.270588, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_itu41"]
+content_margin_left = 24.0
+content_margin_top = 16.0
+content_margin_right = 24.0
+content_margin_bottom = 16.0
+bg_color = Color(0.94902, 0.482353, 0.313726, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1mhyq"]
 content_margin_left = 24.0
 content_margin_top = 16.0
 content_margin_right = 24.0
@@ -113,7 +176,18 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yjimd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfnxp"]
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+bg_color = Color(0.0745098, 0.176471, 0.211765, 0.9)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0nkmd"]
 content_margin_left = 32.0
 content_margin_top = 40.0
 content_margin_right = 32.0
@@ -129,7 +203,7 @@ corner_radius_top_right = 24
 corner_radius_bottom_right = 24
 corner_radius_bottom_left = 24
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ungle"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vmvse"]
 content_margin_left = 32.0
 content_margin_top = 28.0
 content_margin_right = 32.0
@@ -138,7 +212,7 @@ bg_color = Color(0.0862745, 0.180392, 0.215686, 1)
 corner_radius_top_left = 24
 corner_radius_top_right = 24
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_itu41"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dkcdj"]
 content_margin_left = 16.0
 content_margin_top = 12.0
 content_margin_right = 16.0
@@ -149,14 +223,25 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1mhyq"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xa0ox"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+bg_color = Color(1, 1, 1, 0.1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_es70y"]
 bg_color = Color(0.184314, 0.435294, 0.839216, 1)
 corner_radius_top_left = 12
 corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bfnxp"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o8cq8"]
 content_margin_top = 8.0
 content_margin_bottom = 8.0
 bg_color = Color(0.184314, 0.435294, 0.839216, 1)
@@ -165,7 +250,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0nkmd"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wun14"]
 content_margin_top = 8.0
 content_margin_bottom = 8.0
 bg_color = Color(0.3, 0.3, 0.34, 1)
@@ -176,6 +261,17 @@ corner_radius_bottom_left = 8
 
 [resource]
 default_font = ExtResource("1_cviax")
+AccentButton/base_type = &"Button"
+AccentButton/colors/font_color = Color(0.0470588, 0.121569, 0.14902, 1)
+AccentButton/colors/font_focus_color = Color(0.0470588, 0.121569, 0.14902, 1)
+AccentButton/colors/font_hover_color = Color(0.0470588, 0.121569, 0.14902, 1)
+AccentButton/colors/font_hover_pressed_color = Color(0.0470588, 0.121569, 0.14902, 1)
+AccentButton/colors/font_pressed_color = Color(0.0470588, 0.121569, 0.14902, 1)
+AccentButton/styles/disabled = SubResource("StyleBoxFlat_cviax")
+AccentButton/styles/hover = SubResource("StyleBoxFlat_cviax")
+AccentButton/styles/hover_pressed = SubResource("StyleBoxFlat_cviax")
+AccentButton/styles/normal = SubResource("StyleBoxFlat_cviax")
+AccentButton/styles/pressed = SubResource("StyleBoxFlat_cviax")
 AccentLabel/base_type = &"Label"
 AccentLabel/colors/font_color = Color(1, 0.823529, 0.247059, 1)
 AchievementRowPanel/base_type = &"PanelContainer"
@@ -184,61 +280,107 @@ BannerPanel/base_type = &"PanelContainer"
 BannerPanel/styles/panel = SubResource("StyleBoxFlat_qosx5")
 BarPanel/base_type = &"PanelContainer"
 BarPanel/styles/panel = SubResource("StyleBoxFlat_m7jai")
+Button/styles/disabled = SubResource("StyleBoxFlat_ufndy")
+Button/styles/hover = SubResource("StyleBoxFlat_ufndy")
+Button/styles/hover_pressed = SubResource("StyleBoxFlat_ybqih")
+Button/styles/normal = SubResource("StyleBoxFlat_ufndy")
+Button/styles/pressed = SubResource("StyleBoxFlat_ybqih")
 CaptionPanel/base_type = &"PanelContainer"
-CaptionPanel/styles/panel = SubResource("StyleBoxFlat_ufndy")
+CaptionPanel/styles/panel = SubResource("StyleBoxFlat_wp64m")
 CardPanel/base_type = &"PanelContainer"
-CardPanel/styles/panel = SubResource("StyleBoxFlat_ybqih")
+CardPanel/styles/panel = SubResource("StyleBoxFlat_jvwhf")
 ChipButton/base_type = &"Button"
-ChipButton/styles/hover_pressed = SubResource("StyleBoxFlat_wp64m")
-ChipButton/styles/pressed = SubResource("StyleBoxFlat_wp64m")
+ChipButton/styles/hover_pressed = SubResource("StyleBoxFlat_r625f")
+ChipButton/styles/pressed = SubResource("StyleBoxFlat_r625f")
 ChoiceButton/base_type = &"Button"
-ChoiceButton/styles/hover_pressed = SubResource("StyleBoxFlat_jvwhf")
-ChoiceButton/styles/pressed = SubResource("StyleBoxFlat_jvwhf")
+ChoiceButton/styles/hover_pressed = SubResource("StyleBoxFlat_nvthg")
+ChoiceButton/styles/pressed = SubResource("StyleBoxFlat_nvthg")
 DimButton/base_type = &"Button"
-DimButton/styles/hover = SubResource("StyleBoxFlat_r625f")
-DimButton/styles/normal = SubResource("StyleBoxFlat_r625f")
-DimButton/styles/pressed = SubResource("StyleBoxFlat_r625f")
+DimButton/styles/hover = SubResource("StyleBoxFlat_w0yef")
+DimButton/styles/normal = SubResource("StyleBoxFlat_w0yef")
+DimButton/styles/pressed = SubResource("StyleBoxFlat_w0yef")
 DimButtonStrong/base_type = &"Button"
-DimButtonStrong/styles/hover = SubResource("StyleBoxFlat_nvthg")
-DimButtonStrong/styles/normal = SubResource("StyleBoxFlat_nvthg")
-DimButtonStrong/styles/pressed = SubResource("StyleBoxFlat_nvthg")
+DimButtonStrong/styles/hover = SubResource("StyleBoxFlat_eehny")
+DimButtonStrong/styles/normal = SubResource("StyleBoxFlat_eehny")
+DimButtonStrong/styles/pressed = SubResource("StyleBoxFlat_eehny")
 DimLabel/base_type = &"Label"
 DimLabel/colors/font_color = Color(0.7, 0.7, 0.7, 1)
 DimPanel/base_type = &"Panel"
-DimPanel/styles/panel = SubResource("StyleBoxFlat_w0yef")
+DimPanel/styles/panel = SubResource("StyleBoxFlat_yjimd")
+GhostButton/base_type = &"Button"
+GhostButton/styles/disabled = SubResource("StyleBoxFlat_ungle")
+GhostButton/styles/hover = SubResource("StyleBoxFlat_ungle")
+GhostButton/styles/hover_pressed = SubResource("StyleBoxFlat_ungle")
+GhostButton/styles/normal = SubResource("StyleBoxFlat_ungle")
+GhostButton/styles/pressed = SubResource("StyleBoxFlat_ungle")
+HotButton/base_type = &"Button"
+HotButton/colors/font_color = Color(0.0470588, 0.121569, 0.14902, 1)
+HotButton/colors/font_focus_color = Color(0.0470588, 0.121569, 0.14902, 1)
+HotButton/colors/font_hover_color = Color(0.0470588, 0.121569, 0.14902, 1)
+HotButton/colors/font_hover_pressed_color = Color(0.0470588, 0.121569, 0.14902, 1)
+HotButton/colors/font_pressed_color = Color(0.0470588, 0.121569, 0.14902, 1)
+HotButton/styles/disabled = SubResource("StyleBoxFlat_itu41")
+HotButton/styles/hover = SubResource("StyleBoxFlat_itu41")
+HotButton/styles/hover_pressed = SubResource("StyleBoxFlat_itu41")
+HotButton/styles/normal = SubResource("StyleBoxFlat_itu41")
+HotButton/styles/pressed = SubResource("StyleBoxFlat_itu41")
 InfoLabel/base_type = &"Label"
 InfoLabel/colors/font_color = Color(0.560784, 0.890196, 1, 1)
 LevelRowPanel/base_type = &"PanelContainer"
-LevelRowPanel/styles/panel = SubResource("StyleBoxFlat_eehny")
+LevelRowPanel/styles/panel = SubResource("StyleBoxFlat_1mhyq")
 MutedLabel/base_type = &"Label"
 MutedLabel/colors/font_color = Color(0.560784, 0.666667, 0.698039, 1)
 OnAccentLabel/base_type = &"Label"
 OnAccentLabel/colors/font_color = Color(0.0470588, 0.121569, 0.14902, 1)
+PillButton/base_type = &"Button"
+PillButton/colors/font_color = Color(0.560784, 0.666667, 0.698039, 1)
+PillButton/colors/font_focus_color = Color(0.560784, 0.666667, 0.698039, 1)
+PillButton/colors/font_hover_color = Color(0.560784, 0.666667, 0.698039, 1)
+PillButton/colors/font_hover_pressed_color = Color(0.560784, 0.666667, 0.698039, 1)
+PillButton/colors/font_pressed_color = Color(0.560784, 0.666667, 0.698039, 1)
+PillButton/styles/disabled = SubResource("StyleBoxFlat_bfnxp")
+PillButton/styles/hover = SubResource("StyleBoxFlat_bfnxp")
+PillButton/styles/hover_pressed = SubResource("StyleBoxFlat_bfnxp")
+PillButton/styles/normal = SubResource("StyleBoxFlat_bfnxp")
+PillButton/styles/pressed = SubResource("StyleBoxFlat_bfnxp")
 RevealCardPanel/base_type = &"PanelContainer"
-RevealCardPanel/styles/panel = SubResource("StyleBoxFlat_yjimd")
+RevealCardPanel/styles/panel = SubResource("StyleBoxFlat_0nkmd")
 SheetPanel/base_type = &"PanelContainer"
-SheetPanel/styles/panel = SubResource("StyleBoxFlat_ungle")
+SheetPanel/styles/panel = SubResource("StyleBoxFlat_vmvse")
 ShopRowPanel/base_type = &"PanelContainer"
-ShopRowPanel/styles/panel = SubResource("StyleBoxFlat_itu41")
+ShopRowPanel/styles/panel = SubResource("StyleBoxFlat_dkcdj")
+SoftButton/base_type = &"Button"
+SoftButton/styles/disabled = SubResource("StyleBoxFlat_xa0ox")
+SoftButton/styles/hover = SubResource("StyleBoxFlat_xa0ox")
+SoftButton/styles/hover_pressed = SubResource("StyleBoxFlat_xa0ox")
+SoftButton/styles/normal = SubResource("StyleBoxFlat_xa0ox")
+SoftButton/styles/pressed = SubResource("StyleBoxFlat_xa0ox")
 TabButton/base_type = &"Button"
-TabButton/styles/hover_pressed = SubResource("StyleBoxFlat_1mhyq")
-TabButton/styles/pressed = SubResource("StyleBoxFlat_1mhyq")
+TabButton/styles/hover_pressed = SubResource("StyleBoxFlat_es70y")
+TabButton/styles/pressed = SubResource("StyleBoxFlat_es70y")
 Tokens/colors/accent = Color(1, 0.823529, 0.247059, 1)
 Tokens/colors/accent_line = Color(1, 0.823529, 0.247059, 0.8)
 Tokens/colors/accent_warm = Color(0.96, 0.78, 0.26, 1)
 Tokens/colors/background = Color(0.0470588, 0.121569, 0.14902, 1)
 Tokens/colors/background_settings = Color(0.113725, 0.121569, 0.14902, 1)
 Tokens/colors/banner = Color(0.0392157, 0.101961, 0.12549, 0.86)
+Tokens/colors/caption = Color(0.101961, 0.227451, 0.270588, 0.92)
 Tokens/colors/control_track = Color(0.3, 0.3, 0.34, 1)
+Tokens/colors/hot = Color(0.94902, 0.482353, 0.313726, 1)
 Tokens/colors/info = Color(0.560784, 0.890196, 1, 1)
+Tokens/colors/line = Color(0.152941, 0.313726, 0.360784, 1)
 Tokens/colors/outline = Color(1, 1, 1, 1)
 Tokens/colors/overlay = Color(0.08, 0.085, 0.1, 1)
 Tokens/colors/overlay_glass = Color(0.08, 0.085, 0.1, 0.92)
+Tokens/colors/panel = Color(0.0745098, 0.176471, 0.211765, 1)
+Tokens/colors/panel_raised = Color(0.101961, 0.227451, 0.270588, 1)
+Tokens/colors/pill = Color(0.0745098, 0.176471, 0.211765, 0.9)
 Tokens/colors/row = Color(1, 1, 1, 0.05)
 Tokens/colors/row_border = Color(1, 1, 1, 0.1)
 Tokens/colors/scrim = Color(0, 0, 0, 0.6)
 Tokens/colors/scrim_strong = Color(0, 0, 0, 0.7)
 Tokens/colors/selected = Color(0.184314, 0.435294, 0.839216, 1)
+Tokens/colors/spotlight_dim = Color(0.0156863, 0.0470588, 0.0627451, 0.45)
 Tokens/colors/surface = Color(0.0862745, 0.180392, 0.215686, 1)
 Tokens/colors/surface_glass = Color(0.0862745, 0.180392, 0.215686, 0.96)
 Tokens/colors/text_dim = Color(0.7, 0.7, 0.7, 1)
@@ -246,8 +388,8 @@ Tokens/colors/text_muted = Color(0.560784, 0.666667, 0.698039, 1)
 Tokens/colors/text_on_accent = Color(0.0470588, 0.121569, 0.14902, 1)
 Tokens/colors/track = Color(1, 1, 1, 0.12)
 VolumeSlider/base_type = &"HSlider"
-VolumeSlider/styles/grabber_area = SubResource("StyleBoxFlat_bfnxp")
-VolumeSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_bfnxp")
-VolumeSlider/styles/slider = SubResource("StyleBoxFlat_0nkmd")
+VolumeSlider/styles/grabber_area = SubResource("StyleBoxFlat_o8cq8")
+VolumeSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_o8cq8")
+VolumeSlider/styles/slider = SubResource("StyleBoxFlat_wun14")
 WarmAccentLabel/base_type = &"Label"
 WarmAccentLabel/colors/font_color = Color(0.96, 0.78, 0.26, 1)

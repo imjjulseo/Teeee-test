@@ -12,6 +12,8 @@ extends TutorialStep
 @export var button: String = ""
 @export var top: bool = false
 @export var grow_seeds: bool = false
+## 설명 칸 아이콘 (HTML icon: 시계 · 금화 · 씨앗 · 족보 점).
+@export var icon: CaptionIcon.Kind = CaptionIcon.Kind.NONE
 @export var release_seeds: bool = false
 @export var seed_min: float = 0.4
 @export var seed_max: float = 3.5
@@ -21,6 +23,7 @@ var _waiting: float = -1.0
 
 func start(director: TutorialDirector) -> void:
 	_waiting = -1.0
+	director.caption_icon(icon)
 	director.say(director.fill(head), director.fill(text), holes, button, top)
 	if grow_seeds:
 		director.grow_held_seeds()

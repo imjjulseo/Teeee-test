@@ -255,18 +255,17 @@ bg_token = &"banner"
 border_token = &"outline"
 
 [sub_resource type="StyleBoxFlat" id="Box_16"]
-content_margin_left = 28.0
-content_margin_top = 20.0
-content_margin_right = 28.0
-content_margin_bottom = 20.0
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
+content_margin_left = 25.0
+content_margin_top = 18.0
+content_margin_right = 25.0
+content_margin_bottom = 18.0
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 24
+shadow_offset = Vector2(0, 14)
 
 [sub_resource type="Resource" id="Style_16"]
 script = ExtResource("2_style")
@@ -274,8 +273,7 @@ name = &"CaptionPanel"
 base_type = &"PanelContainer"
 slots = PackedStringArray("panel")
 template = SubResource("Box_16")
-bg_token = &"surface_glass"
-border_token = &"accent_line"
+bg_token = &"caption"
 
 [sub_resource type="StyleBoxFlat" id="Box_17"]
 content_margin_left = 16.0
@@ -295,6 +293,145 @@ slots = PackedStringArray("panel")
 template = SubResource("Box_17")
 bg_token = &"surface_glass"
 
+[sub_resource type="StyleBoxFlat" id="Box_18"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="Resource" id="Style_18"]
+script = ExtResource("2_style")
+name = &"Button"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "disabled")
+template = SubResource("Box_18")
+bg_token = &"panel"
+border_token = &"line"
+
+[sub_resource type="StyleBoxFlat" id="Box_19"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="Resource" id="Style_19"]
+script = ExtResource("2_style")
+name = &"Button"
+base_type = &"Button"
+slots = PackedStringArray("pressed", "hover_pressed")
+template = SubResource("Box_19")
+bg_token = &"panel_raised"
+border_token = &"line"
+
+[sub_resource type="StyleBoxFlat" id="Box_20"]
+content_margin_left = 24.0
+content_margin_top = 16.0
+content_margin_right = 24.0
+content_margin_bottom = 16.0
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+
+[sub_resource type="Resource" id="Style_20"]
+script = ExtResource("2_style")
+name = &"HotButton"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "pressed", "hover_pressed", "disabled")
+template = SubResource("Box_20")
+bg_token = &"hot"
+font_token = &"text_on_accent"
+
+[sub_resource type="StyleBoxFlat" id="Box_21"]
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="Resource" id="Style_21"]
+script = ExtResource("2_style")
+name = &"AccentButton"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "pressed", "hover_pressed", "disabled")
+template = SubResource("Box_21")
+bg_token = &"accent"
+font_token = &"text_on_accent"
+
+[sub_resource type="StyleBoxFlat" id="Box_22"]
+content_margin_left = 18.0
+content_margin_top = 9.0
+content_margin_right = 18.0
+content_margin_bottom = 9.0
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="Resource" id="Style_22"]
+script = ExtResource("2_style")
+name = &"PillButton"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "pressed", "hover_pressed", "disabled")
+template = SubResource("Box_22")
+bg_token = &"pill"
+font_token = &"text_muted"
+
+[sub_resource type="StyleBoxFlat" id="Box_23"]
+content_margin_left = 14.0
+content_margin_top = 8.0
+content_margin_right = 14.0
+content_margin_bottom = 8.0
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="Resource" id="Style_23"]
+script = ExtResource("2_style")
+name = &"SoftButton"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "pressed", "hover_pressed", "disabled")
+template = SubResource("Box_23")
+bg_token = &"row_border"
+
+[sub_resource type="StyleBoxFlat" id="Box_24"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="Resource" id="Style_24"]
+script = ExtResource("2_style")
+name = &"GhostButton"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "pressed", "hover_pressed", "disabled")
+template = SubResource("Box_24")
+bg_token = &"panel_raised"
+
 [resource]
 script = ExtResource("1_spec")
 default_font = ExtResource("3_font")
@@ -306,4 +443,4 @@ label_variations = Dictionary[StringName, StringName]({
 &"OnAccentLabel": &"text_on_accent",
 &"WarmAccentLabel": &"accent_warm"
 })
-styles = Array[ExtResource("2_style")]([SubResource("Style_1"), SubResource("Style_2"), SubResource("Style_3"), SubResource("Style_4"), SubResource("Style_5"), SubResource("Style_6"), SubResource("Style_7"), SubResource("Style_8"), SubResource("Style_9"), SubResource("Style_10"), SubResource("Style_11"), SubResource("Style_12"), SubResource("Style_13"), SubResource("Style_14"), SubResource("Style_15"), SubResource("Style_16"), SubResource("Style_17")])
+styles = Array[ExtResource("2_style")]([SubResource("Style_1"), SubResource("Style_2"), SubResource("Style_3"), SubResource("Style_4"), SubResource("Style_5"), SubResource("Style_6"), SubResource("Style_7"), SubResource("Style_8"), SubResource("Style_9"), SubResource("Style_10"), SubResource("Style_11"), SubResource("Style_12"), SubResource("Style_13"), SubResource("Style_14"), SubResource("Style_15"), SubResource("Style_16"), SubResource("Style_17"), SubResource("Style_18"), SubResource("Style_19"), SubResource("Style_20"), SubResource("Style_21"), SubResource("Style_22"), SubResource("Style_23"), SubResource("Style_24")])

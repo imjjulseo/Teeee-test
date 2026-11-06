@@ -24,11 +24,13 @@ script = ExtResource("3_say")
 text = "매치한 자리에는 다시 블럭이 무작위로 자라나요"
 holes = PackedStringArray("seeds")
 release_seeds = true
+icon = 5
 
 [sub_resource type="Resource" id="Step_TimeSay"]
 script = ExtResource("3_say")
 text = "시간 안에 매치해야 하고, 뭐든 매치하면 추가 시간을 얻어요"
 holes = PackedStringArray("time")
+icon = 4
 
 [sub_resource type="Resource" id="Step_Time"]
 script = ExtResource("10_time")
@@ -42,11 +44,13 @@ rule_cards = true
 script = ExtResource("3_say")
 text = "점수를 얻으려면 족보를 완성해야 해요"
 holes = PackedStringArray("cards")
+icon = 2
 
 [sub_resource type="Resource" id="Step_Recipe2"]
 script = ExtResource("3_say")
 text = "족보의 색 순서대로 매치하면 완성돼요. 흰 테두리가 다음 색이에요"
 holes = PackedStringArray("cards")
+icon = 2
 
 [sub_resource type="Resource" id="Step_RecipeMatch"]
 script = ExtResource("6_match")
@@ -58,6 +62,7 @@ rule_hints = true
 cheer = ""
 cheer_done = ""
 done_pause = 0.6
+icon = 2
 
 [sub_resource type="Resource" id="Step_Coin1"]
 script = ExtResource("7_coin")
@@ -85,6 +90,7 @@ seconds = 1.5
 script = ExtResource("3_say")
 text = "모은 코인은 캐릭터를 뽑는 데 써요"
 holes = PackedStringArray("coin")
+icon = 3
 
 [sub_resource type="Resource" id="Step_Lv1"]
 script = ExtResource("4_level")

@@ -1,7 +1,7 @@
 class_name RecipeView
 extends PanelContainer
-## 족보 1개 표시 (D9). 박스 배경 = 다음에 제거해야 하는 색. 칸마다 색 순서를 문양과 함께 보여주고,
-## 제거한 칸은 흐리게, 다음 칸은 흰 테두리로 강조한다. 로직(RecipeSet)을 읽기만 한다.
+## 족보 1개 표시 (D9, HTML .rc.tint): 카드 바탕·테두리를 다음에 깰 색으로 은은하게 물들이고, 칸마다 색 순서를 문양과 함께
+## 왼쪽부터 보여 준다. 아직 안 깬 칸은 어둡게, 깬 칸은 또렷하게, 다음 칸만 흰 고리로 강조. 아래 줄은 "+점수". 로직(RecipeSet)을 읽기만 한다.
 ## 캐릭터 카드에도 쓴다 (is_ability: 캐릭터 색 테두리, 둘째 줄은 상태 문구 또는 능력 이름).
 
 ## 표시할 족보 슬롯 번호 (RecipeSet.recipes 인덱스). 능력 박스는 사용하지 않음.
@@ -32,11 +32,11 @@ var _recipe: RecipeSet.Recipe
 
 func _ready() -> void:
 	_panel_style = StyleBoxFlat.new()
-	_panel_style.set_corner_radius_all(10)
-	_panel_style.set_content_margin_all(10)
-	if is_ability:
-		_panel_style.set_border_width_all(theme_data.ability_border_width)
-		_panel_style.border_color = _border_color
+	_panel_style.set_corner_radius_all(theme_data.recipe_card_radius)
+	_panel_style.set_content_margin_all(12)
+	_panel_style.bg_color = theme_data.recipe_card_bg
+	_panel_style.set_border_width_all(theme_data.ability_border_width if is_ability else theme_data.recipe_card_border)
+	_panel_style.border_color = _border_color if is_ability else theme_data.recipe_card_bg
 	add_theme_stylebox_override("panel", _panel_style)
 	if _step_size <= 0.0:
 		_step_size = theme_data.recipe_step_size
@@ -87,7 +87,10 @@ func caption_text() -> String:
 ## caption이 비어 있으면 족보 점수를 표시한다.
 func show_recipe(recipe: RecipeSet.Recipe, caption: String = "") -> void:
 	_recipe = recipe
-	_panel_style.bg_color = theme_data.display_color(recipe.next_color(), _display)
+	if not is_ability:
+		var tint: Color = theme_data.display_color(recipe.next_color(), _display)
+		_panel_style.bg_color = theme_data.recipe_card_bg.lerp(tint, theme_data.recipe_tint)
+		_panel_style.border_color = theme_data.recipe_card_bg.lerp(tint, theme_data.recipe_border_tint)
 	_caption = caption
 	_points = recipe.points
 	_steps.visible = true
@@ -101,19 +104,19 @@ func show_recipe(recipe: RecipeSet.Recipe, caption: String = "") -> void:
 		var style: StyleBoxFlat = _step_styles[slot_index]
 		var color: Color = theme_data.display_color(recipe.colors[i], _display)
 		var glyph_color: Color = theme_data.glyph_color
-		if recipe.is_step_done(i):
-			color.a = theme_data.recipe_done_alpha
-			glyph_color.a *= theme_data.recipe_done_alpha
+		var alpha: float = theme_data.recipe_done_alpha if recipe.is_step_done(i) else (1.0 if i == next else theme_data.recipe_pending_alpha)
+		color.a *= alpha
+		glyph_color.a *= alpha
 		style.bg_color = color
 		_step_glyphs[slot_index].set_glyph(theme_data.glyph_for(recipe.colors[i]), glyph_color)
 		var art: Texture2D = theme_data.block_art(recipe.colors[i], _display)
 		_step_arts[slot_index].texture = art
 		_step_arts[slot_index].visible = art != null
-		_step_arts[slot_index].modulate.a = theme_data.recipe_done_alpha if recipe.is_step_done(i) else 1.0
+		_step_arts[slot_index].modulate.a = alpha
 		if art != null:  # 이미지에 색·문양이 다 있다 (테두리는 다음 칸 표시로 남긴다)
 			style.bg_color = Color.TRANSPARENT
 			_step_glyphs[slot_index].set_glyph(GlyphView.Shape.NONE, glyph_color)
-		style.border_color = theme_data.recipe_next_border if i == next else theme_data.recipe_step_border
+		_set_ring(style, i == next)
 
 
 ## 족보 완성 / 능력 발동 연출.
@@ -135,7 +138,7 @@ func _refresh_caption() -> void:
 	elif not _caption.is_empty():
 		_points_label.text = _caption
 	else:
-		_points_label.text = str(_points)
+		_points_label.text = "+%d" % _points
 
 
 ## 족보 길이만큼 칸(Panel)을 맞춘다. 길이는 데이터로 정해지므로 코드에서 만든다.
@@ -151,8 +154,6 @@ func _ensure_steps(count: int) -> void:
 	_step_arts.clear()
 	for _i: int in count:
 		var style: StyleBoxFlat = StyleBoxFlat.new()
-		style.set_border_width_all(3)
-		style.set_corner_radius_all(4)
 		var step: Panel = Panel.new()
 		step.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		step.add_theme_stylebox_override("panel", style)
@@ -174,8 +175,19 @@ func _ensure_steps(count: int) -> void:
 		_step_arts.append(art)
 
 
+## 다음 칸: 칸 바깥으로 흰 고리 (HTML box-shadow 0 0 0 3px).
+func _set_ring(style: StyleBoxFlat, on: bool) -> void:
+	var ring: int = theme_data.recipe_next_ring if on else 0
+	style.set_border_width_all(ring)
+	style.set_expand_margin_all(ring)
+	style.border_color = theme_data.recipe_next_border
+
+
 func _apply_step_size(step: Panel, glyph: GlyphView) -> void:
 	step.custom_minimum_size = Vector2.ONE * _step_size
+	var style: StyleBoxFlat = step.get_theme_stylebox(&"panel") as StyleBoxFlat
+	if style != null:
+		style.set_corner_radius_all(int(_step_size * 0.2))
 	var inset: float = _step_size * 0.25
 	glyph.offset_left = inset
 	glyph.offset_top = inset

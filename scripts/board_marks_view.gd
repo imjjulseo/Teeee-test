@@ -3,11 +3,18 @@ extends Node2D
 ## 능력의 판 위 표시를 칸 위에 그린다 (마라토너 깃발, 탐험가 구역). 받은 BoardMark를 그대로 그릴 뿐 판정하지 않는다.
 ## 좌표는 칸 기준 (BoardView의 Cells와 같은 원점).
 ## 표시 종류에 디자인 이미지(BoardTheme.mark_textures)가 있으면 그 칸 범위에 이미지를 그린다 (화살표는 방향대로 돌림, 길은 늘 선).
+## 퍼즐·튜토리얼 안내는 HTML 그대로: 모을 블록은 흰 빛이 맥박처럼(tuthl, 1.2초), 당길 블록은 노란 빛(tpull), 목표 가운데는 노란
+## 방사형(tctr), 화살표는 흰 화살표가 깜빡임(tarr, 0.9초). 목표 자리·설 칸(tslot · tdest)은 HTML처럼 그리지 않는다.
+
+## 매 프레임 다시 그리는(움직이는) 표시.
+const ANIMATED: Array[BoardMark.Kind] = [BoardMark.Kind.SWIPE, BoardMark.Kind.TARGET, BoardMark.Kind.PULL, BoardMark.Kind.ARROW]
 
 @export var theme_data: BoardTheme
 
 var _marks: Array[BoardMark] = []
 var _swipe_time: float = 0.0
+## 깜빡이는 표시의 시계 (초).
+var _pulse_time: float = 0.0
 
 
 func show_marks(marks: Array[BoardMark]) -> void:
@@ -16,11 +23,12 @@ func show_marks(marks: Array[BoardMark]) -> void:
 	queue_redraw()
 
 
-## 스와이프 안내가 있으면 매 프레임 다시 그린다.
+## 움직이는 표시가 있으면 매 프레임 다시 그린다.
 func _process(delta: float) -> void:
 	for mark: BoardMark in _marks:
-		if mark.kind == BoardMark.Kind.SWIPE:
+		if ANIMATED.has(mark.kind):
 			_swipe_time = fmod(_swipe_time + delta, theme_data.swipe_period)
+			_pulse_time = fmod(_pulse_time + delta, 3600.0)
 			queue_redraw()
 			return
 
@@ -53,18 +61,17 @@ func _draw() -> void:
 				_draw_path(mark, step)
 			BoardMark.Kind.WARN:
 				draw_rect(rect.grow(-theme_data.mark_line_width / 2.0), theme_data.mark_warn_color, false, theme_data.mark_line_width)
-			BoardMark.Kind.TARGET:
-				draw_rect(rect.grow(-theme_data.mark_line_width), theme_data.puzzle_target_color, false, theme_data.mark_line_width)
-			BoardMark.Kind.GOAL_CENTER:
-				draw_circle(rect.get_center(), rect.size.x * 0.12, theme_data.puzzle_goal_color)
-			BoardMark.Kind.GOAL_SLOT:
-				_draw_dashed_rect(rect.grow(-theme_data.mark_line_width), theme_data.puzzle_goal_color)
-			BoardMark.Kind.GOAL_SLOT_FILLED:
-				_draw_dashed_rect(rect.grow(-theme_data.mark_line_width), theme_data.puzzle_filled_color)
-			BoardMark.Kind.STAND:
-				draw_circle(rect.get_center(), rect.size.x * 0.2, theme_data.puzzle_stand_color, false, theme_data.mark_line_width)
-			BoardMark.Kind.PULL:
-				draw_rect(rect.grow(-theme_data.mark_line_width / 2.0), theme_data.puzzle_pull_color, false, theme_data.mark_line_width * 1.5)
+			BoardMark.Kind.TARGET:  # HTML .tuthl: 밝게 + 흰 빛 (0 0 16px 6px rgba(255,255,255,.45)), 1.2초 맥박
+				var k: float = _pulse(theme_data.glow_period, 0.2)
+				_draw_soft_fill(rect, theme_data.glow_brighten)
+				_draw_glow(rect.grow(-rect.size.x * 0.06), Color(theme_data.target_glow_color, theme_data.target_glow_color.a * k), 0.15, 0.39)
+			BoardMark.Kind.PULL:  # HTML .tpull: 노란 빛 (0 0 18px 7px rgba(255,210,63,.6))
+				var k: float = _pulse(theme_data.glow_period, 0.2)
+				_draw_glow(rect, Color(theme_data.puzzle_pull_color, theme_data.pull_glow_alpha * k), 0.17, 0.44)
+			BoardMark.Kind.GOAL_CENTER:  # HTML .tctr: 노란 방사형 (가운데 .35 → 70%에서 0)
+				_draw_radial(rect.get_center(), rect.size.x * 0.5, theme_data.puzzle_goal_color)
+			BoardMark.Kind.GOAL_SLOT, BoardMark.Kind.GOAL_SLOT_FILLED, BoardMark.Kind.STAND:
+				pass  # HTML: display:none
 			BoardMark.Kind.ARROW:
 				_draw_arrow(rect, mark.direction)
 			BoardMark.Kind.SWIPE:
@@ -97,14 +104,62 @@ func _draw_dashed_rect(rect: Rect2, color: Color) -> void:
 		draw_dashed_line(corners[i], corners[(i + 1) % corners.size()], color, theme_data.mark_line_width, theme_data.mark_dash_length)
 
 
-## 칸 가운데의 화살표 (direction 쪽).
+## 칸 가운데의 흰 화살표 (HTML .tarr: 칸의 52%, 그림자, 0.9초마다 1 → .35 → 1).
 func _draw_arrow(rect: Rect2, direction: Vector2i) -> void:
 	var dir: Vector2 = Vector2(direction).normalized()
 	var side: Vector2 = Vector2(-dir.y, dir.x)
 	var c: Vector2 = rect.get_center()
-	var s: float = rect.size.x * 0.3
-	draw_colored_polygon(PackedVector2Array([c + dir * s, c - dir * s * 0.6 + side * s * 0.8, c - dir * s * 0.6 - side * s * 0.8]),
-		theme_data.puzzle_arrow_color)
+	var half: float = rect.size.x * 0.52 / 2.0
+	# HTML clip-path: polygon(0 30%, 52% 30%, 52% 6%, 100% 50%, 52% 94%, 52% 70%, 0 70%) (오른쪽을 향한 모양)
+	var shape: Array[Vector2] = [Vector2(0, 0.3), Vector2(0.52, 0.3), Vector2(0.52, 0.06), Vector2(1, 0.5), Vector2(0.52, 0.94), Vector2(0.52, 0.7), Vector2(0, 0.7)]
+	var points: PackedVector2Array = PackedVector2Array()
+	for p: Vector2 in shape:
+		var local: Vector2 = (p - Vector2(0.5, 0.5)) * half * 2.0
+		points.append(c + dir * local.x + side * local.y)
+	var k: float = _pulse(theme_data.arrow_period, 0.35)
+	var shadow: PackedVector2Array = PackedVector2Array()
+	for p: Vector2 in points:
+		shadow.append(p + Vector2(0, rect.size.x * 0.02))
+	draw_colored_polygon(shadow, Color(0, 0, 0, 0.5 * k))
+	draw_colored_polygon(points, Color(theme_data.puzzle_arrow_color, k))
+
+
+## 1 → low → 1을 period초마다 (HTML 50% 지점에서 low).
+func _pulse(period: float, low: float) -> float:
+	return lerpf(1.0, low, 0.5 - 0.5 * cos(_pulse_time / period * TAU))
+
+
+## rect 둘레로 퍼지는 빛 (CSS box-shadow: spread · blur를 칸 크기 비율로). 바깥으로 갈수록 옅어지는 선을 겹쳐 그린다.
+func _draw_glow(rect: Rect2, color: Color, spread: float, blur: float) -> void:
+	var cell: float = rect.size.x
+	var steps: int = 10
+	var reach: float = cell * (spread + blur)
+	for i: int in steps:
+		var t: float = float(i) / steps
+		var grow: float = reach * t
+		var fade: float = 1.0 if grow <= cell * spread else pow(1.0 - (grow - cell * spread) / (cell * blur), 2.0)
+		var box: StyleBoxFlat = StyleBoxFlat.new()
+		box.draw_center = false
+		box.set_border_width_all(int(ceil(reach / steps)) + 1)
+		box.border_color = Color(color, color.a * fade / steps * 3.0)
+		box.set_corner_radius_all(int(cell * 0.3 + grow))
+		draw_style_box(box, rect.grow(grow))
+
+
+## 블록을 밝게 (HTML filter: brightness(1.15)) — 둥근 흰 막을 얇게 덮는다.
+func _draw_soft_fill(rect: Rect2, color: Color) -> void:
+	var box: StyleBoxFlat = StyleBoxFlat.new()
+	box.bg_color = color
+	box.set_corner_radius_all(int(rect.size.x * 0.2))
+	draw_style_box(box, rect)
+
+
+## 가운데가 진하고 바깥으로 옅어지는 원 (CSS radial-gradient, 70%에서 0).
+func _draw_radial(center: Vector2, radius: float, color: Color) -> void:
+	var rings: int = 12
+	for i: int in rings:
+		var t: float = 1.0 - float(i) / rings
+		draw_circle(center, radius * 0.7 * t, Color(color, color.a / rings * 1.6))
 
 
 ## 손가락 안내: 0~15% 나타나며 커짐 → 60%까지 옆 칸으로 → 80%부터 작아지며 사라짐 (HTML @keyframes tswipe).

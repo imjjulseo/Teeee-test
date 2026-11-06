@@ -40,7 +40,6 @@ const PRACTICE_SIZE: int = 5
 @export var spotlight: SpotlightOverlay
 @export var hud: Hud
 @export var board_view: BoardView
-@export var puzzle_bar: TutorialPuzzleBar
 @export var result_panel: PuzzleResultPanel
 ## 자유 매치: 가만히 있으면 이만큼 뒤 힌트(초), 힌트 탐색 깊이·노드 수.
 @export var hint_idle: float = 6.0
@@ -114,6 +113,17 @@ var _hold_text: String = ""
 var _holding: bool = false
 ## 시간 설명 단계: 남은 시간이 흐른다 (HTML timeOn).
 var _time_running: bool = false
+## 설명 칸 아이콘과 진행 막대 (HTML icon · pre). 단계가 바뀌면 지운다.
+var _icon: CaptionIcon.Kind = CaptionIcon.Kind.NONE
+var _icon_colors: PackedInt32Array = PackedInt32Array()
+var _progress: Vector2i = Vector2i.ZERO
+## 퍼즐 줄 (설명 칸 안, HTML #tspCap .pzf).
+var puzzle_bar: TutorialPuzzleBar
+var _puzzle_caption_open: bool = false
+
+
+func _ready() -> void:
+	puzzle_bar = spotlight.foot() if spotlight != null else null
 
 
 # --- 시작 · 끝 --------------------------------------------------------------------
@@ -304,6 +314,8 @@ func _start_next() -> void:
 		_complete()
 		return
 	_caption_holes = PackedStringArray()
+	_icon = CaptionIcon.Kind.NONE
+	_progress = Vector2i.ZERO
 	_step = _steps[step_index]
 	_step.start(self)
 
@@ -353,14 +365,37 @@ func _process(delta: float) -> void:
 
 ## 설명 한 장 (TAP): 누르면 지금 단계의 on_tap.
 func say(head: String, text: String, holes: PackedStringArray, button: String = "", top: bool = false) -> void:
+	_puzzle_caption_open = false
+	if puzzle_bar != null:
+		puzzle_bar.visible = false  # HTML: 퍼즐 줄은 퍼즐 조작 설명에만
 	_remember_caption(SpotlightOverlay.Mode.TAP, head, text, holes)
 	spotlight.open(SpotlightOverlay.Mode.TAP, head, text, holes_for(holes), button, true, top)
+	_decorate_caption()
 
 
 ## 조작 설명 (ACT): 판을 직접 조작한다.
 func act(head: String, text: String, holes: PackedStringArray) -> void:
+	_puzzle_caption_open = false
+	if puzzle_bar != null:
+		puzzle_bar.visible = false
 	_remember_caption(SpotlightOverlay.Mode.ACT, head, text, holes)
 	spotlight.open(SpotlightOverlay.Mode.ACT, head, text, holes_for(holes))
+	_decorate_caption()
+
+
+## 다음 설명 칸의 아이콘 (DOTS면 첫 족보 색, SHAPE면 colors의 첫 색). 떠 있는 칸에도 바로 적용한다.
+func caption_icon(kind: CaptionIcon.Kind, colors: PackedInt32Array = PackedInt32Array()) -> void:
+	_icon = kind
+	_icon_colors = colors
+	if kind == CaptionIcon.Kind.DOTS and colors.is_empty() and session.recipes.slot_count() > 0:
+		_icon_colors = session.recipes.recipes[0].colors
+	if spotlight.is_open():
+		_decorate_caption()
+
+
+func _decorate_caption() -> void:
+	spotlight.set_icon(_icon, _icon_colors)
+	spotlight.set_progress(_progress.x, _progress.y)
 
 
 func set_caption(text: String) -> void:
@@ -413,6 +448,8 @@ static func with_object_particle(word: String) -> String:
 func holes_for(names: PackedStringArray) -> Array[Rect2]:
 	var rects: Array[Rect2] = []
 	for target: String in names:
+		if target == "board" or target == "player":  # HTML: 판 전체·내 칸은 강조하지 않음
+			continue
 		match target:
 			"cards", "chr", "score", "coin", "time", "card:0", "card:1", "card:2":
 				rects.append_array(hud.target_rects(target))
@@ -460,6 +497,7 @@ func _close_moment() -> void:
 	_moment_holes = PackedStringArray()
 	if running and _caption_mode == SpotlightOverlay.Mode.ACT and _banner_left < 0.0:
 		spotlight.open(SpotlightOverlay.Mode.ACT, _caption_head, _caption_text, holes_for(_caption_holes))
+		_decorate_caption()
 	else:
 		spotlight.close()
 
@@ -747,7 +785,7 @@ func start_puzzle(def: PuzzleDef, target: int, hide_goal: bool, quick: bool, coi
 ## 규칙 튜토리얼 퍼즐 (HTML startPuzzle + pzStamp): 판은 그대로 두고 내 주변 5×5에만 모양을 깐다. 목표 점선은 그리지 않고
 ## 결과 제목은 칭찬. delay초 동안 조작을 받지 않고(HTML 첫 판 800ms), swipe면 첫 수 쪽 손가락 안내와 swipe_caption,
 ## hold_text면 풀린 첫 매치를 멈추고 그 설명을 띄운 뒤 매치한다.
-func start_rule_puzzle(def: PuzzleDef, target: int, quick: bool, coins: int, sub: String, holes: PackedStringArray,
+func start_rule_puzzle(def: PuzzleDef, target: int, quick: bool, coins: int, progress: Vector2i, holes: PackedStringArray,
 		hold_seeds: bool, caption: String = "", delay: float = 0.0, swipe: bool = false, hold_text: String = "") -> void:
 	var color_count: int = session.get_config().color_count
 	var stamp: BlockPuzzle.Stamp = BlockPuzzle.stamp(session.board, def, target, color_count, _pick)
@@ -762,8 +800,9 @@ func start_rule_puzzle(def: PuzzleDef, target: int, quick: bool, coins: int, sub
 	_pick.shuffle(cells)
 	for i: int in mini(coins, cells.size()):
 		(cells[i] as BoardCell).attach_coin(1.0e6)  # 튜토리얼 금화는 사라지지 않는다
-	_prepare_runner(puzzle, quick, "", sub, holes, hold_seeds, caption)
+	_prepare_runner(puzzle, quick, "", "", holes, hold_seeds, caption)
 	_runner.cheer_heads = true
+	_progress = progress
 	_hold_text = hold_text
 	_swipe_dir = puzzle.solution.path[0] if swipe and puzzle.solution != null and not puzzle.solution.path.is_empty() else Vector2i.ZERO
 	_runner.begin(puzzle)
@@ -809,7 +848,11 @@ func _prepare_runner(puzzle: BlockPuzzle, quick: bool, label: String, sub: Strin
 func show_puzzle_caption() -> void:
 	if _runner == null:
 		return
+	_icon = CaptionIcon.Kind.SHAPE  # HTML pzActBase: icoT(모을 색)
+	_icon_colors = PackedInt32Array([_runner.puzzle.target_color])
 	act(_puzzle_label, _puzzle_caption if not _puzzle_caption.is_empty() else _runner.tip_text(), _puzzle_holes)
+	_puzzle_caption_open = true
+	_on_puzzle_changed()
 
 
 func _attach_coins(puzzle: BlockPuzzle, coins: int) -> void:
@@ -822,12 +865,17 @@ func _attach_coins(puzzle: BlockPuzzle, coins: int) -> void:
 func _on_puzzle_solved(_center: Vector2i, _color: int) -> void:
 	if not _hold_text.is_empty():  # HTML holdM: 매치하기 전에 멈추고 둘러싼 4칸을 밝혀 설명
 		_holding = true
-		var marks: Array[BoardMark] = [BoardMark.new(BoardMark.Kind.ZONE, _runner.puzzle.window)]
+		var marks: Array[BoardMark] = []
 		for pos: Vector2i in session.board.neighbors(session.board.player_pos):
 			marks.append(BoardMark.at_cell(BoardMark.Kind.TARGET, pos))
 		board_channel.marks_changed.emit(marks)
+		_puzzle_caption_open = false
+		if puzzle_bar != null:
+			puzzle_bar.visible = false
 		_remember_caption(SpotlightOverlay.Mode.TAP, "", _hold_text, PackedStringArray(["player_area"]))
 		spotlight.open(SpotlightOverlay.Mode.TAP, "", _hold_text, holes_for(_caption_holes), "", true)
+		_progress = Vector2i.ZERO
+		_decorate_caption()
 		return
 	_resolve_puzzle_match()
 
@@ -861,7 +909,8 @@ func _on_puzzle_finished(stars: int) -> void:
 func _on_puzzle_changed() -> void:
 	if _runner == null:
 		return
-	puzzle_bar.show_runner(_runner, _puzzle_label, _puzzle_sub)
+	if _puzzle_caption_open:
+		puzzle_bar.show_runner(_runner, _puzzle_label, _puzzle_sub)
 	if spotlight.is_open() and spotlight.mode == SpotlightOverlay.Mode.ACT and _banner_left < 0.0 and not _moment_open:
 		set_caption(_puzzle_caption if not _puzzle_caption.is_empty() and _runner.tip_override.is_empty() else _runner.tip_text())
 
@@ -914,7 +963,7 @@ func _on_spotlight_tapped() -> void:
 	if _holding:
 		_holding = false
 		spotlight.close()
-		board_channel.marks_changed.emit([BoardMark.new(BoardMark.Kind.ZONE, _runner.puzzle.window)] as Array[BoardMark])
+		board_channel.marks_changed.emit([] as Array[BoardMark])
 		_resolve_puzzle_match()
 		return
 	if intro_only:

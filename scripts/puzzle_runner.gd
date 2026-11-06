@@ -31,8 +31,8 @@ class ResultInfo:
 
 var puzzle: BlockPuzzle
 var phase: Phase = Phase.PLAYING
-## 퍼즐 창 테두리를 그린다 (판 전체가 퍼즐이 아니면).
-var show_window: bool = true
+## 퍼즐 창 테두리를 그린다 (HTML .twin은 display:none이라 기본은 그리지 않는다).
+var show_window: bool = false
 ## 힌트·결과 없이 풀리면 바로 끝 (튜토리얼 금화 퍼즐).
 var quick: bool = false
 ## 안내 줄 (비어 있으면 판의 tip).

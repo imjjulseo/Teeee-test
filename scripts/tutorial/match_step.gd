@@ -21,6 +21,8 @@ enum Filter { ANY, NOT_NEXT, RECIPE_NEXT, LETTER_A }
 @export var hints: bool = true
 ## 규칙 튜토리얼 힌트 (HTML tFree): 배운 모양(있는 T로 들어가기)만, 판을 고쳐서라도 만들 수 있게. 칭찬은 수에 따라 자동.
 @export var rule_hints: bool = false
+## 설명 칸 아이콘 (규칙 튜토리얼 족보 = 족보 점).
+@export var icon: CaptionIcon.Kind = CaptionIcon.Kind.NONE
 ## 진행할 때 떠오르는 말, 다 채웠을 때의 말.
 @export var cheer: String = "좋아요!"
 @export var cheer_done: String = "좋아요!"
@@ -34,6 +36,7 @@ var _wait: float = -1.0
 func start(director: TutorialDirector) -> void:
 	_done = 0
 	_wait = -1.0
+	director.caption_icon(icon)
 	director.act(director.fill(head), _text(director), holes)
 	if rule_hints:
 		director.begin_rule_free(0, _color_filter(director))

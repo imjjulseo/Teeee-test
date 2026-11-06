@@ -336,6 +336,7 @@ func _tick_flow() -> void:
 		16:
 			if in_scene("MainMenu", 0.4):
 				expect(_menu().is_entry_enabled(E.ACHIEVEMENTS) and _menu().highlighted_entry() == E.ACHIEVEMENTS, "achievements open and glow")
+				shot("flow_menu_glow")
 				click_control(node("%AchievementsButton"))
 				next_step()
 		17:

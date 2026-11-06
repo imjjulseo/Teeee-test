@@ -24,6 +24,17 @@ const THEME_TYPE: StringName = &"Tokens"
 @export var surface: Color = Color(0.0862745, 0.180392, 0.215686, 1)
 ## 판 위에 뜨는 설명 상자·막대.
 @export var surface_glass: Color = Color(0.0862745, 0.180392, 0.215686, 0.96)
+## 버튼·카드 바탕 (HTML --panel #132D36) / 한 단계 밝은 바탕 (--panel-2 #1A3A45, 누른 버튼·보조 버튼).
+@export var panel: Color = Color(0.0745098, 0.176471, 0.211765, 1)
+@export var panel_raised: Color = Color(0.101961, 0.227451, 0.270588, 1)
+## 버튼·카드 테두리 (HTML --line #27505C).
+@export var line: Color = Color(0.152941, 0.313726, 0.360784, 1)
+## 튜토리얼 설명 칸 (HTML #tspCap: --panel-2 92%).
+@export var caption: Color = Color(0.101961, 0.227451, 0.270588, 0.92)
+## 설명 칸 위 건너뛰기 알약 (HTML rgba(19,45,54,.9)).
+@export var pill: Color = Color(0.0745098, 0.176471, 0.211765, 0.9)
+## 스포트라이트가 덮는 어두운 막 (HTML #tsp .dim rgba(4,12,16,.45)).
+@export var spotlight_dim: Color = Color(0.0156863, 0.0470588, 0.0627451, 0.45)
 ## 능력 배너.
 @export var banner: Color = Color(0.0392157, 0.101961, 0.12549, 0.86)
 ## 목록 한 줄 바탕 / 테두리.
@@ -53,6 +64,8 @@ const THEME_TYPE: StringName = &"Tokens"
 @export var accent_warm: Color = Color(0.96, 0.78, 0.26, 1)
 ## 강조 테두리 (설명 상자).
 @export var accent_line: Color = Color(1, 0.823529, 0.247059, 0.8)
+## 주 행동 버튼 (게임 시작·결과의 다음, HTML --hot #F27B50).
+@export var hot: Color = Color(0.94902, 0.482353, 0.313726, 1)
 ## 정보 (진행 막대 채움·소제목·상태).
 @export var info: Color = Color(0.560784, 0.890196, 1, 1)
 

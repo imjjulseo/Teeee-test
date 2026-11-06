@@ -15,6 +15,7 @@ func start(director: TutorialDirector) -> void:
 	_wait = -1.0
 	director.begin_rule_free(0, Callable())
 	director.run_tutorial_time(time_ratio)
+	director.caption_icon(CaptionIcon.Kind.TIME)
 	director.act("", text, holes)
 
 

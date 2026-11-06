@@ -20,10 +20,14 @@ static func build_into(theme: Theme, spec: UiThemeSpec, tokens: DesignTokens) ->
 		theme.set_type_variation(variation, &"Label")
 		theme.set_color(&"font_color", variation, tokens.color_of(spec.label_variations[variation]))
 	for style: UiStyle in spec.styles:
-		theme.set_type_variation(style.name, style.base_type)
+		if style.name != style.base_type:  # 이름이 바탕 타입과 같으면 그 타입 전체의 기본 모양 (모든 Button 등)
+			theme.set_type_variation(style.name, style.base_type)
 		var box: StyleBox = UiThemeBuilder.style_box(style, tokens)
 		for slot: String in style.slots:
 			theme.set_stylebox(slot, style.name, box)
+		if style.font_token != &"":
+			for key: StringName in [&"font_color", &"font_hover_color", &"font_pressed_color", &"font_focus_color", &"font_hover_pressed_color"]:
+				theme.set_color(key, style.name, tokens.color_of(style.font_token))
 
 
 ## 모양 하나: 이미지가 있으면 9분할 이미지 판넬, 없으면 template 복사 + 토큰 색.

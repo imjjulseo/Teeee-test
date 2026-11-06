@@ -265,7 +265,7 @@ func _tick_select() -> void:
 func _tick_basic() -> void:
 	if step == 0 and playing():
 		expect(not (node("Hud/%AbilityView") as Control).visible, "no character card")
-		expect((node("Hud/%Recipe0") as RecipeView).step_size() == 34.0, "normal step size")
+		expect((node("Hud/%Recipe0") as RecipeView).step_size() == (node("Hud/%Recipe0") as RecipeView).theme_data.recipe_step_size, "normal step size")
 		expect(not (node("EffectBackground") as EffectBackground).is_effect_on(), "no background effect")
 		shot("basic")
 		finish()
@@ -302,7 +302,7 @@ func _tick_ability() -> void:
 		0:
 			if playing():
 				expect((node("Hud/%AbilityView") as Control).visible, "character card shown")
-				expect((node("Hud/%Recipe0") as RecipeView).step_size() == 26.0, "compact steps with 4 boxes")
+				expect((node("Hud/%Recipe0") as RecipeView).step_size() == (node("Hud/%Recipe0") as RecipeView).theme_data.recipe_step_size_compact, "compact steps with 4 boxes")
 				expect(_recipes_fit(), "4 boxes fit on screen")
 				expect(_card() == session().character.ability_name, "card shows the ability name before triggering")
 				if mode == "gardener":

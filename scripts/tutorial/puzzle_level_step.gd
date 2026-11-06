@@ -61,7 +61,7 @@ func _start_board(director: TutorialDirector) -> void:
 	var sub: String = PuzzleLevelStep.progress_dots(_board_index, puzzle_level.boards.size())
 	var holes: PackedStringArray = PackedStringArray(["cards"]) if show_cards else PackedStringArray()
 	if rule:
-		director.start_rule_puzzle(puzzle_level.boards[_board_index], color, false, 0, sub, holes, hold_seeds_after and last,
+		director.start_rule_puzzle(puzzle_level.boards[_board_index], color, false, 0, Vector2i(_board_index, puzzle_level.boards.size()), holes, hold_seeds_after and last,
 			first_caption if first else "", first_delay if first else 0.0, swipe_first and first, hold_text if first else "")
 		return
 	director.start_puzzle(puzzle_level.boards[_board_index], color, puzzle_level.hide_goal, false, 0, "", sub,
