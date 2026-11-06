@@ -1,0 +1,194 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/options_menu.gd" id="1_options"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="2_nav"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="PackedScene" path="res://scenes/debug_panel.tscn" id="3_debug"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_options")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("95_token_rect")
+token = &"background_settings"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 80.0
+offset_right = -40.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 24
+
+[node name="Title" type="Label" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "설정"
+horizontal_alignment = 1
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Inner" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 24
+
+[node name="ControlHeading" type="Label" parent="SafeArea/Content/Layout/Scroll/Inner"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "조작"
+
+[node name="ControlRow" type="HBoxContainer" parent="SafeArea/Content/Layout/Scroll/Inner"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SwipeButton" type="Button" parent="SafeArea/Content/Layout/Scroll/Inner/ControlRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+theme_type_variation = &"ChoiceButton"
+toggle_mode = true
+text = "스와이프
+밀거나 옆 칸 탭"
+
+[node name="DpadButton" type="Button" parent="SafeArea/Content/Layout/Scroll/Inner/ControlRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+theme_type_variation = &"ChoiceButton"
+toggle_mode = true
+text = "패드
+누르고 있으면 반복"
+
+[node name="ControlNote" type="Label" parent="SafeArea/Content/Layout/Scroll/Inner"]
+layout_mode = 2
+theme_type_variation = &"DimLabel"
+theme_override_font_sizes/font_size = 22
+text = "키보드(방향키 / WASD)는 항상 사용할 수 있습니다"
+autowrap_mode = 3
+
+[node name="VolumeHeading" type="Label" parent="SafeArea/Content/Layout/Scroll/Inner"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "소리"
+
+[node name="MasterRow" type="HBoxContainer" parent="SafeArea/Content/Layout/Scroll/Inner"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="MasterVolumeSlider" type="HSlider" parent="SafeArea/Content/Layout/Scroll/Inner/MasterRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+focus_mode = 0
+theme_type_variation = &"VolumeSlider"
+max_value = 100.0
+rounded = true
+value = 100.0
+
+[node name="MasterVolumeLabel" type="Label" parent="SafeArea/Content/Layout/Scroll/Inner/MasterRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "100"
+horizontal_alignment = 2
+
+[node name="VolumeNote" type="Label" parent="SafeArea/Content/Layout/Scroll/Inner"]
+layout_mode = 2
+theme_type_variation = &"DimLabel"
+theme_override_font_sizes/font_size = 22
+text = "게임의 모든 소리(효과음·배경음)의 크기입니다. 0이면 소리가 나지 않습니다"
+autowrap_mode = 3
+
+[node name="ReduceMotionToggle" type="CheckButton" parent="SafeArea/Content/Layout/Scroll/Inner"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 32
+text = "효과 줄이기"
+
+[node name="ReduceMotionNote" type="Label" parent="SafeArea/Content/Layout/Scroll/Inner"]
+layout_mode = 2
+theme_type_variation = &"DimLabel"
+theme_override_font_sizes/font_size = 22
+text = "흔들림·파편·떠오르는 숫자를 끕니다"
+autowrap_mode = 3
+
+[node name="PuzzleButton" type="Button" parent="SafeArea/Content/Layout/Scroll/Inner"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 32
+text = "블럭 모으기 연습"
+
+[node name="DebugPanel" parent="SafeArea/Content/Layout/Scroll/Inner" instance=ExtResource("3_debug")]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 40
+text = "뒤로"
+
+[node name="MenuNavigator" type="Node" parent="."]
+script = ExtResource("2_nav")
+target_scene = "res://scenes/main_menu.tscn"
+
+[node name="PuzzleNavigator" type="Node" parent="."]
+script = ExtResource("2_nav")
+target_scene = "res://scenes/puzzle_practice.tscn"
+
+[connection signal="pressed" from="SafeArea/Content/Layout/Scroll/Inner/ControlRow/SwipeButton" to="." method="_on_swipe_button_pressed"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Scroll/Inner/ControlRow/DpadButton" to="." method="_on_dpad_button_pressed"]
+[connection signal="value_changed" from="SafeArea/Content/Layout/Scroll/Inner/MasterRow/MasterVolumeSlider" to="." method="_on_master_volume_changed"]
+[connection signal="drag_ended" from="SafeArea/Content/Layout/Scroll/Inner/MasterRow/MasterVolumeSlider" to="." method="_on_master_volume_drag_ended"]
+[connection signal="toggled" from="SafeArea/Content/Layout/Scroll/Inner/ReduceMotionToggle" to="." method="_on_reduce_motion_toggled"]
+[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Scroll/Inner/PuzzleButton" to="PuzzleNavigator" method="go"]

@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://2no6sq30aio6"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://bsfgceiuieeku" path="res://scripts/logic/abilities/colorblind_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"colorblind"
+display_name = "색약"
+grade = 3
+ability = SubResource("Ability_1")
+ability_name = "뒤섞임"
+ability_description = "뒤섞임: 10초 동안 무작위 두 색을 같은 색으로"
+detail_effect = "10초 동안 무작위 두 색을 같은 색으로 쳐요. 두 번째 색 블럭이 첫 번째 색으로 보이고 문양은 그대로 남아요. 매치와 족보 진행 모두 같은 색으로 쳐요."
+condition_colors = PackedInt32Array(1, 2, 3, 0, 1)
+accent_color = Color(0.788235, 0.635294, 0.494118, 1)
+player_fill = Color(0.173412, 0.139765, 0.108706, 1)
+player_border = Color(0.788235, 0.635294, 0.494118, 1)

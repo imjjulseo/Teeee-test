@@ -1,0 +1,155 @@
+[gd_resource type="Resource" script_class="PuzzleBook" format=3 uid="uid://cbiviknrnyidn"]
+
+[ext_resource type="Script" uid="uid://1pnm2yaijeap" path="res://scripts/logic/puzzle_book.gd" id="1_book"]
+[ext_resource type="Script" uid="uid://26g186h1gnr3" path="res://scripts/logic/puzzle_level.gd" id="2_level"]
+[ext_resource type="Script" uid="uid://24abgsam3xcq" path="res://scripts/logic/puzzle_def.gd" id="3_def"]
+[ext_resource type="Script" uid="uid://c4ycs3vv5uq3e" path="res://scripts/logic/puzzle_difficulty.gd" id="4_diff"]
+
+[sub_resource type="Resource" id="Diff_easy"]
+script = ExtResource("4_diff")
+id = &"easy"
+name = "쉬움"
+description = "최소 3~5수 · 목표 모양 보임"
+tip = "빈 자리에 먼저 서서, 블럭 쪽으로 움직여 당겨 와요"
+
+[sub_resource type="Resource" id="Diff_normal"]
+script = ExtResource("4_diff")
+id = &"normal"
+name = "보통"
+description = "최소 6~8수"
+tip = "가운데를 정하고, 당긴 자리에서 바로 다음 블럭으로 가요"
+min_moves = 6
+max_moves = 8
+hide_goal = true
+
+[sub_resource type="Resource" id="Diff_hard"]
+script = ExtResource("4_diff")
+id = &"hard"
+name = "어려움"
+description = "최소 9~12수"
+tip = "멀리 있는 블럭은 당기고, 돌아서 한 번 더 당겨요"
+min_moves = 9
+max_moves = 12
+hide_goal = true
+
+[sub_resource type="Resource" id="Diff_hollow"]
+script = ExtResource("4_diff")
+id = &"hollow"
+name = "속 빈 모양"
+description = "가운데가 다른 색인 함정 모양"
+tip = "가운데가 다른 색이면, 먼저 가운데로 들어가 그 블럭을 빼내요"
+min_moves = 5
+max_moves = 11
+hollow = true
+hide_goal = true
+
+[sub_resource type="Resource" id="Board_0a"]
+script = ExtResource("3_def")
+id = "0a"
+rows = PackedStringArray(".....", "..T..", ".TTT.", ".....", "..P..")
+tip = "ㅗ의 열린 쪽에서 가운데로 들어가요"
+
+[sub_resource type="Resource" id="Board_0b"]
+script = ExtResource("3_def")
+id = "0b"
+rows = PackedStringArray(".....", "..T..", ".TTTP", ".....", ".....")
+tip = "모양 블럭을 밟으면 밀려서 깨져요. 돌아서 들어가요"
+
+[sub_resource type="Resource" id="Level_0"]
+script = ExtResource("2_level")
+name = "들어가기"
+boards = Array[ExtResource("3_def")]([SubResource("Board_0a"), SubResource("Board_0b")])
+
+[sub_resource type="Resource" id="Board_1a"]
+script = ExtResource("3_def")
+id = "1a"
+rows = PackedStringArray(".....", "..T..", ".TT.P", "...T.", ".....")
+tip = "블럭은 내가 있던 칸으로 와요. 빈 자리에 먼저 서서, 블럭 쪽으로 움직여요"
+
+[sub_resource type="Resource" id="Level_1"]
+script = ExtResource("2_level")
+level = 1
+name = "한 칸 당기기"
+boards = Array[ExtResource("3_def")]([SubResource("Board_1a")])
+
+[sub_resource type="Resource" id="Board_2a"]
+script = ExtResource("3_def")
+id = "2a"
+rows = PackedStringArray(".....", ".T...", "..TT.", ".T...", "..P..")
+tip = "두 개를 차례로 당겨 와요. ㅗ는 어느 쪽으로 열려 있어도 돼요"
+
+[sub_resource type="Resource" id="Board_2b"]
+script = ExtResource("3_def")
+id = "2b"
+rows = PackedStringArray(".....", "...T.", ".TT..", "..T..", "..P..")
+tip = "하나만 당기면 ㅗ가 돼요. 남은 빈 쪽에서 들어가면 가운데 블럭이 그 칸을 채워요"
+
+[sub_resource type="Resource" id="Board_2c"]
+script = ExtResource("3_def")
+id = "2c"
+rows = PackedStringArray(".....", ".TT..", "..TT.", ".....", "..P..")
+tip = "블럭 줄을 지나가면 블럭이 한 칸씩 내 뒤로 밀려요"
+
+[sub_resource type="Resource" id="Level_2"]
+script = ExtResource("2_level")
+level = 2
+name = "두 개 모으기"
+boards = Array[ExtResource("3_def")]([SubResource("Board_2a"), SubResource("Board_2b"), SubResource("Board_2c")])
+clear_coins = 50
+
+[sub_resource type="Resource" id="Board_3a"]
+script = ExtResource("3_def")
+id = "3a"
+rows = PackedStringArray(".....", "..T..", ".TT..", ".....", "...TP")
+tip = "멀리 있는 블럭은 당기고, 돌아서 한 번 더 당겨요"
+
+[sub_resource type="Resource" id="Board_3b"]
+script = ExtResource("3_def")
+id = "3b"
+rows = PackedStringArray(".....", "..T..", ".T.T.", "...T.", "..P..")
+tip = "가운데가 다른 색이면, 먼저 가운데로 들어가 그 블럭을 빼내요"
+
+[sub_resource type="Resource" id="Board_3c"]
+script = ExtResource("3_def")
+id = "3c"
+rows = PackedStringArray(".....", "..T..", ".T.TT", "..P..", ".....")
+tip = "가운데를 비운 뒤, 옆 블럭을 하나씩 돌려 넣어요"
+
+[sub_resource type="Resource" id="Level_3"]
+script = ExtResource("2_level")
+level = 3
+name = "돌아서 · 속 빈 모양"
+boards = Array[ExtResource("3_def")]([SubResource("Board_3a"), SubResource("Board_3b"), SubResource("Board_3c")])
+clear_coins = 70
+
+[sub_resource type="Resource" id="Board_4a"]
+script = ExtResource("3_def")
+id = "4a"
+rows = PackedStringArray(".....", ".T.T.", "..T..", ".T...", "..P..")
+tip = "가운데를 정하고, 한 바퀴 돌면서 하나씩 당겨 와요"
+
+[sub_resource type="Resource" id="Board_4b"]
+script = ExtResource("3_def")
+id = "4b"
+rows = PackedStringArray(".....", "..T..", ".T.T.", "..T..", ".P...")
+tip = "십자로 둘러싸도 가운데가 다른 색이면 매치가 안 돼요. 들어갈 길부터 만들어요"
+
+[sub_resource type="Resource" id="Board_4c"]
+script = ExtResource("3_def")
+id = "4c"
+rows = PackedStringArray(".....", "..T..", ".T...", "..T.T", "...P.")
+tip = "어디를 가운데로 할지 먼저 정해요. 블럭이 몰린 쪽이 가까워요"
+
+[sub_resource type="Resource" id="Level_4"]
+script = ExtResource("2_level")
+level = 4
+name = "흩어진 블럭"
+hide_goal = true
+boards = Array[ExtResource("3_def")]([SubResource("Board_4a"), SubResource("Board_4b"), SubResource("Board_4c")])
+clear_coins = 100
+
+[resource]
+script = ExtResource("1_book")
+levels = Array[ExtResource("2_level")]([SubResource("Level_0"), SubResource("Level_1"), SubResource("Level_2"), SubResource("Level_3"), SubResource("Level_4")])
+difficulties = Array[ExtResource("4_diff")]([SubResource("Diff_easy"), SubResource("Diff_normal"), SubResource("Diff_hard"), SubResource("Diff_hollow")])
+hollow_shapes = Array[PackedVector2Array]([PackedVector2Array(1, 0, 0, 1, 2, 1, 3, 1), PackedVector2Array(1, 0, 0, 1, 2, 1, 1, 2), PackedVector2Array(1, 0, 0, 1, 2, 1, 2, 2), PackedVector2Array(1, 0, 0, 1, 2, 1, 0, 2)])

@@ -1,0 +1,131 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/achievements_screen.gd" id="1_screen"]
+[ext_resource type="Resource" path="res://resources/achievements.tres" id="2_book"]
+[ext_resource type="PackedScene" path="res://scenes/achievement_row.tscn" id="3_row"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="4_nav"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="PackedScene" path="res://scenes/spotlight_overlay.tscn" id="80_spot"]
+[ext_resource type="Resource" path="res://resources/first_view_tips.tres" id="81_tips"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
+
+[node name="Achievements" type="Control" node_paths=PackedStringArray("spotlight")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_screen")
+achievements = ExtResource("2_book")
+row_scene = ExtResource("3_row")
+tips = ExtResource("81_tips")
+spotlight = NodePath("Spotlight")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"background"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 48.0
+offset_right = -32.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 56
+text = "업적"
+
+[node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
+unique_name_in_owner = true
+layout_mode = 2
+font_size = 32
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="CommonTitle" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "공통 업적"
+
+[node name="CommonList" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="HiddenTitle" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "히든 업적"
+
+[node name="HiddenList" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CharacterNote" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
+layout_mode = 2
+theme_type_variation = &"DimLabel"
+theme_override_font_sizes/font_size = 22
+text = "캐릭터 업적은 캐릭터 화면의 상세에서 볼 수 있어요"
+autowrap_mode = 3
+
+[node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 40
+text = "뒤로"
+
+[node name="MenuNavigator" type="Node" parent="."]
+script = ExtResource("4_nav")
+target_scene = "res://scenes/main_menu.tscn"
+
+[node name="Spotlight" parent="." instance=ExtResource("80_spot")]
+
+[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
+[connection signal="tapped" from="Spotlight" to="." method="_on_spotlight_tapped"]

@@ -1,0 +1,133 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/puzzle_practice_screen.gd" id="1_screen"]
+[ext_resource type="Resource" path="res://resources/puzzles.tres" id="2_book"]
+[ext_resource type="PackedScene" path="res://scenes/filter_chip.tscn" id="3_chip"]
+[ext_resource type="PackedScene" path="res://scenes/puzzle_level_row.tscn" id="4_row"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="5_nav"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+
+[node name="PuzzlePractice" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_screen")
+book = ExtResource("2_book")
+chip_scene = ExtResource("3_chip")
+level_row_scene = ExtResource("4_row")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"background"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 48.0
+offset_right = -32.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 56
+text = "블럭 모으기"
+horizontal_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 26
+text = "푼 문제 0 · 모은 별 0 · 최소 수 성공 0"
+horizontal_alignment = 1
+
+[node name="PracticeTitle" type="Label" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "연습"
+
+[node name="Difficulties" type="HBoxContainer" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DifficultyDescription" type="Label" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"DimLabel"
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="SafeArea/Content/Layout"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 36
+text = "연습 시작"
+
+[node name="TutorialTitle" type="Label" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "퍼즐 레벨 · 순서대로 열려요"
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Levels" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 40
+text = "뒤로"
+
+[node name="OptionsNavigator" type="Node" parent="."]
+script = ExtResource("5_nav")
+target_scene = "res://scenes/options.tscn"
+
+[node name="PlayNavigator" type="Node" parent="."]
+script = ExtResource("5_nav")
+target_scene = "res://scenes/puzzle_play.tscn"
+
+[connection signal="pressed" from="SafeArea/Content/Layout/StartButton" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="OptionsNavigator" method="go"]
+[connection signal="play_requested" from="." to="PlayNavigator" method="go"]

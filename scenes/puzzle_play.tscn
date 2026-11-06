@@ -1,0 +1,231 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/puzzle_play_screen.gd" id="1_screen"]
+[ext_resource type="Resource" path="res://resources/puzzles.tres" id="2_book"]
+[ext_resource type="Resource" path="res://resources/board_theme.tres" id="3_theme"]
+[ext_resource type="Resource" path="res://resources/game_config.tres" id="4_config"]
+[ext_resource type="Script" path="res://scripts/input_router.gd" id="5_input"]
+[ext_resource type="Script" path="res://scripts/channels/board_channel.gd" id="6_channel"]
+[ext_resource type="PackedScene" path="res://scenes/board_view.tscn" id="7_board_view"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="8_nav"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="PackedScene" path="res://scenes/puzzle_result_panel.tscn" id="9_result"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+
+[node name="PuzzlePlay" type="Node2D" node_paths=PackedStringArray("board_channel")]
+script = ExtResource("1_screen")
+book = ExtResource("2_book")
+board_channel = NodePath("BoardChannel")
+theme_data = ExtResource("3_theme")
+
+[node name="InputRouter" type="Node" parent="."]
+script = ExtResource("5_input")
+config = ExtResource("4_config")
+
+[node name="BoardChannel" type="Node" parent="."]
+script = ExtResource("6_channel")
+
+[node name="LayoutLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" type="ColorRect" parent="LayoutLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"background"
+
+[node name="SafeArea" type="MarginContainer" parent="LayoutLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Column" type="VBoxContainer" parent="LayoutLayer/SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="TopSpace" type="Control" parent="LayoutLayer/SafeArea/Column"]
+custom_minimum_size = Vector2(0, 260)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BoardArea" type="Control" parent="LayoutLayer/SafeArea/Column"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="BottomSpace" type="Control" parent="LayoutLayer/SafeArea/Column"]
+custom_minimum_size = Vector2(0, 420)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BoardView" parent="." node_paths=PackedStringArray("board_area") instance=ExtResource("7_board_view")]
+position = Vector2(360, 640)
+config = ExtResource("4_config")
+board_area = NodePath("../LayoutLayer/SafeArea/Column/BoardArea")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="SafeArea" type="MarginContainer" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="UI/SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Top" type="VBoxContainer" parent="UI/SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 48.0
+offset_right = -32.0
+offset_bottom = 240.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="PuzzleName" type="Label" parent="UI/SafeArea/Content/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "블럭 모으기"
+horizontal_alignment = 1
+
+[node name="PuzzleSub" type="Label" parent="UI/SafeArea/Content/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 26
+horizontal_alignment = 1
+
+[node name="MoveCount" type="Label" parent="UI/SafeArea/Content/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "0수 · 최소 0수"
+horizontal_alignment = 1
+
+[node name="Bottom" type="VBoxContainer" parent="UI/SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -400.0
+offset_right = -32.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="TipLabel" type="Label" parent="UI/SafeArea/Content/Bottom"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Row1" type="HBoxContainer" parent="UI/SafeArea/Content/Bottom"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="UndoButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "되돌리기"
+
+[node name="ResetButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "처음부터"
+
+[node name="HintButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row1"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "힌트"
+
+[node name="Row2" type="HBoxContainer" parent="UI/SafeArea/Content/Bottom"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="NewButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "새 문제"
+
+[node name="ExitButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row2"]
+custom_minimum_size = Vector2(0, 88)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "나가기"
+
+[node name="ResultPanel" parent="UI" instance=ExtResource("9_result")]
+unique_name_in_owner = true
+
+[node name="ExitNavigator" type="Node" parent="."]
+script = ExtResource("8_nav")
+target_scene = "res://scenes/puzzle_practice.tscn"
+
+[connection signal="move_requested" from="InputRouter" to="." method="_on_move_requested"]
+[connection signal="tap_requested" from="InputRouter" to="BoardView" method="_on_tap_requested"]
+[connection signal="pause_requested" from="InputRouter" to="." method="_on_exit_pressed"]
+[connection signal="cell_tapped" from="BoardView" to="." method="_on_cell_tapped"]
+[connection signal="board_created" from="BoardChannel" to="BoardView" method="_on_board_created"]
+[connection signal="move_started" from="BoardChannel" to="BoardView" method="_on_move_started"]
+[connection signal="move_blocked" from="BoardChannel" to="BoardView" method="_on_move_blocked"]
+[connection signal="matched" from="BoardChannel" to="BoardView" method="_on_matched"]
+[connection signal="cells_changed" from="BoardChannel" to="BoardView" method="_on_cells_changed"]
+[connection signal="marks_changed" from="BoardChannel" to="BoardView" method="_on_marks_changed"]
+[connection signal="resized" from="LayoutLayer/SafeArea/Column/BoardArea" to="BoardView" method="_on_board_area_resized"]
+[connection signal="pressed" from="UI/SafeArea/Content/Bottom/Row1/UndoButton" to="." method="_on_undo_pressed"]
+[connection signal="pressed" from="UI/SafeArea/Content/Bottom/Row1/ResetButton" to="." method="_on_reset_pressed"]
+[connection signal="pressed" from="UI/SafeArea/Content/Bottom/Row1/HintButton" to="." method="_on_hint_pressed"]
+[connection signal="pressed" from="UI/SafeArea/Content/Bottom/Row2/NewButton" to="." method="_on_new_pressed"]
+[connection signal="pressed" from="UI/SafeArea/Content/Bottom/Row2/ExitButton" to="." method="_on_exit_pressed"]
+[connection signal="exit_requested" from="." to="ExitNavigator" method="go"]
+[connection signal="replay_pressed" from="UI/ResultPanel" to="." method="_on_result_replay"]
+[connection signal="retry_pressed" from="UI/ResultPanel" to="." method="_on_result_retry"]
+[connection signal="next_pressed" from="UI/ResultPanel" to="." method="_on_result_next"]

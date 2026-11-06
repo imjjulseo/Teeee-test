@@ -1,0 +1,143 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/character_select.gd" id="1_select"]
+[ext_resource type="Resource" path="res://resources/character_roster.tres" id="2_roster"]
+[ext_resource type="PackedScene" path="res://scenes/character_card.tscn" id="3_card"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="4_nav"]
+[ext_resource type="PackedScene" path="res://scenes/filter_chip.tscn" id="5_chip"]
+[ext_resource type="PackedScene" path="res://scenes/character_sheet.tscn" id="6_sheet"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="Resource" path="res://resources/progression.tres" id="7_progression"]
+[ext_resource type="Resource" path="res://resources/achievements.tres" id="8_achievements"]
+[ext_resource type="Resource" path="res://resources/character_tutorials.tres" id="9_lessons"]
+[ext_resource type="PackedScene" path="res://scenes/spotlight_overlay.tscn" id="80_spot"]
+[ext_resource type="Resource" path="res://resources/first_view_tips.tres" id="81_tips"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
+
+[node name="CharacterSelect" type="Control" node_paths=PackedStringArray("spotlight")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_select")
+roster = ExtResource("2_roster")
+progression = ExtResource("7_progression")
+achievements = ExtResource("8_achievements")
+lessons = ExtResource("9_lessons")
+card_scene = ExtResource("3_card")
+chip_scene = ExtResource("5_chip")
+tips = ExtResource("81_tips")
+spotlight = NodePath("Spotlight")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"background"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 48.0
+offset_right = -32.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 56
+text = "캐릭터"
+
+[node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
+unique_name_in_owner = true
+layout_mode = 2
+font_size = 32
+
+[node name="EquippedLabel" type="Label" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "장착 중 · 기본"
+
+[node name="FilterScroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+custom_minimum_size = Vector2(0, 76)
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="Filters" type="HBoxContainer" parent="SafeArea/Content/Layout/FilterScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="Cards" type="HBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+
+[node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 40
+text = "뒤로"
+
+[node name="CharacterSheet" parent="." instance=ExtResource("6_sheet")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="MenuNavigator" type="Node" parent="."]
+script = ExtResource("4_nav")
+target_scene = "res://scenes/main_menu.tscn"
+
+[node name="GameNavigator" type="Node" parent="."]
+script = ExtResource("4_nav")
+target_scene = "res://scenes/main.tscn"
+
+[node name="Spotlight" parent="." instance=ExtResource("80_spot")]
+
+[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
+[connection signal="equip_requested" from="CharacterSheet" to="." method="_on_equip_requested"]
+[connection signal="unlock_requested" from="CharacterSheet" to="." method="_on_unlock_requested"]
+[connection signal="buy_requested" from="CharacterSheet" to="." method="_on_buy_requested"]
+[connection signal="trial_requested" from="CharacterSheet" to="." method="_on_trial_requested"]
+[connection signal="lesson_requested" from="CharacterSheet" to="." method="_on_lesson_requested"]
+[connection signal="trial_started" from="." to="GameNavigator" method="go"]
+[connection signal="tapped" from="Spotlight" to="." method="_on_spotlight_tapped"]

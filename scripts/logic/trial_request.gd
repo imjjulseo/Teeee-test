@@ -1,0 +1,24 @@
+class_name TrialRequest
+extends RefCounted
+## 체험 한 판 요청 (기획서 8.5장): 캐릭터 화면이 체험할 캐릭터를 적어 두고 게임 씬으로 넘어가면, GameController가 읽고 지운다.
+## 씬끼리 서로 참조하지 않으려고 (순환 로드) 정적 값 하나로 넘긴다. 테스트 러너가 되돌리지 않은 값을 실패로 센다.
+## with_lesson이면 체험 판을 캐릭터 튜토리얼부터 시작한다 (캐릭터 상세의 "튜토리얼 다시 하기", 8.8장).
+
+## 체험할 캐릭터 id (없으면 빈 값).
+static var character_id: StringName = &""
+## 캐릭터 튜토리얼부터 (take가 함께 지운다).
+static var with_lesson: bool = false
+
+
+## 요청이 있으면 꺼내고 지운다.
+static func take() -> StringName:
+	var id: StringName = character_id
+	character_id = &""
+	return id
+
+
+## 튜토리얼 요청을 꺼내고 지운다 (take 전에 읽는다).
+static func take_lesson() -> bool:
+	var lesson: bool = with_lesson
+	with_lesson = false
+	return lesson

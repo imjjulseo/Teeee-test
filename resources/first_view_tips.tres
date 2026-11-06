@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="FirstViewTips" format=3]
+
+[ext_resource type="Script" path="res://scripts/tutorial/first_view_tips.gd" id="1_tips"]
+
+[resource]
+script = ExtResource("1_tips")
+multi_head = "족보 동시 진행"
+multi_text = "두 족보를 동시에 올릴 수도 있어요"
+experience_head = "경험치"
+experience_text = "점수만큼 경험치를 얻어요"
+achievements_head = "업적"
+achievements_text = "조건을 달성하면 코인·다이아를 받아요"
+hidden_head = "히든 업적"
+hidden_text = "조건은 비밀. 달성하면 히든 캐릭터를 얻어요"
+characters_head = "캐릭터"
+characters_text = "눌러서 능력 보기 · 다이아로 해금 · 한 판 체험 · 튜토리얼"

@@ -1,0 +1,240 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="1_nav"]
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="2_menu"]
+[ext_resource type="Resource" path="res://resources/character_roster.tres" id="3_roster"]
+[ext_resource type="Script" path="res://scripts/audio_options_loader.gd" id="4_audio"]
+[ext_resource type="Resource" path="res://resources/progression.tres" id="5_progression"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_menu")
+roster = ExtResource("3_roster")
+progression = ExtResource("5_progression")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"background"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TopBar" type="HBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = -32.0
+offset_bottom = 128.0
+grow_horizontal = 2
+theme_override_constants/separation = 24
+
+[node name="LevelButton" type="Button" parent="SafeArea/Content/TopBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 96)
+layout_mode = 2
+focus_mode = 0
+
+[node name="LevelBox" type="VBoxContainer" parent="SafeArea/Content/TopBar/LevelButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 12.0
+offset_right = -20.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="LevelLabel" type="Label" parent="SafeArea/Content/TopBar/LevelButton/LevelBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 34
+text = "Lv 1"
+
+[node name="ExpBar" type="ColorRect" parent="SafeArea/Content/TopBar/LevelButton/LevelBox"]
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"track"
+
+[node name="ExpFill" type="ColorRect" parent="SafeArea/Content/TopBar/LevelButton/LevelBox/ExpBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"info"
+
+[node name="Spacer" type="Control" parent="SafeArea/Content/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="WalletLabel" parent="SafeArea/Content/TopBar" instance=ExtResource("97_wallet")]
+unique_name_in_owner = true
+layout_mode = 2
+font_size = 34
+
+[node name="Center" type="VBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -300.0
+offset_right = 260.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="Title" type="Label" parent="SafeArea/Content/Center"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "Swap match"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="SafeArea/Content/Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 48
+text = "게임 시작"
+
+[node name="StageLabel" type="Label" parent="SafeArea/Content/Center"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 28
+text = "최고점 0"
+horizontal_alignment = 1
+
+[node name="CharacterButton" type="Button" parent="SafeArea/Content/Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 36
+text = "캐릭터 · 기본"
+
+[node name="BottomBar" type="HBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -152.0
+offset_right = -32.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 16
+
+[node name="ShopButton" type="Button" parent="SafeArea/Content/BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "상점"
+
+[node name="CharactersButton" type="Button" parent="SafeArea/Content/BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "캐릭터"
+
+[node name="AchievementsButton" type="Button" parent="SafeArea/Content/BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "업적"
+
+[node name="OptionsButton" type="Button" parent="SafeArea/Content/BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "설정"
+
+[node name="GameNavigator" type="Node" parent="."]
+script = ExtResource("1_nav")
+target_scene = "res://scenes/main.tscn"
+
+[node name="CharacterNavigator" type="Node" parent="."]
+script = ExtResource("1_nav")
+target_scene = "res://scenes/character_select.tscn"
+
+[node name="OptionsNavigator" type="Node" parent="."]
+script = ExtResource("1_nav")
+target_scene = "res://scenes/options.tscn"
+
+[node name="LevelNavigator" type="Node" parent="."]
+script = ExtResource("1_nav")
+target_scene = "res://scenes/level_rewards.tscn"
+
+[node name="ShopNavigator" type="Node" parent="."]
+script = ExtResource("1_nav")
+target_scene = "res://scenes/shop.tscn"
+
+[node name="AchievementsNavigator" type="Node" parent="."]
+script = ExtResource("1_nav")
+target_scene = "res://scenes/achievements.tscn"
+
+[node name="AudioOptionsLoader" type="Node" parent="."]
+script = ExtResource("4_audio")
+
+[connection signal="pressed" from="SafeArea/Content/Center/StartButton" to="." method="_on_start_pressed"]
+[connection signal="start_game_requested" from="." to="GameNavigator" method="go"]
+[connection signal="shop_requested" from="." to="ShopNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/Center/CharacterButton" to="CharacterNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/BottomBar/CharactersButton" to="CharacterNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/BottomBar/OptionsButton" to="OptionsNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/TopBar/LevelButton" to="LevelNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/BottomBar/ShopButton" to="ShopNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/BottomBar/AchievementsButton" to="AchievementsNavigator" method="go"]

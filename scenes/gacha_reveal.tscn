@@ -1,0 +1,112 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/gacha_reveal.gd" id="1_reveal"]
+[ext_resource type="Resource" path="res://resources/board_theme.tres" id="2_theme"]
+[ext_resource type="Script" path="res://scripts/portrait_rect.gd" id="96_portrait"]
+
+[node name="GachaReveal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_reveal")
+theme_data = ExtResource("2_theme")
+
+[node name="Dim" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_type_variation = &"DimButtonStrong"
+
+[node name="Center" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -320.0
+offset_right = 200.0
+offset_bottom = 320.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="Card" type="PanelContainer" parent="Center"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"RevealCardPanel"
+
+[node name="VBox" type="VBoxContainer" parent="Center/Card"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="RevealSwatch" type="Panel" parent="Center/Card/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 140)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="Portrait" type="TextureRect" parent="Center/Card/VBox/RevealSwatch"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("96_portrait")
+[node name="RevealName" type="Label" parent="Center/Card/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "이름"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="RevealGrade" type="Label" parent="Center/Card/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "희귀"
+horizontal_alignment = 1
+
+[node name="RevealTag" type="Label" parent="Center/Card/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 30
+text = "NEW"
+horizontal_alignment = 1
+
+[node name="OkButton" type="Button" parent="Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 96)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 36
+text = "확인"
+
+[connection signal="pressed" from="Dim" to="." method="_on_dim_pressed"]
+[connection signal="pressed" from="Center/OkButton" to="." method="_on_ok_button_pressed"]

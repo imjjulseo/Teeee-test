@@ -1,0 +1,59 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/tutorial/tutorial_puzzle_bar.gd" id="1_bar"]
+
+[node name="TutorialPuzzleBar" type="PanelContainer"]
+theme_type_variation = &"BarPanel"
+script = ExtResource("1_bar")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Info" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+alignment = 1
+
+[node name="BarName" type="Label" parent="HBox/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "블럭 모으기"
+text_overrun_behavior = 3
+
+[node name="BarCount" type="Label" parent="HBox/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 20
+text = "0 / 0수"
+
+[node name="BarUndo" type="Button" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 64)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 22
+text = "되돌리기"
+
+[node name="BarReset" type="Button" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 64)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 22
+text = "처음부터"
+
+[node name="BarHint" type="Button" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(90, 64)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 22
+text = "힌트"
+
+[connection signal="pressed" from="HBox/BarUndo" to="." method="_on_undo_pressed"]
+[connection signal="pressed" from="HBox/BarReset" to="." method="_on_reset_pressed"]
+[connection signal="pressed" from="HBox/BarHint" to="." method="_on_hint_pressed"]

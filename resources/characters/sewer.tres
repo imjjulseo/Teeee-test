@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://drghqpvvaqqn8"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://n25pqakwpvew" path="res://scripts/logic/abilities/sewer_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"sewer"
+display_name = "수선사"
+grade = 3
+ability = SubResource("Ability_1")
+ability_name = "바늘"
+ability_description = "바늘: 3초 동안 끈(12칸)이 따라옴. 시작 칸으로 돌아와 폐곡선을 만들면 안쪽 블록이 뽑히며 매치 1회"
+detail_effect = "발동하면 3초 동안 끈이 따라와요. 끈 길이는 12칸(2×2 영역을 감쌀 수 있는 길이)이에요. 시작한 칸으로 돌아와 폐곡선을 만들면, 안에 있는 블럭이 뽑히며 매치 1회로 치고, 그 색들로 족보가 진행돼요. 색 순서는 상관없고, 점수가 높은 족보에 가장 유리한 순서로 들어가요. 시간이 지나거나 끈이 다 되면 실패. 끈이 있는 동안엔 캐릭터 족보가 멈춰요."
+detail_when = "필요한 색이 몇 칸 안에 모여 있을 때"
+detail_tip = "2×2 블럭을 한 바퀴 돌면 4개를 한 번에 뽑아요."
+condition_colors = PackedInt32Array(3, 2)
+accent_color = Color(0.184314, 0.811765, 0.454902, 1)
+player_fill = Color(0.040549, 0.178588, 0.100078, 1)
+player_border = Color(0.184314, 0.811765, 0.454902, 1)

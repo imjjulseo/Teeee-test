@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ticket_row.gd" id="1_row"]
+
+[node name="TicketRow" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 72)
+theme_override_constants/separation = 16
+script = ExtResource("1_row")
+
+[node name="TicketName" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 28
+text = "희귀 선택권"
+
+[node name="TicketCount" type="Label" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 28
+text = "0장"
+horizontal_alignment = 2
+
+[node name="FuseButton" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 64)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+theme_override_font_sizes/font_size = 24
+disabled = true
+text = "3장 → 영웅"
+
+[connection signal="pressed" from="FuseButton" to="." method="_on_fuse_button_pressed"]

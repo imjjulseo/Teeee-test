@@ -1,0 +1,130 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/spotlight_overlay.gd" id="1_spot"]
+[ext_resource type="Shader" path="res://resources/shaders/spotlight.gdshader" id="2_shader"]
+[ext_resource type="Script" path="res://scripts/spotlight_rings.gd" id="3_rings"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dim"]
+shader = ExtResource("2_shader")
+
+[node name="SpotlightOverlay" type="CanvasLayer"]
+layer = 5
+script = ExtResource("1_spot")
+
+[node name="Blocker" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="."]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_dim")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Rings" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_rings")
+
+[node name="Caption" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = -300.0
+offset_right = -28.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"CaptionPanel"
+
+[node name="VBox" type="VBoxContainer" parent="Caption"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Top" type="HBoxContainer" parent="Caption/VBox"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CaptionHead" type="Label" parent="Caption/VBox/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 32
+text = "제목"
+autowrap_mode = 3
+
+[node name="SkipButton" type="Button" parent="Caption/VBox/Top"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+focus_mode = 0
+theme_override_font_sizes/font_size = 22
+text = "건너뛰기"
+flat = true
+
+[node name="CaptionText" type="Label" parent="Caption/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "설명"
+autowrap_mode = 3
+
+[node name="Bottom" type="HBoxContainer" parent="Caption/VBox"]
+layout_mode = 2
+mouse_filter = 2
+alignment = 2
+
+[node name="TapHint" type="Label" parent="Caption/VBox/Bottom"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 22
+text = "눌러서 계속"
+
+[node name="AltButton" type="Button" parent="Caption/VBox/Bottom"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(180, 72)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "바로 시작"
+flat = true
+
+[node name="CaptionButton" type="Button" parent="Caption/VBox/Bottom"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 72)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "계속"
+
+[connection signal="gui_input" from="Blocker" to="." method="_on_blocker_gui_input"]
+[connection signal="gui_input" from="Caption" to="." method="_on_blocker_gui_input"]
+[connection signal="resized" from="Dim" to="." method="_on_dim_resized"]
+[connection signal="pressed" from="Caption/VBox/Top/SkipButton" to="." method="_on_skip_button_pressed"]
+[connection signal="pressed" from="Caption/VBox/Bottom/CaptionButton" to="." method="_on_caption_button_pressed"]
+[connection signal="pressed" from="Caption/VBox/Bottom/AltButton" to="." method="_on_alt_button_pressed"]

@@ -1,0 +1,307 @@
+[gd_resource type="Resource" script_class="UiThemeSpec" format=3]
+
+[ext_resource type="Script" path="res://scripts/theme/ui_theme_spec.gd" id="1_spec"]
+[ext_resource type="Script" path="res://scripts/theme/ui_style.gd" id="2_style"]
+
+[sub_resource type="StyleBoxFlat" id="Box_1"]
+content_margin_left = 20.0
+content_margin_top = 14.0
+content_margin_right = 20.0
+content_margin_bottom = 14.0
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Resource" id="Style_1"]
+script = ExtResource("2_style")
+name = &"AchievementRowPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_1")
+bg_token = &"row"
+
+[sub_resource type="StyleBoxFlat" id="Box_2"]
+content_margin_left = 24.0
+content_margin_top = 16.0
+content_margin_right = 24.0
+content_margin_bottom = 16.0
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Resource" id="Style_2"]
+script = ExtResource("2_style")
+name = &"LevelRowPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_2")
+bg_token = &"row"
+border_token = &"row_border"
+
+[sub_resource type="StyleBoxFlat" id="Box_3"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 12.0
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Resource" id="Style_3"]
+script = ExtResource("2_style")
+name = &"ShopRowPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_3")
+bg_token = &"row"
+
+[sub_resource type="StyleBoxFlat" id="Box_4"]
+content_margin_left = 32.0
+content_margin_top = 28.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+
+[sub_resource type="Resource" id="Style_4"]
+script = ExtResource("2_style")
+name = &"SheetPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_4")
+bg_token = &"surface"
+
+[sub_resource type="StyleBoxFlat" id="Box_5"]
+
+[sub_resource type="Resource" id="Style_5"]
+script = ExtResource("2_style")
+name = &"DimButton"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "pressed")
+template = SubResource("Box_5")
+bg_token = &"scrim"
+
+[sub_resource type="StyleBoxFlat" id="Box_6"]
+
+[sub_resource type="Resource" id="Style_6"]
+script = ExtResource("2_style")
+name = &"DimButtonStrong"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "pressed")
+template = SubResource("Box_6")
+bg_token = &"scrim_strong"
+
+[sub_resource type="StyleBoxFlat" id="Box_7"]
+content_margin_left = 32.0
+content_margin_top = 40.0
+content_margin_right = 32.0
+content_margin_bottom = 40.0
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="Resource" id="Style_7"]
+script = ExtResource("2_style")
+name = &"RevealCardPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_7")
+bg_token = &"surface"
+border_token = &"outline"
+
+[sub_resource type="StyleBoxFlat" id="Box_8"]
+
+[sub_resource type="Resource" id="Style_8"]
+script = ExtResource("2_style")
+name = &"DimPanel"
+base_type = &"Panel"
+slots = PackedStringArray("panel")
+template = SubResource("Box_8")
+bg_token = &"scrim"
+
+[sub_resource type="StyleBoxFlat" id="Box_9"]
+content_margin_left = 32.0
+content_margin_top = 32.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="Resource" id="Style_9"]
+script = ExtResource("2_style")
+name = &"CardPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_9")
+bg_token = &"surface"
+
+[sub_resource type="StyleBoxFlat" id="Box_10"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+
+[sub_resource type="Resource" id="Style_10"]
+script = ExtResource("2_style")
+name = &"ChipButton"
+base_type = &"Button"
+slots = PackedStringArray("pressed", "hover_pressed")
+template = SubResource("Box_10")
+bg_token = &"selected"
+
+[sub_resource type="StyleBoxFlat" id="Box_11"]
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Resource" id="Style_11"]
+script = ExtResource("2_style")
+name = &"ChoiceButton"
+base_type = &"Button"
+slots = PackedStringArray("pressed", "hover_pressed")
+template = SubResource("Box_11")
+bg_token = &"selected"
+border_token = &"outline"
+
+[sub_resource type="StyleBoxFlat" id="Box_12"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Resource" id="Style_12"]
+script = ExtResource("2_style")
+name = &"VolumeSlider"
+base_type = &"HSlider"
+slots = PackedStringArray("slider")
+template = SubResource("Box_12")
+bg_token = &"control_track"
+
+[sub_resource type="StyleBoxFlat" id="Box_13"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Resource" id="Style_13"]
+script = ExtResource("2_style")
+name = &"VolumeSlider"
+base_type = &"HSlider"
+slots = PackedStringArray("grabber_area", "grabber_area_highlight")
+template = SubResource("Box_13")
+bg_token = &"selected"
+
+[sub_resource type="StyleBoxFlat" id="Box_14"]
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="Resource" id="Style_14"]
+script = ExtResource("2_style")
+name = &"TabButton"
+base_type = &"Button"
+slots = PackedStringArray("pressed", "hover_pressed")
+template = SubResource("Box_14")
+bg_token = &"selected"
+
+[sub_resource type="StyleBoxFlat" id="Box_15"]
+content_margin_left = 28.0
+content_margin_top = 14.0
+content_margin_right = 28.0
+content_margin_bottom = 16.0
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="Resource" id="Style_15"]
+script = ExtResource("2_style")
+name = &"BannerPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_15")
+bg_token = &"banner"
+border_token = &"outline"
+
+[sub_resource type="StyleBoxFlat" id="Box_16"]
+content_margin_left = 28.0
+content_margin_top = 20.0
+content_margin_right = 28.0
+content_margin_bottom = 20.0
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="Resource" id="Style_16"]
+script = ExtResource("2_style")
+name = &"CaptionPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_16")
+bg_token = &"surface_glass"
+border_token = &"accent_line"
+
+[sub_resource type="StyleBoxFlat" id="Box_17"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="Resource" id="Style_17"]
+script = ExtResource("2_style")
+name = &"BarPanel"
+base_type = &"PanelContainer"
+slots = PackedStringArray("panel")
+template = SubResource("Box_17")
+bg_token = &"surface_glass"
+
+[resource]
+script = ExtResource("1_spec")
+label_variations = Dictionary[StringName, StringName]({
+&"AccentLabel": &"accent",
+&"DimLabel": &"text_dim",
+&"InfoLabel": &"info",
+&"MutedLabel": &"text_muted",
+&"OnAccentLabel": &"text_on_accent",
+&"WarmAccentLabel": &"accent_warm"
+})
+styles = Array[ExtResource("2_style")]([SubResource("Style_1"), SubResource("Style_2"), SubResource("Style_3"), SubResource("Style_4"), SubResource("Style_5"), SubResource("Style_6"), SubResource("Style_7"), SubResource("Style_8"), SubResource("Style_9"), SubResource("Style_10"), SubResource("Style_11"), SubResource("Style_12"), SubResource("Style_13"), SubResource("Style_14"), SubResource("Style_15"), SubResource("Style_16"), SubResource("Style_17")])

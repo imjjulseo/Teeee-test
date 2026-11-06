@@ -1,0 +1,61 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/level_reward_row.gd" id="1_row"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+
+[node name="LevelRewardRow" type="PanelContainer"]
+theme_type_variation = &"LevelRowPanel"
+script = ExtResource("1_row")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 24
+
+[node name="LevelLabel" type="Label" parent="VBox/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 34
+text = "Lv 1"
+
+[node name="RewardsLabel" type="Label" parent="VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 26
+text = "—"
+autowrap_mode = 3
+
+[node name="StateLabel" type="Label" parent="VBox/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_type_variation = &"InfoLabel"
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 2
+
+[node name="ExpBar" type="ColorRect" parent="VBox"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"track"
+
+[node name="ExpFill" type="ColorRect" parent="VBox/ExpBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"info"

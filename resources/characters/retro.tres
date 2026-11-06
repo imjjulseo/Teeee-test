@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://dqsrjdjp1frrv"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://dssleuldogm0q" path="res://scripts/logic/abilities/retro_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"retro"
+display_name = "레트로"
+grade = 3
+ability = SubResource("Ability_1")
+ability_name = "흑백"
+ability_description = "흑백: 10초 동안 판·족보 흑백(문양으로만 구분), 족보 점수 ×2"
+detail_effect = "10초 동안 판과 족보가 흑백으로 바뀌어요. 블럭 문양으로만 구분해야 하는 대신 족보 점수 ×2."
+condition_colors = PackedInt32Array(3, 0, 1, 2)
+accent_color = Color(0.85098, 0.85098, 0.85098, 1)
+player_fill = Color(0.187216, 0.187216, 0.187216, 1)
+player_border = Color(0.85098, 0.85098, 0.85098, 1)

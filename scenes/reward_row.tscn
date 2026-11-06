@@ -1,0 +1,21 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/reward_row.gd" id="1_row"]
+
+[node name="RewardRow" type="HBoxContainer"]
+script = ExtResource("1_row")
+
+[node name="RewardNameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 30
+text = "레벨 2"
+
+[node name="RewardValueLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 30
+text = "● 100  ◆ 10"
+horizontal_alignment = 2

@@ -1,0 +1,88 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/virtual_dpad.gd" id="1_dpad"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="2_safe"]
+[ext_resource type="Resource" path="res://resources/game_config.tres" id="3_config"]
+
+[node name="VirtualDpad" type="CanvasLayer"]
+script = ExtResource("1_dpad")
+config = ExtResource("3_config")
+
+[node name="RepeatTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Pad" type="Control" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -150.0
+offset_top = -350.0
+offset_right = 150.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Up" type="Button" parent="SafeArea/Content/Pad"]
+layout_mode = 0
+offset_left = 100.0
+offset_right = 200.0
+offset_bottom = 100.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 44
+text = "▲"
+
+[node name="Left" type="Button" parent="SafeArea/Content/Pad"]
+layout_mode = 0
+offset_top = 100.0
+offset_right = 100.0
+offset_bottom = 200.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 44
+text = "◀"
+
+[node name="Right" type="Button" parent="SafeArea/Content/Pad"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 100.0
+offset_right = 300.0
+offset_bottom = 200.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 44
+text = "▶"
+
+[node name="Down" type="Button" parent="SafeArea/Content/Pad"]
+layout_mode = 0
+offset_left = 100.0
+offset_top = 200.0
+offset_right = 200.0
+offset_bottom = 300.0
+focus_mode = 0
+theme_override_font_sizes/font_size = 44
+text = "▼"
+
+[connection signal="button_down" from="SafeArea/Content/Pad/Up" to="." method="_on_up_down"]
+[connection signal="button_down" from="SafeArea/Content/Pad/Left" to="." method="_on_left_down"]
+[connection signal="button_down" from="SafeArea/Content/Pad/Right" to="." method="_on_right_down"]
+[connection signal="button_down" from="SafeArea/Content/Pad/Down" to="." method="_on_down_down"]
+[connection signal="button_up" from="SafeArea/Content/Pad/Up" to="." method="_on_button_up"]
+[connection signal="button_up" from="SafeArea/Content/Pad/Left" to="." method="_on_button_up"]
+[connection signal="button_up" from="SafeArea/Content/Pad/Right" to="." method="_on_button_up"]
+[connection signal="button_up" from="SafeArea/Content/Pad/Down" to="." method="_on_button_up"]
+[connection signal="timeout" from="RepeatTimer" to="." method="_on_repeat_timer_timeout"]

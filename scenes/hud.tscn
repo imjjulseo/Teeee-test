@@ -1,0 +1,255 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
+[ext_resource type="PackedScene" path="res://scenes/recipe_view.tscn" id="2_recipe"]
+[ext_resource type="Resource" path="res://resources/game_config.tres" id="3_config"]
+[ext_resource type="Resource" path="res://resources/board_theme.tres" id="4_theme"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="5_safe"]
+[ext_resource type="PackedScene" path="res://scenes/floating_text.tscn" id="6_float"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="Resource" path="res://resources/ui_assets.tres" id="98_ui_assets"]
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_hud")
+config = ExtResource("3_config")
+theme_data = ExtResource("4_theme")
+floating_text_scene = ExtResource("6_float")
+ui_assets = ExtResource("98_ui_assets")
+
+[node name="Flash" type="ColorRect" parent="."]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)
+
+[node name="FlashArt" type="TextureRect" parent="Flash"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TopRow" type="HBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 112.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="PauseButton" type="Button" parent="SafeArea/Content/TopRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(88, 88)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 40
+text = "II"
+
+[node name="ScoreLabel" type="Label" parent="SafeArea/Content/TopRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 60
+text = "0"
+vertical_alignment = 1
+
+[node name="Spacer" type="Control" parent="SafeArea/Content/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="CoinIcon" type="TextureRect" parent="SafeArea/Content/TopRow"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(34, 34)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinLabel" type="Label" parent="SafeArea/Content/TopRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 1
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 34
+text = "● 0"
+vertical_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="SafeArea/Content/TopRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 60
+text = "60.0"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="TimeBar" type="ColorRect" parent="SafeArea/Content"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 126.0
+offset_right = -24.0
+offset_bottom = 136.0
+grow_horizontal = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"track"
+
+[node name="Fill" type="ColorRect" parent="SafeArea/Content/TimeBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Recipes" type="HBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 156.0
+offset_bottom = 276.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Recipe0" parent="SafeArea/Content/Recipes" instance=ExtResource("2_recipe")]
+unique_name_in_owner = true
+layout_mode = 2
+slot = 0
+
+[node name="Recipe1" parent="SafeArea/Content/Recipes" instance=ExtResource("2_recipe")]
+unique_name_in_owner = true
+layout_mode = 2
+slot = 1
+
+[node name="Recipe2" parent="SafeArea/Content/Recipes" instance=ExtResource("2_recipe")]
+unique_name_in_owner = true
+layout_mode = 2
+slot = 2
+
+[node name="AbilityView" parent="SafeArea/Content/Recipes" instance=ExtResource("2_recipe")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+slot = -1
+is_ability = true
+
+[node name="ScorePopup" type="Label" parent="SafeArea/Content"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 280.0
+offset_bottom = 330.0
+grow_horizontal = 2
+theme_type_variation = &"WarmAccentLabel"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 40
+text = "+0"
+horizontal_alignment = 1
+
+[node name="MessageLabel" type="Label" parent="SafeArea/Content"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -48.0
+offset_right = -24.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 26
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Banner" type="PanelContainer" parent="SafeArea/Content"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"BannerPanel"
+
+[node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Banner"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="BannerTitle" type="Label" parent="SafeArea/Content/Banner/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.4)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 96
+text = "촉진!"
+horizontal_alignment = 1
+
+[node name="BannerSub" type="Label" parent="SafeArea/Content/Banner/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(520, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "촉진: 자라는 중인 씨앗 전부 즉시 성장"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Floats" type="Control" parent="SafeArea/Content"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[connection signal="pressed" from="SafeArea/Content/TopRow/PauseButton" to="." method="_on_pause_button_pressed"]
