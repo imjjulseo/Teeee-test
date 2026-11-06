@@ -10,6 +10,9 @@ extends Node
 ## CharacterMomentGuide가 골라 한 번씩 설명한다 — 튜토리얼 판에서도, 이어지는 실전 판(watch_moments)에서도.
 ## 판 위 안내 표시(힌트·연습 판 자리·수선 길)는 능력의 표시(깃발·구역)에 덧붙여 보낸다.
 ## 실전 판의 처음 볼 때 안내(6d): 두 족보가 같은 색을 기다리는 순간 "족보 동시 진행"을 한 번 (watch_multi_recipes).
+## 규칙 튜토리얼은 HTML runRuleTut와 같게 (팀 11/06): 고정 시드 시작 판(TutorialStartBoard) → 그 판 위에 내 주변 5×5만 바꿔
+## 퍼즐을 깔고(BlockPuzzle.stamp, 목표 점선 없음), 난수는 HTML과 같은 mulberry32(HtmlRng)를 이어 쓴다. 자유 매치 힌트는
+## 배운 모양만(TutorialPlanner), 매치마다 Good · Great! · Awesome!.
 
 signal finished
 ## 캐릭터 튜토리얼이 끝났다 (끝까지 또는 건너뛰기) — 실전 판으로.
@@ -94,6 +97,23 @@ var _hint_marks: Array[BoardMark] = []
 var _ring_marks: Array[BoardMark] = []
 ## 족보 동시 진행 안내를 기다린다 (본 기록을 적을 저장).
 var _multi_store: TutorialStore
+## 규칙 튜토리얼: HTML 난수(고정 시드에서 이어 씀)와 배운 모양 계산. 캐릭터 튜토리얼이면 null.
+var _pick: HtmlRng
+var planner: TutorialPlanner
+var _rule_free: bool = false
+var _moves_total: int = 0
+var _seg_start: int = 0
+var _seg_best: int = 0
+var _segment_pending: bool = false
+## 퍼즐을 깐 뒤 조작을 받기까지 남은 시간(초, HTML 첫 판 800ms). 음수면 없음.
+var _start_delay: float = -1.0
+## 첫 판 손가락 안내 방향 (없으면 ZERO), 손가락 안내 동안의 문구.
+var _swipe_dir: Vector2i = Vector2i.ZERO
+## 풀린 첫 매치를 멈추고 띄울 설명 (HTML holdM). 떠 있는 동안 _holding.
+var _hold_text: String = ""
+var _holding: bool = false
+## 시간 설명 단계: 남은 시간이 흐른다 (HTML timeOn).
+var _time_running: bool = false
 
 
 # --- 시작 · 끝 --------------------------------------------------------------------
@@ -101,6 +121,15 @@ var _multi_store: TutorialStore
 ## 튜토리얼 판의 세션으로 처음부터 시작한다 (다시 시작하면 새 세션으로 다시 부른다).
 func begin(p_session: GameSession) -> void:
 	_start_steps(p_session, tutorial.steps, null)
+	var start: TutorialStartBoard = TutorialStartBoard.find(tutorial.start_seed, session.board.size, session.get_config().color_count) \
+		if tutorial.start_seed > 0 else null
+	if start != null:
+		start.apply_to(session.board)
+		session.notify_board_rearranged()
+		_pick = start.rng
+	else:
+		_pick = HtmlRng.new(_rng.randi())
+	planner = TutorialPlanner.new(session.board, session.get_config().color_count, _pick)
 	clear_cards()
 
 
@@ -192,7 +221,7 @@ func lesson_for(id: StringName) -> CharacterTutorial:
 func halts_game() -> bool:
 	if _moment_open or _offer != null:
 		return true
-	return running and (spotlight.is_blocking() or result_panel.visible or _banner_left >= 0.0)
+	return running and (spotlight.is_blocking() or result_panel.visible or _banner_left >= 0.0 or _holding)
 
 
 ## 이동 입력을 튜토리얼이 받는지 (퍼즐 중이거나 판이 멈췄을 때).
@@ -201,8 +230,21 @@ func intercepts_moves() -> bool:
 
 
 func handle_move(dir: Vector2i) -> void:
-	if _runner != null and not halts_game():
-		_runner.step(dir)
+	if _runner == null or halts_game() or _start_delay >= 0.0:
+		return
+	var from: Vector2i = session.board.player_pos
+	_runner.step(dir)
+	if session.board.player_pos == from:
+		return
+	session.start()  # HTML pzStep의 begin(): 퍼즐 수도 판 시계를 시작한다
+	if planner != null:
+		planner.note_move(from)
+	if _swipe_dir != Vector2i.ZERO:  # 첫 수를 두면 손가락 안내를 지우고 판의 안내 문구로
+		_swipe_dir = Vector2i.ZERO
+		_runner.extra_marks = []
+		_runner.refresh_marks()
+		_puzzle_caption = ""
+		show_puzzle_caption()
 
 
 ## 지금 단계 (테스트·스모크용).
@@ -214,6 +256,11 @@ func runner() -> PuzzleRunner:
 	return _runner
 
 
+## 퍼즐을 깔고 조작을 받기 전 (HTML 첫 판 800ms).
+func is_waiting_to_start() -> bool:
+	return _start_delay >= 0.0
+
+
 func finish_step() -> void:
 	_advance_pending = true
 
@@ -221,7 +268,11 @@ func finish_step() -> void:
 func _start_steps(p_session: GameSession, steps: Array[TutorialStep], p_lesson: CharacterTutorial) -> void:
 	_connect_session(p_session)
 	session.frozen_clocks = [TimedSystem.Clock.TIMER] as Array[TimedSystem.Clock]
+	session.coins.enabled = false  # HTML maybeCoin: 튜토리얼 중에는 금화가 생기지 않는다 (금화 퍼즐만)
 	_rng = GameRng.derive(session.base_seed, GameRng.Stream.TUTORIAL)
+	_pick = null
+	planner = null
+	_moves_total = 0
 	running = true
 	intro_only = false
 	step_index = -1
@@ -268,6 +319,18 @@ func _process(delta: float) -> void:
 		if not running:
 			return
 	_grow_seeds(delta)
+	if _time_running and session.remaining_time() < 0.25:  # HTML: 0초가 돼도 끝나지 않고 멈춘다
+		stop_tutorial_time()
+	if _start_delay >= 0.0:
+		_start_delay -= delta
+		if _start_delay < 0.0:
+			_open_puzzle()
+		return
+	if _segment_pending and not halts_game():
+		_segment_pending = false
+		if _rule_free:
+			_ensure_shapes()
+			_new_segment()
 	if _banner_left >= 0.0:
 		_banner_left -= delta
 		if _banner_left < 0.0:
@@ -278,7 +341,9 @@ func _process(delta: float) -> void:
 		return
 	if _runner != null:
 		_runner.advance(delta)
-	if _free and _free_hints:
+	if _free and _rule_free:
+		_rule_idle_hints(delta)
+	elif _free and _free_hints:
 		_idle_hints(delta)
 	if _step != null:
 		_step.tick(self, delta)
@@ -353,6 +418,11 @@ func holes_for(names: PackedStringArray) -> Array[Rect2]:
 				rects.append_array(hud.target_rects(target))
 			"player":
 				rects.append(board_view.cells_rect([session.board.player_pos] as Array[Vector2i]))
+			"player_area":  # HTML hPlayer: 내 칸 둘레 3×3
+				var at: Vector2i = session.board.player_pos
+				var last_cell: int = session.board.size - 1
+				rects.append(board_view.cells_rect([Vector2i(maxi(at.x - 1, 0), maxi(at.y - 1, 0)),
+					Vector2i(mini(at.x + 1, last_cell), mini(at.y + 1, last_cell))] as Array[Vector2i]))
 			"board":
 				var last: Vector2i = Vector2i.ONE * (session.board.size - 1)
 				rects.append(board_view.cells_rect([Vector2i.ZERO, last] as Array[Vector2i]))
@@ -401,7 +471,59 @@ func letter(key: String) -> int:
 
 
 func random_color() -> int:
+	if _pick != null:
+		return _pick.rnd(session.get_config().color_count)
 	return _rng.randi_range(0, session.get_config().color_count - 1)
+
+
+## HTML otherThan: xs가 아닌 색 중 무작위.
+func other_color(excluded: Array[int]) -> int:
+	var choices: Array[int] = []
+	for color: int in session.get_config().color_count:
+		if not excluded.has(color):
+			choices.append(color)
+	if _pick != null:
+		return choices[_pick.rnd(choices.size())]
+	return choices[_rng.randi_range(0, choices.size() - 1)]
+
+
+## 규칙 튜토리얼 족보 카드 (HTML cards()): [가장 빨리 배운 모양으로 매치할 색, 다른 색] + [다른 색 3칸].
+func make_rule_cards() -> void:
+	var a: int = planner.plan_color() if planner != null else random_color()
+	var b: int = other_color([a] as Array[int])
+	var c: int = other_color([a] as Array[int])
+	var c2: int = other_color([c] as Array[int])
+	var list: Array[PackedInt32Array] = [PackedInt32Array([a, b]), PackedInt32Array([c, c2, random_color()])]
+	session.recipes.replace_all(list)
+	_emit_recipes()
+
+
+## 퍼즐이 모을 색 (HTML tg): 카드가 없으면 무작위, 다 찼으면 카드를 새로 깔고, 첫 족보가 기다리는 색.
+func recipe_target() -> int:
+	if session.recipes.slot_count() == 0:
+		return random_color()
+	if recipe_nexts().is_empty():
+		make_rule_cards()
+	return recipe_nexts()[0]
+
+
+## 시간 설명: 남은 시간을 제한시간 × ratio로 맞추고 흐르게 한다 (HTML timeLeft = fix × 0.6, timeOn).
+func run_tutorial_time(ratio: float) -> void:
+	session.set_remaining_time(roundf(session.get_config().game_duration * ratio))
+	session.frozen_clocks.erase(TimedSystem.Clock.TIMER)
+	_time_running = true
+
+
+func stop_tutorial_time() -> void:
+	_time_running = false
+	if not session.frozen_clocks.has(TimedSystem.Clock.TIMER):
+		session.frozen_clocks.append(TimedSystem.Clock.TIMER)
+
+
+## 묶어 둔 씨앗을 평소처럼 자라게 한다 (HTML: 자라는 칸 설명 뒤 p.at = gclock).
+func release_held_seeds() -> void:
+	_hold_seeds = false
+	session.frozen_clocks.erase(TimedSystem.Clock.REFILL)
 
 
 ## 글자 색을 새로 고른다: A = 지금 판에서 가장 빨리 매치할 수 있는 색(from_plan) 또는 무작위, B · C = 다른 색.
@@ -615,6 +737,57 @@ func start_puzzle(def: PuzzleDef, target: int, hide_goal: bool, quick: bool, coi
 	var puzzle: BlockPuzzle = BlockPuzzle.new(session.board, def, target, origin, book, session.get_config().color_count, _rng, fill_real)
 	puzzle.hide_goal = hide_goal
 	_attach_coins(puzzle, coins)
+	_prepare_runner(puzzle, quick, label, sub, holes, hold_seeds, caption)
+	_hold_text = ""
+	_swipe_dir = Vector2i.ZERO
+	_runner.begin(puzzle)
+	show_puzzle_caption()
+
+
+## 규칙 튜토리얼 퍼즐 (HTML startPuzzle + pzStamp): 판은 그대로 두고 내 주변 5×5에만 모양을 깐다. 목표 점선은 그리지 않고
+## 결과 제목은 칭찬. delay초 동안 조작을 받지 않고(HTML 첫 판 800ms), swipe면 첫 수 쪽 손가락 안내와 swipe_caption,
+## hold_text면 풀린 첫 매치를 멈추고 그 설명을 띄운 뒤 매치한다.
+func start_rule_puzzle(def: PuzzleDef, target: int, quick: bool, coins: int, sub: String, holes: PackedStringArray,
+		hold_seeds: bool, caption: String = "", delay: float = 0.0, swipe: bool = false, hold_text: String = "") -> void:
+	var color_count: int = session.get_config().color_count
+	var stamp: BlockPuzzle.Stamp = BlockPuzzle.stamp(session.board, def, target, color_count, _pick)
+	var puzzle: BlockPuzzle = BlockPuzzle.new(session.board, stamp.def, target, stamp.origin, book, color_count, _rng, false, true)
+	puzzle.show_goal = false
+	var window_cells: Array[Vector2i] = []
+	for y: int in def.size():
+		for x: int in def.size():
+			window_cells.append(stamp.origin + Vector2i(x, y))
+	planner.forget(window_cells)
+	var cells: Array = puzzle.targets.duplicate()
+	_pick.shuffle(cells)
+	for i: int in mini(coins, cells.size()):
+		(cells[i] as BoardCell).attach_coin(1.0e6)  # 튜토리얼 금화는 사라지지 않는다
+	_prepare_runner(puzzle, quick, "", sub, holes, hold_seeds, caption)
+	_runner.cheer_heads = true
+	_hold_text = hold_text
+	_swipe_dir = puzzle.solution.path[0] if swipe and puzzle.solution != null and not puzzle.solution.path.is_empty() else Vector2i.ZERO
+	_runner.begin(puzzle)
+	if delay > 0.0:
+		spotlight.close()
+		_start_delay = delay
+	else:
+		_open_puzzle()
+
+
+func _open_puzzle() -> void:
+	_start_delay = -1.0
+	if _runner == null:
+		return
+	if _swipe_dir != Vector2i.ZERO:
+		var hand: BoardMark = BoardMark.at_cell(BoardMark.Kind.SWIPE, session.board.player_pos)
+		hand.direction = _swipe_dir
+		_runner.extra_marks = [hand]
+		_runner.refresh_marks()
+	show_puzzle_caption()
+
+
+func _prepare_runner(puzzle: BlockPuzzle, quick: bool, label: String, sub: String, holes: PackedStringArray,
+		hold_seeds: bool, caption: String) -> void:
 	_runner = PuzzleRunner.new(board_channel, book)
 	_runner.quick = quick
 	_runner.solved.connect(_on_puzzle_solved)
@@ -628,8 +801,8 @@ func start_puzzle(def: PuzzleDef, target: int, hide_goal: bool, quick: bool, coi
 	_puzzle_caption = caption
 	_hold_seeds = hold_seeds
 	_end_free_marks()
-	_runner.begin(puzzle)
-	show_puzzle_caption()
+	_free = false
+	_rule_free = false
 
 
 ## 퍼즐 조작 설명 (판 안내 문구).
@@ -647,9 +820,26 @@ func _attach_coins(puzzle: BlockPuzzle, coins: int) -> void:
 
 
 func _on_puzzle_solved(_center: Vector2i, _color: int) -> void:
+	if not _hold_text.is_empty():  # HTML holdM: 매치하기 전에 멈추고 둘러싼 4칸을 밝혀 설명
+		_holding = true
+		var marks: Array[BoardMark] = [BoardMark.new(BoardMark.Kind.ZONE, _runner.puzzle.window)]
+		for pos: Vector2i in session.board.neighbors(session.board.player_pos):
+			marks.append(BoardMark.at_cell(BoardMark.Kind.TARGET, pos))
+		board_channel.marks_changed.emit(marks)
+		_remember_caption(SpotlightOverlay.Mode.TAP, "", _hold_text, PackedStringArray(["player_area"]))
+		spotlight.open(SpotlightOverlay.Mode.TAP, "", _hold_text, holes_for(_caption_holes), "", true)
+		return
+	_resolve_puzzle_match()
+
+
+func _resolve_puzzle_match() -> void:
+	_hold_text = ""
+	var stars: int = _runner.puzzle.stars()
 	session.resolve_player_match()
 	if _hold_seeds:
 		session.frozen_clocks.append(TimedSystem.Clock.REFILL)
+	if _runner.cheer_heads:
+		cheer(PuzzleRunner.CHEER_WORDS[stars - 1])
 
 
 func _on_puzzle_result(info: PuzzleRunner.ResultInfo) -> void:
@@ -721,6 +911,12 @@ func _on_spotlight_tapped() -> void:
 		return
 	if not running:
 		return
+	if _holding:
+		_holding = false
+		spotlight.close()
+		board_channel.marks_changed.emit([BoardMark.new(BoardMark.Kind.ZONE, _runner.puzzle.window)] as Array[BoardMark])
+		_resolve_puzzle_match()
+		return
 	if intro_only:
 		spotlight.close()
 		_complete()
@@ -750,6 +946,7 @@ func _window_cells() -> Array[Vector2i]:
 ## 자유 매치 시작 (hints: 가만히 있으면 만들 자리 → 첫 수 화살표, filter: 힌트가 고를 매치).
 func begin_free(hints: bool, filter: Callable) -> void:
 	_free = true
+	_rule_free = false
 	_free_hints = hints
 	_free_filter = filter
 	_idle = 0.0
@@ -758,7 +955,75 @@ func begin_free(hints: bool, filter: Callable) -> void:
 
 func end_free() -> void:
 	_free = false
+	_rule_free = false
+	_segment_pending = false
 	_end_free_marks()
+
+
+## 규칙 튜토리얼 자유 매치 (HTML tFree): 배운 모양(level)만 힌트로 쓰고, color_filter(색 -> bool)를 통과하는 매치를 고른다.
+## 지금 필요한 색을 배운 모양으로 만들 수 있게 판을 고친다 (tutEnsure).
+func begin_rule_free(level: int, color_filter: Callable) -> void:
+	_free = true
+	_rule_free = true
+	_free_hints = true
+	planner.level = level
+	planner.color_filter = color_filter
+	_ensure_shapes()
+	_new_segment()
+
+
+func _ensure_shapes() -> void:
+	var changed: Array[Vector2i] = planner.ensure()
+	if not changed.is_empty():
+		board_channel.cells_changed.emit(changed)
+
+
+## 매치 한 번의 구간 (HTML freeSeg): 시작 수와 지금 가장 짧은 배운 모양 길이.
+func _new_segment() -> void:
+	_seg_start = _moves_total
+	var plan: TutorialPlanner.Plan = planner.best(9)
+	_seg_best = plan.path.size() if plan != null else 0
+	_idle = 0.0
+	_hint_level = 0
+	if not _hint_marks.is_empty():
+		_show_hint_marks([] as Array[BoardMark])
+
+
+## 자유 매치 칭찬 (HTML tutCheer): 가장 짧은 길 이내 Awesome!, +2수 이내 Great!, 그 밖 Good.
+func _free_cheer() -> void:
+	var used: int = _moves_total - _seg_start
+	var grade: int = 0
+	if _seg_best > 0:
+		grade = 2 if used <= _seg_best else (1 if used <= _seg_best + 2 else 0)
+	else:
+		grade = 2 if used <= 3 else (1 if used <= 6 else 0)
+	cheer(PuzzleRunner.CHEER_WORDS[grade])
+
+
+## 가만히 hint_idle초: 1단계 = 매치할 4블럭 강조, 2단계 = 첫 수 화살표 (HTML tutFreeIdle).
+func _rule_idle_hints(delta: float) -> void:
+	if _hint_level >= 2:
+		return
+	_idle += delta
+	if _idle < hint_idle:
+		return
+	_idle = 0.0
+	var found: Array = planner.idle_plan()
+	var changed: Array[Vector2i] = found[1]
+	if not changed.is_empty():
+		board_channel.cells_changed.emit(changed)
+	_hint_level += 1
+	var plan: TutorialPlanner.Plan = found[0]
+	if plan == null:
+		return
+	var marks: Array[BoardMark] = []
+	for pos: Vector2i in planner.plan_cells(plan):
+		marks.append(BoardMark.at_cell(BoardMark.Kind.TARGET, pos))
+	if _hint_level >= 2:
+		var arrow: BoardMark = BoardMark.at_cell(BoardMark.Kind.ARROW, session.board.player_pos + plan.path[0])
+		arrow.direction = plan.path[0]
+		marks.append(arrow)
+	_show_hint_marks(marks)
 
 
 func _end_free_marks() -> void:
@@ -831,18 +1096,27 @@ func _disconnect_session() -> void:
 	session = null
 
 
-func _on_session_moved(_result: Board.MoveResult) -> void:
+func _on_session_moved(result: Board.MoveResult) -> void:
 	if not running or _runner != null:
 		return
+	_moves_total += 1
+	if planner != null and result.is_accepted():
+		planner.note_move(result.from)
 	_idle = 0.0
+	_hint_level = 0
 	_end_free_marks()  # 힌트·첫 이동 화살표
 	if _step != null:
 		_step.on_move(self)
 
 
-func _on_session_matched(_center: Vector2i, color: int, _cells: Array[Vector2i]) -> void:
+func _on_session_matched(_center: Vector2i, color: int, cells: Array[Vector2i]) -> void:
 	if not running:
 		return
+	if planner != null:
+		planner.forget(cells)
+	if _rule_free and _runner == null:
+		_free_cheer()
+		_segment_pending = true  # HTML: 30ms 뒤 tutEnsure + freeSeg (단계가 자유 매치를 끝냈으면 안 함)
 	_pending_match = MatchInfo.new()
 	_pending_match.color = color
 	_pending_match.next_before = first_recipe_next()
@@ -916,6 +1190,15 @@ func _emit_recipes() -> void:
 func _reset_tools() -> void:
 	_runner = null
 	_free = false
+	_rule_free = false
+	_segment_pending = false
+	_start_delay = -1.0
+	_swipe_dir = Vector2i.ZERO
+	_hold_text = ""
+	_holding = false
+	if _time_running and session != null:
+		stop_tutorial_time()
+	_time_running = false
 	_hint_level = 0
 	_banner_left = -1.0
 	_grow_queue.clear()

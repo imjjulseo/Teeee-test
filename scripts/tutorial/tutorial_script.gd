@@ -6,6 +6,8 @@ extends Resource
 
 @export var color_count: int = 3
 @export var refill_time: float = 2.0
+## 시작 판의 고정 시드 (HTML TUT_SEED, TutorialStartBoard). 0이면 실제 판처럼 무작위.
+@export var start_seed: int = 8907
 @export var steps: Array[TutorialStep] = []
 
 @export_group("Flow")

@@ -6,8 +6,9 @@ extends RefCounted
 ##   (한 수는 반대 수로 되돌릴 수 있어 보통 많아야 1 는다 — 깨짐은 풀이기 한도 안에서 못 풀 때·우연한 매치로 색이 바뀔 때.)
 ## - 힌트 3단계: 0 목표 모양(점선, hide_goal이면 숨김) → 1 당길 블록과 그 전에 설 칸 + 안내 강조 → 2 첫 수 화살표.
 ##   가만히 idle_hint초 또는 헛수 waste_hint번이면 한 단계 오른다 (quick이면 힌트 없음).
-## - 별점: 화살표 힌트를 봤으면 ★, 최소 수 + 되돌리기 없음 ★★★, 최소 + star_extra수 이내 ★★, 그 밖 ★.
-## - 다른 색이 우연히 매치되면 그 칸들의 색만 바꾸고 이어 간다.
+## - 별점 (HTML 11/04): 최소 수면 힌트·되돌리기와 상관없이 ★★★, 최소 + star_extra수 이내 ★★, 그 밖 ★.
+## - 다른 색이 우연히 매치되면 모을 블록이 아닌 칸의 색만 바꾸고 이어 간다.
+## - 규칙 튜토리얼(HTML pzStamp)은 stamp()로 판은 그대로 두고 내 주변 5×5에만 모양을 깐다 (회전·뒤집기로 P가 지금 칸에 오게).
 ## - 정답 다시 보기: 처음 판에서 내 좋은 수를 따라가다 처음 벗어난 곳부터 최소 수 길.
 
 enum Judgment { GOOD, WASTE, BREAK }
@@ -41,6 +42,8 @@ var window: Rect2i
 ## 풀이기 탐색 범위 (창 둘레 한 칸, 판 안).
 var region: Rect2i
 var hide_goal: bool = false
+## 목표 모양(가운데·점선 자리)을 그린다 (규칙 튜토리얼은 그리지 않는다 — HTML pzDraw).
+var show_goal: bool = true
 ## 힌트·결과 없이 (튜토리얼 빠른 퍼즐).
 var quick: bool = false
 var targets: Array[BoardCell] = []
@@ -67,8 +70,9 @@ var _idle: float = 0.0
 
 
 ## board 위 window_origin에 def를 깔고 시작한다. fill_real이면 창 둘레 밖은 실제 판처럼 아무 색.
+## keep_board면 판을 칠하지 않는다 (stamp()로 이미 깔았다).
 func _init(p_board: Board, p_def: PuzzleDef, p_target: int, window_origin: Vector2i, p_book: PuzzleBook,
-		color_count: int, rng: RandomNumberGenerator, fill_real: bool = false) -> void:
+		color_count: int, rng: RandomNumberGenerator, fill_real: bool = false, keep_board: bool = false) -> void:
 	board = p_board
 	def = p_def
 	book = p_book
@@ -77,7 +81,10 @@ func _init(p_board: Board, p_def: PuzzleDef, p_target: int, window_origin: Vecto
 	_rng = rng
 	window = Rect2i(window_origin, Vector2i.ONE * def.size())
 	region = window.grow(1).intersection(Rect2i(Vector2i.ZERO, Vector2i.ONE * board.size))
-	_build(fill_real)
+	if keep_board:
+		_take_targets()
+	else:
+		_build(fill_real)
 	_start = snapshot()
 	_resolve()
 	min_moves = distance
@@ -172,9 +179,7 @@ func restart() -> void:
 # --- 결과 ------------------------------------------------------------------------
 
 func stars() -> int:
-	if max_hint >= Hint.ARROW:
-		return 1
-	if moves.size() <= min_moves and undos == 0:
+	if moves.size() <= min_moves:
 		return 3
 	if moves.size() <= min_moves + book.star_extra:
 		return 2
@@ -232,7 +237,7 @@ func replay_move(dir: Vector2i) -> Board.MoveResult:
 # --- 힌트 표시 데이터 --------------------------------------------------------------
 
 func goal_visible() -> bool:
-	return not finished and solution != null and (not hide_goal or hint >= Hint.PULL)
+	return show_goal and not finished and solution != null and (not hide_goal or hint >= Hint.PULL)
 
 
 ## 목표 모양: 가운데 칸 + 상·하·좌·우 4칸.
@@ -320,11 +325,16 @@ func _build(fill_real: bool) -> void:
 		elif (pos.x + pos.y) % 2 == 0:
 			color = even[_rng.randi_range(0, even.size() - 1)]
 		board.set_color_block(pos, color)
-	targets.clear()
 	for cell: Vector2i in def.target_cells():
 		board.set_color_block(window.position + cell, target_color)
-		targets.append(board.get_cell(window.position + cell))
 	board.set_player(window.position + def.player_cell())
+	_take_targets()
+
+
+func _take_targets() -> void:
+	targets.clear()
+	for cell: Vector2i in def.target_cells():
+		targets.append(board.get_cell(window.position + cell))
 
 
 func _solve() -> PuzzleSolver.Solution:
@@ -364,7 +374,104 @@ func _recolor_accidental(color: int) -> Array[Vector2i]:
 			choices.append(c)
 	var cells: Array[Vector2i] = []
 	for pos: Vector2i in board.neighbors(board.player_pos):
-		if board.is_inside(pos) and not choices.is_empty():
+		if board.is_inside(pos) and not choices.is_empty() and not targets.has(board.get_cell(pos)):
 			board.recolor_block(pos, choices[_rng.randi_range(0, choices.size() - 1)])
 			cells.append(pos)
 	return cells
+
+
+# --- 규칙 튜토리얼: 내 주변 5×5에만 깔기 (HTML pzStamp) -----------------------------------
+
+## 깐 결과: 회전·뒤집기한 모양(id·tip은 원래 판 것)과 창 위치.
+class Stamp:
+	var def: PuzzleDef
+	var origin: Vector2i
+
+
+## 판은 그대로 두고, 지금 플레이어 자리에 P가 오도록 회전·뒤집기(8가지 중 플레이어를 가장 덜 옮기는 것)한 모양을
+## 그 주변 창에 깐다: T = target, 나머지는 체크무늬 다른 색. 창 둘레 한 칸의 target 색 블록·씨앗은 다른 색으로 바꾼다.
+## 난수는 HTML과 같은 순서로 pick에서 꺼낸다. 깐 뒤 BlockPuzzle.new(..., keep_board = true)로 시작한다.
+static func stamp(board: Board, source: PuzzleDef, target: int, color_count: int, pick: HtmlRng) -> Stamp:
+	var n: int = board.size
+	var span: int = source.size()
+	var player: Vector2i = board.player_pos
+	var best_rows: PackedStringArray
+	var best_origin: Vector2i
+	var best_p: Vector2i
+	var best_cost: int = -1
+	for f: int in 8:
+		var rows: PackedStringArray = BlockPuzzle.sym_rows(source.rows, f)
+		var p: Vector2i = Vector2i(span / 2, span / 2)
+		for y: int in span:
+			var x: int = rows[y].find(PuzzleDef.PLAYER)
+			if x >= 0:
+				p = Vector2i(x, y)
+		var origin: Vector2i = Vector2i(clampi(player.x - p.x, 0, n - span), clampi(player.y - p.y, 0, n - span))
+		var cost: int = Board.distance(origin + p, player)
+		if best_cost < 0 or cost < best_cost:
+			best_rows = rows
+			best_origin = origin
+			best_p = p
+			best_cost = cost
+		if cost == 0:
+			break
+	var to: Vector2i = best_origin + best_p
+	if to != player:
+		board.set_player(to)
+		board.set_color_block(player, pick.rnd(color_count))
+	var others: Array[int] = []
+	for color: int in color_count:
+		if color != target:
+			others.append(color)
+	var even: Array[int] = others.slice(0, 2) if others.size() >= 3 else others.slice(0, 1)
+	var odd: int = others[others.size() - 1]
+	for y: int in span:
+		for x: int in span:
+			var pos: Vector2i = best_origin + Vector2i(x, y)
+			if pos == board.player_pos:
+				continue
+			var ch: String = best_rows[y][x]
+			var color: int = target
+			if ch != PuzzleDef.TARGET and ch != "A":
+				color = even[pick.rnd(even.size())] if (pos.x + pos.y) % 2 == 0 else odd
+			board.set_color_block(pos, color)
+	var window: Rect2i = Rect2i(best_origin, Vector2i.ONE * span)
+	for y: int in range(best_origin.y - 1, best_origin.y + span + 1):
+		for x: int in range(best_origin.x - 1, best_origin.x + span + 1):
+			var pos: Vector2i = Vector2i(x, y)
+			if not board.is_inside(pos) or window.has_point(pos):
+				continue
+			var cell: BoardCell = board.get_cell(pos)
+			if (cell.is_block() or cell.type == Board.CellType.SEED) and cell.color == target:
+				cell.color = others[pick.rnd(others.size())]
+	var stamp_result: Stamp = Stamp.new()
+	stamp_result.def = source.duplicate() as PuzzleDef
+	stamp_result.def.rows = best_rows
+	stamp_result.origin = best_origin
+	return stamp_result
+
+
+## 모양을 f번째 대칭으로 (HTML symRows: f % 4번 시계 방향으로 돌린 뒤 f >= 4면 좌우 뒤집기).
+static func sym_rows(rows: PackedStringArray, f: int) -> PackedStringArray:
+	var span: int = rows.size()
+	var out: Array[PackedStringArray] = []
+	for y: int in span:
+		var line: PackedStringArray = PackedStringArray()
+		line.resize(span)
+		line.fill(".")
+		out.append(line)
+	for r: int in span:
+		for c: int in span:
+			var a: int = r
+			var b: int = c
+			for _i: int in f % 4:
+				var t: int = a
+				a = b
+				b = span - 1 - t
+			if f >= 4:
+				b = span - 1 - b
+			out[a][b] = rows[r][c]
+	var result: PackedStringArray = PackedStringArray()
+	for line: PackedStringArray in out:
+		result.append("".join(line))
+	return result

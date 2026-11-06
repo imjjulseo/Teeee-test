@@ -14,6 +14,7 @@ var _path: Array[Vector2i] = []
 var _cooldown: float = 0.0
 var _reloaded: bool = false
 var _shots: Dictionary[String, bool] = {}
+var _swipe_seen_at: float = -1.0
 
 
 func _setup() -> void:
@@ -111,7 +112,17 @@ func _drive(director: TutorialDirector) -> void:
 		return
 	var runner: PuzzleRunner = director.runner()
 	if runner != null:
+		if director.is_waiting_to_start():
+			return
 		if runner.is_playing():
+			if director.step_index == 0 and runner.puzzle.moves.is_empty() and not _shots.has("swipe"):
+				if _swipe_seen_at < 0.0:
+					_swipe_seen_at = step_time
+					var marks: Array[BoardMark] = (node("BoardView/Marks") as BoardMarksView).marks()
+					expect(marks.any(func(m: BoardMark) -> bool: return m.kind == BoardMark.Kind.SWIPE), "first board: swipe hint (HTML tswipe)")
+				if step_time - _swipe_seen_at < 0.6:
+					return
+				_shot_once("swipe")
 			if _path.is_empty():
 				_path = runner.puzzle.solution.path.duplicate()
 				_shot_once("puzzle_%s" % runner.puzzle.def.id)
@@ -122,9 +133,27 @@ func _drive(director: TutorialDirector) -> void:
 	if current is MoveStep:
 		press_key(KEY_RIGHT)
 		_cooldown = 0.3
+	elif current is TimeStep or (current is MatchStep and (current as MatchStep).rule_hints):
+		_walk_learned_plan(director)
 	elif current is MatchStep:
 		_make_match(director, current as MatchStep)
 		_cooldown = 0.35
+
+
+## 규칙 튜토리얼 자유 매치: 배운 모양 힌트(TutorialPlanner)가 고른 길을 실제 방향키로 따라간다 (판을 칠하지 않는다).
+func _walk_learned_plan(director: TutorialDirector) -> void:
+	if _path.is_empty():
+		var plan: TutorialPlanner.Plan = director.planner.best(9)
+		if plan == null and director.planner.best(9, false, true) != null:
+			_cooldown = 0.2  # 씨앗이 자라면 생기는 모양 (HTML tutEnsure도 씨앗을 자랄 색으로 친다) — 기다린다
+			return
+		if plan == null:  # 매치 직후 다음 프레임에 판을 고친다(tutEnsure). 그래도 없으면 6초 힌트가 고친다 (tutFreeIdle)
+			_cooldown = 0.3
+			return
+		_shot_once("free_%d" % director.step_index)
+		_path = plan.path.duplicate()
+	press_key(KEYS[_path.pop_front()])
+	_cooldown = 0.15
 
 
 ## 목표에 맞는 색으로 플레이어 바로 위에 십자를 칠하고 실제로 위로 움직여 매치한다.

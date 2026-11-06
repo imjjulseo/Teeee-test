@@ -17,6 +17,8 @@ signal changed
 enum Phase { PLAYING, SOLVED, REPLAY, RESULT, DONE }
 
 const ARROW_TEXT: Dictionary[Vector2i, String] = {Vector2i.UP: "↑", Vector2i.DOWN: "↓", Vector2i.LEFT: "←", Vector2i.RIGHT: "→"}
+## 규칙 튜토리얼 결과·칭찬 (HTML CHEER, 별 1~3).
+const CHEER_WORDS: PackedStringArray = ["Good", "Great!", "Awesome!"]
 
 ## 결과 카드에 보일 것.
 class ResultInfo:
@@ -35,6 +37,10 @@ var show_window: bool = true
 var quick: bool = false
 ## 안내 줄 (비어 있으면 판의 tip).
 var tip_override: String = ""
+## 결과 제목을 별 수의 칭찬(CHEER_WORDS)으로 (규칙 튜토리얼).
+var cheer_heads: bool = false
+## 퍼즐 안내에 덧붙여 그릴 표시 (튜토리얼 첫 판의 손가락 안내).
+var extra_marks: Array[BoardMark] = []
 ## 풀린 뒤 결과까지(초), 정답 다시 보기에서 내가 벗어난 자리에 멈추는 시간(초).
 var solved_pause: float = 0.7
 var diverge_pause: float = 1.6
@@ -166,7 +172,10 @@ func start_replay() -> void:
 ## 지금 그릴 판 위 안내.
 func refresh_marks() -> void:
 	if phase == Phase.PLAYING or phase == Phase.SOLVED:
-		_channel.marks_changed.emit(PuzzleMarks.for_puzzle(puzzle, show_window))
+		var marks: Array[BoardMark] = PuzzleMarks.for_puzzle(puzzle, show_window)
+		if phase == Phase.PLAYING:
+			marks.append_array(extra_marks)
+		_channel.marks_changed.emit(marks)
 
 
 ## 지금 보일 안내 문구.
@@ -214,17 +223,14 @@ func _decide_result(first: bool) -> void:
 		_channel.marks_changed.emit([] as Array[BoardMark])
 		finished.emit(_result_stars)
 		return
-	if first and _result_stars == 1 and not puzzle.replayed:
+	if first and _result_stars == 1 and not puzzle.replayed and puzzle.max_hint == BlockPuzzle.Hint.GOAL:  # 힌트로 길을 봤으면 자동으로 안 띄움
 		start_replay()
 		return
 	var info: ResultInfo = ResultInfo.new()
 	info.stars = _result_stars
-	info.head = PuzzleRunner.result_head(_result_stars, puzzle.moves.size() - puzzle.min_moves, puzzle.replayed)
-	var detail: String = "%d수 · 최소 %d수" % [puzzle.moves.size(), puzzle.min_moves]
-	if puzzle.undos > 0:
-		detail += " · 되돌리기 %d번" % puzzle.undos
-	if puzzle.max_hint >= BlockPuzzle.Hint.ARROW:
-		detail += " · 화살표 힌트"
+	info.head = CHEER_WORDS[_result_stars - 1] if cheer_heads \
+		else PuzzleRunner.result_head(_result_stars, puzzle.moves.size() - puzzle.min_moves, puzzle.replayed)
+	var detail: String = "%d / %d수" % [puzzle.moves.size(), puzzle.min_moves]
 	if _result_stars < 3:
 		detail += "\n" + puzzle.def.tip
 	info.detail = detail

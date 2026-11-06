@@ -19,6 +19,8 @@ enum Filter { ANY, NOT_NEXT, RECIPE_NEXT, LETTER_A }
 @export_multiline var wrong_text: String = ""
 @export var holes: PackedStringArray = PackedStringArray()
 @export var hints: bool = true
+## 규칙 튜토리얼 힌트 (HTML tFree): 배운 모양(있는 T로 들어가기)만, 판을 고쳐서라도 만들 수 있게. 칭찬은 수에 따라 자동.
+@export var rule_hints: bool = false
 ## 진행할 때 떠오르는 말, 다 채웠을 때의 말.
 @export var cheer: String = "좋아요!"
 @export var cheer_done: String = "좋아요!"
@@ -33,7 +35,10 @@ func start(director: TutorialDirector) -> void:
 	_done = 0
 	_wait = -1.0
 	director.act(director.fill(head), _text(director), holes)
-	director.begin_free(hints, _hint_filter(director))
+	if rule_hints:
+		director.begin_rule_free(0, _color_filter(director))
+	else:
+		director.begin_free(hints, _hint_filter(director))
 
 
 func on_match(director: TutorialDirector, info: TutorialDirector.MatchInfo) -> void:
@@ -86,6 +91,18 @@ func _accepts(director: TutorialDirector, info: TutorialDirector.MatchInfo) -> b
 		Filter.LETTER_A:
 			return info.color == director.letter("A")
 	return true
+
+
+## 규칙 튜토리얼 힌트의 색 조건 (색 -> bool). HTML needF = 진행 중인 족보가 기다리는 색.
+func _color_filter(director: TutorialDirector) -> Callable:
+	match filter:
+		Filter.RECIPE_NEXT:
+			return func(color: int) -> bool: return director.recipe_nexts().has(color)
+		Filter.NOT_NEXT:
+			return func(color: int) -> bool: return color != director.first_recipe_next()
+		Filter.LETTER_A:
+			return func(color: int) -> bool: return color == director.letter("A")
+	return Callable()
 
 
 ## 힌트가 고를 매치 (MatchPlanner.Plan) 조건.

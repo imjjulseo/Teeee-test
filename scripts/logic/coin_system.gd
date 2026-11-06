@@ -50,6 +50,12 @@ func on_cells_matured(cells: Array[Vector2i]) -> void:
 		coins_changed.emit(attached)
 
 
+## 금화 연속을 처음부터 (튜토리얼 금화 퍼즐, HTML coinChain = 0).
+func reset_chain() -> void:
+	chain = 0
+	_last_pickup = -INF
+
+
 ## 매치로 깨지는 cells의 금화를 줍는다. 얻은 코인을 반환한다 (없으면 0).
 func collect(cells: Array[Vector2i]) -> int:
 	var gained: int = 0

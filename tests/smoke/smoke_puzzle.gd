@@ -3,7 +3,7 @@ extends "res://tests/smoke/smoke_base.gd"
 ## - menu  : 메인 메뉴 → 퍼즐 실제 클릭 → 목록(11판, 1~11번, 모두 열림 "● 20") → 1번 실제 클릭 → "퍼즐 1" →
 ##           실제 방향키로 최소 수 풀이 → ★★★ · "첫 클리어 보상 ● 20" → "다음 퍼즐" → "퍼즐 2" → 나가기 →
 ##           목록: 1번 별, 코인 +20 → 1번 다시 풀어도 보상 없음
-## - board : 마지막 판(11번) → 가만히 6초(당길 블록 힌트) → 힌트 버튼(화살표) → 풀이 → ★ → 정답 보기 자동 → 결과 "목록으로" → 목록 "★☆☆"
+## - board : 마지막 판(11번) → 가만히 6초(당길 블록 힌트) → 힌트 버튼(화살표) → 최소 수 풀이 → ★★★(힌트와 상관없이, HTML 11/04)·정답 보기 자동 없음 → "목록으로" → 목록 "★★★"
 
 const KEYS: Dictionary[Vector2i, Key] = {Vector2i.UP: KEY_UP, Vector2i.DOWN: KEY_DOWN, Vector2i.LEFT: KEY_LEFT, Vector2i.RIGHT: KEY_RIGHT}
 const LAST_BOARD: String = "4b"
@@ -148,26 +148,22 @@ func _tick_board() -> void:
 			if _press_next() and step_time > 0.3:
 				next_step()
 		4:
-			if _play().runner.phase == PuzzleRunner.Phase.REPLAY:
-				expect(true, "one star → replay first")
-				shot("board_replay")
-				next_step()
-			elif step_time > 3.0:
-				fail("no replay")
-				finish()
-		5:
 			if _play().runner.phase == PuzzleRunner.Phase.RESULT:
-				expect((node("UI/ResultPanel").get_node("%ResultStars") as Label).text == "★☆☆", "one star")
-				expect((node("UI/ResultPanel").get_node("%ResultHead") as Label).text == "정답 길을 봤어요", "replayed head")
-				expect((node("UI/ResultPanel").get_node("%ReplayButton") as Button).text == "정답 다시 보기", "replay again button")
-				expect(PuzzleStore.new().stars_of(LAST_BOARD) == 1, "board stars saved")
+				expect((node("UI/ResultPanel").get_node("%ResultStars") as Label).text == "★★★", "minimum moves → three stars even with hints (HTML 11/04)")
+				expect((node("UI/ResultPanel").get_node("%ResultHead") as Label).text == "최소 수로 성공!", "head")
+				expect(PuzzleStore.new().stars_of(LAST_BOARD) == 3, "board stars saved")
 				expect((node("UI/ResultPanel").get_node("%NextButton") as Button).text == "목록으로", "last board → back to the list")
+				shot("board_result")
 				click_control(node("UI/ResultPanel").get_node("%NextButton"))
-				next_step()
-			elif step_time > 8.0:
-				fail("replay did not finish")
+				step = 6
+				step_time = 0.0
+			elif _play().runner.phase == PuzzleRunner.Phase.REPLAY:
+				fail("no automatic replay after a hint (HTML: !P.maxHint)")
+				finish()
+			elif step_time > 4.0:
+				fail("no result")
 				finish()
 		6:
 			if in_scene("PuzzleMenu", 0.3):
-				expect(_list().buttons()[10].stars_text() == "★☆☆", "list shows the stars (%s)" % _list().buttons()[10].stars_text())
+				expect(_list().buttons()[10].stars_text() == "★★★", "list shows the stars (%s)" % _list().buttons()[10].stars_text())
 				finish()

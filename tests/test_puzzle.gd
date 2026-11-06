@@ -116,7 +116,7 @@ func test_idle_hints_up_to_the_arrow() -> void:
 	puzzle.advance(6.0)
 	assert_eq(puzzle.arrow_hint(), puzzle.solution.path[0], "arrow = first move")
 	_follow_solution(puzzle)
-	assert_eq(puzzle.stars(), 1, "arrow hint → one star")
+	assert_eq(puzzle.stars(), 3, "minimum moves → three stars even with hints (HTML 11/04)")
 
 
 func test_hidden_goal_shows_after_the_first_hint() -> void:
@@ -146,7 +146,7 @@ func test_undo_restores_board_and_targets() -> void:
 	assert_eq(puzzle.target_positions(), start_targets)
 	assert_eq([puzzle.moves.size(), puzzle.undos, puzzle.distance], [0, 2, puzzle.min_moves])
 	_follow_solution(puzzle)
-	assert_eq(puzzle.stars(), 2, "minimum moves but undone → two stars")
+	assert_eq(puzzle.stars(), 3, "minimum moves → three stars even after undo (HTML 11/04)")
 
 
 func test_reset_and_restart() -> void:

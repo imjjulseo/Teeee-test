@@ -17,6 +17,7 @@ enum Kind {
 	STAND,  ## 힌트: 먼저 설 칸
 	PULL,  ## 힌트: 당길 블록
 	ARROW,  ## 힌트: 첫 수 방향 (direction)
+	SWIPE,  ## 튜토리얼 첫 판: 손가락이 내 칸에서 direction 쪽으로 밀어 보이는 안내 (HTML tswipe, 반복 애니메이션)
 }
 
 var kind: Kind

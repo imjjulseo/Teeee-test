@@ -301,6 +301,11 @@ func remaining_time() -> float:
 	return _time.remaining
 
 
+## 남은 시간을 seconds로 맞춘다 (튜토리얼 시간 설명: HTML timeLeft = 제한시간 × 0.6).
+func set_remaining_time(seconds: float) -> void:
+	_time.set_remaining(seconds)
+
+
 ## 0초에서 부활: 남은 시간을 seconds로 하고 다시 진행한다. TIMED_OUT이 아니면 false.
 func revive(seconds: float) -> bool:
 	if phase != Phase.TIMED_OUT:

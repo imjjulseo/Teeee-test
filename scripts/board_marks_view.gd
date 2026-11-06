@@ -7,11 +7,22 @@ extends Node2D
 @export var theme_data: BoardTheme
 
 var _marks: Array[BoardMark] = []
+var _swipe_time: float = 0.0
 
 
 func show_marks(marks: Array[BoardMark]) -> void:
 	_marks = marks
+	_swipe_time = 0.0
 	queue_redraw()
+
+
+## 스와이프 안내가 있으면 매 프레임 다시 그린다.
+func _process(delta: float) -> void:
+	for mark: BoardMark in _marks:
+		if mark.kind == BoardMark.Kind.SWIPE:
+			_swipe_time = fmod(_swipe_time + delta, theme_data.swipe_period)
+			queue_redraw()
+			return
 
 
 ## 지금 그리는 표시 (테스트/디버그용).
@@ -56,6 +67,8 @@ func _draw() -> void:
 				draw_rect(rect.grow(-theme_data.mark_line_width / 2.0), theme_data.puzzle_pull_color, false, theme_data.mark_line_width * 1.5)
 			BoardMark.Kind.ARROW:
 				_draw_arrow(rect, mark.direction)
+			BoardMark.Kind.SWIPE:
+				_draw_swipe(rect, mark.direction, step)
 
 
 ## 이미지를 rect에 맞춰 그린다. 오른쪽을 향한 이미지를 direction 쪽으로 돌린다.
@@ -92,6 +105,21 @@ func _draw_arrow(rect: Rect2, direction: Vector2i) -> void:
 	var s: float = rect.size.x * 0.3
 	draw_colored_polygon(PackedVector2Array([c + dir * s, c - dir * s * 0.6 + side * s * 0.8, c - dir * s * 0.6 - side * s * 0.8]),
 		theme_data.puzzle_arrow_color)
+
+
+## 손가락 안내: 0~15% 나타나며 커짐 → 60%까지 옆 칸으로 → 80%부터 작아지며 사라짐 (HTML @keyframes tswipe).
+func _draw_swipe(rect: Rect2, direction: Vector2i, step: float) -> void:
+	var t: float = _swipe_time / theme_data.swipe_period
+	var travel: float = clampf((t - 0.15) / 0.45, 0.0, 1.0)
+	travel = travel * travel * (3.0 - 2.0 * travel)  # ease-in-out
+	var scale: float = lerpf(0.8, 1.0, clampf(t / 0.15, 0.0, 1.0)) if t < 0.6 else lerpf(1.0, 0.8, clampf((t - 0.6) / 0.2, 0.0, 1.0))
+	var alpha: float = clampf(t / 0.15, 0.0, 1.0) if t < 0.6 else 1.0 - clampf((t - 0.6) / 0.2, 0.0, 1.0)
+	var center: Vector2 = rect.get_center() + Vector2(direction) * step * travel
+	var radius: float = rect.size.x * theme_data.swipe_size / 2.0 * scale
+	var halo: Color = theme_data.swipe_halo
+	var fill: Color = theme_data.swipe_color
+	draw_circle(center, radius + rect.size.x * 0.06, Color(halo, halo.a * alpha))
+	draw_circle(center, radius, Color(fill, fill.a * alpha))
 
 
 ## 칸 왼쪽 위의 작은 깃발 (준비된 깃발).

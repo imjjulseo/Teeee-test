@@ -12,12 +12,16 @@ enum Pick { PLAN, RANDOM, KEEP }
 @export var progress: PackedInt32Array = PackedInt32Array()
 @export var pick: Pick = Pick.PLAN
 @export var clear_cards: bool = false
+## 규칙 튜토리얼 족보 카드 (HTML cards(): 배운 모양으로 가장 빨리 매치할 색부터 2칸 + 3칸).
+@export var rule_cards: bool = false
 
 
 func start(director: TutorialDirector) -> void:
 	if fresh:
 		director.random_board()
-	if clear_cards:
+	if rule_cards:
+		director.make_rule_cards()
+	elif clear_cards:
 		director.clear_cards()
 	elif not cards.is_empty():
 		if pick != Pick.KEEP:

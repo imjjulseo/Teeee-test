@@ -127,6 +127,11 @@ extends Resource
 @export var puzzle_stand_color: Color = Color("8fe3ff")
 @export var puzzle_pull_color: Color = Color("ffd23f")
 @export var puzzle_arrow_color: Color = Color("ffd23f")
+## 튜토리얼 첫 판 손가락 안내 (HTML tswipe): 한 번(초), 칸 대비 크기, 원·테두리 색.
+@export var swipe_period: float = 1.4
+@export var swipe_size: float = 0.46
+@export var swipe_color: Color = Color(1, 1, 1, 0.85)
+@export var swipe_halo: Color = Color(1, 1, 1, 0.25)
 
 @export_group("Collection")
 ## 등급 색 (CharacterData.Grade 순서: 기본·희귀·영웅·전설·신화·히든). 캐릭터 카드·상점·뽑기 연출.

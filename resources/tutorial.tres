@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="TutorialScript" format=3 uid="uid://dhyotheks4gs2"]
 
 [ext_resource type="Script" uid="uid://dr06j3fj8vodo" path="res://scripts/tutorial/tutorial_script.gd" id="1_script"]
-[ext_resource type="Script" uid="uid://jhahxjg2bcti" path="res://scripts/tutorial/move_step.gd" id="2_move"]
 [ext_resource type="Script" uid="uid://btd8m4xskwsc0" path="res://scripts/tutorial/say_step.gd" id="3_say"]
 [ext_resource type="Script" uid="uid://cdoxtbicass74" path="res://scripts/tutorial/puzzle_level_step.gd" id="4_level"]
 [ext_resource type="Script" uid="uid://rgkoauc12cvk" path="res://scripts/tutorial/board_step.gd" id="5_board"]
@@ -9,125 +8,92 @@
 [ext_resource type="Script" uid="uid://kiqootm3ntej" path="res://scripts/tutorial/coin_puzzle_step.gd" id="7_coin"]
 [ext_resource type="Script" uid="uid://du5v7w7kv6vfu" path="res://scripts/tutorial/wait_step.gd" id="8_wait"]
 [ext_resource type="Script" uid="uid://crn1b07o54a1g" path="res://scripts/tutorial/tutorial_step.gd" id="9_step"]
+[ext_resource type="Script" path="res://scripts/tutorial/time_step.gd" id="10_time"]
 
-[sub_resource type="Resource" id="Step_1"]
-script = ExtResource("2_move")
-
-[sub_resource type="Resource" id="Step_2"]
-script = ExtResource("3_say")
-head = "자리 바꾸기"
-text = "움직이면 나(빈칸)와 옆 블럭이 자리를 바꿔요"
-holes = PackedStringArray("player")
-
-[sub_resource type="Resource" id="Step_3"]
-script = ExtResource("3_say")
-head = "매치"
-text = "나를 둘러싼 4칸이 모두 같은 색이면 사라지고 시간을 얻어요"
-holes = PackedStringArray("player", "time")
-
-[sub_resource type="Resource" id="Step_4"]
-script = ExtResource("3_say")
-head = "가장 쉬운 방법"
-text = "ㅗ 모양을 만든 뒤, 열린 쪽에서 가운데로 들어가요"
-holes = null
-
-[sub_resource type="Resource" id="Step_5"]
+[sub_resource type="Resource" id="Step_Lv0"]
 script = ExtResource("4_level")
 hold_seeds_after = true
+rule = true
+first_delay = 0.8
+first_caption = "스와이프해서 옆칸과 바꿔요"
+swipe_first = true
+hold_text = "주변이 같은 색으로 둘러싸이면 매치!"
 
-[sub_resource type="Resource" id="Step_6"]
+[sub_resource type="Resource" id="Step_Seeds"]
 script = ExtResource("3_say")
-head = "다시 자라는 칸"
-text = "사라진 블럭은 잠시 뒤 무작위 색으로 다시 자라요"
+text = "매치한 자리에는 다시 블럭이 무작위로 자라나요"
 holes = PackedStringArray("seeds")
-grow_seeds = true
+release_seeds = true
 
-[sub_resource type="Resource" id="Step_T1"]
+[sub_resource type="Resource" id="Step_TimeSay"]
 script = ExtResource("3_say")
-head = "시간"
 text = "시간 안에 매치해야 하고, 뭐든 매치하면 추가 시간을 얻어요"
 holes = PackedStringArray("time")
 
-[sub_resource type="Resource" id="Step_8"]
+[sub_resource type="Resource" id="Step_Time"]
+script = ExtResource("10_time")
+
+[sub_resource type="Resource" id="Step_Cards"]
 script = ExtResource("5_board")
-fresh = true
 progress = null
+rule_cards = true
 
-[sub_resource type="Resource" id="Step_9"]
-script = ExtResource("6_match")
-head = "매치해서 시간을 늘려 보세요"
-text = "막히면 잠시 기다려 보세요. 만들 자리를 보여 줘요"
-holes = PackedStringArray("time")
-cheer_done = "시간이 늘었어요!"
-
-[sub_resource type="Resource" id="Step_10"]
-script = ExtResource("5_board")
-cards = Array[PackedStringArray]([PackedStringArray("A", "B")])
-progress = null
-
-[sub_resource type="Resource" id="Step_11"]
+[sub_resource type="Resource" id="Step_Recipe1"]
 script = ExtResource("3_say")
-head = "족보"
 text = "점수를 얻으려면 족보를 완성해야 해요"
 holes = PackedStringArray("cards")
 
-[sub_resource type="Resource" id="Step_12"]
+[sub_resource type="Resource" id="Step_Recipe2"]
 script = ExtResource("3_say")
-head = "순서대로"
 text = "족보의 색 순서대로 매치하면 완성돼요. 흰 테두리가 다음 색이에요"
 holes = PackedStringArray("cards")
 
-[sub_resource type="Resource" id="Step_18"]
+[sub_resource type="Resource" id="Step_RecipeMatch"]
 script = ExtResource("6_match")
 goal = 2
 filter = 2
-head = "족보를 완성해 보세요"
-text = "족보 색 순서대로 매치해요"
+text = "족보를 완성해 보세요"
 holes = null
+rule_hints = true
 cheer = ""
-cheer_done = "완성!"
+cheer_done = ""
+done_pause = 0.6
 
-[sub_resource type="Resource" id="Step_32"]
-script = ExtResource("5_board")
-progress = null
-clear_cards = true
-
-[sub_resource type="Resource" id="Step_33"]
+[sub_resource type="Resource" id="Step_Coin1"]
 script = ExtResource("7_coin")
-intro_head = "코인 블럭"
-intro_text = "금화가 붙은 블럭을 매치하면 코인이 들어와요"
-intro_holes = PackedStringArray("board_coins", "coin")
+caption = "코인 블럭을 매치해서 코인을 얻어 보세요"
+rule = true
+target_recipe = true
 
-[sub_resource type="Resource" id="Step_34"]
+[sub_resource type="Resource" id="Step_CoinWait1"]
 script = ExtResource("8_wait")
-seconds = 0.4
 
-[sub_resource type="Resource" id="Step_35"]
+[sub_resource type="Resource" id="Step_Coin2"]
 script = ExtResource("7_coin")
 board_id = "0b"
 coins = 3
-label = "코인 블럭 여러 개"
-caption = "코인 블럭 3개를 한 번에 매치해 보세요"
-intro_head = "연속 보너스"
-intro_text = "코인 블럭을 빠르게 이어 먹을수록 더 들어와요. 10 → 20 → 30"
-intro_holes = PackedStringArray("board_coins")
+caption = "코인 블럭을 한 번에 여러 개 먹어 보세요"
+rule = true
+target_recipe = true
+reset_chain = true
 
-[sub_resource type="Resource" id="Step_36"]
+[sub_resource type="Resource" id="Step_CoinWait2"]
 script = ExtResource("8_wait")
-seconds = 0.4
+seconds = 1.5
 
-[sub_resource type="Resource" id="Step_37"]
+[sub_resource type="Resource" id="Step_CoinSay"]
 script = ExtResource("3_say")
-head = "코인은 어디에?"
 text = "모은 코인은 캐릭터를 뽑는 데 써요"
 holes = PackedStringArray("coin")
 
-[sub_resource type="Resource" id="Step_7"]
+[sub_resource type="Resource" id="Step_Lv1"]
 script = ExtResource("4_level")
 level = 1
 target = 1
 show_cards = true
+rule = true
+first_delay = 0.8
 
 [resource]
 script = ExtResource("1_script")
-steps = Array[ExtResource("9_step")]([SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_T1"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_18"), SubResource("Step_32"), SubResource("Step_33"), SubResource("Step_34"), SubResource("Step_35"), SubResource("Step_36"), SubResource("Step_37"), SubResource("Step_7")])
+steps = Array[ExtResource("9_step")]([SubResource("Step_Lv0"), SubResource("Step_Seeds"), SubResource("Step_TimeSay"), SubResource("Step_Time"), SubResource("Step_Cards"), SubResource("Step_Recipe1"), SubResource("Step_Recipe2"), SubResource("Step_RecipeMatch"), SubResource("Step_Coin1"), SubResource("Step_CoinWait1"), SubResource("Step_Coin2"), SubResource("Step_CoinWait2"), SubResource("Step_CoinSay"), SubResource("Step_Lv1")])
