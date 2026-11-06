@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/theme/ui_theme_spec.gd" id="1_spec"]
 [ext_resource type="Script" path="res://scripts/theme/ui_style.gd" id="2_style"]
+[ext_resource type="FontFile" path="res://assets/fonts/Pretendard-SemiBold.otf" id="3_font"]
 
 [sub_resource type="StyleBoxFlat" id="Box_1"]
 content_margin_left = 20.0
@@ -296,6 +297,7 @@ bg_token = &"surface_glass"
 
 [resource]
 script = ExtResource("1_spec")
+default_font = ExtResource("3_font")
 label_variations = Dictionary[StringName, StringName]({
 &"AccentLabel": &"accent",
 &"DimLabel": &"text_dim",
