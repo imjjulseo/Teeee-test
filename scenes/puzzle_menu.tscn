@@ -1,14 +1,16 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://scripts/puzzle_practice_screen.gd" id="1_screen"]
+[ext_resource type="Script" path="res://scripts/puzzle_menu_screen.gd" id="1_screen"]
 [ext_resource type="Resource" path="res://resources/puzzles.tres" id="2_book"]
-[ext_resource type="PackedScene" path="res://scenes/filter_chip.tscn" id="3_chip"]
-[ext_resource type="PackedScene" path="res://scenes/puzzle_level_row.tscn" id="4_row"]
+[ext_resource type="PackedScene" path="res://scenes/puzzle_board_button.tscn" id="3_button"]
 [ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="5_nav"]
+[ext_resource type="PackedScene" path="res://scenes/spotlight_overlay.tscn" id="80_spot"]
+[ext_resource type="Resource" path="res://resources/first_view_tips.tres" id="81_tips"]
 [ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
 
-[node name="PuzzlePractice" type="Control"]
+[node name="PuzzleMenu" type="Control" node_paths=PackedStringArray("spotlight")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,8 +19,9 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_screen")
 book = ExtResource("2_book")
-chip_scene = ExtResource("3_chip")
-level_row_scene = ExtResource("4_row")
+board_button_scene = ExtResource("3_button")
+tips = ExtResource("81_tips")
+spotlight = NodePath("Spotlight")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -56,50 +59,29 @@ offset_right = -32.0
 offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 18
+theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="SafeArea/Content/Layout"]
+[node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
 layout_mode = 2
+
+[node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 56
-text = "블럭 모으기"
-horizontal_alignment = 1
+text = "퍼즐"
 
-[node name="StatsLabel" type="Label" parent="SafeArea/Content/Layout"]
+[node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 26
-text = "푼 문제 0 · 모은 별 0 · 최소 수 성공 0"
-horizontal_alignment = 1
+font_size = 32
 
-[node name="PracticeTitle" type="Label" parent="SafeArea/Content/Layout"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "연습"
-
-[node name="Difficulties" type="HBoxContainer" parent="SafeArea/Content/Layout"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 10
-
-[node name="DifficultyDescription" type="Label" parent="SafeArea/Content/Layout"]
-unique_name_in_owner = true
+[node name="Note" type="Label" parent="SafeArea/Content/Layout"]
 layout_mode = 2
 theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 24
+text = "T 모양을 만들어 매치해요 · 처음 깨면 코인"
 horizontal_alignment = 1
-
-[node name="StartButton" type="Button" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 96)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 36
-text = "연습 시작"
-
-[node name="TutorialTitle" type="Label" parent="SafeArea/Content/Layout"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 30
-text = "퍼즐 레벨 · 순서대로 열려요"
+autowrap_mode = 3
 
 [node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
 unique_name_in_owner = true
@@ -107,11 +89,13 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="Levels" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
+[node name="Boards" type="GridContainer" parent="SafeArea/Content/Layout/Scroll"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 20
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+columns = 3
 
 [node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
 custom_minimum_size = Vector2(0, 96)
@@ -120,14 +104,16 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 40
 text = "뒤로"
 
-[node name="OptionsNavigator" type="Node" parent="."]
+[node name="MenuNavigator" type="Node" parent="."]
 script = ExtResource("5_nav")
-target_scene = "res://scenes/options.tscn"
+target_scene = "res://scenes/main_menu.tscn"
 
 [node name="PlayNavigator" type="Node" parent="."]
 script = ExtResource("5_nav")
 target_scene = "res://scenes/puzzle_play.tscn"
 
-[connection signal="pressed" from="SafeArea/Content/Layout/StartButton" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="OptionsNavigator" method="go"]
+[node name="Spotlight" parent="." instance=ExtResource("80_spot")]
+
+[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
 [connection signal="play_requested" from="." to="PlayNavigator" method="go"]
+[connection signal="tapped" from="Spotlight" to="." method="_on_spotlight_tapped"]

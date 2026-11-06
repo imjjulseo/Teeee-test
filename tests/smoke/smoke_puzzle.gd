@@ -1,29 +1,24 @@
 extends "res://tests/smoke/smoke_base.gd"
-## 6a 블럭 모으기 (기획서 8.8장). 모드:
-## - practice : 설정 → 블럭 모으기 연습 실제 클릭 → 목록(난이도 4, 튜토리얼 판 12개 "안 함") → 연습 시작 → 문제 생성 →
-##              실제 방향키로 최소 수 풀이 → ★★★ 결과 → 다음 문제(2번째) → 나가기 → 기록(푼 문제 1 · 별 3 · 최소 수 1)
-## - reward   : Lv.0·1을 푼 저장 → 목록에서 2a만 열림("● 50") → 2a 실제 클릭 → 최소 수 풀이 → 결과에 "첫 클리어 보상 ● 50" →
-##              코인 +50 → 목록으로: 2a 별, 2b 열림 → 2a 다시 풀어도 보상 없음
-## - board    : 튜토리얼 판 1a → 가만히 6초(당길 블록 힌트) → 힌트 버튼(화살표) → 풀이 → ★ → 정답 보기 자동 → 결과 → 목록 "★☆☆"
+## 블럭 모으기 퍼즐 (기획서 8.8장, 메뉴 > 퍼즐 — 팀 결정 11/06). 모드:
+## - menu  : 메인 메뉴 → 퍼즐 실제 클릭 → 목록(11판, 1~11번, 모두 열림 "● 20") → 1번 실제 클릭 → "퍼즐 1" →
+##           실제 방향키로 최소 수 풀이 → ★★★ · "첫 클리어 보상 ● 20" → "다음 퍼즐" → "퍼즐 2" → 나가기 →
+##           목록: 1번 별, 코인 +20 → 1번 다시 풀어도 보상 없음
+## - board : 마지막 판(11번) → 가만히 6초(당길 블록 힌트) → 힌트 버튼(화살표) → 풀이 → ★ → 정답 보기 자동 → 결과 "목록으로" → 목록 "★☆☆"
 
 const KEYS: Dictionary[Vector2i, Key] = {Vector2i.UP: KEY_UP, Vector2i.DOWN: KEY_DOWN, Vector2i.LEFT: KEY_LEFT, Vector2i.RIGHT: KEY_RIGHT}
+const LAST_BOARD: String = "4b"
 
 var _path: Array[Vector2i] = []
+var _coins_before: int = 0
 
 
 func _setup() -> void:
+	_coins_before = ProgressStore.new().coins
 	match mode:
-		"practice":
-			change_scene_to_file("res://scenes/options.tscn")
-		"reward":
-			var store: PuzzleStore = PuzzleStore.new()
-			for id: String in ["0a", "0b", "1a"]:
-				store.record_board(id, 3)
-			change_scene_to_file("res://scenes/puzzle_practice.tscn")
+		"menu":
+			change_scene_to_file("res://scenes/main_menu.tscn")
 		"board":
-			for id: String in ["0a", "0b"]:  # 1a가 열려 있게 (판은 순서대로 열린다)
-				PuzzleStore.new().record_board(id, 3)
-			PuzzleRequest.board("1a")
+			PuzzleRequest.board(LAST_BOARD)
 			change_scene_to_file("res://scenes/puzzle_play.tscn")
 		_:
 			fail("unknown mode " + mode)
@@ -32,16 +27,18 @@ func _setup() -> void:
 
 func _tick() -> void:
 	match mode:
-		"practice":
-			_tick_practice()
+		"menu":
+			_tick_menu()
 		"board":
 			_tick_board()
-		"reward":
-			_tick_reward()
 
 
 func _play() -> PuzzlePlayScreen:
 	return current_scene as PuzzlePlayScreen
+
+
+func _list() -> PuzzleMenuScreen:
+	return current_scene as PuzzleMenuScreen
 
 
 func _marks_of(kind: BoardMark.Kind) -> int:
@@ -59,62 +56,72 @@ func _press_next() -> bool:
 	return false
 
 
-func _tick_practice() -> void:
+func _result_detail() -> String:
+	return (node("UI/ResultPanel").get_node("%ResultDetail") as Label).text
+
+
+func _tick_menu() -> void:
 	match step:
 		0:
-			if in_scene("OptionsMenu"):
-				click_control(node("%PuzzleButton"))
+			if in_scene("MainMenu", 0.3):
+				expect((current_scene as MainMenu).is_entry_enabled(MenuUnlocks.Entry.PUZZLES), "puzzle button open")
+				click_control(node("%PuzzlesButton"))
 				next_step()
 		1:
-			if in_scene("PuzzlePractice", 0.4):
-				var screen: PuzzlePracticeScreen = current_scene as PuzzlePracticeScreen
-				expect(node("%Difficulties").get_child_count() == 4, "4 difficulties")
+			if in_scene("PuzzleMenu", 0.4):
+				var numbers: PackedStringArray = PackedStringArray()
 				var texts: PackedStringArray = PackedStringArray()
-				for row: PuzzleLevelRow in screen.level_rows():
-					for button: PuzzleBoardButton in row.buttons():
-						texts.append(button.stars_text())
-						if button.board_id != "0a":
-							expect(button.disabled, "%s locked" % button.board_id)
-				expect(texts.size() == 12, "12 boards (%d)" % texts.size())
-				expect(texts[0] == "안 함" and texts.count("잠김") == 11, "only the first board is open (%s)" % ", ".join(texts))
-				expect((node("%StatsLabel") as Label).text == "푼 문제 0 · 모은 별 0 · 최소 수 성공 0", "empty stats")
-				shot("practice_list")
-				click_control(node("SafeArea/Content/Layout/StartButton"))
+				for button: PuzzleBoardButton in _list().buttons():
+					numbers.append(button.number_text())
+					texts.append(button.stars_text())
+					expect(not button.disabled, "%s open" % button.board_id)
+				expect(numbers == PackedStringArray(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]), "numbered 1-11 (%s)" % ", ".join(numbers))
+				expect(texts.count("● 20") == 11, "first-clear coins on every board (%s)" % ", ".join(texts))
+				expect(_list().buttons()[0].board_id == "2a", "starts at Lv.2")
+				shot("menu_list")
+				click_control(_list().buttons()[0])
 				next_step()
-		2:
+		2, 7:
 			if in_scene("PuzzlePlay", 0.3) and _play().puzzle() != null and _play().runner.is_playing():
-				expect(_play().problem_number == 1, "first problem")
-				var puzzle: BlockPuzzle = _play().puzzle()
-				expect(puzzle.min_moves >= 3 and puzzle.min_moves <= 5, "easy band (%d)" % puzzle.min_moves)
-				expect(_marks_of(BoardMark.Kind.TARGET) == 4 and _marks_of(BoardMark.Kind.GOAL_SLOT) + _marks_of(BoardMark.Kind.GOAL_SLOT_FILLED) == 4, "targets and goal shape shown (easy)")
-				shot("practice_play")
-				_path = puzzle.solution.path.duplicate()
+				expect((node("%PuzzleName") as Label).text == "퍼즐 1", "label (%s)" % (node("%PuzzleName") as Label).text)
+				if step == 2:
+					shot("menu_play")
+				_path = _play().puzzle().solution.path.duplicate()
 				next_step()
-			elif step_time > 8.0:
-				fail("problem not generated")
-				finish()
-		3:
+		3, 8:
 			if _press_next() and step_time > 0.3:
 				next_step()
 		4:
-			if _play().runner.phase == PuzzleRunner.Phase.RESULT:
+			if _play().runner.phase == PuzzleRunner.Phase.RESULT and step_time > 0.2:
 				expect((node("UI/ResultPanel").get_node("%ResultStars") as Label).text == "★★★", "three stars")
-				expect((node("UI/ResultPanel").get_node("%ResultHead") as Label).text == "최소 수로 성공!", "head")
-				expect(PuzzleStore.new().solved == 1, "practice saved")
-				shot("practice_result")
+				expect(_result_detail().ends_with("첫 클리어 보상 ● 20"), "reward on the result (%s)" % _result_detail())
+				expect(ProgressStore.new().coins == _coins_before + 20 and PuzzleStore.new().is_rewarded("2a"), "coins and reward saved")
+				expect((node("UI/ResultPanel").get_node("%NextButton") as Button).text == "다음 퍼즐", "next puzzle button")
+				shot("menu_result")
 				click_control(node("UI/ResultPanel").get_node("%NextButton"))
 				next_step()
-			elif step_time > 4.0:
+			elif step_time > 5.0:
 				fail("no result")
 				finish()
 		5:
 			if _play().puzzle() != null and _play().runner.is_playing() and step_time > 0.3:
-				expect(_play().problem_number == 2, "next problem")
+				expect((node("%PuzzleName") as Label).text == "퍼즐 2" and _play().puzzle().def.id == "l1", "continues to puzzle 2")
 				click_control(node("UI/SafeArea/Content/Bottom/Row2/ExitButton"))
 				next_step()
 		6:
-			if in_scene("PuzzlePractice", 0.3):
-				expect((node("%StatsLabel") as Label).text == "푼 문제 1 · 모은 별 3 · 최소 수 성공 1", "stats (%s)" % (node("%StatsLabel") as Label).text)
+			if in_scene("PuzzleMenu", 0.3):
+				expect(_list().buttons()[0].stars_text() == "★★★", "list shows the stars (%s)" % _list().buttons()[0].stars_text())
+				expect(_list().buttons()[1].stars_text() == "● 20", "puzzle 2 still has its reward")
+				PuzzleRequest.board("2a")
+				change_scene_to_file("res://scenes/puzzle_play.tscn")
+				next_step()
+		9:
+			if _play().runner.phase == PuzzleRunner.Phase.RESULT and step_time > 0.2:
+				expect(not _result_detail().contains("첫 클리어 보상"), "no second reward")
+				expect(ProgressStore.new().coins == _coins_before + 20, "still +20 coins")
+				finish()
+			elif step_time > 5.0:
+				fail("no second result")
 				finish()
 
 
@@ -122,7 +129,7 @@ func _tick_board() -> void:
 	match step:
 		0:
 			if in_scene("PuzzlePlay", 0.3):
-				expect((node("%PuzzleName") as Label).text == "블럭 모으기 Lv.1 · 한 칸 당기기", "board label")
+				expect((node("%PuzzleName") as Label).text == "퍼즐 11", "board label (%s)" % (node("%PuzzleName") as Label).text)
 				expect(_marks_of(BoardMark.Kind.PULL) == 0, "no hint yet")
 				next_step()
 		1:
@@ -153,69 +160,14 @@ func _tick_board() -> void:
 				expect((node("UI/ResultPanel").get_node("%ResultStars") as Label).text == "★☆☆", "one star")
 				expect((node("UI/ResultPanel").get_node("%ResultHead") as Label).text == "정답 길을 봤어요", "replayed head")
 				expect((node("UI/ResultPanel").get_node("%ReplayButton") as Button).text == "정답 다시 보기", "replay again button")
-				expect(PuzzleStore.new().stars_of("1a") == 1, "board stars saved")
+				expect(PuzzleStore.new().stars_of(LAST_BOARD) == 1, "board stars saved")
+				expect((node("UI/ResultPanel").get_node("%NextButton") as Button).text == "목록으로", "last board → back to the list")
 				click_control(node("UI/ResultPanel").get_node("%NextButton"))
 				next_step()
 			elif step_time > 8.0:
 				fail("replay did not finish")
 				finish()
 		6:
-			if in_scene("PuzzlePractice", 0.3):
-				var row: PuzzleLevelRow = (current_scene as PuzzlePracticeScreen).level_rows()[1]
-				expect(row.buttons()[0].stars_text() == "★☆☆", "list shows the stars")
-				finish()
-
-
-func _button(id: String) -> PuzzleBoardButton:
-	for row: PuzzleLevelRow in (current_scene as PuzzlePracticeScreen).level_rows():
-		for button: PuzzleBoardButton in row.buttons():
-			if button.board_id == id:
-				return button
-	return null
-
-
-func _tick_reward() -> void:
-	match step:
-		0, 5:
-			if in_scene("PuzzlePractice", 0.4):
-				var first: bool = step == 0
-				expect(_button("2a").stars_text() == ("● 50" if first else "★★★"), "2a (%s)" % _button("2a").stars_text())
-				expect(_button("2b").disabled == first, "2b opens only after 2a (%s)" % _button("2b").stars_text())
-				if first:
-					expect(_button("3a").disabled and _button("2b").stars_text() == "잠김", "later boards locked")
-					shot("reward_list")
-					(node("%Scroll") as ScrollContainer).ensure_control_visible(_button("2a"))  # 목록 아래쪽
-				else:
-					expect(_button("2b").stars_text() == "● 50", "next reward shown")
-					expect(ProgressStore.new().coins == 50, "coins kept after the list (%d)" % ProgressStore.new().coins)
-					shot("reward_list_after")
-					PuzzleRequest.board("2a")
-					change_scene_to_file("res://scenes/puzzle_play.tscn")
-				next_step()
-		1:
-			if step_time > 0.3:
-				click_control(_button("2a"))
-				next_step()
-		2, 6:
-			if in_scene("PuzzlePlay", 0.3) and _play().puzzle() != null and _play().runner.is_playing():
-				_path = _play().puzzle().solution.path.duplicate()
-				next_step()
-		3, 7:
-			if _press_next() and step_time > 0.3:
-				next_step()
-		4, 8:
-			if _play().runner.phase == PuzzleRunner.Phase.RESULT and step_time > 0.2:
-				var detail: String = (node("UI/ResultPanel").get_node("%ResultDetail") as Label).text
-				if step == 4:
-					expect(detail.ends_with("첫 클리어 보상 ● 50"), "reward on the result (%s)" % detail)
-					expect(ProgressStore.new().coins == 50 and PuzzleStore.new().is_rewarded("2a"), "coins and reward saved")
-					shot("reward_result")
-					click_control(node("UI/ResultPanel").get_node("%NextButton"))
-				else:
-					expect(not detail.contains("첫 클리어 보상"), "no second reward")
-					expect(ProgressStore.new().coins == 50, "still 50 coins")
-					finish()
-				next_step()
-			elif step_time > 5.0:
-				fail("no result at step %d" % step)
+			if in_scene("PuzzleMenu", 0.3):
+				expect(_list().buttons()[10].stars_text() == "★☆☆", "list shows the stars (%s)" % _list().buttons()[10].stars_text())
 				finish()

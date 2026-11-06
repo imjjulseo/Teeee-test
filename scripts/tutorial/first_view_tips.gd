@@ -18,3 +18,6 @@ extends Resource
 @export_multiline var hidden_text: String = "조건은 비밀. 달성하면 히든 캐릭터를 얻어요"
 @export var characters_head: String = "캐릭터"
 @export_multiline var characters_text: String = "눌러서 능력 보기 · 다이아로 해금 · 한 판 체험 · 튜토리얼"
+## 메뉴 > 퍼즐 첫 방문.
+@export var puzzles_head: String = "퍼즐"
+@export_multiline var puzzles_text: String = "T 모양 만들기 퍼즐이에요. 처음 깰 때마다 코인을 받아요"

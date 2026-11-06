@@ -194,6 +194,14 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 28
 text = "업적"
 
+[node name="PuzzlesButton" type="Button" parent="SafeArea/Content/BottomBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 28
+text = "퍼즐"
+
 [node name="OptionsButton" type="Button" parent="SafeArea/Content/BottomBar"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -222,6 +230,10 @@ target_scene = "res://scenes/level_rewards.tscn"
 script = ExtResource("1_nav")
 target_scene = "res://scenes/shop.tscn"
 
+[node name="PuzzlesNavigator" type="Node" parent="."]
+script = ExtResource("1_nav")
+target_scene = "res://scenes/puzzle_menu.tscn"
+
 [node name="AchievementsNavigator" type="Node" parent="."]
 script = ExtResource("1_nav")
 target_scene = "res://scenes/achievements.tscn"
@@ -238,3 +250,4 @@ script = ExtResource("4_audio")
 [connection signal="pressed" from="SafeArea/Content/TopBar/LevelButton" to="LevelNavigator" method="go"]
 [connection signal="pressed" from="SafeArea/Content/BottomBar/ShopButton" to="ShopNavigator" method="go"]
 [connection signal="pressed" from="SafeArea/Content/BottomBar/AchievementsButton" to="AchievementsNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/BottomBar/PuzzlesButton" to="PuzzlesNavigator" method="go"]

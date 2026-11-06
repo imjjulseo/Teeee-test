@@ -2,11 +2,16 @@ class_name PuzzleBook
 extends Resource
 ## 블럭 모으기 퍼즐 데이터와 규칙 수치 (기획서 8.8장, HTML 블럭 모으기 엔진). 튜토리얼 담당이 판·문구를 바꿀 수 있게 데이터로 둔다.
 
-## 튜토리얼 퍼즐 단계 (설정 > 블럭 모으기에서 다시 하기).
+## 퍼즐 단계 (Lv.0·1 = 규칙 튜토리얼, in_menu 단계 = 메뉴 > 퍼즐).
 @export var levels: Array[PuzzleLevel] = []
+## 무작위 연습 난이도 (PuzzleGenerator). 11/06 메뉴 > 퍼즐에는 없다 — 생성기는 남겨 둔다.
 @export var difficulties: Array[PuzzleDifficulty] = []
 ## 속 빈 모양 문제의 바탕 모양들 (4×4 안 좌표 4칸, 가운데(1,1)는 다른 색으로 남는다).
 @export var hollow_shapes: Array[PackedVector2Array] = []
+
+@export_group("Menu")
+## 메뉴 > 퍼즐 판을 처음 풀면 판마다 한 번 받는 코인 (HTML PZ_COIN, 임시).
+@export var menu_clear_coins: int = 20
 
 @export_group("Rules")
 ## 퍼즐 창 크기 (칸).
@@ -46,6 +51,15 @@ func level_of(id: String) -> PuzzleLevel:
 	return null
 
 
+## 메뉴 > 퍼즐 판 (in_menu 단계의 판을 순서대로, 단계 구분 없이).
+func menu_boards() -> Array[PuzzleDef]:
+	var boards: Array[PuzzleDef] = []
+	for level: PuzzleLevel in levels:
+		if level.in_menu:
+			boards.append_array(level.boards)
+	return boards
+
+
 func find_difficulty(id: StringName) -> PuzzleDifficulty:
 	for difficulty: PuzzleDifficulty in difficulties:
 		if difficulty.id == id:
@@ -59,6 +73,8 @@ func validate() -> PackedStringArray:
 		for board: PuzzleDef in level.boards:
 			if board.size() != window_size or board.target_cells().size() != 4:
 				errors.append("board %s must be %d rows with 4 targets" % [board.id, window_size])
+	if menu_clear_coins < 0:
+		errors.append("menu_clear_coins must be >= 0")
 	if idle_hint <= 0.0 or waste_hint <= 0:
 		errors.append("hint timing must be > 0")
 	return errors

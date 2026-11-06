@@ -1,20 +1,20 @@
 class_name TutorialFlow
 extends RefCounted
 ## 튜토리얼 흐름 (기획서 8.8장, HTML menuStage): 튜토리얼 → 첫 실전 판 → 레벨 보상 화면 안내 → 첫 뽑기(고정) →
-## 캐릭터 화면 → 그 캐릭터로 시작 → 업적 안내 → 모두 열림. 메뉴 버튼은 이 순서로 열리고(한 번 열리면 계속), 지금 누를 버튼이 빛난다.
+## 캐릭터 화면 → 그 캐릭터로 시작 → 업적 안내 → 퍼즐 안내(11/06) → 모두 열림. 메뉴 버튼은 이 순서로 열리고(한 번 열리면 계속), 지금 누를 버튼이 빛난다.
 ## 순수 규칙: 저장 값(TutorialStore)과 결과로 끝난 판 수를 받아 판단만 한다.
 
-enum Stage { START, LEVEL, SHOP, CHARACTERS, PLAY, ACHIEVEMENTS, ALL }
+enum Stage { START, LEVEL, SHOP, CHARACTERS, PLAY, ACHIEVEMENTS, PUZZLES, ALL }
 
-## 단계별로 열린 메뉴 버튼 수 (MenuUnlocks.ORDER 앞에서부터: 시작 · 레벨 · 상점 · 캐릭터 · 업적).
+## 단계별로 열린 메뉴 버튼 수 (MenuUnlocks.ORDER 앞에서부터: 시작 · 레벨 · 상점 · 캐릭터 · 업적 · 퍼즐).
 const OPENED: Dictionary[Stage, int] = {
-	Stage.START: 1, Stage.LEVEL: 2, Stage.SHOP: 3, Stage.CHARACTERS: 4, Stage.PLAY: 4, Stage.ACHIEVEMENTS: 5, Stage.ALL: 5,
+	Stage.START: 1, Stage.LEVEL: 2, Stage.SHOP: 3, Stage.CHARACTERS: 4, Stage.PLAY: 4, Stage.ACHIEVEMENTS: 5, Stage.PUZZLES: 6, Stage.ALL: 6,
 }
 ## 단계별로 빛나는 메뉴 버튼 (없으면 -1).
 const HIGHLIGHT: Dictionary[Stage, int] = {
 	Stage.START: MenuUnlocks.Entry.START, Stage.LEVEL: MenuUnlocks.Entry.LEVEL, Stage.SHOP: MenuUnlocks.Entry.SHOP,
 	Stage.CHARACTERS: MenuUnlocks.Entry.CHARACTERS, Stage.PLAY: MenuUnlocks.Entry.START,
-	Stage.ACHIEVEMENTS: MenuUnlocks.Entry.ACHIEVEMENTS, Stage.ALL: -1,
+	Stage.ACHIEVEMENTS: MenuUnlocks.Entry.ACHIEVEMENTS, Stage.PUZZLES: MenuUnlocks.Entry.PUZZLES, Stage.ALL: -1,
 }
 
 var store: TutorialStore
@@ -40,7 +40,9 @@ func stage() -> Stage:
 			return Stage.SHOP if gacha_ready() else Stage.START
 		TutorialStore.Flow.FIRST_CHARACTER:
 			return Stage.PLAY if store.has_seen(TutorialStore.SEEN_CHARACTERS) else Stage.CHARACTERS
-	return Stage.ALL if store.has_seen(TutorialStore.SEEN_ACHIEVEMENTS) else Stage.ACHIEVEMENTS
+	if not store.has_seen(TutorialStore.SEEN_ACHIEVEMENTS):
+		return Stage.ACHIEVEMENTS
+	return Stage.ALL if store.has_seen(TutorialStore.SEEN_PUZZLES) else Stage.PUZZLES
 
 
 ## 레벨 버튼 안내 단계: 첫 실전 판을 했고 레벨 보상 화면을 아직 안 봤다.

@@ -17,6 +17,8 @@ enum Flow { BEFORE, FIRST_GAMES, FIRST_CHARACTER, DONE }
 const SEEN_LEVEL_SCREEN: String = "level_screen"
 const SEEN_CHARACTERS: String = "characters"
 const SEEN_ACHIEVEMENTS: String = "achievements"
+## 메뉴 > 퍼즐 화면 첫 방문 (튜토리얼 흐름의 마지막 단계, 팀 결정 11/06).
+const SEEN_PUZZLES: String = "puzzles"
 const SEEN_GACHA_GIFT: String = "gacha_gift"
 const SEEN_REAL_GAME: String = "real_game"
 ## 처음 쓰는 캐릭터 질문(6c)을 모두 본 것으로 (기존 저장·개발용 튜토리얼 끝냄). 캐릭터별은 "character:<id>".
@@ -25,7 +27,7 @@ const SEEN_ALL_CHARACTERS: String = "all_characters"
 const SEEN_MULTI_RECIPES: String = "multi_recipes"
 const SEEN_EXPERIENCE: String = "experience"
 const SEEN_HIDDEN_ACHIEVEMENTS: String = "hidden_achievements"
-const ALL_SEEN: PackedStringArray = [SEEN_LEVEL_SCREEN, SEEN_CHARACTERS, SEEN_ACHIEVEMENTS, SEEN_GACHA_GIFT, SEEN_REAL_GAME, SEEN_ALL_CHARACTERS,
+const ALL_SEEN: PackedStringArray = [SEEN_LEVEL_SCREEN, SEEN_CHARACTERS, SEEN_ACHIEVEMENTS, SEEN_PUZZLES, SEEN_GACHA_GIFT, SEEN_REAL_GAME, SEEN_ALL_CHARACTERS,
 	SEEN_MULTI_RECIPES, SEEN_EXPERIENCE, SEEN_HIDDEN_ACHIEVEMENTS]
 
 var path: String

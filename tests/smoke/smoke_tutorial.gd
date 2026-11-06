@@ -5,7 +5,7 @@ extends "res://tests/smoke/smoke_base.gd"
 ##          → 실전 판으로 다시 열림 + 첫 실전 판 안내 → 튜토리얼 완료 업적 ● 50, 튜토리얼 퍼즐 별 기록
 ## - skip : 첫 설명의 건너뛰기 실제 클릭 → 실전 판, 튜토리얼 끝냄
 ## - flow : 튜토리얼 뒤 메뉴(시작만) → 첫 실전 판(결과에서 다시 하기 숨김) → 레벨 버튼 → 레벨 보상 안내 → 시작 = 상점(첫 뽑기:
-##          1회분 코인, 정원사·시계공 고정, 장착) → 캐릭터 버튼 → 캐릭터 화면 → 그 캐릭터로 시작(캐릭터 튜토리얼 판) → 업적 → 모두 열림
+##          1회분 코인, 정원사·시계공 고정, 장착) → 캐릭터 버튼 → 캐릭터 화면 → 그 캐릭터로 시작(캐릭터 튜토리얼 판) → 업적 → 퍼즐 안내 → 모두 열림
 
 const KEYS: Dictionary[Vector2i, Key] = {Vector2i.UP: KEY_UP, Vector2i.DOWN: KEY_DOWN, Vector2i.LEFT: KEY_LEFT, Vector2i.RIGHT: KEY_RIGHT}
 
@@ -319,6 +319,21 @@ func _tick_flow() -> void:
 				click_control(node("SafeArea/Content/Layout/BackButton"))
 				next_step()
 		18:
+			if in_scene("MainMenu", 0.4):
+				expect(_menu().is_entry_enabled(E.PUZZLES) and _menu().highlighted_entry() == E.PUZZLES, "puzzles open and glow (11/06)")
+				click_control(node("%PuzzlesButton"))
+				next_step()
+		19:
+			if in_scene("PuzzleMenu", 0.4) and (current_scene as PuzzleMenuScreen).guide_key() != "":
+				expect((node("Spotlight") as SpotlightOverlay).caption_head() == "퍼즐", "puzzle guide")
+				shot("flow_puzzles_guide")
+				click_control(node("Spotlight").get_node("%Caption"))
+				step_time = 0.0
+			elif in_scene("PuzzleMenu", 0.4):
+				expect(TutorialStore.new().has_seen(TutorialStore.SEEN_PUZZLES), "puzzle guide seen")
+				click_control(node("SafeArea/Content/Layout/BackButton"))
+				next_step()
+		20:
 			if in_scene("MainMenu", 0.4):
 				expect(_menu().highlighted_entry() == -1, "all open, nothing glows")
 				shot("flow_all")

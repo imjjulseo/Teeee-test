@@ -159,14 +159,6 @@ theme_override_font_sizes/font_size = 22
 text = "흔들림·파편·떠오르는 숫자를 끕니다"
 autowrap_mode = 3
 
-[node name="PuzzleButton" type="Button" parent="SafeArea/Content/Layout/Scroll/Inner"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 88)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 32
-text = "블럭 모으기 연습"
-
 [node name="DebugPanel" parent="SafeArea/Content/Layout/Scroll/Inner" instance=ExtResource("3_debug")]
 layout_mode = 2
 
@@ -181,14 +173,9 @@ text = "뒤로"
 script = ExtResource("2_nav")
 target_scene = "res://scenes/main_menu.tscn"
 
-[node name="PuzzleNavigator" type="Node" parent="."]
-script = ExtResource("2_nav")
-target_scene = "res://scenes/puzzle_practice.tscn"
-
 [connection signal="pressed" from="SafeArea/Content/Layout/Scroll/Inner/ControlRow/SwipeButton" to="." method="_on_swipe_button_pressed"]
 [connection signal="pressed" from="SafeArea/Content/Layout/Scroll/Inner/ControlRow/DpadButton" to="." method="_on_dpad_button_pressed"]
 [connection signal="value_changed" from="SafeArea/Content/Layout/Scroll/Inner/MasterRow/MasterVolumeSlider" to="." method="_on_master_volume_changed"]
 [connection signal="drag_ended" from="SafeArea/Content/Layout/Scroll/Inner/MasterRow/MasterVolumeSlider" to="." method="_on_master_volume_drag_ended"]
 [connection signal="toggled" from="SafeArea/Content/Layout/Scroll/Inner/ReduceMotionToggle" to="." method="_on_reduce_motion_toggled"]
 [connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
-[connection signal="pressed" from="SafeArea/Content/Layout/Scroll/Inner/PuzzleButton" to="PuzzleNavigator" method="go"]

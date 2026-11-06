@@ -42,9 +42,11 @@ text = "사라진 블럭은 잠시 뒤 무작위 색으로 다시 자라요"
 holes = PackedStringArray("seeds")
 grow_seeds = true
 
-[sub_resource type="Resource" id="Step_7"]
-script = ExtResource("4_level")
-level = 1
+[sub_resource type="Resource" id="Step_T1"]
+script = ExtResource("3_say")
+head = "시간"
+text = "시간 안에 매치해야 하고, 뭐든 매치하면 추가 시간을 얻어요"
+holes = PackedStringArray("time")
 
 [sub_resource type="Resource" id="Step_8"]
 script = ExtResource("5_board")
@@ -53,12 +55,10 @@ progress = null
 
 [sub_resource type="Resource" id="Step_9"]
 script = ExtResource("6_match")
-count = 5
-head = "5개 매치시켜 보세요"
-text = "{done} / {count} · 막히면 잠시 기다려 보세요. 만들 자리를 보여 줘요"
-progress_text = "{done} / {count}"
-holes = null
-cheer_done = "완벽해요!"
+head = "매치해서 시간을 늘려 보세요"
+text = "막히면 잠시 기다려 보세요. 만들 자리를 보여 줘요"
+holes = PackedStringArray("time")
+cheer_done = "시간이 늘었어요!"
 
 [sub_resource type="Resource" id="Step_10"]
 script = ExtResource("5_board")
@@ -77,32 +77,6 @@ head = "순서대로"
 text = "족보의 색 순서대로 매치하면 완성돼요. 흰 테두리가 다음 색이에요"
 holes = PackedStringArray("cards")
 
-[sub_resource type="Resource" id="Step_13"]
-script = ExtResource("3_say")
-head = "진행은 그대로"
-text = "족보 색이 아닌 블럭을 매치해도 진행도는 초기화되지 않아요"
-holes = PackedStringArray("cards")
-
-[sub_resource type="Resource" id="Step_14"]
-script = ExtResource("6_match")
-filter = 1
-head = "다른 색을 매치해 보세요"
-text = "족보의 다음 색({next})이 아닌 색으로 매치해요"
-wrong_text = "그 색은 족보 색이에요. {next}이 아닌 색으로 해 보세요"
-holes = null
-
-[sub_resource type="Resource" id="Step_15"]
-script = ExtResource("3_say")
-head = "진행도 그대로"
-text = "보세요, 족보 진행은 그대로 남아 있어요"
-holes = PackedStringArray("cards")
-
-[sub_resource type="Resource" id="Step_17"]
-script = ExtResource("5_board")
-fresh = true
-cards = Array[PackedStringArray]([PackedStringArray("A", "B")])
-progress = null
-
 [sub_resource type="Resource" id="Step_18"]
 script = ExtResource("6_match")
 goal = 2
@@ -112,92 +86,6 @@ text = "족보 색 순서대로 매치해요"
 holes = null
 cheer = ""
 cheer_done = "완성!"
-
-[sub_resource type="Resource" id="Step_19"]
-script = ExtResource("6_match")
-goal = 2
-count = 3
-filter = 2
-head = "족보 3개를 완성해 보세요"
-text = "{done} / {count}"
-holes = null
-cheer = "완성!"
-cheer_done = "완성!"
-done_pause = 0.6
-
-[sub_resource type="Resource" id="Step_20"]
-script = ExtResource("5_board")
-cards = Array[PackedStringArray]([PackedStringArray("A", "B"), PackedStringArray("A", "C")])
-progress = null
-
-[sub_resource type="Resource" id="Step_21"]
-script = ExtResource("3_say")
-head = "동시에 올라가요"
-text = "여러 족보가 같은 색을 기다리면, 한 번 매치로 모두 한 칸씩 올라가요"
-holes = PackedStringArray("cards")
-
-[sub_resource type="Resource" id="Step_22"]
-script = ExtResource("6_match")
-goal = 1
-count = 2
-filter = 3
-head = "{A을} 매치해 보세요"
-text = "두 족보가 함께 올라가요"
-holes = null
-cheer_done = "두 개 동시!"
-
-[sub_resource type="Resource" id="Step_24"]
-script = ExtResource("5_board")
-fresh = true
-cards = Array[PackedStringArray]([PackedStringArray("B", "A"), PackedStringArray("C", "A")])
-progress = PackedInt32Array(1, 1)
-
-[sub_resource type="Resource" id="Step_25"]
-script = ExtResource("3_say")
-head = "마지막 칸이 같은 색"
-text = "두 족보 모두 마지막으로 같은 색을 기다리고 있어요"
-holes = PackedStringArray("cards")
-
-[sub_resource type="Resource" id="Step_26"]
-script = ExtResource("6_match")
-goal = 3
-count = 2
-filter = 3
-head = "두 족보를 한 번에 완성해 보세요"
-text = "{A을} 매치해요"
-holes = null
-cheer_done = "동시 완성!"
-done_pause = 0.7
-
-[sub_resource type="Resource" id="Step_27"]
-script = ExtResource("3_say")
-head = "점수도 같이"
-text = "동시에 완성하면 두 족보 점수가 한꺼번에 들어와요"
-holes = PackedStringArray("score")
-
-[sub_resource type="Resource" id="Step_28"]
-script = ExtResource("5_board")
-cards = Array[PackedStringArray]([PackedStringArray("A", "B"), PackedStringArray("A", "B", "C", "A")])
-progress = null
-pick = 1
-
-[sub_resource type="Resource" id="Step_29"]
-script = ExtResource("3_say")
-head = "점수"
-text = "긴 족보일수록 큰 점수를 줘요"
-holes = PackedStringArray("cards")
-
-[sub_resource type="Resource" id="Step_30"]
-script = ExtResource("5_board")
-cards = Array[PackedStringArray]([PackedStringArray("A", "B", "C"), PackedStringArray("A", "A", "B")])
-progress = null
-pick = 2
-
-[sub_resource type="Resource" id="Step_31"]
-script = ExtResource("3_say")
-head = "점수"
-text = "같은 색이 연속되면 더 큰 점수를 줘요"
-holes = PackedStringArray("cards")
 
 [sub_resource type="Resource" id="Step_32"]
 script = ExtResource("5_board")
@@ -216,7 +104,7 @@ seconds = 0.4
 
 [sub_resource type="Resource" id="Step_35"]
 script = ExtResource("7_coin")
-board_id = "1a"
+board_id = "0b"
 coins = 3
 label = "코인 블럭 여러 개"
 caption = "코인 블럭 3개를 한 번에 매치해 보세요"
@@ -234,6 +122,12 @@ head = "코인은 어디에?"
 text = "모은 코인은 캐릭터를 뽑는 데 써요"
 holes = PackedStringArray("coin")
 
+[sub_resource type="Resource" id="Step_7"]
+script = ExtResource("4_level")
+level = 1
+target = 1
+show_cards = true
+
 [resource]
 script = ExtResource("1_script")
-steps = Array[ExtResource("9_step")]([SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_7"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_13"), SubResource("Step_14"), SubResource("Step_15"), SubResource("Step_17"), SubResource("Step_18"), SubResource("Step_19"), SubResource("Step_20"), SubResource("Step_21"), SubResource("Step_22"), SubResource("Step_24"), SubResource("Step_25"), SubResource("Step_26"), SubResource("Step_27"), SubResource("Step_28"), SubResource("Step_29"), SubResource("Step_30"), SubResource("Step_31"), SubResource("Step_32"), SubResource("Step_33"), SubResource("Step_34"), SubResource("Step_35"), SubResource("Step_36"), SubResource("Step_37")])
+steps = Array[ExtResource("9_step")]([SubResource("Step_1"), SubResource("Step_2"), SubResource("Step_3"), SubResource("Step_4"), SubResource("Step_5"), SubResource("Step_6"), SubResource("Step_T1"), SubResource("Step_8"), SubResource("Step_9"), SubResource("Step_10"), SubResource("Step_11"), SubResource("Step_12"), SubResource("Step_18"), SubResource("Step_32"), SubResource("Step_33"), SubResource("Step_34"), SubResource("Step_35"), SubResource("Step_36"), SubResource("Step_37"), SubResource("Step_7")])

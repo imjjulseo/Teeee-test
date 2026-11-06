@@ -51,8 +51,11 @@ func test_book_has_the_html_tutorial_puzzles() -> void:
 	for level: PuzzleLevel in book.levels:
 		for board: PuzzleDef in level.boards:
 			ids.append(board.id)
-	assert_eq(ids, PackedStringArray(["0a", "0b", "1a", "2a", "2b", "2c", "3a", "3b", "3c", "4a", "4b", "4c"]))
-	assert_true(book.levels[4].hide_goal and not book.levels[0].hide_goal, "Lv.4 hides the goal")
+	assert_eq(ids, PackedStringArray(["0a", "0b", "0c", "1a", "1b", "1c", "2a", "l1", "n1", "i1", "n2", "3c", "1x", "3b", "4a", "2c", "4b"]))
+	var menu_ids: PackedStringArray = PackedStringArray()
+	for board: PuzzleDef in book.menu_boards():
+		menu_ids.append(board.id)
+	assert_eq(menu_ids, ids.slice(6), "Lv.2~4 are the menu puzzles, in order (11/06)")
 	assert_eq(book.difficulties.size(), 4)
 
 
@@ -275,33 +278,26 @@ func test_store_keeps_best_stars_and_practice_stats() -> void:
 		[2, 0, 2, 4, 1, &"hard"])
 
 
-# --- 8d: 순서대로 열림 · 첫 클리어 보상 (E27) -------------------------------------
+# --- 메뉴 > 퍼즐: 번호 · 다음 판 · 첫 클리어 보상 (11/06, E28) ------------------------
 
-func test_boards_open_one_by_one() -> void:
-	var store: PuzzleStore = PuzzleStore.new(TEST_SAVE)
-	var unlocks: PuzzleUnlocks = PuzzleUnlocks.new(_book(), store)
-	assert_eq([unlocks.is_open("0a"), unlocks.is_open("0b"), unlocks.is_open("2a"), unlocks.is_open("nope")], [true, false, false, false])
-	for id: String in ["0a", "0b", "1a"]:
-		store.record_board(id, 1)
-	assert_true(unlocks.is_open("2a"), "Lv.2 opens after the tutorial boards")
-	assert_false(unlocks.is_open("2b"), "board by board")
-	store.record_board("2a", 2)
-	assert_eq([unlocks.is_open("2b"), unlocks.is_open("2c")], [true, false])
+func test_menu_numbers_boards_without_levels() -> void:
+	var menu: PuzzleMenu = PuzzleMenu.new(_book(), PuzzleStore.new(TEST_SAVE))
+	assert_eq(menu.boards().size(), 11, "Lv.2~4: 3 + 3 + 5")
+	assert_eq([menu.number_of("2a"), menu.number_of("i1"), menu.number_of("4b"), menu.number_of("1a"), menu.number_of("nope")], [1, 4, 11, 0, 0],
+		"numbered 1… across levels; tutorial boards are not in the menu")
+	assert_eq(menu.next_after("n1").id, "i1", "next crosses into the next level")
+	assert_true(menu.next_after("4b") == null and menu.next_after("1a") == null, "no next after the last (or outside the menu)")
 
 
 func test_first_clear_reward_once() -> void:
 	var store: PuzzleStore = PuzzleStore.new(TEST_SAVE)
-	var unlocks: PuzzleUnlocks = PuzzleUnlocks.new(_book(), store)
-	assert_eq([unlocks.reward_of("1a"), unlocks.reward_of("2a"), unlocks.reward_of("3b"), unlocks.reward_of("4c")], [0, 50, 70, 100])
+	var menu: PuzzleMenu = PuzzleMenu.new(_book(), store)
+	assert_eq([menu.reward_of("1a"), menu.reward_of("2a"), menu.reward_of("3b"), menu.reward_of("4b")], [0, 20, 20, 20], "● 20 per menu board")
 	var progress: ProgressStore = ProgressStore.new(TEST_SAVE)
-	assert_eq(unlocks.claim("2a", progress), 0, "not solved yet")
+	assert_eq(menu.claim("2a", progress), 0, "not solved yet")
 	store.record_board("2a", 1)
-	assert_eq(unlocks.claim("2a", progress), 50)
-	assert_eq(unlocks.claim("2a", progress), 0, "only once")
-	assert_eq(unlocks.pending_reward("2a"), 0)
+	assert_eq(menu.claim("2a", progress), 20)
+	assert_eq(menu.claim("2a", progress), 0, "only once")
+	assert_eq(menu.pending_reward("2a"), 0)
 	var saved: PuzzleStore = PuzzleStore.new(TEST_SAVE)
-	assert_eq([ProgressStore.new(TEST_SAVE).coins, saved.is_rewarded("2a"), saved.stars_of("2a")], [50, true, 1], "saved")
-	var total: int = 0
-	for level: PuzzleLevel in _book().levels:
-		total += level.clear_coins * level.boards.size()
-	assert_eq(total, 660, "Lv.2~4: 3 × (50 + 70 + 100)")
+	assert_eq([ProgressStore.new(TEST_SAVE).coins, saved.is_rewarded("2a"), saved.stars_of("2a")], [20, true, 1], "saved")

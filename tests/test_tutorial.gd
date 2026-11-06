@@ -93,11 +93,13 @@ func test_menu_opens_step_by_step() -> void:
 	store.started_with_character()
 	record.call(2)  # → 업적
 	store.mark_seen(TutorialStore.SEEN_ACHIEVEMENTS)
+	record.call(2)  # → 퍼즐 (11/06)
+	store.mark_seen(TutorialStore.SEEN_PUZZLES)
 	record.call(2)  # → 모두
-	assert_eq(stages, [Stage.START, Stage.START, Stage.LEVEL, Stage.SHOP, Stage.CHARACTERS, Stage.PLAY, Stage.ACHIEVEMENTS, Stage.ALL] as Array[int])
-	assert_eq(opened, [1, 1, 2, 3, 4, 4, 5, 5] as Array[int], "start → level → shop → characters → achievements")
+	assert_eq(stages, [Stage.START, Stage.START, Stage.LEVEL, Stage.SHOP, Stage.CHARACTERS, Stage.PLAY, Stage.ACHIEVEMENTS, Stage.PUZZLES, Stage.ALL] as Array[int])
+	assert_eq(opened, [1, 1, 2, 3, 4, 4, 5, 6, 6] as Array[int], "start → level → shop → characters → achievements → puzzles")
 	var E = MenuUnlocks.Entry
-	assert_eq(glow, [E.START, E.START, E.LEVEL, E.SHOP, E.CHARACTERS, E.START, E.ACHIEVEMENTS, -1] as Array[int])
+	assert_eq(glow, [E.START, E.START, E.LEVEL, E.SHOP, E.CHARACTERS, E.START, E.ACHIEVEMENTS, E.PUZZLES, -1] as Array[int])
 	assert_true(MenuUnlocks.new(1).is_open(MenuUnlocks.Entry.OPTIONS), "options always open")
 
 
@@ -125,9 +127,11 @@ func test_tutorial_script_is_valid() -> void:
 	for step: TutorialStep in tutorial.steps:
 		if step is PuzzleLevelStep:
 			levels.append((step as PuzzleLevelStep).level)
-	assert_eq(levels, [0, 1] as Array[int], "only Lv.0 and Lv.1 — Lv.2~4 are reward puzzles in practice (E27)")
-	var last: SayStep = tutorial.steps[tutorial.steps.size() - 1] as SayStep
-	assert_true(last != null and last.head == "코인은 어디에?", "ends after the coin section, no graduation exam")
+	assert_eq(levels, [0, 1] as Array[int], "only Lv.0 and Lv.1 — Lv.2~4 are menu puzzles (E28)")
+	var last: PuzzleLevelStep = tutorial.steps[tutorial.steps.size() - 1] as PuzzleLevelStep
+	assert_true(last != null and last.level == 1 and last.target == PuzzleLevelStep.Target.RECIPE_NEXT,
+		"ends with Lv.1 (moving one block) toward the recipe, then the first real game (11/06)")
+	assert_eq([PuzzleLevelStep.progress_dots(0, 3), PuzzleLevelStep.progress_dots(2, 3)], ["●○○", "●●●"], "progress bar, no level number")
 	var config: GameConfig = tutorial.apply_to(make_config())
 	assert_eq([config.color_count, config.refill_total_start, config.refill_total_end], [3, 2.0, 2.0])
 	assert_eq(tutorial.first_pull, [&"gardener", &"clock"] as Array[StringName])

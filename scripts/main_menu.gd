@@ -1,7 +1,7 @@
 class_name MainMenu
 extends Control
 ## 메인 메뉴 (기획서 8.1장). 위: 레벨 버튼(Lv · 경험치 바 → 레벨 보상), 지갑(코인·다이아).
-## 가운데: 게임 시작 + 보드 단계 안내, 현재 캐릭터 버튼. 아래: 상점 · 캐릭터 · 업적 · 설정.
+## 가운데: 게임 시작 + 보드 단계 안내, 현재 캐릭터 버튼. 아래: 상점 · 캐릭터 · 업적 · 퍼즐 · 설정.
 ## 버튼은 튜토리얼 흐름(TutorialFlow)에 따라 차례로 열리고, 지금 누를 버튼이 빛난다. 첫 뽑기 유도 단계에서는
 ## 게임 시작이 상점으로 간다 (shop_requested). 씬 전환은 main_menu.tscn에서 signal → SceneNavigator로 연결한다.
 
@@ -30,6 +30,7 @@ var unlocks: MenuUnlocks = MenuUnlocks.new()
 	MenuUnlocks.Entry.SHOP: %ShopButton,
 	MenuUnlocks.Entry.CHARACTERS: %CharactersButton,
 	MenuUnlocks.Entry.ACHIEVEMENTS: %AchievementsButton,
+	MenuUnlocks.Entry.PUZZLES: %PuzzlesButton,
 	MenuUnlocks.Entry.OPTIONS: %OptionsButton,
 }
 
