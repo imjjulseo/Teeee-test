@@ -3,10 +3,14 @@ extends Node2D
 ## 논리 Board를 따라 그리기만 하는 View (기획서 7.2). Board를 읽기만 하고 절대 변경하지 않는다.
 ## 보드는 이 노드의 원점을 중심으로 그려진다. 위치·크기는 board_area(레이아웃 Control)의 가운데에 맞추고,
 ## 영역보다 크면 영역 안에 들어가도록 축소한다 (화면 비율·안전 영역 대응).
-## 매치하면 칸마다 색 파편(burst_scene)과 판 흔들림. 효과 줄이기 옵션이면 흔들림·파편을 끈다.
+## 연출은 HTML 판 연출과 같다 (E32, 수치는 BoardTheme Feedback 그룹): 이동 미끄러짐, 벽 튕김, 매치 = 깨진 블록이 커지며
+## 밝아지고 사라짐 + 칸마다 색 파편 + 판 흔들림, 블록이 생기거나 색이 바뀌면 번쩍임(pop), 퍼즐을 깔면 내 칸에서 가까운 칸부터
+## 튀어나옴. 효과 줄이기 옵션이면 흔들림·튕김·파편·번쩍임·튀어나옴을 모두 끄고 바로 그린다.
 
 ## 탭한 화면 위치가 판의 칸이면 알린다 (조작 해석만 하고 이동은 GameController가 판단).
 signal cell_tapped(cell: Vector2i)
+## 매치한 자리(첫 칸 가운데)의 화면(캔버스) 위치. HUD가 금화 "+10"을 이 자리에서 코인 쪽으로 날린다.
+signal match_point(canvas_position: Vector2)
 
 @export var config: GameConfig
 @export var theme_data: BoardTheme
@@ -49,7 +53,7 @@ func _on_character_ready(character: CharacterData) -> void:
 
 
 func _on_board_created(board: Board) -> void:
-	_kill_tweens()
+	_kill_tweens(true)
 	for child: Node in _cells.get_children():
 		child.queue_free()
 	_views.clear()
@@ -128,19 +132,18 @@ func _on_move_started(result: Board.MoveResult) -> void:
 	if result.is_jump():  # 판 끝 넘기·순간이동: 판을 가로지르지 않게 바로 옮긴다 (항해사·떠돌이)
 		player_view.position = _to_pixel(result.to)
 		displaced_view.position = _to_pixel(result.from)
-		_refresh_with_pop([result.to] as Array[Vector2i], theme_data.refill_pop_scale, theme_data.refill_pop_duration)
+		_pop_cells([result.to] as Array[Vector2i])
 		return
-
-	var duration: float = config.move_animation_time
-	_move_tween = create_tween().set_parallel(true)
-	_move_tween.tween_property(player_view, "position", _to_pixel(result.to), duration) \
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_move_tween.tween_property(displaced_view, "position", _to_pixel(result.from), duration) \
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	if result.displaced_type != Board.CellType.EMPTY:
-		var squash: Vector2 = Vector2.ONE * theme_data.swap_block_scale
-		_move_tween.tween_property(displaced_view, "scale", squash, duration / 2.0)
-		_move_tween.tween_property(displaced_view, "scale", Vector2.ONE, duration / 2.0).set_delay(duration / 2.0)
+	if _reduce_motion:  # HTML: 효과 줄이기면 transition 없이 바로
+		player_view.position = _to_pixel(result.to)
+		displaced_view.position = _to_pixel(result.from)
+		return
+	# HTML .blk: transform .09s cubic-bezier(.3,.8,.4,1) — 두 칸이 같은 곡선으로 자리를 바꾼다.
+	var player_frames: Array = [[0.0, {"position": player_view.position}], [1.0, {"position": _to_pixel(result.to)}]]
+	var displaced_frames: Array = [[0.0, {"position": displaced_view.position}], [1.0, {"position": _to_pixel(result.from)}]]
+	_move_tween = KeyframeAnim.play(self, player_view, config.move_animation_time, player_frames, theme_data.move_curve)
+	_move_tween.parallel().tween_method(func(t: float) -> void: KeyframeAnim.apply(displaced_view, displaced_frames, t, theme_data.move_curve),
+		0.0, 1.0, config.move_animation_time)
 
 
 func _on_move_blocked(result: Board.MoveResult) -> void:
@@ -150,14 +153,13 @@ func _on_move_blocked(result: Board.MoveResult) -> void:
 		_shake_tween.kill()
 	var player_view: CellView = _views[result.from]
 	var home: Vector2 = _to_pixel(result.from)
-	var offset: Vector2 = Vector2(result.to - result.from).limit_length(1.0) * theme_data.wall_shake_distance
-	if offset == Vector2.ZERO:
-		return
 	player_view.position = home
-	var half: float = theme_data.wall_shake_duration / 2.0
-	_shake_tween = create_tween()
-	_shake_tween.tween_property(player_view, "position", home + offset, half)
-	_shake_tween.tween_property(player_view, "position", home, half)
+	# HTML nudge: 6 CSS px 튕겼다 돌아옴, 0.17초 ease-out (화면 px → 판 안 px).
+	var offset: Vector2 = Vector2(result.to - result.from).limit_length(1.0) * theme_data.wall_shake_distance / _screen_scale()
+	if offset == Vector2.ZERO or _reduce_motion:
+		return
+	var frames: Array = [[0.0, {"position": home}], [0.5, {"position": home + offset}], [1.0, {"position": home}]]
+	_shake_tween = KeyframeAnim.play(self, player_view, theme_data.wall_shake_duration, frames, KeyframeAnim.EASE_OUT, 0.0, true)
 
 
 ## 일시정지 중에는 공정성을 위해 보드를 숨긴다 (기획서 9장).
@@ -165,14 +167,14 @@ func _on_state_changed(state: GameFlow.GameState) -> void:
 	visible = state != GameFlow.GameState.PAUSED
 
 
-## 매치: 4칸을 동시에 강조(팝)하며 씨앗 표시로 바꾸고, 칸마다 색 파편 + 판 흔들림 (7.2장).
+## 매치: 깨진 칸은 바로 씨앗으로 그리고, 그 위에서 원래 블록이 커지며 밝아지고 사라진다 (HTML .gone).
+## 칸마다 색 파편 + 판 흔들림 (7.2장). 금화를 날릴 자리를 match_point로 알린다.
 func _on_matched(_center: Vector2i, color: int, cells: Array[Vector2i]) -> void:
-	_refresh_with_pop(cells, theme_data.clear_pop_scale, config.clear_animation_time)
-	if _reduce_motion:
-		return
-	for pos: Vector2i in cells:
-		_burst_at(pos, theme_data.display_color(color, _style))
-	_shake_board()
+	_clear_cells(cells, color)
+	if not cells.is_empty():
+		match_point.emit(cell_center(cells[0]))
+	if not _reduce_motion:
+		_shake_board()
 
 
 func _on_reduce_motion_ready(enabled: bool) -> void:
@@ -184,9 +186,26 @@ func is_reduce_motion() -> bool:
 	return _reduce_motion
 
 
-## 리필: 다 자란 씨앗을 색 블록으로 바꾼다.
+## 리필: 다 자란 씨앗을 색 블록으로 바꾸며 번쩍인다 (HTML mature → pop).
 func _on_cells_refilled(cells: Array[Vector2i]) -> void:
-	_refresh_with_pop(cells, theme_data.refill_pop_scale, theme_data.refill_pop_duration)
+	_pop_cells(cells)
+
+
+## 퍼즐을 깔았다 (튜토리얼 pzStamp): origin(내 칸)에서 가까운 칸부터 작게·투명하게 시작해 튀어나온다 (HTML flipIn).
+func _on_cells_stamped(cells: Array[Vector2i], origin: Vector2i) -> void:
+	for pos: Vector2i in cells:
+		if not _views.has(pos):
+			continue
+		var view: CellView = _views[pos]
+		_draw_cell(pos)
+		if _reduce_motion:
+			continue
+		var distance: int = absi(pos.x - origin.x) + absi(pos.y - origin.y)
+		var frames: Array = [
+			[0.0, {"scale": Vector2.ONE * theme_data.stamp_start_scale, "modulate:a": 0.0}],
+			[1.0, {"scale": Vector2.ONE, "modulate:a": 1.0}],
+		]
+		KeyframeAnim.play(view, view, theme_data.stamp_duration, frames, theme_data.stamp_curve, distance * theme_data.stamp_delay_step)
 
 
 ## 능력의 판 위 표시 (마라토너 깃발, 탐험가 구역).
@@ -208,18 +227,21 @@ func display_style() -> DisplayStyle:
 	return _style
 
 
-## 폭파범 연쇄: 터진 칸을 씨앗으로 다시 그리고 파편 (판 흔들림은 매치보다 약하게 생략).
+## 폭파범 연쇄: 터진 칸을 씨앗으로 다시 그리고 깨짐 연출 + 파편 (판 흔들림은 매치보다 약하게 생략).
 func _on_cells_blasted(cells: Array[Vector2i], color: int) -> void:
-	_refresh_with_pop(cells, theme_data.clear_pop_scale, config.clear_animation_time)
-	if _reduce_motion:
-		return
-	for pos: Vector2i in cells:
-		_burst_at(pos, theme_data.display_color(color, _style))
+	_clear_cells(cells, color)
 
 
-## 능력(화가 "물감")으로 색이 바뀐 칸을 다시 그린다.
+## 능력(화가 "물감")·튜토리얼 판 고치기로 색이 바뀐 칸을 다시 그리며 번쩍인다 (HTML retrigger pop).
 func _on_cells_changed(cells: Array[Vector2i]) -> void:
-	_refresh_with_pop(cells, theme_data.clear_pop_scale, config.clear_animation_time)
+	_pop_cells(cells)
+
+
+## 칸 가운데의 화면(캔버스) 위치 (HUD 떠오르는 글자·금화).
+func cell_center(cell: Vector2i) -> Vector2:
+	if _cells == null:
+		return Vector2.ZERO
+	return _cells.get_global_transform_with_canvas() * (_to_pixel(cell) + Vector2.ONE * theme_data.cell_size / 2.0)
 
 
 ## 금화가 붙거나 사라진 칸을 다시 그린다.
@@ -228,13 +250,54 @@ func _on_coins_changed(cells: Array[Vector2i]) -> void:
 		_draw_cell(pos)
 
 
-func _refresh_with_pop(cells: Array[Vector2i], pop_scale: float, duration: float) -> void:
+## 칸들을 다시 그리고 번쩍인다 (HTML pop: brightness 2.1 · saturate .4 → 원래, 0.26초 ease-out).
+func _pop_cells(cells: Array[Vector2i]) -> void:
 	for pos: Vector2i in cells:
+		if not _views.has(pos):
+			continue
 		var view: CellView = _views[pos]
 		_draw_cell(pos)
-		view.scale = Vector2.ONE * pop_scale
-		view.create_tween().tween_property(view, "scale", Vector2.ONE, duration) \
-			.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		if _reduce_motion:
+			continue
+		# CSS처럼 filter 값(밝기·채도)을 보간하고 그때그때 색을 계산한다 (색 배율을 보간하면 하얗게 날아간 구간이 짧아진다).
+		var base: Variant = _plain_color(pos)
+		var b0: float = theme_data.pop_brightness
+		var s0: float = theme_data.pop_saturation
+		KeyframeAnim.run(view, theme_data.pop_duration, func(e: float) -> void:
+			view.modulate = _filtered(base, lerpf(b0, 1.0, e), lerpf(s0, 1.0, e)), KeyframeAnim.EASE_OUT)
+
+
+## 매치·폭파로 깨진 칸: 씨앗으로 다시 그리고, 그 자리에 원래 블록의 그림자를 띄워 커지며 밝아지고 사라지게 한다 (HTML .gone)
+## + 칸마다 색 파편.
+func _clear_cells(cells: Array[Vector2i], color: int) -> void:
+	for pos: Vector2i in cells:
+		if _views.has(pos):
+			_draw_cell(pos)
+	if _reduce_motion:
+		return
+	for pos: Vector2i in cells:
+		_ghost_at(pos, color)
+		_burst_at(pos, theme_data.display_color(color, _style))
+
+
+## 깨진 블록의 그림자 한 장 (연출이 끝나면 사라진다).
+func _ghost_at(pos: Vector2i, color: int) -> void:
+	if cell_scene == null:
+		return
+	var ghost: CellView = cell_scene.instantiate() as CellView
+	_cells.add_child(ghost)
+	ghost.display(Board.CellType.COLOR_BLOCK, color, theme_data, _character, _style)
+	ghost.position = _to_pixel(pos)
+	# HTML .gone: 크기는 ease-out, 밝기는 ease, 투명은 ease-out (CSS transition마다 곡선이 다르다).
+	var base: Color = theme_data.display_color(color, _style)
+	var b1: float = theme_data.clear_brightness
+	var grow: float = theme_data.clear_scale
+	KeyframeAnim.run(ghost, config.clear_animation_time, func(t: float) -> void:
+		var out: float = KeyframeAnim.bezier(KeyframeAnim.EASE_OUT, t)
+		ghost.scale = Vector2.ONE * lerpf(1.0, grow, out)
+		var lit: Color = BoardTheme.filter_modulate(base, lerpf(1.0, b1, KeyframeAnim.bezier(KeyframeAnim.EASE, t)))
+		lit.a = 1.0 - out
+		ghost.modulate = lit, KeyframeAnim.LINEAR).finished.connect(ghost.queue_free)
 
 
 func _burst_at(pos: Vector2i, color: Color) -> void:
@@ -243,19 +306,43 @@ func _burst_at(pos: Vector2i, color: Color) -> void:
 	var burst: BurstEffect = burst_scene.instantiate() as BurstEffect
 	_cells.add_child(burst)
 	burst.position = _to_pixel(pos) + Vector2.ONE * theme_data.cell_size / 2.0
+	burst.scale = Vector2.ONE / _screen_scale()  # 파편 수치는 화면 px (판 배율과 무관하게 HTML과 같은 크기)
 	burst.play(color, theme_data)
 
 
-## 판 전체를 살짝 흔든다 (매치 손맛).
+## 판 전체를 살짝 흔든다 (HTML #boardwrap.shake: 0.2초, 25% (2,-1) · 50% (-2,1) · 75% (1,1) CSS px, 구간마다 ease).
 func _shake_board() -> void:
 	if _board_shake_tween != null and _board_shake_tween.is_valid():
 		_board_shake_tween.kill()
 	var home: Vector2 = _cells_home()
-	var d: float = theme_data.match_shake_distance
-	var step: float = theme_data.match_shake_duration / 4.0
-	_board_shake_tween = create_tween()
-	for offset: Vector2 in [Vector2(d, -d / 2.0), Vector2(-d, d / 2.0), Vector2(d / 2.0, d / 2.0), Vector2.ZERO]:
-		_board_shake_tween.tween_property(_cells, "position", home + offset, step)
+	var d: float = theme_data.match_shake_distance / _screen_scale()
+	var frames: Array = [
+		[0.0, {"position": home}],
+		[0.25, {"position": home + Vector2(d, -d / 2.0)}],
+		[0.5, {"position": home + Vector2(-d, d / 2.0)}],
+		[0.75, {"position": home + Vector2(d / 2.0, d / 2.0)}],
+		[1.0, {"position": home}],
+	]
+	_board_shake_tween = KeyframeAnim.play(self, _cells, theme_data.match_shake_duration, frames, KeyframeAnim.EASE)
+
+
+## 판의 화면 배율 (판 안 px 1 = 화면 px 몇). 화면 px로 적은 연출 수치를 판 안 px로 바꿀 때 나눈다.
+func _screen_scale() -> float:
+	return maxf(scale.x, 0.01)
+
+
+## 그림 블록이면 그 표시 색, 이미지 칸이나 그 밖은 null (번쩍임 계산용).
+func _plain_color(pos: Vector2i) -> Variant:
+	if _board.get_cell_type(pos) == Board.CellType.COLOR_BLOCK and theme_data.block_art(_board.get_color(pos), _style) == null:
+		return theme_data.display_color(_board.get_color(pos), _style)
+	return null
+
+
+## CSS filter brightness·saturate를 건 modulate (색을 모르면 밝기 배율만).
+static func _filtered(base: Variant, brightness: float, saturation: float) -> Color:
+	if base is Color:
+		return BoardTheme.filter_modulate(base, brightness, saturation)
+	return Color(brightness, brightness, brightness)
 
 
 ## 칸들의 기준 위치 (판 가운데가 이 노드의 원점).
@@ -270,12 +357,16 @@ func _draw_cell(pos: Vector2i) -> void:
 	view.show_coin(_board.has_coin(pos), theme_data)
 
 
-## 진행 중인 연출을 즉시 끝내고 모든 View를 논리 좌표에 맞춘다.
-func _kill_tweens() -> void:
-	for tween: Tween in [_move_tween, _shake_tween, _board_shake_tween]:
+## 진행 중인 이동 연출을 즉시 끝내고 모든 View를 논리 좌표에 맞춘다. with_board면 판 흔들림도 (새 판).
+## (매치 흔들림은 이동해도 이어진다 — HTML과 같게.)
+func _kill_tweens(with_board: bool = false) -> void:
+	for tween: Tween in [_move_tween, _shake_tween]:
 		if tween != null and tween.is_valid():
 			tween.kill()
-	_cells.position = _cells_home()
+	if with_board:
+		if _board_shake_tween != null and _board_shake_tween.is_valid():
+			_board_shake_tween.kill()
+		_cells.position = _cells_home()
 	for pos: Vector2i in _views:
 		var view: CellView = _views[pos]
 		view.position = _to_pixel(pos)

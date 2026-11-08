@@ -8,6 +8,7 @@
 - 9단계까지 완료: 메뉴 > 퍼즐(11판), 튜토리얼 레벨제 없앰, 규칙 튜토리얼 = HTML `runRuleTut` 그대로(E29: 고정 시드 8907, 5×5 스탬프, 배운 모양 힌트), 화면 디자인 HTML 따르기(E30: 버튼·설명 칸·족보 카드·스포트라이트·블럭 빛남·버튼 노란 고리), **기준 해상도 1080×1920**(E31: 모든 픽셀 값 1.5배, 디자인 이미지는 1080 기준 1:1).
 - 웹 배포: `main`에 push하면 `.github/workflows/pages.yml`이 GitHub Pages에 올린다 (저장소 Settings → Pages → Source = GitHub Actions가 켜져 있어야 함).
 - 사용자(팀)의 결정: **UI·기본 디자인을 다듬은 뒤 애니메이션** — 이제 애니메이션 차례.
+- **2026-11-08: A(판 기본 손맛) 완료** (E32). 함께 고친 것: 스와이프가 가장 최근 손가락을 따름(E33, "스와이프가 한동안 안 먹힘" 원인), 설정의 진행 초기화 두 번 누르기(E34). 다음은 **B → C**.
 
 ## 2. 작업 환경 (클라우드 세션은 매번 새로 받아야 함)
 
@@ -24,13 +25,17 @@ mkdir -p ~/.local/share/godot/export_templates/4.7.2.stable && unzip -qj t.tpz '
 - 단위 테스트(463개): `$GODOT_BIN --headless --path . -s tests/run_tests.gd`
 - 실제 창 스모크(81개, Xvfb): `GODOT_BIN=... tools/run_smoke.sh [필터]` — 스크린샷은 `~/.local/share/godot/app_userdata/Moving_Puzzle/smoke_shots/`
 - 테마를 바꾸면: `$GODOT_BIN --headless --path . -s tools/build_ui_theme.gd`
+- **연출 비교 (A에서 만든 도구)**: `node tools/html_anim_capture.js <장면> <폴더>` → HTML을 시각(0·30·60…800ms)별로 찍는다 (가짜 시계를 멈추고 모든 CSS·Web Animations를 멈춘 뒤 각자 생긴 시각부터 넘김 — 스크린샷이 느려도 정확한 시각). Godot는 `tools/run_smoke.sh smoke_anim`(같은 장면·같은 ms, `Engine.time_scale`로 느리게). `python3 tools/anim_compare.py <장면> <html 폴더> ~/.local/share/godot/app_userdata/Moving_Puzzle/smoke_shots out.png [x,y,w,h] [Godot 세로 차이(HTML 판이 41px 아래)]`로 위 HTML / 아래 Godot를 붙인다. B·C도 장면을 두 쪽에 추가해서 맞춘다.
+- 옮길 때 주의 (A에서 배운 것): CSS @keyframes는 **구간마다** 곡선, `element.animate(…, {easing})`는 **전체** 곡선(`KeyframeAnim` whole). 키프레임에 적지 않은 속성은 이웃 키프레임끼리 한 구간 (`cardBreak`의 opacity). CSS filter brightness는 modulate > 1로(`BoardTheme.filter_modulate`), 색 블록은 filter 값을 보간한다. `transform: scale() translateY()`는 이동도 배율만큼 줄어든다.
 - HTML 화면 비교: Playwright(사전 설치)로 `docs/reference/swap_match_html_1106.html`을 405×720으로 열어 찍는다. 인트로는 화면 탭, 메뉴 `#mStart`, 튜토리얼은 새 저장에서 자동. 게임 전역 함수(`tut`, `slots`, `tutFinish()` 등)를 `page.evaluate`로 부를 수 있다. Godot 스모크와 같은 405×720 창이라 나란히 비교된다.
 
 ## 3. 애니메이션 목록 (HTML → Godot, 우선순위 순)
 
 HTML 위치는 `docs/reference/swap_match_html_1106.html`의 줄 번호(대략). HTML CSS px는 폰 폭 405 기준이라 Godot 1080 기준으로는 × 2.67. 판 안 크기는 칸 크기 비율로 옮긴다.
 
-### A. 판 기본 손맛 (가장 먼저)
+### A. 판 기본 손맛 — 완료 (2026-11-08, E32)
+아래 표는 기록용. `boardSwap`은 HTML 안에서 불리지 않아(정의만 있음) 옮기지 않았다. `grown`은 새싹 요정(로스터 밖) 전용이고, 다 자랄 때는 HTML도 `pop`을 쓴다. 판 흔들림은 HTML처럼 길이 4 이상 족보 완성 때도 나지만 같은 매치의 흔들림과 겹쳐 따로 두지 않았다.
+
 | HTML | 무엇 | Godot에 붙일 곳 |
 |---|---|---|
 | `@keyframes pop`(125), `retrigger(b.el,'pop')` | 블럭 색이 바뀌거나(능력·힌트 보정) 생길 때 밝게 번쩍 → 원래 색 | `BoardView._refresh_with_pop` / `CellView` |
@@ -66,6 +71,18 @@ HTML 위치는 `docs/reference/swap_match_html_1106.html`의 줄 번호(대략).
 - 커밋 메시지 끝에 Co-Authored-By 등 세션 지침을 따른다. 기획 7.2장·별첨 A(새 결정 번호 E32~)·별첨 C도 함께 고친다.
 
 ## 5. 붙여 넣을 프롬프트
+
+다음(B부터) 새 대화창에서:
+
+```
+imjjulseo/Teeee-test 레포(Godot 4.7.2, Swap match)에서 이어서 작업하자.
+먼저 docs/handoff_animation.md 와 CLAUDE.md 를 읽어. 애니메이션 A(판 기본 손맛)는 끝났고 비교 도구(tools/html_anim_capture.js,
+smoke_anim, tools/anim_compare.py)가 있어. 3장 목록의 B(튜토리얼·UI)를 HTML 연출과 똑같은 느낌으로 옮겨 줘.
+장면을 두 쪽에 추가해 같은 시각으로 찍어 나란히 비교하면서 맞추고, 효과 줄이기에서는 꺼지게 해.
+단위 테스트·스모크 전부 통과시키고 main에 push한 뒤 보고해. B가 끝나면 C를 진행할지 물어봐.
+```
+
+처음(A) 때 쓴 프롬프트:
 
 ```
 imjjulseo/Teeee-test 레포(Godot 4.7.2, Swap match)에서 이어서 작업하자.

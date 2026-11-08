@@ -54,8 +54,28 @@ extends Resource
 @export var recipe_step_size_compact: float = 45.0
 ## 시계공 "정지" 중 남은 시간 표시 색.
 @export var hud_time_stop_color: Color = Color("7fd6ff")
-## 족보 완성 시 박스가 커졌다 돌아오는 비율.
+## 캐릭터 카드 발동 시 박스가 커졌다 돌아오는 비율.
 @export var recipe_complete_pop_scale: float = 1.15
+## 족보 칸이 채워질 때 (HTML dotHit: 1.7배 · brightness 2 → 원래, 0.32초 cubic-bezier(.2,.9,.3,1.4)).
+@export var dot_hit_scale: float = 1.7
+@export var dot_hit_brightness: float = 2.0
+@export var dot_hit_duration: float = 0.32
+@export var dot_hit_curve: Vector4 = Vector4(0.2, 0.9, 0.3, 1.4)
+## 족보 완성: 잠깐 뒤(card_break_delay) 카드가 커지며 밝아지다 작아지며 위로 빠지고(HTML cardBreak 0.2초 ease-in),
+## 새 카드가 위에서 내려온다(HTML cardIn 0.24초). 거리는 화면 px.
+## 깨짐: 30%에 peak 배율·밝기, 끝에 end 배율·밝기·투명 (HTML cardBreak 1.1 · 1.9 → 0.55 · 2.6).
+## 등장: 위로 drop만큼, enter 배율·투명에서 시작 (HTML cardIn -18 CSS px · 0.82).
+@export var card_break_delay: float = 0.06
+@export var card_break_duration: float = 0.2
+@export var card_break_peak_scale: float = 1.1
+@export var card_break_brightness: float = 1.9
+@export var card_break_end_scale: float = 0.55
+@export var card_break_end_brightness: float = 2.6
+@export var card_break_rise: float = 20.5
+@export var card_enter_duration: float = 0.24
+@export var card_enter_drop: float = 48.0
+@export var card_enter_scale: float = 0.82
+@export var card_enter_curve: Vector4 = Vector4(0.2, 0.9, 0.3, 1.35)
 
 @export_group("HUD")
 @export var hud_time_color: Color = Color("ffffff")
@@ -65,32 +85,73 @@ extends Resource
 @export var hud_warning_pulse_duration: float = 0.25
 ## 점수 표시가 실제 점수를 따라가는 속도 (초당 남은 차이의 비율).
 @export var score_count_speed: float = 12.0
-## 떠오르는 숫자("+2.5", "+10")가 올라가는 거리(px)와 시간(초).
-@export var float_rise: float = 60.0
+## 점수·시간·코인 숫자가 바뀔 때 커졌다 돌아오는 비율과 시간 (HTML bump: 1.22배 → 0.28초 ease-out, 왼쪽 아래 기준).
+@export var bump_scale: float = 1.22
+@export var bump_duration: float = 0.28
+## 떠오르는 숫자(HTML rise)와 날아가는 숫자(HTML fly: 족보 점수 → 점수, 금화 → 코인)의 시간(초).
 @export var float_duration: float = 0.8
-## 족보 완성 "+N" 팝업이 떠오르는 거리(px)와 시간(초).
-@export var score_popup_rise: float = 90.0
-@export var score_popup_duration: float = 0.9
+@export var fly_duration: float = 0.75
+## 떠오르는 글자 크기(px, 1080 기준 = HTML CSS px × 2.67). 매치 시간 "+2.5"와 그 색.
+@export var float_time_size: float = 40.0
+@export var float_time_color: Color = Color("e6f0f2")
+## 금화 "+10": 기본 크기 + 연속 1번마다 커지는 크기(최대 4번). "금화 N연속!" 크기·커지는 크기, 금화 위로 띄우는 거리.
+@export var float_coin_size: float = 64.0
+@export var float_coin_size_step: float = 10.7
+@export var float_chain_size: float = 53.3
+@export var float_chain_size_step: float = 8.0
+@export var float_chain_offset: float = 90.7
+## 족보 완성 "+점수": 기본 크기 + 난이도(길이 + 반복) 1마다 커지는 크기(최대 4). 족보 밖 점수(피버 정산 등) 크기.
+@export var float_recipe_size: float = 53.3
+@export var float_recipe_size_step: float = 8.0
+@export var float_bonus_size: float = 106.7
+## 족보 카드가 깨질 때 색마다 터지는 파편 (개수 · 속도 px/초 · 크기 px).
+@export var card_burst_count: int = 9
+@export var card_burst_speed: float = 853.0
+@export var card_burst_size: float = 16.0
+## 튜토리얼 칭찬 (HTML tutCheer: Good · Great! · Awesome!): 등급별 크기·색, 플레이어 칸 위로 띄우는 거리,
+## 등급별 파편(Great! 이상) 개수·속도와 크기, 등급 없는 칭찬 글의 크기·색.
+@export var cheer_sizes: PackedFloat32Array = PackedFloat32Array([58.7, 69.3, 80.0])
+@export var cheer_colors: Array[Color] = [Color("9fe3c9"), Color("8fd3ff"), Color("ffd23f")]
+@export var cheer_offset: float = 80.0
+@export var cheer_burst_counts: PackedInt32Array = PackedInt32Array([0, 9, 18])
+@export var cheer_burst_speeds: PackedFloat32Array = PackedFloat32Array([0.0, 587.0, 800.0])
+@export var cheer_burst_size: float = 10.7
+@export var cheer_text_size: float = 64.0
+@export var cheer_text_color: Color = Color("ffd23f")
 
 @export_group("Feedback")
-## 교환 시 밀려나는 블록이 작아지는 비율 (두 블록이 서로 통과하지 않고 교환이 보이도록).
-@export_range(0.1, 1.0) var swap_block_scale: float = 0.7
-## 매치 강조 시 4칸이 커졌다 돌아오는 비율 (시간은 GameConfig.clear_animation_time).
-@export var clear_pop_scale: float = 1.2
-## 리필 생성 시 팝 비율과 시간(초).
-@export var refill_pop_scale: float = 0.6
-@export var refill_pop_duration: float = 0.15
-## 매치 때 판 전체가 흔들리는 거리(px)와 시간(초).
-@export var match_shake_distance: float = 4.5
+## 이동 미끄러짐 곡선 (HTML .blk transition cubic-bezier(.3,.8,.4,1), 시간은 GameConfig.move_animation_time).
+@export var move_curve: Vector4 = Vector4(0.3, 0.8, 0.4, 1.0)
+## 블록이 생기거나 색이 바뀔 때 번쩍임 (HTML pop: brightness 2.1 · saturate .4 → 원래, 0.26초 ease-out).
+@export var pop_brightness: float = 2.1
+@export var pop_saturation: float = 0.4
+@export var pop_duration: float = 0.26
+## 매치로 깨진 블록이 커지며 밝아지고 사라짐 (HTML .gone: 1.3배 · brightness 1.9 · 투명, 시간은 GameConfig.clear_animation_time).
+@export var clear_scale: float = 1.3
+@export var clear_brightness: float = 1.9
+## 퍼즐을 깔 때 내 칸에서 가까운 칸부터 튀어나옴 (HTML flipIn: 0.2배·투명 → 1, 0.28초, 거리 1칸마다 0.055초 늦게).
+@export var stamp_start_scale: float = 0.2
+@export var stamp_duration: float = 0.28
+@export var stamp_delay_step: float = 0.055
+@export var stamp_curve: Vector4 = Vector4(0.2, 0.9, 0.3, 1.3)
+## 매치 때 판 전체가 흔들리는 거리(화면 px)와 시간(초) (HTML shake: 2 CSS px, 0.2초).
+@export var match_shake_distance: float = 5.33
 @export var match_shake_duration: float = 0.2
-## 매치 파편: 칸마다 개수, 퍼지는 속도(px/초), 크기(px), 사라지는 시간(초).
+## 매치 파편 (HTML burst): 칸마다 개수, 기준 속도(화면 px/초)와 그 배율 범위, 위로 뜨는 비율, 중력(px/초²),
+## 1/60초마다 가로 속도에 곱하는 값, 크기(px), 수명 범위(초).
 @export var burst_count: int = 7
-@export var burst_speed: float = 330.0
-@export var burst_size: float = 10.5
-@export var burst_lifetime: float = 0.45
-## 벽 입력 흔들림 거리(px)와 시간(초).
-@export var wall_shake_distance: float = 9.0
-@export var wall_shake_duration: float = 0.12
+@export var burst_speed: float = 587.0
+@export var burst_speed_min: float = 0.35
+@export var burst_speed_max: float = 1.15
+@export var burst_lift: float = 0.35
+@export var burst_gravity: float = 2133.0
+@export var burst_drag: float = 0.985
+@export var burst_size: float = 13.3
+@export var burst_life_min: float = 0.4
+@export var burst_life_max: float = 0.8
+## 벽 입력 때 플레이어가 살짝 튕기는 거리(화면 px)와 시간(초) (HTML nudge: 6 CSS px, 0.17초 ease-out).
+@export var wall_shake_distance: float = 16.0
+@export var wall_shake_duration: float = 0.17
 
 @export_group("Ability")
 ## 캐릭터 카드 테두리 두께(px). 색은 캐릭터 색.
@@ -217,3 +278,20 @@ func glyph_for(color_id: int) -> GlyphView.Shape:
 	if color_id < 0 or color_id >= block_glyphs.size():
 		return GlyphView.Shape.NONE
 	return block_glyphs[color_id] as GlyphView.Shape
+
+
+## CSS filter: brightness(b) saturate(s)를 base 색에 건 결과를 내는 modulate 값 (채널별 배율, 1보다 클 수 있다).
+## 색을 모르는 이미지·그림 칸은 밝기 배율만 (Color(b, b, b)). HTML pop·dotHit·cardBreak 번쩍임에 쓴다.
+static func filter_modulate(base: Color, brightness: float, saturation: float = 1.0) -> Color:
+	var lit: Color = Color(minf(base.r * brightness, 1.0), minf(base.g * brightness, 1.0), minf(base.b * brightness, 1.0))
+	# CSS saturate 행렬 (W3C Filter Effects).
+	var s: float = saturation
+	var r: float = (0.213 + 0.787 * s) * lit.r + (0.715 - 0.715 * s) * lit.g + (0.072 - 0.072 * s) * lit.b
+	var g: float = (0.213 - 0.213 * s) * lit.r + (0.715 + 0.285 * s) * lit.g + (0.072 - 0.072 * s) * lit.b
+	var b: float = (0.213 - 0.213 * s) * lit.r + (0.715 - 0.715 * s) * lit.g + (0.072 + 0.928 * s) * lit.b
+	var out: Color = Color(clampf(r, 0.0, 1.0), clampf(g, 0.0, 1.0), clampf(b, 0.0, 1.0))
+	return Color(_ratio(out.r, base.r, brightness), _ratio(out.g, base.g, brightness), _ratio(out.b, base.b, brightness))
+
+
+static func _ratio(target: float, base: float, fallback: float) -> float:
+	return target / base if base > 0.02 else fallback

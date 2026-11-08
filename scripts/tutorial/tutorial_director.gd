@@ -412,10 +412,15 @@ func banner(title: String, sub: String, then: Callable) -> void:
 	_banner_then = then
 
 
-## 칭찬 한마디 (메시지 줄).
-func cheer(text: String) -> void:
-	if session != null and not text.is_empty():
-		session.announce(text)
+## 칭찬 한마디. grade 0~2(Good · Great! · Awesome!)는 플레이어 칸 위로 떠오르고(HTML tutCheer, 효과 줄이기면 메시지 줄),
+## 등급 없는 칭찬 글은 메시지 줄.
+func cheer(text: String, grade: int = -1) -> void:
+	if session == null or text.is_empty():
+		return
+	if grade >= 0 and hud != null and board_view != null:
+		hud.cheer(text, grade, board_view.cell_center(session.board.player_pos))
+		return
+	session.announce(text)
 
 
 ## 캐릭터 튜토리얼 활용 연습 제목 ("시계공 · 활용").
@@ -806,11 +811,22 @@ func start_rule_puzzle(def: PuzzleDef, target: int, quick: bool, coins: int, pro
 	_hold_text = hold_text
 	_swipe_dir = puzzle.solution.path[0] if swipe and puzzle.solution != null and not puzzle.solution.path.is_empty() else Vector2i.ZERO
 	_runner.begin(puzzle)
+	_emit_stamped(window_cells)
 	if delay > 0.0:
 		spotlight.close()
 		_start_delay = delay
 	else:
 		_open_puzzle()
+
+
+## 깐 5×5 칸(내 칸 빼고)이 내 칸에서 가까운 순서로 튀어나오게 알린다 (HTML pzStamp의 flipIn).
+func _emit_stamped(window_cells: Array[Vector2i]) -> void:
+	var origin: Vector2i = session.board.player_pos
+	var cells: Array[Vector2i] = []
+	for cell: Vector2i in window_cells:
+		if cell != origin and session.board.is_inside(cell):
+			cells.append(cell)
+	board_channel.cells_stamped.emit(cells, origin)
 
 
 func _open_puzzle() -> void:
@@ -887,7 +903,7 @@ func _resolve_puzzle_match() -> void:
 	if _hold_seeds:
 		session.frozen_clocks.append(TimedSystem.Clock.REFILL)
 	if _runner.cheer_heads:
-		cheer(PuzzleRunner.CHEER_WORDS[stars - 1])
+		cheer(PuzzleRunner.CHEER_WORDS[stars - 1], stars - 1)
 
 
 func _on_puzzle_result(info: PuzzleRunner.ResultInfo) -> void:
@@ -1046,7 +1062,7 @@ func _free_cheer() -> void:
 		grade = 2 if used <= _seg_best else (1 if used <= _seg_best + 2 else 0)
 	else:
 		grade = 2 if used <= 3 else (1 if used <= 6 else 0)
-	cheer(PuzzleRunner.CHEER_WORDS[grade])
+	cheer(PuzzleRunner.CHEER_WORDS[grade], grade)
 
 
 ## 가만히 hint_idle초: 1단계 = 매치할 4블럭 강조, 2단계 = 첫 수 화살표 (HTML tutFreeIdle).

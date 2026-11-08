@@ -334,3 +334,46 @@ func test_options_screen_toggle_saves_reduce_motion() -> void:
 	reopened.free()
 
 # 설정 화면의 실제 클릭(조작 방법·볼륨)은 실제 창 스모크 테스트(smoke_input)로 확인한다.
+# --- 진행 초기화 ------------------------------------------------------------------
+
+func _detach_reset(menu: OptionsMenu) -> Array[int]:
+	for connection: Dictionary in menu.progress_reset.get_connections():
+		menu.progress_reset.disconnect(connection["callable"])
+	var count: Array[int] = [0]
+	menu.progress_reset.connect(func() -> void: count[0] += 1)
+	return count
+
+
+func test_reset_progress_keeps_only_options() -> void:
+	_clean()
+	OptionsStore.new(TEST_SAVE).set_reduce_motion(true)
+	SaveData.write_value(TEST_SAVE, "progress", "level", 7)
+	SaveData.write_value(TEST_SAVE, "tutorial", "done", true)
+	assert_eq(SaveData.reset_progress(TEST_SAVE), OK)
+	var data: SaveData = SaveData.new(TEST_SAVE)
+	assert_eq(data.get_value("progress", "level", 1), 1, "progress erased")
+	assert_eq(data.get_value("tutorial", "done", false), false, "tutorial erased")
+	assert_true(OptionsStore.new(TEST_SAVE).reduce_motion, "options kept")
+	_clean()
+
+
+func test_reset_button_needs_a_second_press_in_time() -> void:
+	_clean()
+	SaveData.write_value(TEST_SAVE, "progress", "level", 7)
+	var menu: OptionsMenu = _open_options()
+	var count: Array[int] = _detach_reset(menu)
+	var button: Button = menu.get_node("%ResetButton")
+	button.pressed.emit()
+	assert_true(menu.is_reset_armed(), "first press only arms")
+	assert_eq(button.text, OptionsMenu.RESET_CONFIRM_TEXT)
+	assert_eq(SaveData.new(TEST_SAVE).get_value("progress", "level", 1), 7, "nothing erased yet")
+	menu.tick(menu.reset_confirm_time + 0.1)
+	assert_false(menu.is_reset_armed(), "times out")
+	assert_eq(button.text, OptionsMenu.RESET_TEXT)
+	button.pressed.emit()
+	menu.tick(1.0)
+	button.pressed.emit()
+	assert_eq(count[0], 1, "second press in time resets and leaves")
+	assert_eq(SaveData.new(TEST_SAVE).get_value("progress", "level", 1), 1, "progress erased")
+	menu.free()
+	_clean()

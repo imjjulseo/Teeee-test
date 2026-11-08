@@ -65,13 +65,29 @@ func test_gesture_tap_and_cancel() -> void:
 	assert_false(gesture.release(0, true), "canceled touch is not a tap")
 
 
-func test_gesture_ignores_a_second_finger() -> void:
+func test_gesture_follows_the_newest_finger() -> void:
 	var gesture: SwipeGesture = SwipeGesture.new(22.0)
-	gesture.press(0, Vector2(100, 100))
+	gesture.press(0, Vector2(100, 100))  # 화면에 닿아 있는 손가락 (손바닥·쉬는 엄지)
 	gesture.press(1, Vector2(300, 300))
-	assert_eq(gesture.drag(1, Vector2(400, 300)), Vector2i.ZERO)
-	assert_false(gesture.release(1))
-	assert_eq(gesture.drag(0, Vector2(100, 150)), Vector2i.DOWN)
+	assert_eq(gesture.drag(1, Vector2(400, 300)), Vector2i.RIGHT, "the new finger swipes while the first stays down")
+	assert_eq(gesture.drag(0, Vector2(100, 150)), Vector2i.ZERO, "the old finger is ignored")
+	assert_false(gesture.release(0), "the old finger's release is not a tap")
+	assert_true(gesture.is_tracking(), "still following the new finger")
+	assert_false(gesture.release(1), "the new finger swiped: not a tap")
+	assert_false(gesture.is_tracking())
+
+
+func test_router_swipes_with_a_finger_resting_on_the_screen() -> void:
+	var router: InputRouter = _router()
+	var moves: Array[Vector2i] = []
+	router.move_requested.connect(func(dir: Vector2i, _hand: int) -> void: moves.append(dir))
+	router.handle_input(_touch(Vector2(10, 900), true, 0))  # 가장자리에 닿아 있는 손가락
+	for i: int in 3:
+		router.handle_input(_touch(Vector2(500, 900), true, 1 + i))
+		router.handle_input(_drag(Vector2(500, 760), 1 + i))
+		router.handle_input(_touch(Vector2(500, 760), false, 1 + i))
+	assert_eq(moves, [Vector2i.UP, Vector2i.UP, Vector2i.UP] as Array[Vector2i], "every swipe moves")
+	router.free()
 
 
 func test_direction_uses_the_larger_axis() -> void:

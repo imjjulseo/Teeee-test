@@ -36,7 +36,7 @@ func _tick() -> void:
 			if step_time > 0.3:
 				expect(session().board.player_pos == _start + Vector2i.UP, "swipe up moved player")
 				expect(session().score == _points, "recipe completed via swipe")
-				expect((node("Hud/%ScorePopup") as Label).text == "+%d" % _points, "+%d popup" % _points)
+				expect(_floating_texts().has("+%d" % _points), "+%d flies to the score (%s)" % [_points, _floating_texts()])
 				expect(_sfx == ([SfxPlayer.SWAP, SfxPlayer.MATCH, SfxPlayer.RECIPE_COMPLETE] as Array[StringName]), "sfx order %s" % [_sfx])
 				expect(_glyphs_match(), "every glyph matches its color")
 				expect(_seeds_hidden(), "seed cells hide their next color")
@@ -55,6 +55,14 @@ func _tick() -> void:
 				expect(flow().state == S.PAUSED, "pause button click → PAUSED")
 				expect(session().board.player_pos == _start + Vector2i.UP, "button click did not move")
 				finish()
+
+
+func _floating_texts() -> PackedStringArray:
+	var texts: PackedStringArray = PackedStringArray()
+	for child: Node in node("Hud/%Floats").get_children():
+		if child is FloatingText:
+			texts.append((child as FloatingText).text)
+	return texts
 
 
 func _views() -> Dictionary:

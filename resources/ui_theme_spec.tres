@@ -432,6 +432,30 @@ slots = PackedStringArray("normal", "hover", "pressed", "hover_pressed", "disabl
 template = SubResource("Box_24")
 bg_token = &"panel_raised"
 
+[sub_resource type="StyleBoxFlat" id="Box_25"]
+content_margin_left = 24.0
+content_margin_top = 18.0
+content_margin_right = 24.0
+content_margin_bottom = 18.0
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 27
+corner_radius_top_right = 27
+corner_radius_bottom_right = 27
+corner_radius_bottom_left = 27
+
+[sub_resource type="Resource" id="Style_25"]
+script = ExtResource("2_style")
+name = &"WarnButton"
+base_type = &"Button"
+slots = PackedStringArray("normal", "hover", "pressed", "hover_pressed", "disabled")
+template = SubResource("Box_25")
+bg_token = &"panel"
+border_token = &"line"
+font_token = &"warn"
+
 [resource]
 script = ExtResource("1_spec")
 default_font = ExtResource("3_font")
@@ -443,4 +467,4 @@ label_variations = Dictionary[StringName, StringName]({
 &"OnAccentLabel": &"text_on_accent",
 &"WarmAccentLabel": &"accent_warm"
 })
-styles = Array[ExtResource("2_style")]([SubResource("Style_1"), SubResource("Style_2"), SubResource("Style_3"), SubResource("Style_4"), SubResource("Style_5"), SubResource("Style_6"), SubResource("Style_7"), SubResource("Style_8"), SubResource("Style_9"), SubResource("Style_10"), SubResource("Style_11"), SubResource("Style_12"), SubResource("Style_13"), SubResource("Style_14"), SubResource("Style_15"), SubResource("Style_16"), SubResource("Style_17"), SubResource("Style_18"), SubResource("Style_19"), SubResource("Style_20"), SubResource("Style_21"), SubResource("Style_22"), SubResource("Style_23"), SubResource("Style_24")])
+styles = Array[ExtResource("2_style")]([SubResource("Style_1"), SubResource("Style_2"), SubResource("Style_3"), SubResource("Style_4"), SubResource("Style_5"), SubResource("Style_6"), SubResource("Style_7"), SubResource("Style_8"), SubResource("Style_9"), SubResource("Style_10"), SubResource("Style_11"), SubResource("Style_12"), SubResource("Style_13"), SubResource("Style_14"), SubResource("Style_15"), SubResource("Style_16"), SubResource("Style_17"), SubResource("Style_18"), SubResource("Style_19"), SubResource("Style_20"), SubResource("Style_21"), SubResource("Style_22"), SubResource("Style_23"), SubResource("Style_24"), SubResource("Style_25")])

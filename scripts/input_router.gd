@@ -130,10 +130,11 @@ func _handle_touch(event: InputEvent) -> bool:
 		return true
 	var touch: InputEventScreenTouch = event
 	if touch.pressed:
-		if not gesture.is_tracking():
-			_touch_hand = RIGHT_HAND if touch.position.x >= _screen_width() / 2.0 else LEFT_HAND
-			_long_press_left = _long_press_time()
-			_long_press_fired = false
+		if gesture.has_fired():  # 앞 손가락이 누르고 있던 방향은 여기서 끝 (새 손가락이 넘겨받는다)
+			hold_released.emit()
+		_touch_hand = RIGHT_HAND if touch.position.x >= _screen_width() / 2.0 else LEFT_HAND
+		_long_press_left = _long_press_time()
+		_long_press_fired = false
 		gesture.press(touch.index, touch.position)
 		return false
 	var held: bool = gesture.has_fired()

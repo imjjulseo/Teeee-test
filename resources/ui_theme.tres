@@ -259,6 +259,22 @@ corner_radius_top_right = 12
 corner_radius_bottom_right = 12
 corner_radius_bottom_left = 12
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ol5d"]
+content_margin_left = 24.0
+content_margin_top = 18.0
+content_margin_right = 24.0
+content_margin_bottom = 18.0
+bg_color = Color(0.0745098, 0.176471, 0.211765, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.152941, 0.313726, 0.360784, 1)
+corner_radius_top_left = 27
+corner_radius_top_right = 27
+corner_radius_bottom_right = 27
+corner_radius_bottom_left = 27
+
 [resource]
 default_font = ExtResource("1_cviax")
 AccentButton/base_type = &"Button"
@@ -387,9 +403,21 @@ Tokens/colors/text_dim = Color(0.7, 0.7, 0.7, 1)
 Tokens/colors/text_muted = Color(0.560784, 0.666667, 0.698039, 1)
 Tokens/colors/text_on_accent = Color(0.0470588, 0.121569, 0.14902, 1)
 Tokens/colors/track = Color(1, 1, 1, 0.12)
+Tokens/colors/warn = Color(0.886275, 0.333333, 0.431373, 1)
 VolumeSlider/base_type = &"HSlider"
 VolumeSlider/styles/grabber_area = SubResource("StyleBoxFlat_o8cq8")
 VolumeSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_o8cq8")
 VolumeSlider/styles/slider = SubResource("StyleBoxFlat_wun14")
 WarmAccentLabel/base_type = &"Label"
 WarmAccentLabel/colors/font_color = Color(0.96, 0.78, 0.26, 1)
+WarnButton/base_type = &"Button"
+WarnButton/colors/font_color = Color(0.886275, 0.333333, 0.431373, 1)
+WarnButton/colors/font_focus_color = Color(0.886275, 0.333333, 0.431373, 1)
+WarnButton/colors/font_hover_color = Color(0.886275, 0.333333, 0.431373, 1)
+WarnButton/colors/font_hover_pressed_color = Color(0.886275, 0.333333, 0.431373, 1)
+WarnButton/colors/font_pressed_color = Color(0.886275, 0.333333, 0.431373, 1)
+WarnButton/styles/disabled = SubResource("StyleBoxFlat_4ol5d")
+WarnButton/styles/hover = SubResource("StyleBoxFlat_4ol5d")
+WarnButton/styles/hover_pressed = SubResource("StyleBoxFlat_4ol5d")
+WarnButton/styles/normal = SubResource("StyleBoxFlat_4ol5d")
+WarnButton/styles/pressed = SubResource("StyleBoxFlat_4ol5d")

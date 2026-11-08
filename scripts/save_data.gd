@@ -71,6 +71,16 @@ func save() -> Error:
 	return err
 
 
+## 진행 초기화 (설정의 "진행 초기화", HTML resetMeta): 설정([options])만 남기고 진행·재화·캐릭터·업적·튜토리얼·퍼즐·최고 점수를
+## 지워 저장한다. 다음 실행은 처음 실행과 같다 (튜토리얼부터).
+static func reset_progress(p_path: String = "") -> Error:
+	var data: SaveData = SaveData.new(p_path)
+	for section: String in data._file.get_sections():
+		if not KEPT_ON_RESET.has(section):
+			data._file.erase_section(section)
+	return data.save()
+
+
 ## 한 항목만 바꿔 저장하는 지름길: 파일을 새로 읽고, 값을 바꾸고, 저장한다.
 static func write_value(p_path: String, section: String, key: String, value: Variant) -> Error:
 	var data: SaveData = SaveData.new(p_path)

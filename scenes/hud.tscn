@@ -6,6 +6,7 @@
 [ext_resource type="Resource" path="res://resources/board_theme.tres" id="4_theme"]
 [ext_resource type="Script" path="res://scripts/safe_area.gd" id="5_safe"]
 [ext_resource type="PackedScene" path="res://scenes/floating_text.tscn" id="6_float"]
+[ext_resource type="PackedScene" path="res://scenes/burst_effect.tscn" id="7_burst"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
 [ext_resource type="Resource" path="res://resources/ui_assets.tres" id="98_ui_assets"]
 
@@ -14,6 +15,7 @@ script = ExtResource("1_hud")
 config = ExtResource("3_config")
 theme_data = ExtResource("4_theme")
 floating_text_scene = ExtResource("6_float")
+burst_scene = ExtResource("7_burst")
 ui_assets = ExtResource("98_ui_assets")
 
 [node name="Flash" type="ColorRect" parent="."]
@@ -176,21 +178,6 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.55
 slot = -1
 is_ability = true
-
-[node name="ScorePopup" type="Label" parent="SafeArea/Content"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 420.0
-offset_bottom = 495.0
-grow_horizontal = 2
-theme_type_variation = &"WarmAccentLabel"
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 12
-theme_override_font_sizes/font_size = 60
-text = "+0"
-horizontal_alignment = 1
 
 [node name="MessageLabel" type="Label" parent="SafeArea/Content"]
 unique_name_in_owner = true

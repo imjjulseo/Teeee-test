@@ -19,6 +19,8 @@ signal marks_changed(marks: Array[BoardMark])
 signal cells_blasted(cells: Array[Vector2i], color: int)
 ## 블록 표시 방식 (색약·레트로, null = 보통).
 signal display_style_changed(style: DisplayStyle)
+## 튜토리얼이 퍼즐 모양을 깔았다 (판은 이미 다시 그렸다): origin(내 칸)에서 가까운 칸부터 튀어나오는 연출만.
+signal cells_stamped(cells: Array[Vector2i], origin: Vector2i)
 
 
 ## 새 판의 세션 이벤트를 이 채널로 연결하고, 초기 상태(캐릭터 외형 → 보드)를 알린다.
