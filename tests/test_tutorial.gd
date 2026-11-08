@@ -304,3 +304,30 @@ func test_planner_counts_built_blocks() -> void:
 	assert_true(planner.best(4) == null or planner.best(4).built == 0)
 	planner.level = 1
 	assert_true(planner.best(4) != null, "level 1 may use a moved block")
+
+
+## 씨앗 색 조합을 한 번의 탐색으로 푼 결과가 조합마다 따로 찾은 결과와 같다 (튜토리얼 판 고치기 속도, 끊김 수정).
+func test_planner_seed_combos_match_the_slow_search() -> void:
+	var config: GameConfig = make_config()
+	config.color_count = 3
+	for seed_value: int in range(1, 7):
+		var rng: RandomNumberGenerator = RandomNumberGenerator.new()
+		rng.seed = seed_value
+		var board: Board = Board.generate(config, rng)
+		var me: Vector2i = board.player_pos
+		var seeds: Array[Vector2i] = []
+		for d: Vector2i in [Vector2i(1, 1), Vector2i(-1, 2), Vector2i(2, -1), Vector2i(0, -2)]:
+			board.set_seed(me + d, rng.randi() % 3, 1.0, 1.0)
+			seeds.append(me + d)
+		var planner: TutorialPlanner = TutorialPlanner.new(board, 3, HtmlRng.new(seed_value))
+		planner.level = seed_value % 2
+		planner.note_move(me + Vector2i(1, 0))
+		var fast: Array[TutorialPlanner.Plan] = planner.best_per_seed_combo(seeds, 6)
+		var slow: Array[TutorialPlanner.Plan] = planner.best_per_seed_combo_reference(seeds, 6)
+		assert_eq(fast.size(), slow.size())
+		for m: int in slow.size():
+			var a: TutorialPlanner.Plan = fast[m]
+			var b: TutorialPlanner.Plan = slow[m]
+			assert_eq(a == null, b == null, "seed %d combo %d found" % [seed_value, m])
+			if a != null and b != null:
+				assert_eq([a.path, a.color, a.built, a.center], [b.path, b.color, b.built, b.center], "seed %d combo %d same plan" % [seed_value, m])
