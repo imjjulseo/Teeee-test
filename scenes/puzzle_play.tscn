@@ -55,7 +55,7 @@ mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="TopSpace" type="Control" parent="LayoutLayer/SafeArea/Column"]
-custom_minimum_size = Vector2(0, 260)
+custom_minimum_size = Vector2(0, 390)
 layout_mode = 2
 mouse_filter = 2
 
@@ -65,12 +65,12 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="BottomSpace" type="Control" parent="LayoutLayer/SafeArea/Column"]
-custom_minimum_size = Vector2(0, 420)
+custom_minimum_size = Vector2(0, 630)
 layout_mode = 2
 mouse_filter = 2
 
 [node name="BoardView" parent="." node_paths=PackedStringArray("board_area") instance=ExtResource("7_board_view")]
-position = Vector2(360, 640)
+position = Vector2(540, 960)
 config = ExtResource("4_config")
 board_area = NodePath("../LayoutLayer/SafeArea/Column/BoardArea")
 
@@ -94,18 +94,18 @@ mouse_filter = 2
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 32.0
-offset_top = 48.0
-offset_right = -32.0
-offset_bottom = 240.0
+offset_left = 48.0
+offset_top = 72.0
+offset_right = -48.0
+offset_bottom = 360.0
 grow_horizontal = 2
 mouse_filter = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 12
 
 [node name="PuzzleName" type="Label" parent="UI/SafeArea/Content/Top"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 60
 text = "퍼즐"
 horizontal_alignment = 1
 
@@ -113,13 +113,13 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 39
 horizontal_alignment = 1
 
 [node name="MoveCount" type="Label" parent="UI/SafeArea/Content/Top"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 text = "0수 · 최소 0수"
 horizontal_alignment = 1
 
@@ -129,21 +129,21 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = -400.0
-offset_right = -32.0
-offset_bottom = -40.0
+offset_left = 48.0
+offset_top = -600.0
+offset_right = -48.0
+offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 24
 alignment = 2
 
 [node name="TipLabel" type="Label" parent="UI/SafeArea/Content/Bottom"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 100)
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 39
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -151,46 +151,46 @@ autowrap_mode = 3
 [node name="Row1" type="HBoxContainer" parent="UI/SafeArea/Content/Bottom"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
 [node name="UndoButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row1"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 88)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 42
 text = "되돌리기"
 
 [node name="ResetButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row1"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 88)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 42
 text = "처음부터"
 
 [node name="HintButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row1"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 88)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 42
 text = "힌트"
 
 [node name="Row2" type="HBoxContainer" parent="UI/SafeArea/Content/Bottom"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
 [node name="ExitButton" type="Button" parent="UI/SafeArea/Content/Bottom/Row2"]
-custom_minimum_size = Vector2(0, 88)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 42
 text = "나가기"
 
 [node name="ResultPanel" parent="UI" instance=ExtResource("9_result")]

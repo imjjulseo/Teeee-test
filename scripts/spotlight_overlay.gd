@@ -17,16 +17,16 @@ enum Mode { TAP, ACT }
 ## 구멍 최대 수 (셰이더 배열 크기).
 const MAX_HOLES: int = 8
 
-## 구멍 여백·모서리·가장자리 흐림·최소 크기 (HTML 16 · 28 · 흐림 16 · 최소 40 css px를 720 기준으로).
-@export var hole_pad: float = 28.0
-@export var hole_radius: float = 50.0
-@export var hole_feather: float = 45.0
-@export var hole_min: float = 71.0
+## 구멍 여백·모서리·가장자리 흐림·최소 크기 (HTML 16 · 28 · 흐림 16 · 최소 40 css px를 1080 기준으로).
+@export var hole_pad: float = 42.0
+@export var hole_radius: float = 75.0
+@export var hole_feather: float = 67.5
+@export var hole_min: float = 106.0
 ## 막이 처음 뜰 때 서서히 나타나는 시간(초).
 @export var fade_time: float = 0.45
 ## 설명 칸이 화면 끝에서 떨어진 거리, 건너뛰기 알약이 칸 위로 뜬 거리.
-@export var caption_margin: float = 40.0
-@export var skip_gap: float = 12.0
+@export var caption_margin: float = 60.0
+@export var skip_gap: float = 18.0
 
 var mode: Mode = Mode.TAP
 var _holes: Array[Rect2] = []
@@ -169,7 +169,7 @@ func _place_caption(top: bool) -> void:
 ## 건너뛰기 알약: 칸 위 오른쪽 (위쪽 칸이면 칸 아래).
 func _place_skip() -> void:
 	var at_top: bool = _caption.anchor_top == 0.0
-	var x: float = _caption.position.x + _caption.size.x - _skip.size.x - 18.0
+	var x: float = _caption.position.x + _caption.size.x - _skip.size.x - 27.0
 	var y: float = _caption.position.y + _caption.size.y + skip_gap if at_top else _caption.position.y - _skip.size.y - skip_gap
 	_skip.position = Vector2(x, y)
 

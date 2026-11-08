@@ -4,7 +4,7 @@ extends HBoxContainer
 ## 주인이 show_amounts를 _ready보다 먼저 불러도 되게 자식은 그때그때 찾는다.
 
 @export var assets: UiAssets
-@export var font_size: int = 32
+@export var font_size: int = 48
 
 ## 지금 보이는 글자 (아이콘이 없으면 "● 340  ◆ 25", 있으면 "340  25").
 var text: String:

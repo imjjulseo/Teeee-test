@@ -104,7 +104,7 @@ func test_moving_the_finger_cancels_the_long_press() -> void:
 	var router: InputRouter = _router()
 	var log: Array = _record(router)
 	router.handle_input(_touch(Vector2(300, 600), true))
-	router.handle_input(_drag(Vector2(315, 600)))  # 12px보다 움직임 (스와이프 22px에는 못 미침)
+	router.handle_input(_drag(Vector2(322, 600)))  # 18px보다 움직임 (스와이프 33px에는 못 미침)
 	router.tick(1.0)
 	assert_eq(log.size(), 0)
 	router.free()

@@ -65,13 +65,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = 48.0
-offset_right = -32.0
-offset_bottom = -48.0
+offset_left = 48.0
+offset_top = 72.0
+offset_right = -48.0
+offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 30
 
 [node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
 layout_mode = 2
@@ -79,36 +79,36 @@ layout_mode = 2
 [node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 56
+theme_override_font_sizes/font_size = 84
 text = "상점"
 
 [node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
 unique_name_in_owner = true
 layout_mode = 2
-font_size = 32
+font_size = 48
 
 [node name="Tabs" type="HBoxContainer" parent="SafeArea/Content/Layout"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
 [node name="GachaTab" type="Button" parent="SafeArea/Content/Layout/Tabs"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 theme_type_variation = &"TabButton"
 toggle_mode = true
 text = "뽑기"
 
 [node name="ShopTab" type="Button" parent="SafeArea/Content/Layout/Tabs"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 theme_type_variation = &"TabButton"
 toggle_mode = true
 text = "상점"
@@ -122,7 +122,7 @@ horizontal_scroll_mode = 0
 [node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/GachaPage"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 16
+theme_override_constants/separation = 24
 
 [node name="Chest" parent="SafeArea/Content/Layout/GachaPage/VBox" instance=ExtResource("9_chest")]
 unique_name_in_owner = true
@@ -133,22 +133,22 @@ size_flags_horizontal = 4
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 39
 text = "상자를 눌러 열기"
 horizontal_alignment = 1
 
 [node name="PullButton" type="Button" parent="SafeArea/Content/Layout/GachaPage/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 96)
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 54
 text = "열기 · ● 350"
 
 [node name="RateLabel" type="Label" parent="SafeArea/Content/Layout/GachaPage/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 text = "신화 0.1% · 전설 0.9% · 영웅 34% · 희귀 65%"
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -157,13 +157,13 @@ autowrap_mode = 3
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 33
 text = "뽑기 1단계"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="TierBar" type="ColorRect" parent="SafeArea/Content/Layout/GachaPage/VBox"]
-custom_minimum_size = Vector2(0, 10)
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("95_token_rect")
@@ -181,21 +181,21 @@ token = &"info"
 
 [node name="PoolTitle" type="Label" parent="SafeArea/Content/Layout/GachaPage/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 text = "나오는 캐릭터"
 
 [node name="Pool" type="HFlowContainer" parent="SafeArea/Content/Layout/GachaPage/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
 
 [node name="AdButton" type="Button" parent="SafeArea/Content/Layout/GachaPage/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 39
 text = "광고 보고 ◆ 5 · 오늘 0/3"
 
 [node name="ShopPage" type="ScrollContainer" parent="SafeArea/Content/Layout"]
@@ -208,33 +208,33 @@ horizontal_scroll_mode = 0
 [node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/ShopPage"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
 [node name="TicketsTitle" type="Label" parent="SafeArea/Content/Layout/ShopPage/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 text = "선택권"
 
 [node name="Tickets" type="VBoxContainer" parent="SafeArea/Content/Layout/ShopPage/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 6
 
 [node name="CharactersTitle" type="Label" parent="SafeArea/Content/Layout/ShopPage/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 text = "다이아 상점"
 
 [node name="Characters" type="VBoxContainer" parent="SafeArea/Content/Layout/ShopPage/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
 [node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 96)
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 60
 text = "뒤로"
 
 [node name="Reveal" parent="." instance=ExtResource("10_reveal")]

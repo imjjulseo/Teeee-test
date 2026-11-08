@@ -64,14 +64,14 @@ extends Resource
 
 @export_group("Input")
 ## 손가락이 이 거리(px, 기준 해상도)를 넘게 움직이는 순간 1칸 이동한다. 한 번 닿을 때 1칸 (3.2장, E8).
-@export var swipe_threshold: float = 22.0
+@export var swipe_threshold: float = 33.0
 ## 패드 버튼을 누르고 있으면 이 시간(초) 뒤부터 반복 이동한다.
 @export var pad_repeat_delay: float = 0.17
 ## 패드 반복 이동 간격(초).
 @export var pad_repeat_interval: float = 0.06
 ## 꾹 누르기: 화면을 움직이지 않고 이만큼(초) 누르고 있으면 (방화광 소화). 손가락이 이 거리(px)보다 움직이면 취소.
 @export var long_press_time: float = 0.5
-@export var long_press_slop: float = 12.0
+@export var long_press_slop: float = 18.0
 
 @export_group("Debug")
 ## 0이면 매 판 랜덤 seed, 0이 아니면 고정 seed.

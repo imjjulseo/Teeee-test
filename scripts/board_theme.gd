@@ -30,13 +30,13 @@ extends Resource
 @export var coin_color: Color = Color("ffd23f")
 
 @export_group("Layout")
-@export var cell_size: float = 64.0
-@export var cell_gap: float = 4.0
-@export var player_border_width: float = 5.0
+@export var cell_size: float = 96.0
+@export var cell_gap: float = 6.0
+@export var player_border_width: float = 7.5
 
 @export_group("Recipe")
 ## 족보 칸 하나의 크기(px).
-@export var recipe_step_size: float = 38.0
+@export var recipe_step_size: float = 57.0
 ## 이미 제거한 족보 칸의 불투명도 (HTML: 모은 칸은 또렷하게 = 1).
 @export_range(0.0, 1.0) var recipe_done_alpha: float = 1.0
 ## 아직 모으지 않은 칸의 불투명도 (HTML .rc.tint .dot = .4). 다음 칸만 또렷하게 + 흰 테두리.
@@ -45,13 +45,13 @@ extends Resource
 @export var recipe_card_bg: Color = Color(0.0745098, 0.176471, 0.211765, 1)
 @export_range(0.0, 1.0) var recipe_tint: float = 0.36
 @export_range(0.0, 1.0) var recipe_border_tint: float = 0.8
-@export var recipe_card_radius: int = 14
-@export var recipe_card_border: int = 3
-@export var recipe_next_ring: int = 5
+@export var recipe_card_radius: int = 21
+@export var recipe_card_border: int = 4
+@export var recipe_next_ring: int = 7
 ## 다음에 제거할 칸의 강조 테두리.
 @export var recipe_next_border: Color = Color("ffffff")
 ## 족보 박스가 4개(능력 조건 포함)일 때의 칸 크기(px). 화면 폭에 맞추기 위해 줄인다.
-@export var recipe_step_size_compact: float = 30.0
+@export var recipe_step_size_compact: float = 45.0
 ## 시계공 "정지" 중 남은 시간 표시 색.
 @export var hud_time_stop_color: Color = Color("7fd6ff")
 ## 족보 완성 시 박스가 커졌다 돌아오는 비율.
@@ -66,10 +66,10 @@ extends Resource
 ## 점수 표시가 실제 점수를 따라가는 속도 (초당 남은 차이의 비율).
 @export var score_count_speed: float = 12.0
 ## 떠오르는 숫자("+2.5", "+10")가 올라가는 거리(px)와 시간(초).
-@export var float_rise: float = 40.0
+@export var float_rise: float = 60.0
 @export var float_duration: float = 0.8
 ## 족보 완성 "+N" 팝업이 떠오르는 거리(px)와 시간(초).
-@export var score_popup_rise: float = 60.0
+@export var score_popup_rise: float = 90.0
 @export var score_popup_duration: float = 0.9
 
 @export_group("Feedback")
@@ -81,20 +81,20 @@ extends Resource
 @export var refill_pop_scale: float = 0.6
 @export var refill_pop_duration: float = 0.15
 ## 매치 때 판 전체가 흔들리는 거리(px)와 시간(초).
-@export var match_shake_distance: float = 3.0
+@export var match_shake_distance: float = 4.5
 @export var match_shake_duration: float = 0.2
 ## 매치 파편: 칸마다 개수, 퍼지는 속도(px/초), 크기(px), 사라지는 시간(초).
 @export var burst_count: int = 7
-@export var burst_speed: float = 220.0
-@export var burst_size: float = 7.0
+@export var burst_speed: float = 330.0
+@export var burst_size: float = 10.5
 @export var burst_lifetime: float = 0.45
 ## 벽 입력 흔들림 거리(px)와 시간(초).
-@export var wall_shake_distance: float = 6.0
+@export var wall_shake_distance: float = 9.0
 @export var wall_shake_duration: float = 0.12
 
 @export_group("Ability")
 ## 캐릭터 카드 테두리 두께(px). 색은 캐릭터 색.
-@export var ability_border_width: int = 4
+@export var ability_border_width: int = 6
 ## 발동 섬광: 화면 전체에 캐릭터 색을 이 불투명도로 덮었다가 사라지는 시간(초).
 @export_range(0.0, 1.0) var ability_flash_alpha: float = 0.35
 @export var ability_flash_duration: float = 0.6
@@ -111,14 +111,14 @@ extends Resource
 ## 씨앗이 자랄 색을 보여 줄 때(예지안) 바탕·문양의 불투명도.
 @export_range(0.0, 1.0) var seed_reveal_alpha: float = 0.35
 ## 수선사 끈: 선 두께(px), 색, 시작 칸 원 크기(칸 대비).
-@export var trail_width: float = 6.0
+@export var trail_width: float = 9.0
 @export var trail_color: Color = Color("2fcf74")
 @export var trail_start_radius: float = 0.32
 ## 상시형 캐릭터 카드 배경 (족보가 없어 다음 색이 없다).
 @export var passive_card_color: Color = Color(1, 1, 1, 0.08)
 ## 판 위 능력 표시: 선 두께(px), 탐험 구역 점선 길이(px)와 색, 깃발 색(가야 할 깃발 / 준비된 깃발 / 다음 깃발).
-@export var mark_line_width: float = 4.0
-@export var mark_dash_length: float = 10.0
+@export var mark_line_width: float = 6.0
+@export var mark_dash_length: float = 15.0
 @export var mark_zone_color: Color = Color(1, 1, 1, 0.75)
 @export var mark_flag_color: Color = Color(1, 1, 1, 0.7)
 @export var mark_flag_ready_color: Color = Color("ffd23f")

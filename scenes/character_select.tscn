@@ -62,13 +62,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = 48.0
-offset_right = -32.0
-offset_bottom = -48.0
+offset_left = 48.0
+offset_top = 72.0
+offset_right = -48.0
+offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 36
 
 [node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
 layout_mode = 2
@@ -76,29 +76,29 @@ layout_mode = 2
 [node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 56
+theme_override_font_sizes/font_size = 84
 text = "캐릭터"
 
 [node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
 unique_name_in_owner = true
 layout_mode = 2
-font_size = 32
+font_size = 48
 
 [node name="EquippedLabel" type="Label" parent="SafeArea/Content/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 48
 text = "장착 중 · 기본"
 
 [node name="FilterScroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 76)
+custom_minimum_size = Vector2(0, 114)
 layout_mode = 2
 vertical_scroll_mode = 0
 
 [node name="Filters" type="HBoxContainer" parent="SafeArea/Content/Layout/FilterScroll"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
 [node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
 unique_name_in_owner = true
@@ -110,13 +110,13 @@ vertical_scroll_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 20
+theme_override_constants/separation = 30
 
 [node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 96)
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 60
 text = "뒤로"
 
 [node name="CharacterSheet" parent="." instance=ExtResource("6_sheet")]

@@ -95,9 +95,9 @@ func test_four_directions() -> void:
 func test_move_happens_during_the_drag_not_on_release() -> void:
 	var router: InputRouter = _router()
 	var c: Vector2 = Vector2(100, 100)
-	var during: Dictionary = _feed(router, [_touch(c, true), _drag(c + Vector2(30, 0))])
+	var during: Dictionary = _feed(router, [_touch(c, true), _drag(c + Vector2(45, 0))])
 	assert_eq(during["moves"], [Vector2i.RIGHT] as Array[Vector2i], "moved while the finger is down")
-	var after: Dictionary = _feed(router, [_drag(c + Vector2(90, 0)), _touch(c + Vector2(90, 0), false)])
+	var after: Dictionary = _feed(router, [_drag(c + Vector2(135, 0)), _touch(c + Vector2(135, 0), false)])
 	assert_eq((after["moves"] as Array).size(), 0, "no second move and no tap for the same touch")
 	assert_eq((after["taps"] as Array).size(), 0)
 	router.free()

@@ -4,94 +4,94 @@
 [ext_resource type="Resource" path="res://resources/character_roster.tres" id="2_roster"]
 
 [node name="DebugPanel" type="VBoxContainer"]
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 script = ExtResource("1_debug")
 roster = ExtResource("2_roster")
 
 [node name="DebugHeading" type="Label" parent="."]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 text = "디버그 (개발 빌드)"
 
 [node name="DebugStatusLabel" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 text = "Lv 1 · ● 0 · ◆ 0 · 해금 1"
 
 [node name="DebugRow" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
 [node name="GrantButton" type="Button" parent="DebugRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 text = "● +1000 ◆ +100"
 
 [node name="LevelButton" type="Button" parent="DebugRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 text = "레벨 +1"
 
 [node name="UnlockAllButton" type="Button" parent="DebugRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 text = "전부 해금"
 
 [node name="TutorialRow" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
 [node name="TutorialRestartButton" type="Button" parent="TutorialRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 30
 text = "튜토리얼
 처음부터"
 
 [node name="TutorialFinishButton" type="Button" parent="TutorialRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 30
 text = "튜토리얼
 끝냄"
 
 [node name="TutorialGachaButton" type="Button" parent="TutorialRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 30
 text = "첫 뽑기
 직전"
 
 [node name="TutorialCharacterButton" type="Button" parent="TutorialRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 72)
+custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
 size_flags_horizontal = 3
 focus_mode = 0
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 30
 text = "첫 캐릭터
 받음"
 

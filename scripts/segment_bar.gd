@@ -2,8 +2,8 @@ class_name SegmentBar
 extends Control
 ## 몇 번째 판인지 (HTML 11/06 .pseg): n칸 중 index + 1칸을 노랗게. 단계 번호·구분자 없음.
 
-@export var segment_size: Vector2 = Vector2(32, 9)
-@export var gap: float = 7.0
+@export var segment_size: Vector2 = Vector2(48, 13.5)
+@export var gap: float = 10.5
 
 var index: int = 0
 var count: int = 0

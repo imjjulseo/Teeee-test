@@ -6,8 +6,8 @@
 [node name="CellView" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 64.0
-offset_bottom = 64.0
+offset_right = 96.0
+offset_bottom = 96.0
 mouse_filter = 2
 script = ExtResource("1_cell")
 
@@ -96,5 +96,5 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 border_color = Color(1, 1, 1, 1)
-border_width = 5.0
+border_width = 7.5
 editor_only = false

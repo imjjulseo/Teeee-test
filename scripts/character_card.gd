@@ -8,7 +8,7 @@ signal chosen(character: CharacterData)
 
 @export var theme_data: BoardTheme
 ## 카드 안 족보 칸 크기 (카드 폭에 5칸 족보가 들어가게).
-@export var step_size: float = 26.0
+@export var step_size: float = 39.0
 ## 잠긴 카드 밝기.
 @export var locked_alpha: float = 0.55
 ## 가린 히든 카드의 외형 색.

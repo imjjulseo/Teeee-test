@@ -26,11 +26,11 @@ func _tick() -> void:
 				prepare_match_above(1)
 				_points = prime_recipe(0, 1)
 				_start = session().board.player_pos
-				touch(Vector2(360, 1000), true)
+				touch(Vector2(540, 1500), true)
 				next_step()
 		1:
-			drag(Vector2(370, 880))  # 위로 120px → 손을 떼기 전에 UP
-			touch(Vector2(370, 880), false)
+			drag(Vector2(555, 1320))  # 위로 180px → 손을 떼기 전에 UP
+			touch(Vector2(555, 1320), false)
 			next_step()
 		2:
 			if step_time > 0.3:

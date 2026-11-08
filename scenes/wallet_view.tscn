@@ -5,7 +5,7 @@
 
 [node name="WalletView" type="HBoxContainer"]
 size_flags_vertical = 4
-theme_override_constants/separation = 8
+theme_override_constants/separation = 12
 alignment = 2
 script = ExtResource("1_wallet")
 assets = ExtResource("2_assets")
@@ -26,7 +26,7 @@ theme_type_variation = &"AccentLabel"
 text = "● 0"
 
 [node name="Gap" type="Control" parent="."]
-custom_minimum_size = Vector2(8, 0)
+custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 mouse_filter = 2
 

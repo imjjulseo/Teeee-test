@@ -159,7 +159,7 @@ static func _key_hand(event: InputEvent) -> int:
 func _screen_width() -> float:
 	if is_inside_tree():
 		return get_viewport().get_visible_rect().size.x
-	return float(ProjectSettings.get_setting("display/window/size/viewport_width", 720))
+	return float(ProjectSettings.get_setting("display/window/size/viewport_width", 1080))
 
 
 func _long_press_time() -> float:

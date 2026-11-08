@@ -34,7 +34,7 @@ func show_result(p_result: CharacterShop.PullResult, flip_time: float) -> void:
 		_card.add_theme_stylebox_override("panel", card_style)
 	var swatch_style: StyleBoxFlat = StyleBoxFlat.new()
 	swatch_style.bg_color = result.character.accent_color
-	swatch_style.set_corner_radius_all(16)
+	swatch_style.set_corner_radius_all(24)
 	if _portrait.show_character(result.character):
 		swatch_style.bg_color = Color.TRANSPARENT
 	_swatch.add_theme_stylebox_override("panel", swatch_style)

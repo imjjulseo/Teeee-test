@@ -33,7 +33,7 @@ var _recipe: RecipeSet.Recipe
 func _ready() -> void:
 	_panel_style = StyleBoxFlat.new()
 	_panel_style.set_corner_radius_all(theme_data.recipe_card_radius)
-	_panel_style.set_content_margin_all(12)
+	_panel_style.set_content_margin_all(18)
 	_panel_style.bg_color = theme_data.recipe_card_bg
 	_panel_style.set_border_width_all(theme_data.ability_border_width if is_ability else theme_data.recipe_card_border)
 	_panel_style.border_color = _border_color if is_ability else theme_data.recipe_card_bg

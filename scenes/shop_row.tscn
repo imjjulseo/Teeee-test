@@ -9,11 +9,11 @@ script = ExtResource("1_row")
 
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 24
 
 [node name="Swatch" type="Panel" parent="HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(56, 56)
+custom_minimum_size = Vector2(84, 84)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
@@ -25,10 +25,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -38,51 +38,51 @@ script = ExtResource("96_portrait")
 [node name="Info" type="VBoxContainer" parent="HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 4
+theme_override_constants/separation = 6
 
 [node name="RowName" type="Label" parent="HBox/Info"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 39
 text = "이름 · 희귀"
 
 [node name="RowAbility" type="Label" parent="HBox/Info"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 30
 text = "능력"
 autowrap_mode = 3
 
 [node name="Actions" type="VBoxContainer" parent="HBox"]
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_constants/separation = 8
+theme_override_constants/separation = 12
 
 [node name="OwnedLabel" type="Label" parent="HBox/Actions"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_type_variation = &"InfoLabel"
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 text = "보유"
 horizontal_alignment = 1
 
 [node name="TicketButton" type="Button" parent="HBox/Actions"]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(130, 56)
+custom_minimum_size = Vector2(195, 84)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 33
 text = "선택권"
 
 [node name="RowBuyButton" type="Button" parent="HBox/Actions"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(130, 56)
+custom_minimum_size = Vector2(195, 84)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 33
 text = "◆ 80"
 
 [connection signal="pressed" from="HBox/Actions/TicketButton" to="." method="_on_ticket_button_pressed"]

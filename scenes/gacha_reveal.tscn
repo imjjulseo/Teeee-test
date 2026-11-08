@@ -31,14 +31,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -320.0
-offset_right = 200.0
-offset_bottom = 320.0
+offset_left = -300.0
+offset_top = -480.0
+offset_right = 300.0
+offset_bottom = 480.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 60
 alignment = 1
 
 [node name="Card" type="PanelContainer" parent="Center"]
@@ -50,12 +50,12 @@ theme_type_variation = &"RevealCardPanel"
 [node name="VBox" type="VBoxContainer" parent="Center/Card"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 24
 alignment = 1
 
 [node name="RevealSwatch" type="Panel" parent="Center/Card/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 140)
+custom_minimum_size = Vector2(210, 210)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
@@ -67,10 +67,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = -4.0
-offset_bottom = -4.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -80,7 +80,7 @@ script = ExtResource("96_portrait")
 [node name="RevealName" type="Label" parent="Center/Card/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 44
+theme_override_font_sizes/font_size = 66
 text = "이름"
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -88,7 +88,7 @@ autowrap_mode = 3
 [node name="RevealGrade" type="Label" parent="Center/Card/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 42
 text = "희귀"
 horizontal_alignment = 1
 
@@ -96,16 +96,16 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"AccentLabel"
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 text = "NEW"
 horizontal_alignment = 1
 
 [node name="OkButton" type="Button" parent="Center"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 96)
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 54
 text = "확인"
 
 [connection signal="pressed" from="Dim" to="." method="_on_dim_pressed"]

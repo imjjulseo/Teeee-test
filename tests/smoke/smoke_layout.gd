@@ -3,7 +3,7 @@ extends "res://tests/smoke/smoke_base.gd"
 ## 조작은 가상 방향키(가장 빡빡한 배치)로 확인한다.
 ## 예: godot --path . --resolution 360x780 -s tests/smoke/smoke_layout.gd -- notch
 
-const NOTCH: Vector4 = Vector4(0, 90, 0, 40)
+const NOTCH: Vector4 = Vector4(0, 135, 0, 60)
 
 
 func _setup() -> void:

@@ -10,7 +10,7 @@ script = ExtResource("1_row")
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 6
+theme_override_constants/separation = 9
 
 [node name="Top" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
@@ -20,32 +20,32 @@ mouse_filter = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 39
 text = "업적"
 
 [node name="AchReward" type="Label" parent="VBox/Top"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"AccentLabel"
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 33
 text = "● 100"
 
 [node name="AchText" type="Label" parent="VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 33
 text = "조건"
 autowrap_mode = 3
 
 [node name="Bottom" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
 [node name="AchBar" type="ColorRect" parent="VBox/Bottom"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 10)
+custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -66,6 +66,6 @@ token = &"info"
 [node name="AchValue" type="Label" parent="VBox/Bottom"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 33
 text = "0 / 1"
 horizontal_alignment = 2

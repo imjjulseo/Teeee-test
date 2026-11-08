@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://scripts/filter_chip.gd" id="1_chip"]
 
 [node name="FilterChip" type="Button"]
-custom_minimum_size = Vector2(0, 64)
+custom_minimum_size = Vector2(0, 96)
 focus_mode = 0
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 36
 theme_type_variation = &"ChipButton"
 toggle_mode = true
 text = "전체"

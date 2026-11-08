@@ -53,13 +53,13 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = 48.0
-offset_right = -32.0
-offset_bottom = -48.0
+offset_left = 48.0
+offset_top = 72.0
+offset_right = -48.0
+offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 30
 
 [node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
 layout_mode = 2
@@ -67,13 +67,13 @@ layout_mode = 2
 [node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 56
+theme_override_font_sizes/font_size = 84
 text = "업적"
 
 [node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
 unique_name_in_owner = true
 layout_mode = 2
-font_size = 32
+font_size = 48
 
 [node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
 unique_name_in_owner = true
@@ -84,41 +84,41 @@ horizontal_scroll_mode = 0
 [node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 12
+theme_override_constants/separation = 18
 
 [node name="CommonTitle" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 text = "공통 업적"
 
 [node name="CommonList" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
 [node name="HiddenTitle" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 30
+theme_override_font_sizes/font_size = 45
 text = "히든 업적"
 
 [node name="HiddenList" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 
 [node name="CharacterNote" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
 layout_mode = 2
 theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 33
 text = "캐릭터 업적은 캐릭터 화면의 상세에서 볼 수 있어요"
 autowrap_mode = 3
 
 [node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 96)
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 60
 text = "뒤로"
 
 [node name="MenuNavigator" type="Node" parent="."]

@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://scripts/grade_header.gd" id="1_header"]
 
 [node name="GradeHeader" type="Label"]
-custom_minimum_size = Vector2(0, 56)
-theme_override_font_sizes/font_size = 30
+custom_minimum_size = Vector2(0, 84)
+theme_override_font_sizes/font_size = 45
 text = "희귀"
 vertical_alignment = 2
 script = ExtResource("1_header")

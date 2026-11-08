@@ -99,15 +99,15 @@ func _check_passive_followup() -> void:
 			# 실제 스와이프: 오른쪽으로 밀고 손가락을 떼지 않으면 돌진
 			if _snap == null:
 				_snap = session().board.player_pos
-				touch(Vector2(200, 1150), true)
+				touch(Vector2(300, 1725), true)
 			elif _snap is Vector2i and step_time > 0.05 and step_time < 0.2:
-				drag(Vector2(240, 1150))
+				drag(Vector2(360, 1725))
 				_snap = [_snap]
 			elif _snap is Array and step_time > 0.8:
 				var pachy: PachyAbility = session().ability as PachyAbility
 				var start: Vector2i = _snap[0]
 				expect(session().board.player_pos.x >= start.x + 2 or pachy.headbutts > 0, "held swipe dashed (%s from %s)" % [session().board.player_pos, start])
-				touch(Vector2(240, 1150), false)
+				touch(Vector2(360, 1725), false)
 				_snap = "released"
 				step_time = 0.0
 			elif _snap is String and step_time > 0.4:

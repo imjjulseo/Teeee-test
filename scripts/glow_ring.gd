@@ -4,10 +4,10 @@ extends Control
 ## 화면 전체를 덮는 투명 Control로 두고(입력은 통과), follow(대상)로 대상 버튼 둘레에 그린다. 색은 디자인 토큰 accent.
 
 @export var period: float = 1.8
-## 고리 두께·빛 번짐(px, 720 기준)과 모서리 반지름.
-@export var ring_width: float = 5.0
-@export var blur: float = 28.0
-@export var radius: float = 18.0
+## 고리 두께·빛 번짐(px, 1080 기준)과 모서리 반지름.
+@export var ring_width: float = 7.5
+@export var blur: float = 42.0
+@export var radius: float = 27.0
 
 var target: Control
 var _time: float = 0.0

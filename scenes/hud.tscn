@@ -56,27 +56,27 @@ mouse_filter = 2
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 24.0
-offset_top = 24.0
-offset_right = -24.0
-offset_bottom = 112.0
+offset_left = 36.0
+offset_top = 36.0
+offset_right = -36.0
+offset_bottom = 168.0
 grow_horizontal = 2
 mouse_filter = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 30
 
 [node name="PauseButton" type="Button" parent="SafeArea/Content/TopRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(88, 88)
+custom_minimum_size = Vector2(132, 132)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 60
 text = "II"
 
 [node name="ScoreLabel" type="Label" parent="SafeArea/Content/TopRow"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 90
 text = "0"
 vertical_alignment = 1
 
@@ -88,7 +88,7 @@ mouse_filter = 2
 [node name="CoinIcon" type="TextureRect" parent="SafeArea/Content/TopRow"]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2(34, 34)
+custom_minimum_size = Vector2(51, 51)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
@@ -100,16 +100,16 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 theme_type_variation = &"AccentLabel"
-theme_override_font_sizes/font_size = 34
+theme_override_font_sizes/font_size = 51
 text = "● 0"
 vertical_alignment = 1
 
 [node name="TimeLabel" type="Label" parent="SafeArea/Content/TopRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(225, 0)
 layout_mode = 2
 size_flags_vertical = 1
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 90
 text = "60.0"
 horizontal_alignment = 2
 vertical_alignment = 1
@@ -119,10 +119,10 @@ unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 24.0
-offset_top = 126.0
-offset_right = -24.0
-offset_bottom = 136.0
+offset_left = 36.0
+offset_top = 189.0
+offset_right = -36.0
+offset_bottom = 204.0
 grow_horizontal = 2
 mouse_filter = 2
 script = ExtResource("95_token_rect")
@@ -142,13 +142,13 @@ mouse_filter = 2
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 24.0
-offset_top = 156.0
-offset_right = -24.0
-offset_bottom = 262.0
+offset_left = 36.0
+offset_top = 234.0
+offset_right = -36.0
+offset_bottom = 393.0
 grow_horizontal = 2
 mouse_filter = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 21
 
 [node name="Recipe0" parent="SafeArea/Content/Recipes" instance=ExtResource("2_recipe")]
 unique_name_in_owner = true
@@ -182,13 +182,13 @@ unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 280.0
-offset_bottom = 330.0
+offset_top = 420.0
+offset_bottom = 495.0
 grow_horizontal = 2
 theme_type_variation = &"WarmAccentLabel"
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 40
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 60
 text = "+0"
 horizontal_alignment = 1
 
@@ -199,14 +199,14 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 24.0
-offset_top = -48.0
-offset_right = -24.0
-offset_bottom = -8.0
+offset_left = 36.0
+offset_top = -72.0
+offset_right = -36.0
+offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 39
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -228,22 +228,22 @@ theme_type_variation = &"BannerPanel"
 [node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Banner"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 12
 
 [node name="BannerTitle" type="Label" parent="SafeArea/Content/Banner/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.4)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 96
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 144
 text = "촉진!"
 horizontal_alignment = 1
 
 [node name="BannerSub" type="Label" parent="SafeArea/Content/Banner/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(520, 0)
+custom_minimum_size = Vector2(780, 0)
 layout_mode = 2
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 39
 text = "촉진: 자라는 중인 씨앗 전부 즉시 성장"
 horizontal_alignment = 1
 autowrap_mode = 3

@@ -108,12 +108,12 @@ func _tick_dpad() -> void:
 			if step_time > 0.3:
 				expect(session().stats.moves + session().stats.blocked_moves == _moves_before, "released → repeat stops (+%d, held %s)" % [session().stats.moves + session().stats.blocked_moves - _moves_before, (node("VirtualDpad") as VirtualDpad).held_direction()])
 				_remember()
-				touch(Vector2(360, 600), true)  # 패드 모드에서 스와이프 시도
+				touch(Vector2(540, 900), true)  # 패드 모드에서 스와이프 시도
 				next_step()
 		10:
 			if step_time > 0.05 and step_time < 0.1:
-				drag(Vector2(360, 400))
-				touch(Vector2(360, 400), false)
+				drag(Vector2(540, 600))
+				touch(Vector2(540, 600), false)
 			if step_time > 0.4:
 				expect(session().board.player_pos == _player_before, "swipe ignored in pad mode")
 				finish()
@@ -123,14 +123,14 @@ func _tick_swipe() -> void:
 	match step:
 		6:
 			expect(not (node("VirtualDpad") as CanvasLayer).visible, "pad hidden in swipe mode")
-			touch(Vector2(360, 1100), true)
+			touch(Vector2(540, 1650), true)
 			next_step()
 		7:
 			if step_time > 0.05 and step_time < 0.1:
-				drag(Vector2(360, 1070))  # 30px: 22px를 넘는 순간 이동
+				drag(Vector2(540, 1605))  # 45px: 33px를 넘는 순간 이동
 			if step_time > 0.3:
 				expect(session().board.player_pos - _player_before == Vector2i.UP, "moved up by 1 before lifting the finger")
-				touch(Vector2(360, 900), false)
+				touch(Vector2(540, 1350), false)
 				next_step()
 		8:
 			if step_time > 0.3:

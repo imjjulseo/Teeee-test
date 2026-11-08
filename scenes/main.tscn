@@ -87,7 +87,7 @@ mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="HudSpace" type="Control" parent="LayoutLayer/GameLayout/SafeArea/Column" unique_id=2139995650]
-custom_minimum_size = Vector2(0, 300)
+custom_minimum_size = Vector2(0, 450)
 layout_mode = 2
 mouse_filter = 2
 
@@ -97,13 +97,13 @@ size_flags_vertical = 3
 mouse_filter = 2
 
 [node name="DpadSpace" type="Control" parent="LayoutLayer/GameLayout/SafeArea/Column" unique_id=483619629]
-custom_minimum_size = Vector2(0, 360)
+custom_minimum_size = Vector2(0, 540)
 layout_mode = 2
 mouse_filter = 2
 script = ExtResource("30_space")
 
 [node name="BoardView" parent="." unique_id=1724076225 node_paths=PackedStringArray("board_area") instance=ExtResource("3_board_view")]
-position = Vector2(360, 700)
+position = Vector2(540, 1050)
 config = ExtResource("2_config")
 board_area = NodePath("../LayoutLayer/GameLayout/SafeArea/Column/BoardArea")
 

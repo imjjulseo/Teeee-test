@@ -5,7 +5,7 @@ extends Control
 @export var target_color: Color = Color("5b8def")
 @export var player_color: Color = Color.WHITE
 @export var other_color: Color = Color(1, 1, 1, 0.12)
-@export var gap: float = 2.0
+@export var gap: float = 3.0
 
 var _def: PuzzleDef
 
