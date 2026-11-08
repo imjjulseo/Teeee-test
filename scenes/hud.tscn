@@ -9,6 +9,12 @@
 [ext_resource type="PackedScene" path="res://scenes/burst_effect.tscn" id="7_burst"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
 [ext_resource type="Resource" path="res://resources/ui_assets.tres" id="98_ui_assets"]
+[ext_resource type="Script" path="res://scripts/character_row.gd" id="8_charrow"]
+[ext_resource type="Script" path="res://scripts/portrait_rect.gd" id="9_portrait"]
+[ext_resource type="Shader" path="res://resources/shaders/sheen.gdshader" id="10_sheen"]
+
+[sub_resource type="ShaderMaterial" id="Mat_sheen"]
+shader = ExtResource("10_sheen")
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -145,9 +151,9 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 36.0
-offset_top = 234.0
+offset_top = 222.0
 offset_right = -36.0
-offset_bottom = 393.0
+offset_bottom = 345.0
 grow_horizontal = 2
 mouse_filter = 2
 theme_override_constants/separation = 21
@@ -170,14 +176,128 @@ layout_mode = 2
 size_flags_horizontal = 3
 slot = 2
 
-[node name="AbilityView" parent="SafeArea/Content/Recipes" instance=ExtResource("2_recipe")]
+[node name="CharacterRow" type="PanelContainer" parent="SafeArea/Content"]
 unique_name_in_owner = true
 visible = false
+clip_children = 2
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 36.0
+offset_top = 357.0
+offset_right = -36.0
+offset_bottom = 447.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_type_variation = &"CharacterRowPanel"
+script = ExtResource("8_charrow")
+theme_data = ExtResource("4_theme")
+
+[node name="HBox" type="HBoxContainer" parent="SafeArea/Content/CharacterRow"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+
+[node name="CharIcon" type="Panel" parent="SafeArea/Content/CharacterRow/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(69, 69)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"CharacterIconPanel"
+
+[node name="CharPortrait" type="TextureRect" parent="SafeArea/Content/CharacterRow/HBox/CharIcon"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("9_portrait")
+
+[node name="CharInitial" type="Label" parent="SafeArea/Content/CharacterRow/HBox/CharIcon"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"OnAccentLabel"
+theme_override_font_sizes/font_size = 39
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Info" type="VBoxContainer" parent="SafeArea/Content/CharacterRow/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.55
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="CharName" type="Label" parent="SafeArea/Content/CharacterRow/HBox/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 33
+clip_text = true
+
+[node name="Line2" type="HBoxContainer" parent="SafeArea/Content/CharacterRow/HBox/Info"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="CharGrade" type="Label" parent="SafeArea/Content/CharacterRow/HBox/Info/Line2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 27
+
+[node name="CharStatus" type="Label" parent="SafeArea/Content/CharacterRow/HBox/Info/Line2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 27
+text_overrun_behavior = 3
+
+[node name="CharBar" type="ColorRect" parent="SafeArea/Content/CharacterRow/HBox/Info/Line2"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 9)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"track"
+
+[node name="CharBarFill" type="ColorRect" parent="SafeArea/Content/CharacterRow/HBox/Info/Line2/CharBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="AbilityView" parent="SafeArea/Content/CharacterRow/HBox" instance=ExtResource("2_recipe")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
 slot = -1
 is_ability = true
+dots_only = true
+
+[node name="Sheen" type="ColorRect" parent="SafeArea/Content/CharacterRow"]
+unique_name_in_owner = true
+material = SubResource("Mat_sheen")
+layout_mode = 2
+mouse_filter = 2
 
 [node name="MessageLabel" type="Label" parent="SafeArea/Content"]
 unique_name_in_owner = true

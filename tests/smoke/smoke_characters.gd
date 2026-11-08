@@ -301,9 +301,9 @@ func _tick_ability() -> void:
 	match step:
 		0:
 			if playing():
-				expect((node("Hud/%AbilityView") as Control).visible, "character card shown")
-				expect((node("Hud/%Recipe0") as RecipeView).step_size() == (node("Hud/%Recipe0") as RecipeView).theme_data.recipe_step_size_compact, "compact steps with 4 boxes")
-				expect(_recipes_fit(), "4 boxes fit on screen")
+				expect((node("Hud/%CharacterRow") as Control).visible, "character row shown")
+				expect((node("Hud/%CharacterRow") as Control).get_global_rect().end.y <= (node("BoardView") as BoardView).cells_rect([Vector2i.ZERO] as Array[Vector2i]).position.y, "character row above the board")
+				expect(_recipes_fit(), "cards and character row fit on screen")
 				expect(_card() == session().character.ability_name, "card shows the ability name before triggering")
 				if mode == "gardener":
 					session().board.set_seed(Vector2i(0, 0), 3, 1.0, 1.0)
@@ -589,7 +589,7 @@ func _check_fever_end() -> void:
 
 func _recipes_fit() -> bool:
 	var width: float = root.get_visible_rect().size.x
-	for path: String in ["Hud/%Recipe0", "Hud/%Recipe1", "Hud/%Recipe2", "Hud/%AbilityView"]:
+	for path: String in ["Hud/%Recipe0", "Hud/%Recipe1", "Hud/%Recipe2", "Hud/%CharacterRow"]:
 		var rect: Rect2 = (node(path) as Control).get_global_rect()
 		if (node(path) as Control).visible and (rect.position.x < 0.0 or rect.end.x > width):
 			return false

@@ -88,6 +88,17 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 45
 text = "다음"
 
+[node name="TapHint" type="Label" parent="Card/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"DimLabel"
+theme_override_font_sizes/font_size = 36
+text = "화면을 눌러 계속"
+horizontal_alignment = 1
+
+[connection signal="gui_input" from="Dim" to="." method="_on_tap_area_input"]
+[connection signal="gui_input" from="Card" to="." method="_on_tap_area_input"]
 [connection signal="pressed" from="Card/VBox/ReplayButton" to="." method="_on_replay_button_pressed"]
 [connection signal="pressed" from="Card/VBox/RetryButton" to="." method="_on_retry_button_pressed"]
 [connection signal="pressed" from="Card/VBox/NextButton" to="." method="_on_next_button_pressed"]

@@ -23,7 +23,10 @@ func _on_revive_offered(score: int, cost: int, diamonds: int, seconds: float) ->
 
 
 func _on_state_changed(state: GameFlow.GameState) -> void:
+	var was_visible: bool = visible
 	visible = state == GameFlow.GameState.REVIVE
+	if visible and not was_visible:
+		OverlayIn.play(get_node_or_null("Center") as Control)  # 카드가 커지며 나타남 (HTML ovgIn)
 
 
 func _on_revive_button_pressed() -> void:

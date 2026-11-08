@@ -52,6 +52,18 @@ extends Resource
 @export var recipe_next_border: Color = Color("ffffff")
 ## 족보 박스가 4개(능력 조건 포함)일 때의 칸 크기(px). 화면 폭에 맞추기 위해 줄인다.
 @export var recipe_step_size_compact: float = 45.0
+## 족보 카드 안 여백(px).
+@export var recipe_card_padding: int = 15
+## HUD 캐릭터 줄 (족보 카드 아래): 바탕을 캐릭터 색으로 물들이는 비율, 지나가는 빛 띠 진하기·주기(초, HTML sheen 3.8),
+## 튜토리얼이 가리킬 때 맥박 주기(초, HTML ctPulse 1.2)·빛 크기(px), 발동 때 커지는 배율·밝기·시간(HTML chrBurst 0.6초).
+@export_range(0.0, 1.0) var character_row_tint: float = 0.26
+@export_range(0.0, 1.0) var character_row_sheen_alpha: float = 0.3
+@export var character_row_sheen_period: float = 3.8
+@export var character_row_pulse_period: float = 1.2
+@export var character_row_pulse_size: float = 30.0
+@export var character_burst_scale: float = 1.08
+@export var character_burst_brightness: float = 1.4
+@export var character_burst_duration: float = 0.6
 ## 시계공 "정지" 중 남은 시간 표시 색.
 @export var hud_time_stop_color: Color = Color("7fd6ff")
 ## 캐릭터 카드 발동 시 박스가 커졌다 돌아오는 비율.
@@ -165,6 +177,8 @@ extends Resource
 ## 배경 효과: 가장 진할 때 불투명도, 켜고 끌 때 따라가는 속도(초당 비율).
 @export_range(0.0, 1.0) var effect_alpha: float = 0.3
 @export var effect_fade_speed: float = 10.0
+## 맥박치는 배경 효과(뱀파이어)가 가장 진할 때 더하는 비율.
+@export var effect_pulse_boost: float = 0.8
 ## 배경 효과가 끝나기 몇 초 전부터 깜빡이는지, 깜빡임 빠르기(시작 → 끝, Hz) (5.2장 공통 규칙).
 @export var effect_blink_window: float = 3.0
 @export var effect_blink_start_hz: float = 2.0
@@ -185,7 +199,9 @@ extends Resource
 @export var mark_flag_ready_color: Color = Color("ffd23f")
 @export var mark_flag_next_color: Color = Color(1, 1, 1, 0.25)
 ## 곧 바뀔 칸 예고 테두리 색 (방화광: 불이 번질 칸).
-@export var mark_warn_color: Color = Color("ff8a2a")
+@export var mark_warn_color: Color = Color("ffb04a")
+## 불 번짐 예고 칸이 번갈아 바뀌는 색 (HTML emberWarn #FF4A2A).
+@export var mark_warn_hot_color: Color = Color("ff4a2a")
 
 @export_group("Puzzle")
 ## 블럭 모으기 안내: 모을 블록 테두리, 목표 가운데·빈 자리·모인 자리, 설 칸, 당길 블록, 화살표.

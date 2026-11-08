@@ -11,6 +11,8 @@ extends PanelContainer
 @export var theme_data: BoardTheme
 ## 캐릭터 능력 조건 박스로 표시한다.
 @export var is_ability: bool = false
+## 점만 (판넬·둘째 줄 없음): HUD 캐릭터 줄 오른쪽의 능력 발동 족보. 상태 문구는 줄이 따로 보인다.
+@export var dots_only: bool = false
 
 var _panel_style: StyleBoxFlat
 var _steps_list: Array[Panel] = []
@@ -43,10 +45,14 @@ var _card_tween: Tween
 func _ready() -> void:
 	_panel_style = StyleBoxFlat.new()
 	_panel_style.set_corner_radius_all(theme_data.recipe_card_radius)
-	_panel_style.set_content_margin_all(18)
+	_panel_style.set_content_margin_all(0 if dots_only else theme_data.recipe_card_padding)
 	_panel_style.bg_color = theme_data.recipe_card_bg
 	_panel_style.set_border_width_all(theme_data.ability_border_width if is_ability else theme_data.recipe_card_border)
 	_panel_style.border_color = _border_color if is_ability else theme_data.recipe_card_bg
+	if dots_only:
+		_panel_style.bg_color = Color.TRANSPARENT
+		_panel_style.set_border_width_all(0)
+		_points_label.visible = false
 	add_theme_stylebox_override("panel", _panel_style)
 	if _step_size <= 0.0:
 		_step_size = theme_data.recipe_step_size
@@ -62,7 +68,7 @@ func set_step_size(step_size: float) -> void:
 ## 캐릭터 카드 테두리 색 (캐릭터 색).
 func set_border_color(color: Color) -> void:
 	_border_color = color
-	if _panel_style != null:
+	if _panel_style != null and not dots_only:
 		_panel_style.border_color = color
 
 
@@ -75,7 +81,8 @@ func show_status(text: String) -> void:
 ## 상시형 캐릭터 카드: 족보 칸 없이 상태 문구(없으면 caption)만.
 func show_passive(caption: String) -> void:
 	_recipe = null
-	_panel_style.bg_color = theme_data.passive_card_color
+	if not dots_only:
+		_panel_style.bg_color = theme_data.passive_card_color
 	_caption = caption
 	_ensure_steps(0)
 	_steps.visible = false

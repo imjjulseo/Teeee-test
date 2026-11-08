@@ -13,7 +13,10 @@ func _ready() -> void:
 
 
 func _on_state_changed(state: GameFlow.GameState) -> void:
+	var was_visible: bool = visible
 	visible = state == GameFlow.GameState.PAUSED
+	if visible and not was_visible:
+		OverlayIn.play(get_node_or_null("Center") as Control)  # 카드가 커지며 나타남 (HTML ovgIn)
 
 
 func _on_resume_button_pressed() -> void:

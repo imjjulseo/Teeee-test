@@ -15,6 +15,11 @@ var _seen_remaining: float = -1.0
 ## 지금 진하기 0~1 (× effect_alpha).
 var _level: float = 0.0
 var _phase: float = 0.0
+## 맥박 주기(초, 0 = 없음)와 그 시계 (뱀파이어 피의 시간: 가장자리가 붉게 진해졌다 옅어짐).
+var _pulse_period: float = 0.0
+var _pulse_time: float = 0.0
+## 효과 줄이기 (맥박을 끈다).
+var _reduce_motion: bool = false
 
 @onready var _glow: CanvasItem = $Glow  # TextureRect
 
@@ -33,6 +38,15 @@ func _on_effect_updated(accent: Color, block_color: int, remaining: float, blink
 		return
 	var color: Color = theme_data.color_for(block_color) if block_color != Board.NO_COLOR else accent
 	_glow.modulate = Color(color.r, color.g, color.b, _glow.modulate.a)
+
+
+func _on_effect_pulse_changed(period: float) -> void:
+	_pulse_period = period
+	_pulse_time = 0.0
+
+
+func _on_reduce_motion_ready(enabled: bool) -> void:
+	_reduce_motion = enabled
 
 
 func _process(delta: float) -> void:
@@ -61,4 +75,8 @@ func effect_color() -> Color:
 
 
 func _apply_level() -> void:
-	_glow.modulate.a = _level * theme_data.effect_alpha
+	var pulse: float = 1.0
+	if _pulse_period > 0.0 and not _reduce_motion:
+		_pulse_time = fmod(_pulse_time + get_process_delta_time(), _pulse_period)
+		pulse = 1.0 + theme_data.effect_pulse_boost * (0.5 - 0.5 * cos(_pulse_time / _pulse_period * TAU))
+	_glow.modulate.a = _level * theme_data.effect_alpha * pulse

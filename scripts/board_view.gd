@@ -179,6 +179,7 @@ func _on_matched(_center: Vector2i, color: int, cells: Array[Vector2i]) -> void:
 
 func _on_reduce_motion_ready(enabled: bool) -> void:
 	_reduce_motion = enabled
+	_marks.reduce_motion = enabled
 
 
 ## 효과 줄이기가 켜져 있는지 (테스트/디버그용).

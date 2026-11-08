@@ -7,7 +7,12 @@ extends Node2D
 ## 방사형(tctr), 화살표는 흰 화살표가 깜빡임(tarr, 0.9초). 목표 자리·설 칸(tslot · tdest)은 HTML처럼 그리지 않는다.
 
 ## 매 프레임 다시 그리는(움직이는) 표시.
-const ANIMATED: Array[BoardMark.Kind] = [BoardMark.Kind.SWIPE, BoardMark.Kind.TARGET, BoardMark.Kind.PULL, BoardMark.Kind.ARROW]
+const ANIMATED: Array[BoardMark.Kind] = [BoardMark.Kind.SWIPE, BoardMark.Kind.TARGET, BoardMark.Kind.PULL, BoardMark.Kind.ARROW,
+	BoardMark.Kind.FLAG_READY, BoardMark.Kind.WARN, BoardMark.Kind.PATH, BoardMark.Kind.ZONE]
+## 능력 표시 연출 (HTML): 준비된 깃발 노란 빛 맥박(wpPulse 1초), 불 번짐 예고 칸 점선이 주황↔빨강으로 번갈아(emberWarn 0.35초),
+## 수선사 끈 점선이 흐름(thread 1.2초), 탐험가 구역이 생길 때 작게서 튀어나옴(zoneIn 0.45초). 효과 줄이기면 멈춘 모습.
+const ZONE_IN_TIME: float = 0.45
+const ZONE_IN_CURVE: Vector4 = Vector4(0.2, 0.9, 0.3, 1.4)
 
 @export var theme_data: BoardTheme
 
@@ -15,9 +20,18 @@ var _marks: Array[BoardMark] = []
 var _swipe_time: float = 0.0
 ## 깜빡이는 표시의 시계 (초).
 var _pulse_time: float = 0.0
+## 구역이 처음 보인 시각 (rect → _pulse_time). 새 구역만 튀어나온다.
+var _zone_born: Dictionary = {}
+## 효과 줄이기 (BoardView가 알려 준다).
+var reduce_motion: bool = false
 
 
 func show_marks(marks: Array[BoardMark]) -> void:
+	var born: Dictionary = {}
+	for mark: BoardMark in marks:
+		if mark.kind == BoardMark.Kind.ZONE:
+			born[mark.rect] = _zone_born.get(mark.rect, _pulse_time)
+	_zone_born = born
 	_marks = marks
 	_swipe_time = 0.0
 	queue_redraw()
@@ -49,18 +63,23 @@ func _draw() -> void:
 			continue
 		match mark.kind:
 			BoardMark.Kind.ZONE:
-				_draw_dashed_rect(rect.grow(-theme_data.mark_line_width / 2.0), theme_data.mark_zone_color)
+				_draw_zone(mark, rect)
 			BoardMark.Kind.FLAG:
 				draw_rect(rect.grow(-theme_data.mark_line_width / 2.0), theme_data.mark_flag_color, false, theme_data.mark_line_width)
 			BoardMark.Kind.FLAG_READY:
+				var glow: float = 1.0 if reduce_motion else _pulse(1.0, 0.5)  # HTML wpPulse: 빛 .7 → .35 → .7
+				_draw_glow(rect, Color(theme_data.mark_flag_ready_color, 0.7 * glow), 0.03, 0.15)
 				draw_rect(rect.grow(-theme_data.mark_line_width / 2.0), theme_data.mark_flag_ready_color, false, theme_data.mark_line_width * 1.5)
 				_draw_pennant(rect, theme_data.mark_flag_ready_color)
 			BoardMark.Kind.FLAG_NEXT:
 				draw_rect(rect.grow(-theme_data.mark_line_width / 2.0), theme_data.mark_flag_next_color, false, theme_data.mark_line_width)
 			BoardMark.Kind.PATH:
 				_draw_path(mark, step)
-			BoardMark.Kind.WARN:
-				draw_rect(rect.grow(-theme_data.mark_line_width / 2.0), theme_data.mark_warn_color, false, theme_data.mark_line_width)
+			BoardMark.Kind.WARN:  # HTML emberWarn: 점선 #FFB04A ↔ #FF4A2A, 0.35초 왕복
+				var k: float = 0.0 if reduce_motion else 0.5 - 0.5 * cos(_pulse_time / 0.35 * PI)
+				var warn: Color = theme_data.mark_warn_color.lerp(theme_data.mark_warn_hot_color, k)
+				_draw_soft_fill(rect, Color(warn, 0.15 * k))
+				_draw_dashed_rect(rect.grow(-theme_data.mark_line_width), warn)
 			BoardMark.Kind.TARGET:  # HTML .tuthl: 밝게 + 흰 빛 (0 0 16px 6px rgba(255,255,255,.45)), 1.2초 맥박
 				var k: float = _pulse(theme_data.glow_period, 0.2)
 				_draw_soft_fill(rect, theme_data.glow_brighten)
@@ -94,8 +113,42 @@ func _draw_path(mark: BoardMark, step: float) -> void:
 	draw_arc(points[0], theme_data.cell_size * theme_data.trail_start_radius, 0.0, TAU, 32, theme_data.trail_color, theme_data.trail_width / 2.0)
 	if points.size() > 1:
 		draw_polyline(points, theme_data.trail_color, theme_data.trail_width, true)
+		_draw_thread(points)
 	for point: Vector2 in points:
 		draw_circle(point, theme_data.trail_width * 0.6, theme_data.trail_color)
+
+
+## 끈 위로 흐르는 밝은 점선 (HTML #trail .th: dasharray 7 5, 1.2초에 24만큼 흐름 → 칸 크기 비율).
+func _draw_thread(points: PackedVector2Array) -> void:
+	var unit: float = theme_data.cell_size / 43.0  # HTML 칸 ≈ 43 CSS px
+	var dash: float = 7.0 * unit
+	var gap: float = 5.0 * unit
+	var shift: float = 0.0 if reduce_motion else fmod(_pulse_time / 1.2, 1.0) * 24.0 * unit
+	var color: Color = theme_data.trail_color.lightened(0.6)
+	var walked: float = -shift
+	for i: int in points.size() - 1:
+		var a: Vector2 = points[i]
+		var b: Vector2 = points[i + 1]
+		var length: float = a.distance_to(b)
+		var t: float = 0.0
+		while t < length:
+			var phase: float = fposmod(walked + t, dash + gap)
+			var run: float = minf((dash - phase) if phase < dash else (dash + gap - phase), length - t)
+			if phase < dash:
+				draw_line(a.lerp(b, t / length), a.lerp(b, (t + run) / length), color, theme_data.trail_width * 0.35, true)
+			t += maxf(run, 0.5)
+		walked += length
+
+
+## 탐험가 구역: 생길 때 0.6배·투명에서 튀어나온다 (HTML zoneIn), 바탕은 캐릭터 색 대신 구역 색을 옅게.
+func _draw_zone(mark: BoardMark, rect: Rect2) -> void:
+	var age: float = _pulse_time - float(_zone_born.get(mark.rect, -100.0))
+	var e: float = 1.0 if reduce_motion else KeyframeAnim.bezier(ZONE_IN_CURVE, clampf(age / ZONE_IN_TIME, 0.0, 1.0))
+	var grown: Rect2 = rect.grow(-theme_data.mark_line_width / 2.0)
+	var scaled: Rect2 = Rect2(grown.get_center() - grown.size * lerpf(0.6, 1.0, e) / 2.0, grown.size * lerpf(0.6, 1.0, e))
+	var color: Color = Color(theme_data.mark_zone_color, theme_data.mark_zone_color.a * clampf(e, 0.0, 1.0))
+	_draw_soft_fill(scaled, Color(color, 0.16 * color.a))
+	_draw_dashed_rect(scaled, color)
 
 
 func _draw_dashed_rect(rect: Rect2, color: Color) -> void:

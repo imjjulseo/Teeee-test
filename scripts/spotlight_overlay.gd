@@ -24,6 +24,11 @@ const MAX_HOLES: int = 8
 @export var hole_min: float = 106.0
 ## 막이 처음 뜰 때 서서히 나타나는 시간(초).
 @export var fade_time: float = 0.45
+## 설명 칸 등장 시간(초)과 올라오는 거리(px, HTML capIn 10 CSS px).
+@export var caption_in_time: float = 0.4
+@export var caption_in_rise: float = 27.0
+
+var _caption_tween: Tween
 ## 설명 칸이 화면 끝에서 떨어진 거리, 건너뛰기 알약이 칸 위로 뜬 거리.
 @export var caption_margin: float = 60.0
 @export var skip_gap: float = 18.0
@@ -80,6 +85,33 @@ func open(p_mode: Mode, head: String, text: String, holes: Array[Rect2], button_
 	_caption.mouse_filter = Control.MOUSE_FILTER_IGNORE if mode == Mode.ACT else Control.MOUSE_FILTER_STOP
 	_place_caption(top)
 	update_holes(holes)
+	_caption_in.call_deferred()
+
+
+## 설명 칸이 조금 아래에서 올라오며 나타난다 (HTML capIn 0.4초 ease: 10 CSS px 아래·투명 → 제자리).
+func _caption_in() -> void:
+	if not is_inside_tree() or OptionsStore.new().reduce_motion:
+		_caption.modulate.a = 1.0
+		return
+	# 자리는 앵커 여백(offset)으로 잡혀 있어 여백을 함께 내렸다 올린다 (글이 길어져 칸이 자라도 자리가 맞다).
+	var home: float = caption_margin if _caption.anchor_top == 0.0 else -caption_margin
+	var rise: float = caption_in_rise
+	if _caption_tween != null and _caption_tween.is_valid():
+		_caption_tween.kill()
+	_caption_tween = KeyframeAnim.run(_caption, caption_in_time, func(e: float) -> void:
+		_caption.offset_top = home + rise * (1.0 - e)
+		_caption.offset_bottom = home + rise * (1.0 - e)
+		_caption.modulate.a = e, KeyframeAnim.EASE)
+
+
+## 눌러야 할 버튼 밖을 눌렀다: 버튼이 살짝 커졌다 돌아온다 (HTML tnudge 0.3초, 30%에 1.06배).
+func _nudge_button() -> void:
+	if not _button.visible or OptionsStore.new().reduce_motion:
+		return
+	_button.pivot_offset = _button.size / 2.0
+	KeyframeAnim.play(_button, _button, 0.3, [
+		[0.0, {"scale": Vector2.ONE}], [0.3, {"scale": Vector2.ONE * 1.06}], [1.0, {"scale": Vector2.ONE}],
+	], KeyframeAnim.EASE)
 
 
 ## 설명 칸 왼쪽 아이콘 (HTML icon: ㅗ 모양 · 족보 점 · 금화 · 시계 · 씨앗). open이 지우므로 open 뒤에 부른다.
@@ -186,6 +218,8 @@ func _on_blocker_gui_input(event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 	if mode == Mode.TAP and not _button.visible:
 		tapped.emit()
+	elif mode == Mode.TAP:
+		_nudge_button()
 
 
 func _on_caption_button_pressed() -> void:

@@ -103,5 +103,10 @@ func status_text() -> String:
 	return "%s초" % Ability.format_seconds(time_left) if is_active() else ""
 
 
+## 피의 시간 동안 화면 가장자리가 붉게 맥박친다 (HTML bloodPulse 1초).
+func effect_pulse_period() -> float:
+	return 1.0 if effect_remaining() >= 0.0 else 0.0
+
+
 func effect_remaining() -> float:
 	return time_left if is_active() else -1.0

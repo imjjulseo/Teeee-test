@@ -8,21 +8,33 @@ extends Button
 
 signal opened
 
-## 흔들림 한 번(초)과 각도(라디안), 열릴 때 커지는 비율.
-@export var wiggle_step: float = 0.06
-@export var wiggle_angle: float = 0.09
+## 흔들림 반 번(초)과 각도(라디안), 열릴 때 커지는 비율 (HTML chestShake 0.09초 · ±2°).
+@export var wiggle_step: float = 0.045
+@export var wiggle_angle: float = 0.035
+## 기다리는 동안 둥실거림 (HTML chestBob 2.6초 · 5 CSS px)과 자물쇠 반짝임 (HTML lockGlint 밝기 1.35).
+@export var bob_period: float = 2.6
+@export var bob_height: float = 13.0
+@export var lock_glint: float = 1.35
 @export var open_scale: float = 1.15
 ## 상자 이미지 자리 (Art 그룹).
 @export var theme_data: BoardTheme
 
 var _tween: Tween
+var _idle_time: float = 0.0
+## 지금 그림 부품에 더해 둔 둥실 높이 (다음 프레임에 차이만큼 옮긴다).
+var _bob_applied: float = 0.0
+## 효과 줄이기 (화면이 열릴 때 읽는다).
+var _reduce_motion: bool = false
 
 @onready var _lid: Control = %Lid
 @onready var _glow: Panel = %Glow
 @onready var _art: TextureRect = %Art
+@onready var _rays: ChestRays = %Rays
+@onready var _lock: Panel = $Lock
 
 
 func _ready() -> void:
+	_reduce_motion = OptionsStore.new().reduce_motion
 	resized.connect(_center_pivot)
 	_center_pivot()
 	reset()
@@ -36,6 +48,7 @@ func reset() -> void:
 	scale = Vector2.ONE
 	_lid.position.y = 0.0
 	_glow.modulate = Color(1, 1, 1, 0)
+	_rays.visible = false
 	disabled = false
 	_show_art(false)
 
@@ -48,6 +61,7 @@ func play_open(color: Color, charge: float, open_time: float) -> void:
 	_glow.self_modulate = color
 	if charge <= 0.0 and open_time <= 0.0:
 		_glow.modulate.a = 1.0
+		_rays.show_rays(color, false)
 		_show_art(true)
 		opened.emit()
 		return
@@ -59,6 +73,7 @@ func play_open(color: Color, charge: float, open_time: float) -> void:
 		shake.tween_property(self, "rotation", wiggle_angle * (1.0 if i % 2 == 0 else -1.0) * (0.5 + 0.5 * float(i) / maxi(wiggles, 1)), wiggle_step)
 	shake.tween_property(self, "rotation", 0.0, wiggle_step)
 	_tween.tween_property(self, "scale", Vector2.ONE * open_scale, 0.12)
+	_tween.parallel().tween_callback(_rays.show_rays.bind(color, true))
 	_tween.parallel().tween_property(_lid, "position:y", -_lid.size.y * 0.8, 0.12)
 	_tween.parallel().tween_callback(_show_art.bind(true))
 	_tween.tween_interval(open_time)
@@ -79,6 +94,28 @@ func _show_art(open: bool) -> void:
 	_art.visible = texture != null
 	for part: CanvasItem in [$Body, $LidAnchor, $Lock]:
 		part.visible = texture == null
+
+
+## 기다리는 동안(누를 수 있을 때): 둥실거리고 자물쇠가 반짝인다. 효과 줄이기면 멈춘다.
+func _process(delta: float) -> void:
+	var idle: bool = not disabled and not _reduce_motion
+	var wave: float = 0.0
+	if idle:
+		_idle_time = fmod(_idle_time + delta, bob_period)
+		wave = 0.5 - 0.5 * cos(_idle_time / bob_period * TAU)  # 0 → 1(50%) → 0, ease-in-out에 가깝게
+	_set_bob(-bob_height * wave)
+	var glint: float = lerpf(1.0, lock_glint, wave)
+	_lock.modulate = Color(glint, glint, glint, 1.0)
+
+
+func _set_bob(offset: float) -> void:
+	var change: float = offset - _bob_applied
+	if is_zero_approx(change):
+		return
+	_bob_applied = offset
+	for part: Control in [$Body, $LidAnchor, $Lock, _art]:
+		part.offset_top += change
+		part.offset_bottom += change
 
 
 func _center_pivot() -> void:

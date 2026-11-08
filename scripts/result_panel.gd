@@ -127,14 +127,32 @@ func _show_rewards(lines: Array[PackedStringArray]) -> void:
 func _add_rows(lines: Array[PackedStringArray]) -> void:
 	if reward_row_scene == null:
 		return
-	for line: PackedStringArray in lines:
+	var reduce: bool = OptionsStore.new().reduce_motion
+	for i: int in lines.size():
+		var line: PackedStringArray = lines[i]
 		var row: RewardRow = reward_row_scene.instantiate() as RewardRow
 		_rewards_list.add_child(row)
 		row.show_reward(line[0], line[1])
+		if not reduce and row.is_inside_tree():
+			_pop_row.call_deferred(row, i * 0.08)
+
+
+## 보상 줄이 작게서 튀어나온다 (HTML mslIn 0.5초 cubic-bezier(.2,.9,.3,1.5): 0.2배·투명 → 원래), 줄마다 조금씩 늦게.
+func _pop_row(row: Control, delay: float) -> void:
+	if not is_instance_valid(row):
+		return
+	row.pivot_offset = row.size / 2.0
+	KeyframeAnim.play(row, row, 0.5, [
+		[0.0, {"scale": Vector2.ONE * 0.2, "modulate:a": 0.0}],
+		[1.0, {"scale": Vector2.ONE, "modulate:a": 1.0}],
+	], Vector4(0.2, 0.9, 0.3, 1.5), delay)
 
 
 func _on_state_changed(state: GameFlow.GameState) -> void:
+	var was_visible: bool = visible
 	visible = state == GameFlow.GameState.RESULT
+	if visible and not was_visible:
+		OverlayIn.play(get_node_or_null("Center") as Control)  # 카드가 커지며 나타남 (HTML ovgIn)
 
 
 func _on_retry_button_pressed() -> void:

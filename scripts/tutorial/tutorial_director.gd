@@ -47,6 +47,8 @@ const PRACTICE_SIZE: int = 5
 @export var plan_nodes: int = 20000
 ## 단계 배너가 떠 있는 시간(초), 씨앗이 하나씩 자라는 간격(초).
 @export var banner_time: float = 1.1
+## 설명이 캐릭터 줄을 밝히는 중 (줄 테두리 맥박, HTML ctPulse).
+var _chr_lit: bool = false
 @export var seed_grow_delay: float = 0.9
 @export var seed_grow_gap: float = 0.35
 
@@ -321,6 +323,8 @@ func _start_next() -> void:
 
 
 func _process(delta: float) -> void:
+	if hud != null and spotlight != null:
+		hud.highlight_character(_chr_lit and spotlight.is_open())
 	if spotlight.is_open():
 		spotlight.update_holes(holes_for(_moment_holes if _moment_open else _caption_holes))
 	if not running:
@@ -452,6 +456,7 @@ static func with_object_particle(word: String) -> String:
 ## 스포트라이트가 밝힐 자리 (캔버스 좌표).
 func holes_for(names: PackedStringArray) -> Array[Rect2]:
 	var rects: Array[Rect2] = []
+	_chr_lit = names.has("chr")
 	for target: String in names:
 		if target == "board" or target == "player":  # HTML: 판 전체·내 칸은 강조하지 않음
 			continue
@@ -908,7 +913,7 @@ func _resolve_puzzle_match() -> void:
 
 func _on_puzzle_result(info: PuzzleRunner.ResultInfo) -> void:
 	spotlight.close()
-	result_panel.show_result(info, "다음")
+	result_panel.show_result(info, "")  # 다음 버튼 없이 화면을 눌러 넘김
 
 
 func _on_puzzle_finished(stars: int) -> void:

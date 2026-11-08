@@ -86,7 +86,7 @@ func test_steps_follow_the_html_lesson_order() -> void:
 	assert_true(steps[2] is CharacterTriggerStep)
 	assert_eq((steps[2] as CharacterTriggerStep).label, "시계공 · 발동해 보기")
 	assert_true(steps[3] is CharacterLessonStep)
-	assert_eq([(steps[4] as SayStep).head, (steps[4] as SayStep).button], ["시계공 준비 끝", "시작"])
+	assert_eq([(steps[4] as SayStep).head, (steps[4] as SayStep).button], ["시계공 준비 끝", ""])
 	var wall: CharacterData = _roster().find(&"wall")
 	var wall_steps: Array[TutorialStep] = book.steps_for(book.find(&"wall"), wall)
 	assert_eq(wall_steps.size(), 4, "passive: intro → 2 lessons → ready")

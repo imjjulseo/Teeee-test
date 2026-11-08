@@ -18,7 +18,8 @@ extends Resource
 @export var practice_label: String = "%s · 연습 판"
 @export var ready_head: String = "%s 준비 끝"
 @export_multiline var ready_text: String = "이제 실전이에요. 움직이면 시간이 흘러요"
-@export var ready_button: String = "시작"
+## "준비 끝" 칸의 버튼 문구. 비어 있으면 다른 설명 칸처럼 화면을 눌러 넘긴다.
+@export var ready_button: String = ""
 @export var cheer: String = "좋아요!"
 ## 처음 쓰는 캐릭터에게 묻기 (HTML coach).
 @export var offer_button: String = "튜토리얼"

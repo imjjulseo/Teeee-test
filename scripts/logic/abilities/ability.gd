@@ -32,6 +32,7 @@ extends Resource
 ## 표시
 ##   status_text      캐릭터 카드 둘째 줄 (남은 초·스택·남은 횟수). 비어 있으면 능력 이름.
 ##   effect_remaining 배경 효과가 켜진 남은 시간 (없으면 음수, 끝없이 켜져 있으면 INF).
+##   effect_pulse_period 배경 효과 맥박 주기 (0 = 없음, 뱀파이어).
 ##   effect_block_color / effect_blink_window   배경 효과를 칠할 블록 색 ID (NO_COLOR = 캐릭터 색) / 깜빡이기 시작하는 남은 초 (음수 = 테마 기본).
 ##   board_marks      판 위 표시 (깃발, 구역). 바뀌면 session.notify_marks_changed()를 부른다.
 ##   display_style    블록·족보를 칠하는 방식 (색 합치기, 흑백). 바뀌면 session.notify_display_changed()를 부른다.
@@ -169,6 +170,11 @@ func effect_remaining() -> float:
 ## 배경 효과를 블록 색으로 칠할 때 그 색 ID (현상금). Board.NO_COLOR면 캐릭터 색.
 func effect_block_color() -> int:
 	return Board.NO_COLOR
+
+
+## 배경 효과가 맥박처럼 진해졌다 옅어지는 주기(초, 0 = 없음). 뱀파이어 피의 시간 (HTML bloodPulse 1초).
+func effect_pulse_period() -> float:
+	return 0.0
 
 
 ## 배경 효과가 깜빡이기 시작하는 남은 시간(초). 음수면 테마 기본값 (5.2장: 3초).

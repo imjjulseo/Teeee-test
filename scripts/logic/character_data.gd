@@ -9,6 +9,8 @@ enum Grade { BASIC, RARE, HERO, LEGEND, MYTH, HIDDEN }
 
 ## 등급 이름 (Grade 순서).
 const GRADE_NAMES: PackedStringArray = ["기본", "희귀", "영웅", "전설", "신화", "히든"]
+## 등급 문자 (Grade 순서, HUD 캐릭터 줄). 희귀 C · 영웅 B · 전설 A · 신화 S (E26의 선택권 표기와 같은 줄), 히든 H.
+const GRADE_LETTERS: PackedStringArray = ["", "C", "B", "A", "S", "H"]
 
 ## HTML 프로토타입과 같은 id (저장·업적·도감의 키).
 @export var id: StringName = &""
@@ -34,6 +36,11 @@ const GRADE_NAMES: PackedStringArray = ["기본", "희귀", "영웅", "전설", 
 @export var accent_color: Color = Color("e6f0f2")
 @export var player_fill: Color = Color("1d1f26")
 @export var player_border: Color = Color("ffffff")
+
+
+## 등급 문자 (기본은 빈 문자열).
+func grade_letter() -> String:
+	return GRADE_LETTERS[grade] if grade >= 0 and grade < GRADE_LETTERS.size() else ""
 
 
 ## 능력이 있다 (발동형 또는 상시형).

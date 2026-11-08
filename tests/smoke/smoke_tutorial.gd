@@ -101,7 +101,8 @@ func _drive(director: TutorialDirector) -> void:
 	var result: PuzzleResultPanel = node("TutorialUI/PuzzleResult")
 	if result.visible:
 		_shot_once("puzzle_result")
-		click_control(result.get_node("%NextButton"))
+		expect(result.taps_to_continue(), "tutorial puzzle result continues on a tap (no 다음 button)")
+		click_control(result.get_node("Dim"))
 		_cooldown = 0.2
 		return
 	if _spot().is_blocking():

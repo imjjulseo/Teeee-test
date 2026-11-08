@@ -5,7 +5,8 @@ extends CanvasLayer
 ## HTML 연출 (E32, 수치는 BoardTheme HUD 그룹): 매치 시간 "+2.5"는 시간 옆에서 떠오르고(rise) 시간이 통통 튄다(bump).
 ## 족보 완성 "+점수"와 금화 "+10"은 카드·매치 자리에서 점수·코인으로 날아가고(fly), 닿는 순간 숫자가 오르며 통통 튄다.
 ## 족보 카드는 깨지며 파편을 뿌리고 새 카드가 내려온다 (RecipeView). 효과 줄이기면 날지 않고 바로 오른다.
-## 캐릭터 카드: 캐릭터 족보와 둘째 줄 상태(남은 초·스택). 카드가 있으면 4개가 한 줄에 들어가도록 족보 칸을 줄인다.
+## 캐릭터 줄 (족보 카드 아래, CharacterRow): 아이콘·이름·등급 문자·상태(남은 초·스택)·지속 효과 막대, 오른쪽에 캐릭터 족보 점.
+## 능력이 없으면 줄을 숨긴다 (HUD 높이는 그대로 → 판 크기는 변하지 않는다).
 ## 능력 발동: 캐릭터 색 섬광 + 배너("촉진!" + 설명) + 메시지 줄에 결과 문구. 족보 밖 점수(피버 정산)도 배너로.
 ## 게임 상태를 바꾸지 않고, 버튼 입력은 pause_requested signal로만 알린다.
 
@@ -56,8 +57,12 @@ var _flash_tween: Tween
 @onready var _message_label: Label = %MessageLabel
 @onready var _pause_button: Button = %PauseButton
 @onready var _recipe_views: Array[RecipeView] = [%Recipe0, %Recipe1, %Recipe2]
-## 캐릭터 카드 (캐릭터 족보 + 둘째 줄 상태).
+## 캐릭터 족보 점 (CharacterRow 안, 둘째 줄 문구는 숨겨 두고 상태만 기록).
 @onready var _ability_view: RecipeView = %AbilityView
+@onready var _character_row: CharacterRow = %CharacterRow
+## 캐릭터 능력 이름 (상태 문구가 비어 있을 때)과 지금 상태 문구.
+var _ability_name: String = ""
+var _ability_status: String = ""
 @onready var _floats: Control = %Floats
 @onready var _flash: ColorRect = %Flash
 ## 발동 섬광 이미지 (BoardTheme.ability_flash_texture, 없으면 숨김 → 단색 섬광).
@@ -88,8 +93,8 @@ func target_rects(target: String) -> Array[Rect2]:
 				if view.is_visible_in_tree():
 					rects.append(view.get_global_rect())
 		"chr":
-			if _ability_view.is_visible_in_tree():
-				rects.append(_ability_view.get_global_rect())
+			if _character_row.is_visible_in_tree():
+				rects.append(_character_row.get_global_rect())
 		"score":
 			rects.append(_score_label.get_global_rect())
 		"coin":
@@ -182,7 +187,19 @@ func _show_coins() -> void:
 
 ## 캐릭터 카드 둘째 줄 (예: "3.7초", "×2 (2)", "와일드 2"). 비어 있으면 능력 이름. 문구는 능력이 정한다.
 func _on_ability_status(text: String) -> void:
+	_ability_status = text
 	_ability_view.show_status(text)
+	_character_row.show_status(text, _ability_name)
+
+
+## 능력 지속 효과 남은 시간 → 캐릭터 줄 막대.
+func _on_effect_updated(_accent_color: Color, _block_color: int, remaining: float, _blink_window: float) -> void:
+	_character_row.show_effect(remaining)
+
+
+## 튜토리얼이 캐릭터 줄을 가리키는 동안 테두리가 맥박처럼 빛난다.
+func highlight_character(on: bool) -> void:
+	_character_row.highlight = on
 
 
 ## 족보 밖 점수 (피버 정산 등): 배너 + 판 가운데에서 점수로 날아가는 숫자 (HTML fever 정산 floatText → rScore).
@@ -196,7 +213,7 @@ func _on_reduce_motion_ready(enabled: bool) -> void:
 	_reduce_motion = enabled
 	for view: RecipeView in _recipe_views:
 		view.set_reduce_motion(enabled)
-	_ability_view.set_reduce_motion(enabled)
+	_character_row.set_reduce_motion(enabled)
 
 
 ## 남은 시간이 경고 구간인지 (테스트/디버그용).
@@ -247,18 +264,15 @@ func _celebrate_card(view: RecipeView, recipe: RecipeSet.Recipe, points: int) ->
 	_fly_score(center, "+%d" % points, theme_data.float_time_color, size, points)
 
 
-## 캐릭터 카드 (족보 카드 오른쪽). 발동형은 캐릭터 족보, 상시형은 이름·상태만. 능력이 없으면 숨기고
-## 족보 칸을 기본 크기로 둔다.
+## 캐릭터 줄 (족보 카드 아래). 발동형은 오른쪽에 캐릭터 족보 점, 상시형은 상태 문구만. 능력이 없으면 숨긴다.
 func _on_ability_updated(recipe: RecipeSet.Recipe, character: CharacterData) -> void:
 	if character != null:
 		_accent = character.accent_color
-		_ability_view.set_border_color(_accent)
+		_ability_name = character.ability_name
 	var has_card: bool = character != null and character.has_ability()
-	_ability_view.visible = has_card
-	var step: float = theme_data.recipe_step_size_compact if has_card else theme_data.recipe_step_size
-	for view: RecipeView in _recipe_views:
-		view.set_step_size(step)
-	_ability_view.set_step_size(step)
+	_character_row.show_character(character)
+	_ability_view.visible = has_card  # 상시형은 점 없이 비어 있다 (상태는 줄 가운데)
+	_character_row.show_status(_ability_status, _ability_name)
 	if recipe != null:
 		_ability_view.show_recipe(recipe, character.ability_name)
 	elif has_card:
@@ -279,7 +293,7 @@ func _on_ability_announced(text: String) -> void:
 
 ## 능력 발동: 캐릭터 카드 강조, 캐릭터 색 섬광, 배너, 메시지 줄에 결과 문구 (7.2).
 func _on_ability_triggered(character: CharacterData, message: String) -> void:
-	_ability_view.play_complete()
+	_character_row.play_burst()
 	_flash_screen()
 	if character != null:
 		_show_banner("%s!" % character.ability_name, character.ability_description)
@@ -371,14 +385,17 @@ func _show_banner(title: String, sub: String) -> void:
 	# 가운데 앵커 + 양쪽으로 자람: 크기는 내용 최소 크기 그대로라 가운데를 기준으로 커지고 줄어든다.
 	_banner.pivot_offset = _banner.get_combined_minimum_size() / 2.0
 	var duration: float = theme_data.ability_banner_duration
-	_banner.scale = Vector2.ONE * (1.0 if _reduce_motion else theme_data.ability_banner_start_scale)
-	_banner.modulate.a = 0.0
-	_banner_tween = create_tween()
-	_banner_tween.tween_property(_banner, "scale", Vector2.ONE, duration * 0.28) \
-		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	_banner_tween.parallel().tween_property(_banner, "modulate:a", 1.0, duration * 0.16)
-	_banner_tween.tween_interval(duration * 0.5)
-	_banner_tween.tween_property(_banner, "modulate:a", 0.0, duration * 0.22)
+	var start: float = 1.0 if _reduce_motion else theme_data.ability_banner_start_scale
+	# HTML slam (1초, 구간마다 cubic-bezier(.2,.9,.3,1)): 2.3배·투명 → 16% 0.94배 → 28% 1배 → 78%까지 보임 → 1.04배로 사라짐.
+	var settle: float = 1.0 if _reduce_motion else 0.94
+	var leave: float = 1.0 if _reduce_motion else 1.04
+	_banner_tween = KeyframeAnim.play(_banner, _banner, duration, [
+		[0.0, {"scale": Vector2.ONE * start, "modulate:a": 0.0}],
+		[0.16, {"scale": Vector2.ONE * settle, "modulate:a": 1.0}],
+		[0.28, {"scale": Vector2.ONE}],
+		[0.78, {"modulate:a": 1.0}],
+		[1.0, {"scale": Vector2.ONE * leave, "modulate:a": 0.0}],
+	], Vector4(0.2, 0.9, 0.3, 1.0))
 	_banner_tween.tween_callback(_banner.hide)
 
 

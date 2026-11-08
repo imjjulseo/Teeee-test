@@ -20,6 +20,8 @@ signal ability_status(text: String)
 ## 능력 배경 효과. remaining < 0이면 꺼짐, INF면 끝없이 켜짐. 색은 block_color(블록 색 ID)가 있으면 그 색, 없으면 accent.
 ## blink_window: 깜빡이기 시작하는 남은 초 (음수면 테마 기본).
 signal effect_updated(accent: Color, block_color: int, remaining: float, blink_window: float)
+## 배경 효과 맥박 주기(초, 0 = 없음, 뱀파이어 피의 시간).
+signal effect_pulse_changed(period: float)
 ## 능력이 메시지 줄에 알리는 문구 (현상금 색 변경 등).
 signal ability_announced(text: String)
 ## 족보 카드의 표시 방식 (색약·레트로, null = 보통).
@@ -34,6 +36,7 @@ var _session_ref: WeakRef
 var _last_time_key: String = ""
 var _last_status_key: String = ""
 var _last_effect_key: String = ""
+var _last_pulse: float = -1.0
 var _has_published: bool = false
 
 
@@ -83,6 +86,10 @@ func publish_frame(session: GameSession, force: bool = false) -> void:
 		_last_effect_key = effect_key
 		var accent: Color = session.character.accent_color if effect >= 0.0 else Color.TRANSPARENT
 		effect_updated.emit(accent, block_color, effect, window)
+	var pulse: float = ability.effect_pulse_period() if ability != null and effect >= 0.0 else 0.0
+	if always or pulse != _last_pulse:
+		_last_pulse = pulse
+		effect_pulse_changed.emit(pulse)
 	_has_published = true
 
 
