@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="GameConfig" format=3]
+
+[ext_resource type="Script" path="res://scripts/logic/game_config.gd" id="1_config"]
+
+[resource]
+script = ExtResource("1_config")
+board_size = 9
+color_count = 4
+initial_match_fix_attempts = 50
+game_duration = 60.0
+clear_time_start = 2.5
+clear_time_decay = 0.08
+clear_time_min = 0.8
+max_frame_delta = 0.1
+warning_time_threshold = 5.0
+revive_time = 10.0
+revive_decision_time = 5.0
+refill_total_start = 8.0
+refill_total_end = 2.0
+refill_ramp_time = 90.0
+refill_wait_weight = 3.0
+refill_grow_weight = 5.0
+recipe_lengths = PackedInt32Array(2, 3, 4)
+recipe_base_score = 100
+recipe_repeat_bonus = 0.25
+recipe_first_color_min = 4
+recipe_generation_attempts = 40
+coin_chance = 0.1
+coin_life = 15.0
+coin_max = 3
+coin_value = 10
+coin_chain_gap = 4.0
+move_animation_time = 0.09
+clear_animation_time = 0.18
+swipe_threshold = 33.0
+pad_repeat_delay = 0.17
+pad_repeat_interval = 0.06
+long_press_time = 0.5
+long_press_slop = 18.0
+initial_seed = 0
+playtest_logging = true

@@ -1,0 +1,47 @@
+[gd_resource type="Resource" script_class="GachaConfig" format=3 uid="uid://bopdy04651rrs"]
+
+[ext_resource type="Script" uid="uid://dckseldxthrr6" path="res://scripts/logic/gacha_config.gd" id="1_gacha"]
+[ext_resource type="Script" uid="uid://calo2q1bnwy8g" path="res://scripts/logic/gacha_tier.gd" id="2_tier"]
+
+[sub_resource type="Resource" id="Tier_1"]
+script = ExtResource("2_tier")
+rates = Dictionary[int, float]({
+1: 65.0,
+2: 34.0,
+3: 0.9,
+4: 0.1
+})
+
+[sub_resource type="Resource" id="Tier_8"]
+script = ExtResource("2_tier")
+min_level = 8
+rates = Dictionary[int, float]({
+1: 50.0,
+2: 44.0,
+3: 5.7,
+4: 0.3
+})
+
+[sub_resource type="Resource" id="Tier_20"]
+script = ExtResource("2_tier")
+min_level = 20
+rates = Dictionary[int, float]({
+1: 32.0,
+2: 48.0,
+3: 18.0,
+4: 2.0
+})
+
+[sub_resource type="Resource" id="Tier_30"]
+script = ExtResource("2_tier")
+min_level = 30
+rates = Dictionary[int, float]({
+1: 20.0,
+2: 45.0,
+3: 30.0,
+4: 5.0
+})
+
+[resource]
+script = ExtResource("1_gacha")
+tiers = Array[ExtResource("2_tier")]([SubResource("Tier_1"), SubResource("Tier_8"), SubResource("Tier_20"), SubResource("Tier_30")])

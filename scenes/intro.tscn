@@ -1,0 +1,94 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/intro_screen.gd" id="1_intro"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="2_nav"]
+[ext_resource type="Script" path="res://scripts/audio_options_loader.gd" id="3_audio"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="Resource" path="res://resources/ui_assets.tres" id="98_ui_assets"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tap"]
+
+[node name="Intro" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_intro")
+ui_assets = ExtResource("98_ui_assets")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"background"
+
+[node name="Center" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -300.0
+offset_right = 450.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 72
+alignment = 1
+
+[node name="LogoImage" type="TextureRect" parent="Center"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(900, 390)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Logo" type="Label" parent="Center"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 144
+text = "Swap match"
+horizontal_alignment = 1
+
+[node name="TapLabel" type="Label" parent="Center"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 54
+text = "탭하여 시작"
+horizontal_alignment = 1
+
+[node name="TapArea" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_tap")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_tap")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_tap")
+flat = true
+
+[node name="MenuNavigator" type="Node" parent="."]
+script = ExtResource("2_nav")
+target_scene = "res://scenes/main_menu.tscn"
+
+[node name="AudioOptionsLoader" type="Node" parent="."]
+script = ExtResource("3_audio")
+
+[connection signal="pressed" from="TapArea" to="." method="_on_tap_area_pressed"]
+[connection signal="start_requested" from="." to="MenuNavigator" method="go"]

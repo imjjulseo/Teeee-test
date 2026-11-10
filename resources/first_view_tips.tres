@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="FirstViewTips" format=3]
+
+[ext_resource type="Script" path="res://scripts/tutorial/first_view_tips.gd" id="1_tips"]
+
+[resource]
+script = ExtResource("1_tips")
+multi_head = "족보 동시 진행"
+multi_text = "두 족보를 동시에 올릴 수도 있어요"
+experience_head = "경험치"
+experience_text = "점수만큼 경험치를 얻어요"
+achievements_head = "업적"
+achievements_text = "조건을 달성하면 코인·다이아를 받아요"
+hidden_head = "히든 업적"
+hidden_text = "조건은 비밀. 달성하면 히든 캐릭터를 얻어요"
+characters_head = "캐릭터"
+characters_text = "좌우로 넘겨 능력을 보고 장착해요. 튜토리얼로 미리 써 볼 수 있어요"
+puzzles_head = "퍼즐"
+puzzles_text = "T 모양 만들기 퍼즐이에요. 처음 깰 때마다 코인을 받아요"

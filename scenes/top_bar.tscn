@@ -1,0 +1,95 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/top_bar.gd" id="1_bar"]
+[ext_resource type="Resource" path="res://resources/progression.tres" id="2_progression"]
+[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="3_wallet"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="4_token"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="5_nav"]
+
+[node name="TopBar" type="PanelContainer"]
+theme_type_variation = &"TopBarPanel"
+script = ExtResource("1_bar")
+progression = ExtResource("2_progression")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="LevelButton" type="Button" parent="HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(345, 123)
+layout_mode = 2
+focus_mode = 0
+
+[node name="LevelBox" type="VBoxContainer" parent="HBox/LevelButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 27.0
+offset_top = 12.0
+offset_right = -27.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 9
+alignment = 1
+
+[node name="LevelLabel" type="Label" parent="HBox/LevelButton/LevelBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Lv 1"
+
+[node name="ExpBar" type="ColorRect" parent="HBox/LevelButton/LevelBox"]
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("4_token")
+token = &"track"
+
+[node name="ExpFill" type="ColorRect" parent="HBox/LevelButton/LevelBox/ExpBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_token")
+token = &"info"
+
+[node name="ClaimMark" type="Label" parent="HBox/LevelButton"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_top = 12.0
+offset_right = -24.0
+offset_bottom = 57.0
+grow_horizontal = 0
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 36
+text = "받기"
+horizontal_alignment = 2
+
+[node name="Spacer" type="Control" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="WalletLabel" parent="HBox" instance=ExtResource("3_wallet")]
+unique_name_in_owner = true
+layout_mode = 2
+font_size = 48
+
+[node name="LevelNavigator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_nav")
+target_scene = "res://scenes/level_rewards.tscn"
+
+[connection signal="pressed" from="HBox/LevelButton" to="." method="_on_level_button_pressed"]
+[connection signal="diamond_pressed" from="HBox/WalletLabel" to="." method="_on_diamond_button_pressed"]

@@ -1,0 +1,99 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/puzzle_menu_screen.gd" id="1_screen"]
+[ext_resource type="Resource" path="res://resources/puzzles.tres" id="2_book"]
+[ext_resource type="PackedScene" path="res://scenes/puzzle_board_button.tscn" id="3_button"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="5_nav"]
+[ext_resource type="PackedScene" path="res://scenes/spotlight_overlay.tscn" id="80_spot"]
+[ext_resource type="Resource" path="res://resources/first_view_tips.tres" id="81_tips"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="20_top"]
+[ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="21_bottom"]
+
+[node name="PuzzleMenu" type="Control" node_paths=PackedStringArray("spotlight")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_screen")
+book = ExtResource("2_book")
+board_button_scene = ExtResource("3_button")
+tips = ExtResource("81_tips")
+spotlight = NodePath("Spotlight")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"background"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 21
+
+[node name="TopBar" parent="SafeArea/Content/Layout" instance=ExtResource("20_top")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+
+[node name="Margin" type="MarginContainer" parent="SafeArea/Content/Layout/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 262
+theme_override_constants/margin_right = 262
+
+[node name="Boards" type="HBoxContainer" parent="SafeArea/Content/Layout/Scroll/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 48
+alignment = 1
+
+[node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("21_bottom")]
+unique_name_in_owner = true
+layout_mode = 2
+current = 6
+top_bar = NodePath("../TopBar")
+
+[node name="PlayNavigator" type="Node" parent="."]
+script = ExtResource("5_nav")
+target_scene = "res://scenes/puzzle_play.tscn"
+
+[node name="Spotlight" parent="." instance=ExtResource("80_spot")]
+
+[connection signal="play_requested" from="." to="PlayNavigator" method="go"]
+[connection signal="tapped" from="Spotlight" to="." method="_on_spotlight_tapped"]

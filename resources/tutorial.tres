@@ -1,0 +1,105 @@
+[gd_resource type="Resource" script_class="TutorialScript" format=3 uid="uid://dhyotheks4gs2"]
+
+[ext_resource type="Script" uid="uid://dr06j3fj8vodo" path="res://scripts/tutorial/tutorial_script.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://btd8m4xskwsc0" path="res://scripts/tutorial/say_step.gd" id="3_say"]
+[ext_resource type="Script" uid="uid://cdoxtbicass74" path="res://scripts/tutorial/puzzle_level_step.gd" id="4_level"]
+[ext_resource type="Script" uid="uid://rgkoauc12cvk" path="res://scripts/tutorial/board_step.gd" id="5_board"]
+[ext_resource type="Script" uid="uid://72tsmf7kuvlu" path="res://scripts/tutorial/match_step.gd" id="6_match"]
+[ext_resource type="Script" uid="uid://kiqootm3ntej" path="res://scripts/tutorial/coin_puzzle_step.gd" id="7_coin"]
+[ext_resource type="Script" uid="uid://du5v7w7kv6vfu" path="res://scripts/tutorial/wait_step.gd" id="8_wait"]
+[ext_resource type="Script" uid="uid://crn1b07o54a1g" path="res://scripts/tutorial/tutorial_step.gd" id="9_step"]
+[ext_resource type="Script" path="res://scripts/tutorial/time_step.gd" id="10_time"]
+
+[sub_resource type="Resource" id="Step_Lv0"]
+script = ExtResource("4_level")
+hold_seeds_after = true
+rule = true
+first_delay = 0.8
+first_caption = "스와이프해서 옆칸과 바꿔요"
+swipe_first = true
+hold_text = "주변이 같은 색으로 둘러싸이면 매치!"
+
+[sub_resource type="Resource" id="Step_Seeds"]
+script = ExtResource("3_say")
+text = "매치한 자리에는 다시 블럭이 무작위로 자라나요"
+holes = PackedStringArray("seeds")
+release_seeds = true
+icon = 5
+
+[sub_resource type="Resource" id="Step_TimeSay"]
+script = ExtResource("3_say")
+text = "시간 안에 매치해야 하고, 뭐든 매치하면 추가 시간을 얻어요"
+holes = PackedStringArray("time")
+icon = 4
+
+[sub_resource type="Resource" id="Step_Time"]
+script = ExtResource("10_time")
+
+[sub_resource type="Resource" id="Step_Cards"]
+script = ExtResource("5_board")
+progress = null
+rule_cards = true
+
+[sub_resource type="Resource" id="Step_Recipe1"]
+script = ExtResource("3_say")
+text = "점수를 얻으려면 족보를 완성해야 해요"
+holes = PackedStringArray("cards")
+icon = 2
+
+[sub_resource type="Resource" id="Step_Recipe2"]
+script = ExtResource("3_say")
+text = "족보의 색 순서대로 매치하면 완성돼요. 흰 테두리가 다음 색이에요"
+holes = PackedStringArray("cards")
+icon = 2
+
+[sub_resource type="Resource" id="Step_RecipeMatch"]
+script = ExtResource("6_match")
+goal = 2
+filter = 2
+text = "족보를 완성해 보세요"
+holes = null
+rule_hints = true
+cheer = ""
+cheer_done = ""
+done_pause = 0.6
+icon = 2
+
+[sub_resource type="Resource" id="Step_Coin1"]
+script = ExtResource("7_coin")
+caption = "코인 블럭을 매치해서 코인을 얻어 보세요"
+rule = true
+target_recipe = true
+
+[sub_resource type="Resource" id="Step_CoinWait1"]
+script = ExtResource("8_wait")
+
+[sub_resource type="Resource" id="Step_Coin2"]
+script = ExtResource("7_coin")
+board_id = "0b"
+coins = 3
+caption = "코인 블럭을 한 번에 여러 개 먹어 보세요"
+rule = true
+target_recipe = true
+reset_chain = true
+
+[sub_resource type="Resource" id="Step_CoinWait2"]
+script = ExtResource("8_wait")
+seconds = 1.5
+
+[sub_resource type="Resource" id="Step_CoinSay"]
+script = ExtResource("3_say")
+text = "모은 코인은 캐릭터를 뽑는 데 써요"
+holes = PackedStringArray("coin")
+icon = 3
+
+[sub_resource type="Resource" id="Step_Lv1"]
+script = ExtResource("4_level")
+level = 1
+target = 1
+show_cards = true
+rule = true
+first_delay = 0.8
+
+[resource]
+script = ExtResource("1_script")
+steps = Array[ExtResource("9_step")]([SubResource("Step_Lv0"), SubResource("Step_Seeds"), SubResource("Step_TimeSay"), SubResource("Step_Time"), SubResource("Step_Cards"), SubResource("Step_Recipe1"), SubResource("Step_Recipe2"), SubResource("Step_RecipeMatch"), SubResource("Step_Coin1"), SubResource("Step_CoinWait1"), SubResource("Step_Coin2"), SubResource("Step_CoinWait2"), SubResource("Step_CoinSay"), SubResource("Step_Lv1")])

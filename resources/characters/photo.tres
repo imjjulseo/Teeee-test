@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://ylplweubkaqt"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://cnfutoh3c0lls" path="res://scripts/logic/abilities/photo_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"photo"
+display_name = "사진사"
+grade = 4
+ability = SubResource("Ability_1")
+ability_name = "찰칵"
+ability_description = "찰칵: 7초 동안 판이 사진으로 멈추고(시간·리필 정지) 스와이프는 경로만 계획(최대 60수)"
+detail_effect = "7초 동안 판이 사진으로 멈추고 시간·리필도 멈춰요. 그동안 스와이프는 실제로 움직이지 않고 경로만 계획돼요(사진 위에 점선, 최대 60수). 사진이 깨지면 남은 경로가 판에 점선으로 보이며 계획한 움직임을 드르륵 실행해요(매치 사이 칸은 점점 빨라지고, 매치하면 쾅! 멈칫한 뒤 다시 가속). 그 사이 매치마다 보너스: 1번 250 · 2번 500 · 3번 1,000 · 4번 2,000 …(매치마다 2배, 6번까지). 실행 중에도 시간은 멈춰 있어요."
+condition_colors = PackedInt32Array(2, 0, 3, 1)
+accent_color = Color(0.956863, 0.956863, 0.956863, 1)
+player_fill = Color(0.21051, 0.21051, 0.21051, 1)
+player_border = Color(0.956863, 0.956863, 0.956863, 1)

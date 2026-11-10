@@ -1,0 +1,275 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/bottom_nav.gd" id="1_nav"]
+[ext_resource type="Resource" path="res://resources/character_roster.tres" id="2_roster"]
+[ext_resource type="Resource" path="res://resources/achievements.tres" id="3_book"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="4_navigator"]
+[ext_resource type="Script" path="res://scripts/block_gesture.gd" id="5_gesture"]
+[ext_resource type="PackedScene" path="res://scenes/character_block.tscn" id="6_block"]
+[ext_resource type="Script" path="res://scripts/ui_image.gd" id="7_image"]
+[ext_resource type="Resource" path="res://resources/ui_assets.tres" id="8_assets"]
+[ext_resource type="Script" path="res://scripts/glow_ring.gd" id="9_glow"]
+
+[node name="BottomNav" type="Control"]
+custom_minimum_size = Vector2(0, 234)
+layout_mode = 3
+script = ExtResource("1_nav")
+roster = ExtResource("2_roster")
+achievements = ExtResource("3_book")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_type_variation = &"BottomNavPanel"
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+[node name="ShopButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"NavButton"
+
+[node name="Label" type="Label" parent="Buttons/ShopButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 42
+text = "상점"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Buttons/ShopButton" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("7_image")
+assets = ExtResource("8_assets")
+slot = &"shop_icon"
+fallback = NodePath("../Label")
+
+[node name="AchievementsButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"NavButton"
+
+[node name="Label" type="Label" parent="Buttons/AchievementsButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 42
+text = "업적"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Buttons/AchievementsButton" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("7_image")
+assets = ExtResource("8_assets")
+slot = &"achievements_icon"
+fallback = NodePath("../Label")
+
+[node name="AchievementsDot" type="Panel" parent="Buttons/AchievementsButton"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -39.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = 39.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_type_variation = &"NotifyDot"
+
+[node name="BlockGesture" type="Control" parent="Buttons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+script = ExtResource("5_gesture")
+
+[node name="Block" parent="Buttons/BlockGesture" instance=ExtResource("6_block")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -78.0
+offset_top = -78.0
+offset_right = 78.0
+offset_bottom = 78.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PuzzlesButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"NavButton"
+
+[node name="Label" type="Label" parent="Buttons/PuzzlesButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 42
+text = "퍼즐"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Buttons/PuzzlesButton" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("7_image")
+assets = ExtResource("8_assets")
+slot = &"puzzle_icon"
+fallback = NodePath("../Label")
+
+[node name="OptionsButton" type="Button" parent="Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"NavButton"
+
+[node name="Label" type="Label" parent="Buttons/OptionsButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 42
+text = "설정"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Buttons/OptionsButton" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = -12.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("7_image")
+assets = ExtResource("8_assets")
+slot = &"options_icon"
+fallback = NodePath("../Label")
+
+[node name="Glow" type="Control" parent="."]
+unique_name_in_owner = true
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("9_glow")
+
+[node name="MenuNavigator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_navigator")
+target_scene = "res://scenes/main_menu.tscn"
+
+[node name="ShopNavigator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_navigator")
+target_scene = "res://scenes/shop.tscn"
+
+[node name="AchievementsNavigator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_navigator")
+target_scene = "res://scenes/achievements.tscn"
+
+[node name="CharacterNavigator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_navigator")
+target_scene = "res://scenes/character_select.tscn"
+
+[node name="PuzzlesNavigator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_navigator")
+target_scene = "res://scenes/puzzle_menu.tscn"
+
+[node name="OptionsNavigator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_navigator")
+target_scene = "res://scenes/options.tscn"
+
+[connection signal="pressed" from="Buttons/ShopButton" to="." method="_on_shop_button_pressed"]
+[connection signal="pressed" from="Buttons/AchievementsButton" to="." method="_on_achievements_button_pressed"]
+[connection signal="pressed" from="Buttons/PuzzlesButton" to="." method="_on_puzzles_button_pressed"]
+[connection signal="pressed" from="Buttons/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="tapped" from="Buttons/BlockGesture" to="." method="_on_block_tapped"]
+[connection signal="swiped_up" from="Buttons/BlockGesture" to="." method="_on_block_swiped_up"]

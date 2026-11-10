@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://ddajuec17tkjg"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://c8tm8fi7lxqnb" path="res://scripts/logic/abilities/arson_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"arson"
+display_name = "방화광"
+grade = 4
+ability = SubResource("Ability_1")
+ability_name = "불"
+ability_description = "빨강 = 불: 불씨 1개로 시작, 빨강은 리필되지 않음"
+detail_effect = "항상 켜져 있어요. 판에 빨강 불씨 1개로 시작하고 빨강은 다시 나오지 않아요. 4초마다 불길 가장자리 3칸이 번져요(1초 전 점선 예고, 파랑은 안 탐). 족보의 다음 칸이 빨강일 때 빨강을 매치하면 2칸 전진(족보에 ×2 표시). 빨강을 깬 자리엔 잔불이 남아 다시 불로 자라요. 파랑 매치마다 물방울 +1(최대 6). 판을 꾹 누르면(키보드는 스페이스) 물방울 2개로 불 절반을 꺼요. 불이 모두 꺼지면 3초 뒤 먼 곳에 다시 붙어요."
+condition_colors = PackedInt32Array()
+accent_color = Color(1, 0.478431, 0.239216, 1)
+player_fill = Color(0.22, 0.105255, 0.052627, 1)
+player_border = Color(1, 0.478431, 0.239216, 1)

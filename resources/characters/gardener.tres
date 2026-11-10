@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://clhrlxtyd72wb"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://b1jr3d5n06hvy" path="res://scripts/logic/abilities/grow_all_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"gardener"
+display_name = "정원사"
+grade = 1
+ability = SubResource("Ability_1")
+ability_name = "촉진"
+ability_description = "촉진: 자라는 중인 씨앗 전부 즉시 성장"
+detail_effect = "판에서 자라고 있는 씨앗(빈칸)이 전부 즉시 다 자란 블럭이 돼요."
+condition_colors = PackedInt32Array(0, 1)
+accent_color = Color(0.776471, 0.952941, 0.419608, 1)
+player_fill = Color(0.12, 0.23, 0.16, 1)
+player_border = Color(0.776471, 0.952941, 0.419608, 1)

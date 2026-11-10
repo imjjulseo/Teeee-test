@@ -1,0 +1,164 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/level_rewards_screen.gd" id="1_screen"]
+[ext_resource type="Resource" path="res://resources/progression.tres" id="2_progression"]
+[ext_resource type="PackedScene" path="res://scenes/level_reward_row.tscn" id="3_row"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="4_nav"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="PackedScene" path="res://scenes/spotlight_overlay.tscn" id="5_spotlight"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="Script" path="res://scripts/ui_image.gd" id="20_image"]
+[ext_resource type="Resource" path="res://resources/ui_assets.tres" id="21_assets"]
+
+[node name="LevelRewards" type="Control" node_paths=PackedStringArray("spotlight")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_screen")
+progression = ExtResource("2_progression")
+row_scene = ExtResource("3_row")
+spotlight = NodePath("SpotlightOverlay")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"background"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="SafeArea/Content/Layout/Header"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 132)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+flat = true
+
+[node name="BackLabel" type="Label" parent="SafeArea/Content/Layout/Header/BackButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 96
+text = "‹"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackIcon" type="TextureRect" parent="SafeArea/Content/Layout/Header/BackButton" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("20_image")
+assets = ExtResource("21_assets")
+slot = &"back_icon"
+fallback = NodePath("../BackLabel")
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Rows" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="LevelHud" type="PanelContainer" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+theme_type_variation = &"LevelHudPanel"
+
+[node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/LevelHud"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Line" type="HBoxContainer" parent="SafeArea/Content/Layout/LevelHud/VBox"]
+layout_mode = 2
+
+[node name="SummaryLabel" type="Label" parent="SafeArea/Content/Layout/LevelHud/VBox/Line"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 54
+text = "레벨 1"
+
+[node name="NextLabel" type="Label" parent="SafeArea/Content/Layout/LevelHud/VBox/Line"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 8
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 39
+text = "다음 레벨까지 0"
+
+[node name="ExpBar" type="ColorRect" parent="SafeArea/Content/Layout/LevelHud/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"track"
+
+[node name="ExpFill" type="ColorRect" parent="SafeArea/Content/Layout/LevelHud/VBox/ExpBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"info"
+
+[node name="SpotlightOverlay" parent="." instance=ExtResource("5_spotlight")]
+
+[node name="BackNavigator" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_nav")
+target_scene = "res://scenes/main_menu.tscn"
+
+[connection signal="pressed" from="SafeArea/Content/Layout/Header/BackButton" to="BackNavigator" method="go"]
+[connection signal="tapped" from="SpotlightOverlay" to="." method="_on_spotlight_tapped"]
