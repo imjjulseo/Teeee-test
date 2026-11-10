@@ -377,3 +377,67 @@ func test_reset_button_needs_a_second_press_in_time() -> void:
 	assert_eq(SaveData.new(TEST_SAVE).get_value("progress", "level", 1), 1, "progress erased")
 	menu.free()
 	_clean()
+
+
+# --- 일시정지 화면의 설정 (E40) -------------------------------------------------------
+
+func _open_quick() -> QuickOptions:
+	var quick: QuickOptions = (load("res://scenes/quick_options.tscn") as PackedScene).instantiate() as QuickOptions
+	quick.save_path = TEST_SAVE
+	quick.notification(Node.NOTIFICATION_READY)
+	return quick
+
+
+func test_quick_options_save_and_announce_changes() -> void:
+	_clean()
+	var quick: QuickOptions = _open_quick()
+	var modes: Array[int] = []
+	var motions: Array[bool] = []
+	quick.control_mode_changed.connect(func(mode: OptionsStore.ControlMode) -> void: modes.append(mode))
+	quick.reduce_motion_changed.connect(func(enabled: bool) -> void: motions.append(enabled))
+	(quick.get_node("%DpadButton") as Button).pressed.emit()
+	(quick.get_node("%DpadButton") as Button).pressed.emit()
+	(quick.get_node("%ReduceMotionToggle") as CheckButton).toggled.emit(true)
+	assert_eq(modes, [Mode.DPAD] as Array[int], "announced once (the second press changes nothing)")
+	assert_eq(motions, [true] as Array[bool])
+	assert_true((quick.get_node("%DpadButton") as Button).button_pressed)
+	assert_false((quick.get_node("%SwipeButton") as Button).button_pressed)
+	var saved: OptionsStore = OptionsStore.new(TEST_SAVE)
+	assert_eq([saved.control_mode, saved.reduce_motion], [Mode.DPAD, true], "saved right away")
+	quick.free()
+	_clean()
+
+
+func test_quick_options_volume_saves_when_closed() -> void:
+	_clean()
+	var quick: QuickOptions = _open_quick()
+	var slider: HSlider = quick.get_node("%MasterVolumeSlider")
+	slider.set_value_no_signal(40)
+	slider.value_changed.emit(40.0)
+	assert_eq((quick.get_node("%MasterVolumeLabel") as Label).text, "40")
+	assert_eq(OptionsStore.new(TEST_SAVE).master_volume, 100, "not saved while dragging")
+	quick.save_pending()
+	assert_eq(OptionsStore.new(TEST_SAVE).master_volume, 40)
+	quick.free()
+	OptionsStore.new(TEST_SAVE).set_master_volume(100)
+	OptionsStore.new(TEST_SAVE).apply_audio()
+	_clean()
+
+
+func test_pause_overlay_opens_settings_and_forwards_changes() -> void:
+	_clean()
+	SaveData.path_override = TEST_SAVE
+	var overlay: PauseOverlay = (load("res://scenes/pause_overlay.tscn") as PackedScene).instantiate() as PauseOverlay
+	overlay.propagate_notification(Node.NOTIFICATION_READY)
+	var modes: Array[int] = []
+	overlay.control_mode_changed.connect(func(mode: OptionsStore.ControlMode) -> void: modes.append(mode))
+	assert_false(overlay.is_options_open())
+	(overlay.get_node("%OptionsButton") as Button).pressed.emit()
+	assert_true(overlay.is_options_open(), "settings replace the pause buttons")
+	(overlay.get_node("%QuickOptions/%DpadButton") as Button).pressed.emit()
+	assert_eq(modes, [Mode.DPAD] as Array[int], "the change leaves the overlay as a signal")
+	(overlay.get_node("%BackButton") as Button).pressed.emit()
+	assert_false(overlay.is_options_open())
+	overlay.free()
+	SaveData.path_override = ""
+	_clean()

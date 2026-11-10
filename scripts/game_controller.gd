@@ -286,6 +286,16 @@ func _on_pause_requested() -> void:
 		_flow.toggle_pause()
 
 
+## 일시정지 화면에서 조작 방법을 바꿨다 (E40): 지금 판에 바로 반영. 규칙 튜토리얼은 스와이프 그대로 (저장은 됨).
+func _on_control_mode_changed(mode: OptionsStore.ControlMode) -> void:
+	flow_channel.control_mode_ready.emit(OptionsStore.ControlMode.SWIPE if _tutorial else mode)
+
+
+## 일시정지 화면에서 효과 줄이기를 바꿨다 (E40).
+func _on_reduce_motion_changed(enabled: bool) -> void:
+	flow_channel.reduce_motion_ready.emit(enabled)
+
+
 func _on_resume_requested() -> void:
 	if is_running():
 		_flow.resume()
