@@ -299,7 +299,7 @@ func test_planner_counts_built_blocks() -> void:
 	var planner: TutorialPlanner = TutorialPlanner.new(board, 3, HtmlRng.new(3))
 	var plan: TutorialPlanner.Plan = planner.best(4)
 	assert_true(plan != null and plan.color == 1 and plan.built == 0, "walking into an existing T builds nothing")
-	planner.note_move(Vector2i(2, 2))  # 가운데 블럭을 옮긴 적이 있다
+	planner.note_move(Vector2i(2, 2))  # 가운데 블록을 옮긴 적이 있다
 	planner.level = 0
 	assert_true(planner.best(4) == null or planner.best(4).built == 0)
 	planner.level = 1

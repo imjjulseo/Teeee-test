@@ -274,7 +274,7 @@ func test_sewer_loop_pulls_the_inside_blocks_as_one_match() -> void:
 	assert_eq(gained, [2.5] as Array[float])
 	assert_eq(session.recipes.recipes[0].progress, 1, "its color advances the recipes")
 	assert_eq(session.ability_recipe.progress, 0, "sewer clears do not advance the character recipe")
-	assert_eq(announced, ["수선: 블럭 1개"] as Array[String])
+	assert_eq(announced, ["수선: 블록 1개"] as Array[String])
 	assert_eq(session.board_marks().size(), 0, "rope gone")
 
 
@@ -304,7 +304,7 @@ func test_sewer_fails_on_timeout_rope_or_empty_loop() -> void:
 	square.ability_announced.connect(func(t: String) -> void: said.append(t))
 	_trigger(square)
 	_moves(square, [Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT, Vector2i.UP] as Array[Vector2i])
-	assert_eq(said, ["안에 블럭이 없어요"] as Array[String], "2x2 loop has no inside")
+	assert_eq(said, ["안에 블록이 없어요"] as Array[String], "2x2 loop has no inside")
 
 
 func test_sewer_character_recipe_frozen_while_armed() -> void:

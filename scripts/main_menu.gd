@@ -1,7 +1,7 @@
 class_name MainMenu
 extends Control
 ## 메인 화면 (기획서 8.1장, E38). 위 줄(TopBar), 경험치 2배 칸(표시만), 로고, BEST 최고점, 시작 칸, 아래 줄(BottomNav).
-## 아래 줄 가운데 캐릭터 블럭을 위로 밀면 블럭이 시작 칸으로 올라가 게임이 시작된다. 누르면 캐릭터 화면 (BottomNav).
+## 아래 줄 가운데 캐릭터 블록을 위로 밀면 블록이 시작 칸으로 올라가 게임이 시작된다. 누르면 캐릭터 화면 (BottomNav).
 ## 메뉴 버튼은 튜토리얼 흐름(TutorialFlow)에 따라 열린다. 첫 뽑기 유도 단계에서는 밀어도 상점으로 간다 (shop_requested).
 ## 씬 전환은 main_menu.tscn에서 signal → SceneNavigator로 연결한다.
 
@@ -11,7 +11,7 @@ signal shop_requested
 @export var roster: CharacterRoster
 ## 판을 이만큼 하기 전까지 스와이프 안내를 보인다.
 @export var hint_games: int = 3
-## 블럭이 시작 칸으로 올라가는 시간, 안내가 깜빡이는 주기.
+## 블록이 시작 칸으로 올라가는 시간, 안내가 깜빡이는 주기.
 @export var start_fly_time: float = 0.2
 @export var hint_period: float = 1.2
 ## 저장 파일. 비어 있으면 SaveData 기본 경로 (테스트·스모크는 SaveData.path_override).
@@ -69,7 +69,7 @@ func _show_hint() -> void:
 		tween.tween_property(_hint, "modulate:a", 1.0, hint_period / 2.0).set_trans(Tween.TRANS_SINE)
 
 
-## 블럭을 위로 밀었다 (main_menu.tscn에서 BottomNav.start_swiped에 연결).
+## 블록을 위로 밀었다 (main_menu.tscn에서 BottomNav.start_swiped에 연결).
 func _on_start_swiped() -> void:
 	if _starting:
 		return

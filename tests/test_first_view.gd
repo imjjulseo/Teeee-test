@@ -73,9 +73,9 @@ func test_finished_saves_skip_first_view_guides() -> void:
 	assert_false(TutorialStore.new(TEST_SAVE).has_seen(TutorialStore.SEEN_EXPERIENCE), "restart shows them again")
 
 
-func test_tips_are_the_html_texts() -> void:
+func test_tips_follow_the_copy_guide() -> void:
 	var tips: FirstViewTips = load("res://resources/first_view_tips.tres") as FirstViewTips
-	assert_eq([tips.multi_head, tips.multi_text], ["족보 동시 진행", "두 족보를 동시에 올릴 수도 있어요"])
-	assert_eq([tips.experience_head, tips.experience_text], ["경험치", "점수만큼 경험치를 얻어요"])
-	assert_eq(tips.hidden_text, "조건은 비밀. 달성하면 히든 캐릭터를 얻어요")
-	assert_eq(tips.characters_text, "좌우로 넘겨 능력을 보고 장착해요. 튜토리얼로 미리 써 볼 수 있어요")
+	assert_eq([tips.multi_head, tips.multi_text], ["족보 동시 진행", "같은 색을 기다리는 족보는 한 번 매치로 함께 채워져요"])
+	assert_eq([tips.experience_head, tips.experience_text], ["경험치", "점수가 높을수록 경험치를 많이 받아요"])
+	assert_eq(tips.hidden_text, "조건은 비밀이에요. 달성하면 히든 캐릭터를 얻어요")
+	assert_eq(tips.characters_text, "좌우로 넘기며 능력을 확인하고 장착해요. 없는 캐릭터도 체험해 볼 수 있어요")

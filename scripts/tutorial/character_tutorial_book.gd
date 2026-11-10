@@ -10,10 +10,10 @@ extends Resource
 
 @export_group("Texts")
 @export var recipe_head: String = "캐릭터 족보"
-@export_multiline var recipe_text: String = "이 순서대로 매치하면 능력이 발동해요. 족보는 그대로 반복돼요"
+@export_multiline var recipe_text: String = "이 색 순서대로 매치하면 능력이 발동해요. 발동한 뒤에는 처음부터 다시 채워요"
 @export var trigger_label: String = "%s · 발동해 보기"
 @export var trigger_sub: String = "캐릭터 족보 마지막 칸"
-@export_multiline var trigger_caption: String = "캐릭터 족보가 한 칸 남았어요. 흰 테두리 블럭으로 ㅗ를 만들어 {target을} 매치!"
+@export_multiline var trigger_caption: String = "캐릭터 족보가 한 칸 남았어요. 흰 테두리 블록으로 T 모양을 만들어 {target을} 매치!"
 @export var lesson_head: String = "%s · 활용"
 @export var practice_label: String = "%s · 연습 판"
 @export var ready_head: String = "%s 준비 끝"

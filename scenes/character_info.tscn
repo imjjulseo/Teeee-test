@@ -98,7 +98,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 39
-text = "히든 업적을 달성하면 얻을 수 있어요. 조건은 숨겨져 있어요."
+text = "히든 업적을 달성하면 얻어요. 조건은 비밀이에요."
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -127,7 +127,7 @@ custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 45
-text = "튜토리얼 및 체험"
+text = "튜토리얼 · 체험"
 
 [connection signal="pressed" from="VBox/EquipButton" to="." method="_on_equip_button_pressed"]
 [connection signal="pressed" from="VBox/PurchaseButton" to="." method="_on_purchase_button_pressed"]

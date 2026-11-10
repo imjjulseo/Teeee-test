@@ -174,7 +174,7 @@ func test_common_achievements_accumulate_over_games() -> void:
 		if i == 9:
 			assert_true(_names(completions).has("단골 I"), "10 games")
 		if i == 7:
-			assert_true(_names(completions).has("블럭 부수기 I"), "320 blocks ≥ 300 on the 8th game (%s)" % [_names(completions)])
+			assert_true(_names(completions).has("블록 부수기 I"), "320 blocks ≥ 300 on the 8th game (%s)" % [_names(completions)])
 	var store: AchievementStore = AchievementStore.new(TEST_SAVE)
 	assert_eq([store.stat("games"), store.stat("blocks")], [10, 400])
 	var tracker: AchievementTracker = _tracker()

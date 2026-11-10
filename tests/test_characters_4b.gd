@@ -165,7 +165,7 @@ func test_poseidon_sinks_blue_blocks_to_the_bottom_keeping_counts() -> void:
 	var messages: Array[String] = []
 	session.ability_triggered.connect(func(m: String) -> void: messages.append(m))
 	_trigger(session)
-	assert_eq(messages, ["해일: 파란 블럭이 가라앉음"] as Array[String])
+	assert_eq(messages, ["해일: 파란 블록이 가라앉음"] as Array[String])
 	assert_eq(board.color_counts(4), before, "color counts kept")
 	assert_eq(board.count_type(Board.CellType.COLOR_BLOCK), blocks_before)
 	assert_eq(board.get_cell_type(Vector2i(0, 4)), Board.CellType.SEED, "seed untouched")

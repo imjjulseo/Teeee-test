@@ -23,7 +23,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 33
-text = "블럭 모으기"
+text = "블록 모으기"
 text_overrun_behavior = 3
 
 [node name="BarCount" type="Label" parent="HBox/Info"]

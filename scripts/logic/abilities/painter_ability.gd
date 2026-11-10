@@ -46,7 +46,7 @@ func trigger(session: GameSession) -> String:
 		session.metrics.add(METRIC_PAINTS)
 		session.metrics.add(METRIC_PAINTED, picked.size())
 		session.cells_changed.emit(picked)
-	return "칠하기: 블럭 %d개" % picked.size()
+	return "칠하기: 블록 %d개" % picked.size()
 
 
 func _pick_cells(board: Board, target: int) -> Array[Vector2i]:

@@ -30,7 +30,7 @@ func on_event(_director: TutorialDirector, _event: StringName, _amount: int) -> 
 	pass
 
 
-## 블럭 모으기 퍼즐 한 판이 끝났다.
+## 블록 모으기 퍼즐 한 판이 끝났다.
 func on_puzzle_finished(_director: TutorialDirector, _stars: int) -> void:
 	pass
 

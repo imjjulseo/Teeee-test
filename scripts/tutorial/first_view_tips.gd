@@ -6,18 +6,18 @@ extends Resource
 @export_group("Game")
 ## 두 족보가 같은 색을 기다리는 순간 (판 중).
 @export var multi_head: String = "족보 동시 진행"
-@export_multiline var multi_text: String = "두 족보를 동시에 올릴 수도 있어요"
+@export_multiline var multi_text: String = "같은 색을 기다리는 족보는 한 번 매치로 함께 채워져요"
 ## 첫 결과 화면의 경험치 바.
 @export var experience_head: String = "경험치"
-@export_multiline var experience_text: String = "점수만큼 경험치를 얻어요"
+@export_multiline var experience_text: String = "점수가 높을수록 경험치를 많이 받아요"
 
 @export_group("Screens")
 @export var achievements_head: String = "업적"
-@export_multiline var achievements_text: String = "조건을 달성하면 코인·다이아를 받아요"
+@export_multiline var achievements_text: String = "조건을 채우면 코인과 다이아를 받아요"
 @export var hidden_head: String = "히든 업적"
-@export_multiline var hidden_text: String = "조건은 비밀. 달성하면 히든 캐릭터를 얻어요"
+@export_multiline var hidden_text: String = "조건은 비밀이에요. 달성하면 히든 캐릭터를 얻어요"
 @export var characters_head: String = "캐릭터"
-@export_multiline var characters_text: String = "눌러서 능력 보기 · 다이아로 해금 · 한 판 체험 · 튜토리얼"
+@export_multiline var characters_text: String = "좌우로 넘기며 능력을 확인하고 장착해요. 없는 캐릭터도 체험해 볼 수 있어요"
 ## 메뉴 > 퍼즐 첫 방문.
 @export var puzzles_head: String = "퍼즐"
-@export_multiline var puzzles_text: String = "T 모양 만들기 퍼즐이에요. 처음 깰 때마다 코인을 받아요"
+@export_multiline var puzzles_text: String = "T 모양을 만드는 퍼즐이에요. 판마다 처음 풀면 코인을 받아요"

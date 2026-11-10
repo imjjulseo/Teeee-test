@@ -310,7 +310,7 @@ func test_painter_paints_the_trail_first_with_the_most_advanced_recipe_color() -
 	var matches: int = session.match_count
 	for color: int in session.character.condition_colors:
 		session.advance_ability_condition(color)
-	assert_eq(messages, ["칠하기: 블럭 5개"] as Array[String])
+	assert_eq(messages, ["칠하기: 블록 5개"] as Array[String])
 	assert_eq(changed.size(), 5)
 	var painted_trail: int = 0
 	for pos: Vector2i in trail:

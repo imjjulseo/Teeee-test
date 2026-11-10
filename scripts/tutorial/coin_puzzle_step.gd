@@ -1,14 +1,14 @@
 class_name CoinPuzzleStep
 extends TutorialStep
-## 금화 블럭 퍼즐 (규칙 튜토리얼 코인): 모을 블록 몇 개에 금화를 붙인 빠른 퍼즐(힌트·결과 없음).
+## 금화 블록 퍼즐 (규칙 튜토리얼 코인): 모을 블록 몇 개에 금화를 붙인 빠른 퍼즐(힌트·결과 없음).
 ## intro_text가 있으면 먼저 설명(TAP, 금화 칸·코인 표시를 밝힘)을 보여 주고, 누르면 조작 설명으로 바꿔 풀게 한다.
 ## rule이면 HTML 규칙 튜토리얼처럼 내 주변 5×5에 깔고(설명 없이 바로), target_recipe면 족보가 기다리는 색을 모은다 (HTML tg).
 ## reset_chain이면 시작할 때 금화 연속을 처음부터 (HTML coinChain = 0).
 
 @export var board_id: String = "0a"
 @export var coins: int = 1
-@export var label: String = "코인 블럭"
-@export var caption: String = "코인 블럭을 매치해 보세요"
+@export var label: String = "코인 블록"
+@export var caption: String = "코인 블록을 매치해 보세요"
 @export var intro_head: String = ""
 @export_multiline var intro_text: String = ""
 @export var intro_holes: PackedStringArray = PackedStringArray(["board_coins", "coin"])

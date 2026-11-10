@@ -1,7 +1,7 @@
 class_name CharacterInfo
 extends PanelContainer
-## 캐릭터 정보 한 장 (기획서 8.1 · 8.5장, E37·E38): 블럭, 이름, 등급, 캐릭터 최고점, 능력명 + 족보형(족보 카드) / 상시형, 효과 설명,
-## 장착 자리(장착 / 구매), 튜토리얼 및 체험. 캐릭터 화면의 넘기는 판과 상점 설명창이 함께 쓴다.
+## 캐릭터 정보 한 장 (기획서 8.1 · 8.5장, E37·E38): 블록, 이름, 등급, 캐릭터 최고점, 능력명 + 족보형(족보 카드) / 상시형, 효과 설명,
+## 장착 자리(장착 / 구매), 튜토리얼 · 체험. 캐릭터 화면의 넘기는 판과 상점 설명창이 함께 쓴다.
 ## 무엇을 할지는 정하지 않고 signal로만 알린다.
 
 signal equip_requested(character: CharacterData)
@@ -58,7 +58,7 @@ func shown_actions() -> PackedStringArray:
 	return texts
 
 
-## 블럭 그림 (올라오는 연출이 위치를 본다).
+## 블록 그림 (올라오는 연출이 위치를 본다).
 func block() -> CharacterBlockView:
 	return _block
 

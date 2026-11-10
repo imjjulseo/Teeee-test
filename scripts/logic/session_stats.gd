@@ -14,7 +14,7 @@ var moves: int = 0
 ## 벽·잘못된 방향으로 막힌 입력 수.
 var blocked_moves: int = 0
 var matches: int = 0
-## 깨진 블록 수 (매치한 칸 + 능력으로 터진 칸, 업적 "블럭 부수기").
+## 깨진 블록 수 (매치한 칸 + 능력으로 터진 칸, 업적 "블록 부수기").
 var blocks_cleared: int = 0
 ## 완성한 족보 수 (동시 완성은 각각 센다).
 var recipes_completed: int = 0

@@ -15,7 +15,7 @@ enum Tab { GACHA, SHOP }
 @export var roster: CharacterRoster
 @export var progression: ProgressionConfig
 @export var theme_data: BoardTheme
-## 설명창의 "튜토리얼 및 체험" (튜토리얼이 있는 캐릭터만).
+## 설명창의 "튜토리얼 · 체험" (튜토리얼이 있는 캐릭터만).
 @export var lessons: CharacterTutorialBook
 ## 튜토리얼 흐름 (첫 뽑기 고정·1회분 코인)과 그 안내.
 @export var tutorial: TutorialScript
@@ -275,9 +275,9 @@ func _on_purchase_requested(character: CharacterData) -> void:
 	var action: CharacterCollection.PurchaseAction = collection.purchase_action(character, _ticket_use.is_on(character.grade))
 	match action.kind:
 		CharacterCollection.Purchase.DIAMOND:
-			_ask("%s로 %s을(를) 구매할까요?" % [action.text, character.display_name], "구매", _buy.bind(character))
+			_ask("%s 캐릭터를 %s에 해금할까요?" % [character.display_name, action.text], "해금", _buy.bind(character))
 		CharacterCollection.Purchase.TICKET:
-			_ask("%s 선택권 1장으로 %s을(를) 해금할까요?" % [CharacterData.GRADE_NAMES[character.grade], character.display_name],
+			_ask("%s 선택권 1장을 써서 %s 캐릭터를 해금할까요?" % [CharacterData.GRADE_NAMES[character.grade], character.display_name],
 				"사용", _use_ticket.bind(character))
 
 
@@ -309,7 +309,7 @@ func _on_confirm_accepted() -> void:
 	_pending_confirm = Callable()
 
 
-## 설명창의 튜토리얼 및 체험: 끝나면 상점으로 돌아온다.
+## 설명창의 튜토리얼 · 체험: 끝나면 상점으로 돌아온다.
 func _on_lesson_requested(character: CharacterData) -> void:
 	TrialRequest.character_id = character.id
 	TrialRequest.with_lesson = true

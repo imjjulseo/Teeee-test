@@ -1,18 +1,18 @@
 class_name CharacterSelect
 extends Control
 ## 캐릭터 화면 (기획서 8.1장, E38): 위 줄, 좌우로 넘기는 캐릭터 정보(CharacterCarousel), 아래 줄. 카드 목록 없이 바로 정보가 보인다.
-## 장착은 CharacterCollection으로 처리한다. 해금은 상점에서 한다 (E36). 튜토리얼 및 체험은 TrialRequest에 캐릭터를 적고 trial_started
-## (character_select.tscn에서 게임 씬 전환에 연결). 열릴 때 아래 줄 블럭이 올라와 정보의 블럭이 된다.
+## 장착은 CharacterCollection으로 처리한다. 해금은 상점에서 한다 (E36). 튜토리얼 · 체험은 TrialRequest에 캐릭터를 적고 trial_started
+## (character_select.tscn에서 게임 씬 전환에 연결). 열릴 때 아래 줄 블록이 올라와 정보의 블록이 된다.
 
 signal trial_started
 
 @export var roster: CharacterRoster
-## 튜토리얼 및 체험 (튜토리얼이 있는 캐릭터만).
+## 튜토리얼 · 체험 (튜토리얼이 있는 캐릭터만).
 @export var lessons: CharacterTutorialBook
 ## 처음 볼 때 안내 (처음 열면 설명한다, 8.8장).
 @export var tips: FirstViewTips
 @export var spotlight: SpotlightOverlay
-## 블럭이 올라오는 시간.
+## 블록이 올라오는 시간.
 @export var rise_time: float = 0.28
 ## 저장 파일. 비어 있으면 SaveData 기본 경로 (테스트·스모크는 SaveData.path_override).
 @export var save_path: String = ""
@@ -97,7 +97,7 @@ func _on_spotlight_tapped() -> void:
 	_nav.refresh()
 
 
-## 아래 줄 블럭이 올라와 정보의 블럭이 된다.
+## 아래 줄 블록이 올라와 정보의 블록이 된다.
 func _play_block_rise() -> void:
 	await get_tree().process_frame  # 자리가 정해진 뒤
 	if not is_inside_tree():
@@ -127,7 +127,7 @@ func _on_equip_requested(character: CharacterData) -> void:
 		_nav.refresh()
 
 
-## 판의 튜토리얼 및 체험: 체험 판을 캐릭터 튜토리얼부터 (끝나면 이 화면으로).
+## 판의 튜토리얼 · 체험: 체험 판을 캐릭터 튜토리얼부터 (끝나면 이 화면으로).
 func _on_lesson_requested(character: CharacterData) -> void:
 	TrialRequest.character_id = character.id
 	TrialRequest.with_lesson = true

@@ -1,8 +1,8 @@
 class_name BottomNav
 extends Control
-## 메뉴 화면 공통 아래 줄 (기획서 8.1장, E38): 상점 · 업적 · [캐릭터 블럭] · 퍼즐 · 설정.
+## 메뉴 화면 공통 아래 줄 (기획서 8.1장, E38): 상점 · 업적 · [캐릭터 블록] · 퍼즐 · 설정.
 ## 지금 화면의 버튼은 튀어나와 있고, 다시 누르면 메인으로 간다. 버튼은 튜토리얼 흐름(TutorialFlow)에 따라 잠기고, 지금 누를 버튼이 빛난다.
-## 가운데 블럭을 누르면 캐릭터 화면, 메인에서는 위로 밀면 start_swiped (메인이 게임을 시작한다).
+## 가운데 블록을 누르면 캐릭터 화면, 메인에서는 위로 밀면 start_swiped (메인이 게임을 시작한다).
 ## 받을 수 있는 업적 보상이 있으면 업적 버튼에 빨간 점. 주인 화면이 _ready에서 setup을 부르고, 상태가 바뀌면 refresh를 부른다.
 
 signal start_swiped
@@ -26,7 +26,7 @@ func setup(save_path: String = "") -> void:
 	refresh()
 
 
-## 저장 파일의 지금 값으로 잠금 · 빨간 점 · 블럭 · 빛남을 다시 보인다.
+## 저장 파일의 지금 값으로 잠금 · 빨간 점 · 블록 · 빛남을 다시 보인다.
 func refresh() -> void:
 	var flow: TutorialFlow = TutorialFlow.current(_save_path)
 	var unlocks: MenuUnlocks = flow.unlocks()
@@ -40,7 +40,7 @@ func refresh() -> void:
 	_pop_current()
 
 
-## 가운데 블럭 (올라오는 연출·메인의 시작 연출이 위치를 본다).
+## 가운데 블록 (올라오는 연출·메인의 시작 연출이 위치를 본다).
 func block() -> CharacterBlockView:
 	return %Block as CharacterBlockView
 

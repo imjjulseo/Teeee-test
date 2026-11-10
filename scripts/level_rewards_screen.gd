@@ -13,7 +13,7 @@ static var return_scene: String = ""
 ## 튜토리얼 흐름의 레벨 보상 안내 (첫 실전 판 뒤 한 번).
 @export var spotlight: SpotlightOverlay
 @export var guide_head: String = "레벨 보상"
-@export var guide_text: String = "레벨이 오르면 여기서 눌러서 코인과 다이아를 받아요"
+@export var guide_text: String = "레벨이 오르면 여기서 보상을 눌러 받아요"
 ## 저장 파일. 비어 있으면 SaveData 기본 경로 (테스트·스모크는 SaveData.path_override).
 @export var save_path: String = ""
 

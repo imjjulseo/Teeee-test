@@ -2,9 +2,9 @@ extends "res://tests/smoke/smoke_base.gd"
 ## 메뉴 화면 (기획서 8.1장, E38). 모드:
 ## - intro : 인트로 실제 클릭 → 메인(위 줄·아래 줄·BEST) → 레벨 버튼 실제 클릭 → 레벨 탑(아래가 Lv1, 지금 레벨이 보이게 스크롤,
 ##           선택권은 큰 칸, 다음 레벨 기둥이 경험치만큼) → 뒤로 → 메인
-## - swipe : 아래 줄 블럭을 실제 터치로 위로 밀면 게임 시작
-## - tap   : 아래 줄 블럭을 그냥 누르면 캐릭터 화면, 다시 누르면 메인, 상점 → 위 줄 레벨 → 뒤로 → 상점
-## - sheet : 캐릭터 화면 → 장착 → 화살표로 넘김 → 미보유 캐릭터의 튜토리얼 및 체험 → 건너뛰면 캐릭터 화면, 장착은 그대로
+## - swipe : 아래 줄 블록을 실제 터치로 위로 밀면 게임 시작
+## - tap   : 아래 줄 블록을 그냥 누르면 캐릭터 화면, 다시 누르면 메인, 상점 → 위 줄 레벨 → 뒤로 → 상점
+## - sheet : 캐릭터 화면 → 장착 → 화살표로 넘김 → 미보유 캐릭터의 튜토리얼 · 체험 → 건너뛰면 캐릭터 화면, 장착은 그대로
 ## - trial_quit : 체험 판 일시정지 → 메뉴 실제 클릭 → 캐릭터 화면, 플레이 기록 없음
 const Grade = CharacterData.Grade
 const LEVEL: int = 12
@@ -90,7 +90,7 @@ func _tick_intro() -> void:
 				finish()
 
 
-## 실제 터치로 블럭을 위로 민다.
+## 실제 터치로 블록을 위로 민다.
 func _tick_swipe() -> void:
 	var gesture: Control = null if current_scene == null or current_scene.name != "MainMenu" else node("%BottomNav/%BlockGesture")
 	match step:
@@ -168,14 +168,14 @@ func _tick_sheet() -> void:
 				next_step()
 		1:
 			if step_time > 0.2:
-				expect(_page().shown_actions() == PackedStringArray(["장착하기", "튜토리얼 및 체험"]), "owned → equip (%s)" % [_page().shown_actions()])
+				expect(_page().shown_actions() == PackedStringArray(["장착하기", "튜토리얼 · 체험"]), "owned → equip (%s)" % [_page().shown_actions()])
 				expect((_page().get_node("%CharacterBestLabel") as Label).text == "최고점 0", "character best")
 				click_control(_page().get_node("%EquipButton"))
 				next_step()
 		2:
 			if step_time > 0.3:
 				expect(CharacterStore.new().selected_id == &"gardener", "equipped")
-				expect(_page().shown_actions() == PackedStringArray(["장착 중", "튜토리얼 및 체험"]) and (_page().get_node("%EquipButton") as Button).disabled, "equipped button")
+				expect(_page().shown_actions() == PackedStringArray(["장착 중", "튜토리얼 · 체험"]) and (_page().get_node("%EquipButton") as Button).disabled, "equipped button")
 				expect((node("%BottomNav") as BottomNav).block().shown_letter() == "정", "nav block follows the equipped character")
 				shot("sheet_equipped")
 				click_control(node("SafeArea/Content/Layout/Carousel/RightButton"))
@@ -188,7 +188,7 @@ func _tick_sheet() -> void:
 		4:
 			if step_time > 0.2:
 				expect(_page().character.id == &"clock", "clock page")
-				expect(_page().shown_actions() == PackedStringArray(["미보유", "튜토리얼 및 체험"]) and (_page().get_node("%EquipButton") as Button).disabled, "unowned: no equip, no unlock (%s)" % [_page().shown_actions()])
+				expect(_page().shown_actions() == PackedStringArray(["미보유", "튜토리얼 · 체험"]) and (_page().get_node("%EquipButton") as Button).disabled, "unowned: no equip, no unlock (%s)" % [_page().shown_actions()])
 				expect(ProgressStore.new().ticket_count(Grade.RARE) == 1, "ticket stays for the shop")
 				click_control(_page().get_node("%LessonButton"))
 				next_step()

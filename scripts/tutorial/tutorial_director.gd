@@ -2,7 +2,7 @@ class_name TutorialDirector
 extends Node
 ## 규칙 튜토리얼 진행 (기획서 8.8장): TutorialScript의 단계를 차례로 실행한다. 판은 본게임 세션 그대로 쓰고
 ## (매치·시간·씨앗·족보·금화가 본게임 규칙), 남은 시간은 흐르지 않는다. 단계가 쓰는 도구를 공개 API로 연다:
-## 설명(스포트라이트 TAP)·조작 설명(ACT), 블럭 모으기 퍼즐(PuzzleRunner), 자유 매치 힌트(MatchPlanner), 족보 카드·판 준비.
+## 설명(스포트라이트 TAP)·조작 설명(ACT), 블록 모으기 퍼즐(PuzzleRunner), 자유 매치 힌트(MatchPlanner), 족보 카드·판 준비.
 ## GameController가 튜토리얼 판이면 begin(session)을 부르고, 이동 입력을 넘기고(intercepts_moves), 설명 중엔 판을 멈춘다(halts_game).
 ## 끝나거나 건너뛰면 finished. 첫 실전 판 안내(show_intro)도 여기서 띄운다.
 ## 캐릭터 튜토리얼(6c, CharacterTutorialBook): begin_lesson으로 같은 도구에 캐릭터별 단계를 돌리고, 끝나면 lesson_finished.
@@ -775,7 +775,7 @@ func show_move_arrow() -> void:
 			return
 
 
-# --- 블럭 모으기 퍼즐 ----------------------------------------------------------------
+# --- 블록 모으기 퍼즐 ----------------------------------------------------------------
 
 ## 판 가운데 창에 퍼즐을 깔고 시작한다. 풀리면 본게임 매치로 처리하고, 끝나면 지금 단계의 on_puzzle_finished.
 ## fill_real이면 창 둘레 밖은 실제 판처럼 아무 색 (캐릭터 튜토리얼 발동해 보기).
@@ -1070,7 +1070,7 @@ func _free_cheer() -> void:
 	cheer(PuzzleRunner.CHEER_WORDS[grade], grade)
 
 
-## 가만히 hint_idle초: 1단계 = 매치할 4블럭 강조, 2단계 = 첫 수 화살표 (HTML tutFreeIdle).
+## 가만히 hint_idle초: 1단계 = 매치할 4블록 강조, 2단계 = 첫 수 화살표 (HTML tutFreeIdle).
 func _rule_idle_hints(delta: float) -> void:
 	if _hint_level >= 2:
 		return

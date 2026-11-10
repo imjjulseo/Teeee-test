@@ -67,7 +67,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MutedLabel"
 theme_override_font_sizes/font_size = 54
-text = "탭하여 시작"
+text = "화면을 눌러 시작"
 horizontal_alignment = 1
 
 [node name="TapArea" type="Button" parent="."]

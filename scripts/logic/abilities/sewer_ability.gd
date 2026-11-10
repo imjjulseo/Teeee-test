@@ -134,7 +134,7 @@ func _close(session: GameSession) -> void:
 		if board.get_cell_type(pos) == Board.CellType.COLOR_BLOCK:
 			blocks.append(pos)
 	if blocks.is_empty():
-		_fail(session, "안에 블럭이 없어요")
+		_fail(session, "안에 블록이 없어요")
 		return
 	_disarm(session)
 	var canonical: Callable = canonical_color
@@ -147,7 +147,7 @@ func _close(session: GameSession) -> void:
 	session.metrics.add(METRIC_CLOSES)
 	for color: int in best_order(colors, session.recipes, canonical):
 		session.apply_clear_to_recipes(color)
-	session.announce("수선: 블럭 %d개" % blocks.size())
+	session.announce("수선: 블록 %d개" % blocks.size())
 
 
 func _fail(session: GameSession, why: String) -> void:

@@ -1,6 +1,6 @@
 class_name TutorialPuzzleBar
 extends PanelContainer
-## 튜토리얼 판의 블럭 모으기 막대: 이름 · 판 번호 · 수 / 최소 수, 되돌리기 · 처음부터 · 힌트. 버튼은 signal로만 알린다.
+## 튜토리얼 판의 블록 모으기 막대: 이름 · 판 번호 · 수 / 최소 수, 되돌리기 · 처음부터 · 힌트. 버튼은 signal로만 알린다.
 
 signal undo_pressed
 signal reset_pressed

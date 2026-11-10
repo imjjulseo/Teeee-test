@@ -190,7 +190,7 @@ goals = PackedInt32Array(1, 8, 10000)
 [sub_resource type="Resource" id="Common_blocks"]
 script = ExtResource("2_common")
 stat = &"blocks"
-name = "블럭 부수기"
+name = "블록 부수기"
 text = "블록 누적 제거"
 goals = PackedInt32Array(300, 3000, 30000)
 
@@ -218,8 +218,8 @@ goals = PackedInt32Array(10, 100, 1000)
 [sub_resource type="Resource" id="Common_coins"]
 script = ExtResource("2_common")
 stat = &"coins"
-name = "금화 줍기"
-text = "판에서 주운 금화"
+name = "코인 줍기"
+text = "판에서 주운 코인"
 goals = PackedInt32Array(300, 3000, 30000)
 
 [sub_resource type="Resource" id="Common_owned"]

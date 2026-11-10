@@ -1,6 +1,6 @@
 extends "res://tests/smoke/smoke_base.gd"
 ## 캐릭터 선택과 능력 (기획서 5.2장). 모드:
-## - select : 메인 → 블럭 → 캐릭터 정보, 등급순 32명, 능력명·족보·설명, 히든은 가림, 화살표, 다시 누르면 메인
+## - select : 메인 → 블록 → 캐릭터 정보, 등급순 32명, 능력명·족보·설명, 히든은 가림, 화살표, 다시 누르면 메인
 ## - basic / gardener / clock / gambler / fever / joker : 해당 캐릭터로 게임, 실제 매치로 능력 발동
 ##   → 배너("이름!"), 메시지 줄 결과 문구, 캐릭터 카드 둘째 줄 상태, 배경 효과, 그리고 능력별 후속 확인
 
@@ -214,7 +214,7 @@ func _tick_select() -> void:
 			if step_time > 0.2:
 				var page: CharacterInfo = select.carousel().current_page()
 				expect(page.character.id == &"gardener", "gardener page")
-				expect(page.shown_actions() == PackedStringArray(["미보유", "튜토리얼 및 체험"]), "unowned (%s)" % [page.shown_actions()])
+				expect(page.shown_actions() == PackedStringArray(["미보유", "튜토리얼 · 체험"]), "unowned (%s)" % [page.shown_actions()])
 				expect((page.get_node("%EffectLabel") as Label).text == page.character.detail_effect, "effect detail shown")
 				expect((page.get_node("%AbilityName") as Label).text == "촉진" and (page.get_node("%AbilityKind") as Label).text == "족보형", "ability name and kind")
 				var condition: RecipeView = page.get_node("%SheetCondition")

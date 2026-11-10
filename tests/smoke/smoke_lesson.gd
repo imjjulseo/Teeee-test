@@ -2,10 +2,10 @@ extends "res://tests/smoke/smoke_base.gd"
 ## 6c 캐릭터 튜토리얼 (기획서 8.8장). 모드:
 ## - first : 첫 뽑기로 받은 시계공으로 시작 → 캐릭터 튜토리얼 판(시간 안 흐름) → 소개·캐릭터 족보 설명 클릭 → 발동해 보기 퍼즐(실제 방향키)
 ##           → 발동 순간 설명 → 정지 중 매치(활용) → 준비 끝 "시작" → 같은 캐릭터 실전 판 (보상 있는 판, 순간 설명 이어짐)
-## - wall  : 튜토리얼 및 체험 요청(체험)으로 벽 타는 자 → 연습 판에서 실제 위 키로 벽 매치 → 벽 매치 순간 설명 → 한 번 더 → 캐릭터 화면으로
+## - wall  : 튜토리얼 · 체험 요청(체험)으로 벽 타는 자 → 연습 판에서 실제 위 키로 벽 매치 → 벽 매치 순간 설명 → 한 번 더 → 캐릭터 화면으로
 ## - offer : 처음 쓰는 축제꾼 → "튜토리얼 / 바로 시작" 질문 → 바로 시작 실제 클릭 → 그냥 판, 처음 사용 기록
 ## - accept: 같은 질문에서 튜토리얼 실제 클릭 → 캐릭터 튜토리얼
-## - redo  : 캐릭터 화면 → 가진 시계공 → 튜토리얼 및 체험 실제 클릭 → 체험 튜토리얼 판 → 건너뛰기 → 캐릭터 화면
+## - redo  : 캐릭터 화면 → 가진 시계공 → 튜토리얼 · 체험 실제 클릭 → 체험 튜토리얼 판 → 건너뛰기 → 캐릭터 화면
 
 const KEYS: Dictionary[Vector2i, Key] = {Vector2i.UP: KEY_UP, Vector2i.DOWN: KEY_DOWN, Vector2i.LEFT: KEY_LEFT, Vector2i.RIGHT: KEY_RIGHT}
 
@@ -198,7 +198,7 @@ func _tick_redo() -> void:
 		1:
 			if step_time > 0.3:
 				var page: CharacterInfo = (current_scene as CharacterSelect).carousel().current_page()
-				expect(page.shown_actions().has("튜토리얼 및 체험"), "owned character → tutorial and trial (%s)" % ", ".join(page.shown_actions()))
+				expect(page.shown_actions().has("튜토리얼 · 체험"), "owned character → tutorial and trial (%s)" % ", ".join(page.shown_actions()))
 				shot("redo_sheet")
 				click_control(page.get_node("%LessonButton"))
 				next_step()
