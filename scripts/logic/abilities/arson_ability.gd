@@ -127,7 +127,7 @@ func time_to_next_event() -> float:
 
 
 func status_text() -> String:
-	return "물 %d/%d · 불 %d" % [water, water_max, _fire_count]
+	return "물 %d/%d / 불 %d" % [water, water_max, _fire_count]
 
 
 func board_marks() -> Array[BoardMark]:

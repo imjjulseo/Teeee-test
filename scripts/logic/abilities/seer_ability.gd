@@ -35,7 +35,7 @@ func trigger(session: GameSession) -> String:
 		for _i: int in shapes.size():
 			recipes.advance_slot(slot, outcome)
 	session.apply_recipe_outcome(outcome)
-	return "예언 실현: 모양 %d개 · 족보 모두 %d칸" % [shapes.size(), shapes.size()]
+	return "예언 실현: 모양 %d개 / 족보 모두 %d칸" % [shapes.size(), shapes.size()]
 
 
 func display_style() -> DisplayStyle:

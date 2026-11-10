@@ -52,7 +52,7 @@ func trigger(session: GameSession) -> String:
 	_planted.clear()
 	_window.begin()
 	session.refill.mature_all()
-	return "장전: %d발 · 7번째 탄 %s" % [shots, curse_name()]
+	return "장전: %d발 / 7번째 탄 %s" % [shots, curse_name()]
 
 
 func intercept_move(session: GameSession, dir: Vector2i) -> bool:
@@ -116,7 +116,7 @@ func time_to_next_event() -> float:
 func status_text() -> String:
 	if not armed:
 		return ""
-	return "%d발 · %s초 · %s" % [shots - shots_used, Ability.format_seconds(time_left), curse_name()]
+	return "%d발 / %s초 / %s" % [shots - shots_used, Ability.format_seconds(time_left), curse_name()]
 
 
 func effect_remaining() -> float:

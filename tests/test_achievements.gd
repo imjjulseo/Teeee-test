@@ -202,19 +202,34 @@ func test_best_score_and_owned_characters() -> void:
 	assert_eq([best.name, best.value, best.goal, best.done], ["최고 기록 III", 12000, 20000, false], "next tier after II")
 
 
-func test_hidden_achievements_only_record_progress() -> void:
+func test_hidden_achievement_below_goal_only_records_progress() -> void:
 	var session: GameSession = _session(&"basic")
-	session.metrics.add(RunMetrics.STRAIGHT_MATCHES, 9)
-	assert_eq(_tracker().record_game(session, 0).size(), 0, "no hidden completion yet (5a)")
+	session.metrics.add(RunMetrics.STRAIGHT_MATCHES, 4)
+	assert_eq(_tracker().record_game(session, 0).size(), 0, "4 of 5")
 	var store: AchievementStore = AchievementStore.new(TEST_SAVE)
-	assert_eq(store.progress_of("h_pachy"), 9)
+	assert_eq(store.progress_of("h_pachy"), 4)
 	assert_false(store.is_done("h_pachy"))
 	assert_false(ProgressStore.new(TEST_SAVE).is_unlocked(&"pachy"))
 
 
+func test_hidden_achievement_unlocks_its_character_once() -> void:
+	var session: GameSession = _session(&"basic")
+	session.metrics.add(RunMetrics.STRAIGHT_MATCHES, 5)
+	var completions: Array[AchievementTracker.Completion] = _tracker().record_game(session, 0)
+	assert_eq(_names(completions), PackedStringArray(["돌머리"]))
+	assert_false(completions[0].needs_claim, "the character is unlocked right away")
+	assert_eq(GameController.achievement_lines(completions), [PackedStringArray(["업적 돌머리", "히든 캐릭터"])] as Array[PackedStringArray])
+	assert_true(AchievementStore.new(TEST_SAVE).is_done("h_pachy"))
+	assert_true(ProgressStore.new(TEST_SAVE).is_unlocked(&"pachy"))
+	assert_false(ProgressStore.new(TEST_SAVE).is_unlocked(&"racer"), "only the achieved one")
+	var again: GameSession = _session(&"basic")
+	again.metrics.add(RunMetrics.STRAIGHT_MATCHES, 9)
+	assert_eq(_tracker().record_game(again, 0).size(), 0, "already done")
+
+
 func test_result_lines() -> void:
 	var completions: Array[AchievementTracker.Completion] = [AchievementTracker.Completion.new("단골 I", "● 100")]
-	assert_eq(GameController.achievement_lines(completions), [PackedStringArray(["업적 · 단골 I", "업적에서 받기"])] as Array[PackedStringArray], "the reward is claimed on the achievement screen")
+	assert_eq(GameController.achievement_lines(completions), [PackedStringArray(["업적 단골 I", "업적에서 받기"])] as Array[PackedStringArray], "the reward is claimed on the achievement screen")
 	assert_eq([AchievementTracker.format_count(30000), AchievementTracker.format_count(500), AchievementTracker.format_count(1234567)],
 		["30,000", "500", "1,234,567"])
 

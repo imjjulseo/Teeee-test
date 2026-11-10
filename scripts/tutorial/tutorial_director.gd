@@ -169,7 +169,7 @@ func offer_lesson(p_session: GameSession, p_lesson: CharacterTutorial) -> void:
 	_reset_tools()
 	_offer = p_lesson
 	_caption_holes = PackedStringArray(["chr"])
-	spotlight.open(SpotlightOverlay.Mode.TAP, p_session.character.display_name, "%s\n%s" % [p_lesson.cap, p_lesson.description],
+	spotlight.open(SpotlightOverlay.Mode.TAP, p_session.character.display_name, "%s\n%s" % [p_lesson.cap, p_session.character.player_summary()],
 		holes_for(_caption_holes), lessons.offer_button, false, false, lessons.offer_skip_button)
 
 

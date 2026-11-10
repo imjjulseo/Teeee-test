@@ -360,7 +360,7 @@ func test_runner_stops_time_grows_seeds_and_ends_after_8_moves() -> void:
 	for i: int in 7:
 		session.request_move(Vector2i.LEFT if i % 2 == 0 else Vector2i.RIGHT)
 	assert_true(runner.active)
-	assert_eq(runner.status_text(), "1수 · 6초")
+	assert_eq(runner.status_text(), "1수 / 6초")
 	session.request_move(Vector2i.RIGHT)
 	assert_false(runner.active, "8 moves → ends")
 	assert_eq(announced, ["수읽기 끝"] as Array[String])

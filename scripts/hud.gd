@@ -296,7 +296,7 @@ func _on_ability_triggered(character: CharacterData, message: String) -> void:
 	_character_row.play_burst()
 	_flash_screen()
 	if character != null:
-		_show_banner("%s!" % character.ability_name, character.ability_description)
+		_show_banner("%s!" % character.ability_name, character.player_summary())
 	_message_label.text = message
 
 

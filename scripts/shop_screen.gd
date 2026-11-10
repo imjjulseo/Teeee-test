@@ -151,14 +151,14 @@ func _refresh_gacha(progress: ProgressStore) -> void:
 	var gacha: GachaConfig = progression.gacha
 	var tier: GachaTier = gacha.tier_for(progress.level)
 	var price: int = shop.pull_price()
-	_pull_button.text = "뽑기 · ● %d" % price
+	_pull_button.text = "뽑기 ● %d" % price
 	_pull_button.disabled = busy or not shop.can_pull()
 	if not busy:
 		_tap_label.text = "상자를 눌러 뽑기" if shop.can_pull() else "코인이 부족해요"
 	_rate_label.text = ShopScreen.rate_text(tier)
 	_tier_label.text = ShopScreen.tier_text(gacha, progress.level)
 	var left: int = shop.ads_left(CharacterShop.today())
-	_ad_button.text = "광고 보고 ◆ %d · 오늘 %d/%d" % [gacha.ad_diamonds, gacha.ad_daily_max - left, gacha.ad_daily_max]
+	_ad_button.text = "광고 보고 ◆ %d (오늘 %d/%d)" % [gacha.ad_diamonds, gacha.ad_daily_max - left, gacha.ad_daily_max]
 	_ad_button.disabled = left <= 0
 
 
@@ -180,7 +180,7 @@ static func rate_text(tier: GachaTier) -> String:
 	var parts: PackedStringArray = PackedStringArray()
 	for grade: int in GachaTier.ROLL_ORDER:
 		parts.append("%s %s%%" % [CharacterData.GRADE_NAMES[grade], Ability.format_number(tier.rate_of(grade))])
-	return " · ".join(parts)
+	return " / ".join(parts)
 
 
 ## "뽑기 머신 1단계"
@@ -226,7 +226,7 @@ func _on_reveal_closed() -> void:
 	if _first_pull and spotlight != null:
 		_first_pull = false
 		spotlight.open(SpotlightOverlay.Mode.TAP, "%s 획득!" % _last.character.display_name,
-			"%s · 장착했어요. 캐릭터 화면에서 능력을 확인해 보세요" % _last.character.ability_description, [] as Array[Rect2], "", false, true)
+			"%s\n장착했어요. 캐릭터 화면에서 능력을 확인해 보세요" % _last.character.player_summary(), [] as Array[Rect2], "", false, true)
 
 
 func _on_gacha_tab_pressed() -> void:

@@ -87,7 +87,7 @@ func test_rewards_level_up_and_board_upgrade() -> void:
 	assert_eq([r.level_ups[0].level, r.level_ups[0].coins, r.level_ups[0].diamonds, r.level_ups[0].ticket_grade], [2, 100, 10, -1])
 	assert_true(r.board_upgraded())
 	assert_eq(r.upgraded_description, "제한시간 45초")
-	assert_eq(r.next_stage_description, "4색 · 4칸 족보")
+	assert_eq(r.next_stage_description, "4색, 4칸 족보")
 	assert_eq(ResultPanel.reward_lines(r), [PackedStringArray(["보드 업그레이드", "제한시간 45초"])] as Array[PackedStringArray], "no level rewards on the result (E36)")
 
 

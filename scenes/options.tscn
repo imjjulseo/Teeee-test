@@ -114,7 +114,7 @@ text = "패드
 layout_mode = 2
 theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 33
-text = "키보드(방향키 · WASD)는 언제나 쓸 수 있어요"
+text = "키보드(방향키, WASD)는 언제나 쓸 수 있어요"
 autowrap_mode = 3
 
 [node name="VolumeHeading" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
@@ -166,7 +166,7 @@ text = "효과 줄이기"
 layout_mode = 2
 theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 33
-text = "흔들림·파편·떠오르는 숫자를 꺼요"
+text = "흔들림, 파편, 떠오르는 숫자를 꺼요"
 autowrap_mode = 3
 
 [node name="ResetButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
@@ -183,7 +183,7 @@ text = "진행 초기화"
 layout_mode = 2
 theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 33
-text = "레벨·재화·캐릭터·업적·튜토리얼 기록을 모두 지우고 처음부터 시작해요. 설정은 그대로 남아요. 한 번 더 눌러야 지워져요"
+text = "레벨, 재화, 캐릭터, 업적, 튜토리얼 기록을 모두 지우고 처음부터 시작해요. 설정은 그대로 남아요. 한 번 더 눌러야 지워져요"
 autowrap_mode = 3
 
 [node name="DebugPanel" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("3_debug")]

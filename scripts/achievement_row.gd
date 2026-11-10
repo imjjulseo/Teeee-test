@@ -44,9 +44,20 @@ func show_status(p_status: AchievementTracker.TierStatus) -> void:
 ## 히든 업적: 이름·조건을 숨긴다.
 func show_hidden(reward: String) -> void:
 	_name_label.text = "???"
-	_text_label.text = "조건은 비밀 · 달성하면 히든 캐릭터를 얻어요"
+	_text_label.text = "조건은 비밀이에요. 달성하면 히든 캐릭터를 얻어요"
 	_reward_label.text = reward
 	_value_label.text = ""
+	_bar.visible = false
+	_claim_button.visible = false
+
+
+## 달성한 히든 업적: 이름·조건을 밝힌다. 캐릭터는 달성한 판에서 이미 해금되어 받기 버튼이 없다.
+func show_hidden_done(item: HiddenAchievement, reward: String) -> void:
+	_name_label.text = item.name
+	_text_label.text = item.text
+	_reward_label.text = reward
+	_value_label.text = "달성"
+	_value_label.add_theme_color_override("font_color", done_color)
 	_bar.visible = false
 	_claim_button.visible = false
 

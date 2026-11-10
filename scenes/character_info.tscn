@@ -127,7 +127,7 @@ custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 45
-text = "튜토리얼 · 체험"
+text = "튜토리얼 / 체험"
 
 [connection signal="pressed" from="VBox/EquipButton" to="." method="_on_equip_button_pressed"]
 [connection signal="pressed" from="VBox/PurchaseButton" to="." method="_on_purchase_button_pressed"]

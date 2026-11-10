@@ -214,7 +214,7 @@ func _tick_select() -> void:
 			if step_time > 0.2:
 				var page: CharacterInfo = select.carousel().current_page()
 				expect(page.character.id == &"gardener", "gardener page")
-				expect(page.shown_actions() == PackedStringArray(["미보유", "튜토리얼 · 체험"]), "unowned (%s)" % [page.shown_actions()])
+				expect(page.shown_actions() == PackedStringArray(["미보유", "튜토리얼 / 체험"]), "unowned (%s)" % [page.shown_actions()])
 				expect((page.get_node("%EffectLabel") as Label).text == page.character.detail_effect, "effect detail shown")
 				expect((page.get_node("%AbilityName") as Label).text == "촉진" and (page.get_node("%AbilityKind") as Label).text == "족보형", "ability name and kind")
 				var condition: RecipeView = page.get_node("%SheetCondition")
@@ -354,17 +354,17 @@ func _check_triggered() -> void:
 		"seer":
 			expect(_seeds_revealed(), "seeds show their next color")
 		"sewer":
-			expect(_card().begins_with("12칸 · ") and _card().ends_with("초"), "card shows rope and time (%s)" % _card())
+			expect(_card().begins_with("12칸 / ") and _card().ends_with("초"), "card shows rope and time (%s)" % _card())
 			expect(_marks().size() == 1 and _marks()[0].kind == BoardMark.Kind.PATH, "rope drawn")
 		"zeus":
 			expect(session().is_input_locked(), "no input during the strikes")
 			expect(session().is_clock_stopped(), "time stopped")
-			expect(_card().begins_with("⚡"), "card shows strikes left (%s)" % _card())
+			expect(_card().begins_with("낙뢰 "), "card shows strikes left (%s)" % _card())
 		"photo":
 			expect((session().ability as PhotoAbility).planning, "photo taken")
 			expect(_marks().size() == 1 and _marks()[0].kind == BoardMark.Kind.PATH, "plan path drawn")
 		"madan":
-			expect(_card().begins_with("6발 · "), "card shows bullets (%s)" % _card())
+			expect(_card().begins_with("6발 / "), "card shows bullets (%s)" % _card())
 			expect(session().is_clock_stopped(), "time stopped")
 
 
@@ -523,7 +523,7 @@ func _check_followup() -> void:
 			elif step_time > 0.3:
 				expect(madan.shots_used == 1, "a real key fired one shot")
 				expect(session().board.player_pos == (_snap as Vector2i) + Vector2i.DOWN, "moved into the shot cell")
-				expect(_card().begins_with("5발 · "), "card counts bullets (%s)" % _card())
+				expect(_card().begins_with("5발 / "), "card counts bullets (%s)" % _card())
 				shot("madan_shot")
 				finish()
 		"sewer":

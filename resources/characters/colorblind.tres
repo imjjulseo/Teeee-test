@@ -14,6 +14,7 @@ grade = 3
 ability = SubResource("Ability_1")
 ability_name = "뒤섞임"
 ability_description = "뒤섞임: 10초 동안 무작위 두 색을 같은 색으로"
+summary = "10초 동안 두 색을 같은 색으로 쳐요"
 detail_effect = "10초 동안 아무 두 색이나 골라 같은 색으로 쳐요. 두 번째 색 블록이 첫 번째 색으로 보이고 문양은 그대로 남아요. 매치와 족보 모두 같은 색으로 쳐요."
 condition_colors = PackedInt32Array(1, 2, 3, 0, 1)
 accent_color = Color(0.788235, 0.635294, 0.494118, 1)

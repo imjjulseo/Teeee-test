@@ -73,7 +73,7 @@ func time_to_next_event() -> float:
 
 
 func status_text() -> String:
-	return "%d칸 · %s초" % [rope - used, Ability.format_seconds(time_left)] if armed else ""
+	return "%d칸 / %s초" % [rope - used, Ability.format_seconds(time_left)] if armed else ""
 
 
 func board_marks() -> Array[BoardMark]:

@@ -17,7 +17,7 @@ rule = true
 first_delay = 0.8
 first_caption = "스와이프해서 옆 칸과 자리를 바꿔요"
 swipe_first = true
-hold_text = "내 위아래·양옆이 모두 같은 색이면 매치!"
+hold_text = "내 위아래와 양옆이 모두 같은 색이면 매치!"
 
 [sub_resource type="Resource" id="Step_Seeds"]
 script = ExtResource("3_say")

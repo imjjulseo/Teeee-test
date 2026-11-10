@@ -81,10 +81,10 @@ func test_steps_follow_the_html_lesson_order() -> void:
 	var steps: Array[TutorialStep] = book.steps_for(book.find(&"clock"), clock)
 	# 소개 → 캐릭터 족보 → 발동해 보기 → 활용 1개 → 준비 끝
 	assert_eq(steps.size(), 5)
-	assert_true(steps[0] is SayStep and (steps[0] as SayStep).head == "시계공 · 시간 정지")
+	assert_true(steps[0] is SayStep and (steps[0] as SayStep).head == "시계공 / 시간 정지")
 	assert_eq((steps[1] as SayStep).head, "캐릭터 족보")
 	assert_true(steps[2] is CharacterTriggerStep)
-	assert_eq((steps[2] as CharacterTriggerStep).label, "시계공 · 발동해 보기")
+	assert_eq((steps[2] as CharacterTriggerStep).label, "시계공 발동해 보기")
 	assert_true(steps[3] is CharacterLessonStep)
 	assert_eq([(steps[4] as SayStep).head, (steps[4] as SayStep).button], ["시계공 준비 끝", ""])
 	var wall: CharacterData = _roster().find(&"wall")

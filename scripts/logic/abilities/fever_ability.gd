@@ -64,7 +64,7 @@ func payout(n: int) -> int:
 
 
 func status_text() -> String:
-	return "%s초 · %d스택" % [Ability.format_seconds(time_left), stacks] if is_active() else ""
+	return "%s초 / %d스택" % [Ability.format_seconds(time_left), stacks] if is_active() else ""
 
 
 func effect_remaining() -> float:

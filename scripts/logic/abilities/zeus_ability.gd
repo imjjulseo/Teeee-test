@@ -64,7 +64,7 @@ func locks_input() -> bool:
 
 
 func status_text() -> String:
-	return "⚡ %d" % strikes_left if active else ""
+	return "낙뢰 %d" % strikes_left if active else ""
 
 
 ## 낙뢰 중에는 배경을 칠한다 (끝나는 시각이 정해져 있지 않다).

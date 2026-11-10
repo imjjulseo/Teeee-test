@@ -60,7 +60,10 @@ func _ready() -> void:
 	for item: HiddenAchievement in achievements.hidden:
 		var row: AchievementRow = row_scene.instantiate() as AchievementRow
 		_hidden_box.add_child(row)
-		row.show_hidden("히든 캐릭터")
+		if tracker.is_hidden_done(item):
+			row.show_hidden_done(item, achievements.hidden_reward)
+		else:
+			row.show_hidden(achievements.hidden_reward)
 		_hidden_rows.append(row)
 	_top_bar.setup(save_path)
 	_nav.setup(save_path)

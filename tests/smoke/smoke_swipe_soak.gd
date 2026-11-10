@@ -22,6 +22,7 @@ var _start: Vector2 = Vector2.ZERO
 
 func _setup() -> void:
 	_rng.seed = 7
+	config.initial_seed = 13  # 판도 고정: 무작위 판이면 매치가 한 번도 안 나는 실행이 있었다
 	config.game_duration = 100000.0
 	CharacterStore.new().select(&"basic")
 	OptionsStore.new().set_control_mode(OptionsStore.ControlMode.SWIPE)

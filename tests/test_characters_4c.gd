@@ -208,7 +208,7 @@ func test_seer_matches_every_shape_including_seeds_and_advances_all_recipes() ->
 	var messages: Array[String] = []
 	session.ability_triggered.connect(func(m: String) -> void: messages.append(m))
 	session.advance_ability_condition(1)
-	assert_eq(messages, ["예언 실현: 모양 2개 · 족보 모두 2칸"] as Array[String])
+	assert_eq(messages, ["예언 실현: 모양 2개 / 족보 모두 2칸"] as Array[String])
 	assert_eq(session.match_count, 2, "one match per shape")
 	assert_eq(gained.size(), 2)
 	assert_near(gained[0], 2.5, 1e-9)

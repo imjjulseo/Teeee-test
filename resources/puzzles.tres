@@ -9,7 +9,7 @@
 script = ExtResource("4_diff")
 id = &"easy"
 name = "쉬움"
-description = "최소 3~5수 · 목표 모양 보임"
+description = "최소 3~5수, 목표 모양 보임"
 tip = "빈 자리에 먼저 서서, 블록 쪽으로 움직여 당겨 와요"
 
 [sub_resource type="Resource" id="Diff_normal"]

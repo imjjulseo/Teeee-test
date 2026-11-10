@@ -359,11 +359,11 @@ func _log_playtest(end: String) -> void:
 	PlaytestLog.append(PlaytestLog.row_for(_flow.session, character_id, end, "", context))
 
 
-## 결과 화면 보상 목록 줄 [이름, 보상]: ["업적 · 블록 부수기 I", "● 100"].
+## 결과 화면 보상 목록 줄 [이름, 보상]: ["업적 블록 부수기 I", "업적에서 받기"], 히든 업적은 ["업적 돌머리", "히든 캐릭터"].
 static func achievement_lines(completions: Array[AchievementTracker.Completion]) -> Array[PackedStringArray]:
 	var lines: Array[PackedStringArray] = []
 	for completion: AchievementTracker.Completion in completions:
-		lines.append(PackedStringArray(["업적 · %s" % completion.name, "업적에서 받기"]))
+		lines.append(PackedStringArray(["업적 %s" % completion.name, "업적에서 받기" if completion.needs_claim else completion.reward]))
 	return lines
 
 

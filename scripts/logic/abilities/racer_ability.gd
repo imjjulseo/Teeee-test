@@ -57,7 +57,7 @@ func modify_match_time(session: GameSession, seconds: float, _found: MatchRule.F
 func status_text() -> String:
 	if streak <= 0:
 		return "0칸 질주"
-	return "%d칸 질주 · +%s초" % [streak, Ability.format_number(streak * streak_bonus)]
+	return "%d칸 질주 / +%s초" % [streak, Ability.format_number(streak * streak_bonus)]
 
 
 ## 한 칸 달린다. 벽이면 그 자리.

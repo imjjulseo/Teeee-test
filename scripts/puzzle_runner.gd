@@ -198,7 +198,7 @@ static func result_head(stars: int, over: int, replayed: bool) -> String:
 	if stars == 3:
 		return "최소 수로 성공!"
 	if stars == 2:
-		return "%d수 더 짧은 길이 있어요" % over if over > 0 else "최소 수예요! 되돌리기 없이 하면 ★★★"
+		return "%d수 더 짧은 길이 있어요" % over
 	return "정답 길을 봤어요" if replayed else "다음엔 더 짧게 풀어 보세요"
 
 
@@ -255,7 +255,7 @@ func _replay_step() -> void:
 	var dir: Vector2i = _replay.path[_replay_index]
 	if _replay_index == _replay.diverge and not _paused_at_diverge:
 		_paused_at_diverge = true
-		tip_override = "여기서는 %s 쪽이 더 빨라요 · 나는 %s 쪽으로 갔어요" % [ARROW_TEXT.get(dir, ""), ARROW_TEXT.get(_replay.my_move, "")]
+		tip_override = "여기서는 %s 쪽이 빨라요" % ARROW_TEXT.get(dir, "")
 		var marks: Array[BoardMark] = _window_marks()
 		var arrow: BoardMark = BoardMark.at_cell(BoardMark.Kind.ARROW, puzzle.board.player_pos + dir)
 		arrow.direction = dir

@@ -14,6 +14,7 @@ grade = 2
 ability = SubResource("Ability_1")
 ability_name = "탐험"
 ability_description = "3×3 탐험 구역 안에서 매치하면 그 매치로 진행된 족보가 모두 한 칸 더"
+summary = "빛나는 구역 안에서 매치하면 그 매치로 찬 족보가 한 칸 더 차요"
 detail_effect = "항상 켜져 있어요. 판에 3×3 탐험 구역이 점선으로 보여요. 구역 안에서 매치하면 그 매치로 찬 족보가 모두 한 칸씩 더 차요(같은 색을 기다리던 족보가 여럿이면 전부 2칸). 찬 족보가 없으면 가장 많이 찬 족보가 한 칸 차요. 쓴 구역은 사라지고 5초 뒤 다른 곳에 생겨요."
 condition_colors = PackedInt32Array()
 accent_color = Color(0.498039, 0.819608, 0.72549, 1)

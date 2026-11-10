@@ -50,7 +50,7 @@ func corner(i: int) -> Vector2i:
 
 
 func status_text() -> String:
-	return "깃발 %s%s · +%s초" % [ARROWS[target], " 준비" if flag_ready else "", Ability.format_seconds(bonus_time)]
+	return "깃발 %s%s / +%s초" % [ARROWS[target], " 준비" if flag_ready else "", Ability.format_seconds(bonus_time)]
 
 
 func board_marks() -> Array[BoardMark]:

@@ -163,8 +163,8 @@ func _refresh_labels() -> void:
 	var puzzle_now: BlockPuzzle = runner.puzzle
 	var replaying: bool = runner.phase == PuzzleRunner.Phase.REPLAY
 	_name_label.text = "정답 다시 보기" if replaying else _label
-	_sub_label.text = _sub + (" · 되돌리기 %d번" % puzzle_now.undos if puzzle_now.undos > 0 and not replaying else "")
-	_count_label.text = "%d수 · 최소 %d수" % [runner.shown_moves(), puzzle_now.min_moves]
+	_sub_label.text = _sub + (" / 되돌리기 %d번" % puzzle_now.undos if puzzle_now.undos > 0 and not replaying else "")
+	_count_label.text = "%d수 / 최소 %d수" % [runner.shown_moves(), puzzle_now.min_moves]
 	_tip_label.text = runner.tip_text()
 	_tip_label.add_theme_color_override("font_color", theme_data.puzzle_pull_color if runner.tip_emphasized() else Color.WHITE)
 	var playing: bool = runner.is_playing()

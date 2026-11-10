@@ -105,21 +105,21 @@ func test_grade_counts() -> void:
 
 func test_level_reward_lines() -> void:
 	var p: ProgressionConfig = _progression()
-	assert_eq(p.rewards_for_level(1), PackedStringArray(["시작 보드 · 3색 · 족보 2칸"]))
-	assert_eq(p.rewards_for_level(2), PackedStringArray(["보드 업그레이드 · 제한시간 45초", "● 100", "◆ 10"]))
+	assert_eq(p.rewards_for_level(1), PackedStringArray(["시작 보드 / 3색, 족보 2칸"]))
+	assert_eq(p.rewards_for_level(2), PackedStringArray(["보드 업그레이드 / 제한시간 45초", "● 100", "◆ 10"]))
 	assert_eq(p.rewards_for_level(4), PackedStringArray(["● 100", "◆ 10"]))
 	assert_eq(p.rewards_for_level(5), PackedStringArray(["● 100", "◆ 10"]), "no milestone diamonds")
 	assert_eq(p.rewards_for_level(10), PackedStringArray(["● 100", "◆ 10", "영웅 선택권"]))
-	assert_eq(p.rewards_for_level(20), PackedStringArray(["● 100", "◆ 10", "전설 선택권", "뽑기 머신 업그레이드 · 확률 상승", "상점 전설 열림"]))
-	assert_eq(p.rewards_for_level(8), PackedStringArray(["● 100", "◆ 10", "뽑기 머신 업그레이드 · 확률 상승", "상점 영웅 열림"]))
-	assert_eq(p.rewards_for_level(30), PackedStringArray(["● 100", "◆ 10", "신화 선택권", "뽑기 머신 업그레이드 · 확률 상승", "상점 신화 열림"]))
+	assert_eq(p.rewards_for_level(20), PackedStringArray(["● 100", "◆ 10", "전설 선택권", "뽑기 머신 업그레이드, 확률 상승", "상점 전설 열림"]))
+	assert_eq(p.rewards_for_level(8), PackedStringArray(["● 100", "◆ 10", "뽑기 머신 업그레이드, 확률 상승", "상점 영웅 열림"]))
+	assert_eq(p.rewards_for_level(30), PackedStringArray(["● 100", "◆ 10", "신화 선택권", "뽑기 머신 업그레이드, 확률 상승", "상점 신화 열림"]))
 	assert_eq([p.levels_to_show(1), p.levels_to_show(29)], [30, 32], "at least 30, and 3 ahead")
 
 
 func test_next_stage_and_menu_hint() -> void:
 	var p: ProgressionConfig = _progression()
 	assert_eq([p.next_stage_description(1), p.next_stage_description(2), p.next_stage_description(3)],
-		["제한시간 45초", "4색 · 4칸 족보", ""])
+		["제한시간 45초", "4색, 4칸 족보", ""])
 
 
 func test_level_row_state() -> void:

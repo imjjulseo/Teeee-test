@@ -14,6 +14,7 @@ grade = 1
 ability = SubResource("Ability_1")
 ability_name = "쌍둥이"
 ability_description = "족보에 같은 색이 이어지면 그 색 매치 한 번으로 이어진 칸 모두 진행"
+summary = "족보에 같은 색이 이어져 있으면 한 번에 다 채워요"
 detail_effect = "항상 켜져 있어요. 족보에 같은 색이 이어져 있으면, 그 색 매치 한 번으로 이어진 칸이 모두 차요. 같은 색이 이어진 족보의 보너스 점수도 그대로 받아요."
 condition_colors = PackedInt32Array()
 accent_color = Color(1, 0.701961, 0.780392, 1)

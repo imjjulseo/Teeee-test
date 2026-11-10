@@ -149,7 +149,7 @@ func _on_bar_filled(level: int) -> void:
 
 
 func _finish_exp() -> void:
-	var next: String = " · 다음 %s" % _rewards.next_stage_description if not _rewards.next_stage_description.is_empty() else ""
+	var next: String = " / 다음 %s" % _rewards.next_stage_description if not _rewards.next_stage_description.is_empty() else ""
 	_level_label.text = "Lv %d%s" % [_rewards.level_after, next]
 	_level_up_label.visible = not _rewards.level_ups.is_empty()
 	_set_exp_fill(_rewards.bar_steps.back().to)

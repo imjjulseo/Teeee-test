@@ -1,6 +1,6 @@
 extends "res://tests/smoke/smoke_base.gd"
 ## 5d 업적 (기획서 8.6 · 8.7장). 모드:
-## - result : 9판 해 둔 저장으로 정원사 한 판 → 결과 보상 목록에 "업적 · 단골 I"·"업적 · 정원사 입문", 보상은 아직 없음
+## - result : 9판 해 둔 저장으로 정원사 한 판 → 결과 보상 목록에 "업적 단골 I"·"업적 정원사 입문", 보상은 아직 없음
 ##            → 메뉴(업적 버튼 빨간 점) → 업적 실제 클릭 → 공통 업적 6장, 히든 3장(???) → [받기] 실제 클릭 → 코인, 단골 II 10 / 100 → 메인
 ## - sheet  : 캐릭터 탭 — 정원사(입문 달성 · 숙련 진행 · 극한 잠김), 업적 없는 캐릭터·히든 등급은 없음, 미보유 표시
 ## - trial  : 체험 판은 업적·통계가 남지 않는다
@@ -55,7 +55,7 @@ func _tick_result() -> void:
 				var names: PackedStringArray = PackedStringArray()
 				for line: PackedStringArray in result.shown_rewards():
 					names.append(line[0])
-				expect(names.has("업적 · 단골 I") and names.has("업적 · 정원사 입문"), "achievements in the reward list (%s)" % [names])
+				expect(names.has("업적 단골 I") and names.has("업적 정원사 입문"), "achievements in the reward list (%s)" % [names])
 				_result_ready_coins = ProgressStore.new().coins
 				next_step()
 			elif step_time > 6.0:
@@ -130,7 +130,7 @@ func _tick_character_tab() -> void:
 				expect(not groups[0].shows_unowned(), "owned character")
 				expect(groups[1].shows_unowned(), "unowned characters are shown and marked")
 				expect(rows[0].can_claim(), "입문 can be claimed")
-				expect(screen.section_for(CharacterData.Grade.BASIC).is_preparing() and screen.section_for(CharacterData.Grade.HIDDEN).is_preparing(), "일반 · 히든: 준비 중")
+				expect(screen.section_for(CharacterData.Grade.BASIC).is_preparing() and screen.section_for(CharacterData.Grade.HIDDEN).is_preparing(), "일반 / 히든: 준비 중")
 				expect(not screen.section_for(CharacterData.Grade.RARE).is_preparing(), "희귀 has characters")
 				shot("character_tab")
 				click_control(node("%Chips").get_child(3))  # 전설
