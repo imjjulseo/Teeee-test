@@ -1,61 +1,48 @@
 class_name MainMenu
 extends Control
-## 메인 메뉴 (기획서 8.1장). 위: 레벨 버튼(Lv · 경험치 바 → 레벨 보상), 지갑(코인·다이아).
-## 가운데: 게임 시작 + 보드 단계 안내, 현재 캐릭터 버튼. 아래: 상점 · 캐릭터 · 업적 · 퍼즐 · 설정.
-## 버튼은 튜토리얼 흐름(TutorialFlow)에 따라 차례로 열리고, 지금 누를 버튼이 빛난다. 첫 뽑기 유도 단계에서는
-## 게임 시작이 상점으로 간다 (shop_requested). 씬 전환은 main_menu.tscn에서 signal → SceneNavigator로 연결한다.
+## 메인 화면 (기획서 8.1장, E38). 위 줄(TopBar), 경험치 2배 칸(표시만), 로고, BEST 최고점, 시작 칸, 아래 줄(BottomNav).
+## 아래 줄 가운데 캐릭터 블럭을 위로 밀면 블럭이 시작 칸으로 올라가 게임이 시작된다. 누르면 캐릭터 화면 (BottomNav).
+## 메뉴 버튼은 튜토리얼 흐름(TutorialFlow)에 따라 열린다. 첫 뽑기 유도 단계에서는 밀어도 상점으로 간다 (shop_requested).
+## 씬 전환은 main_menu.tscn에서 signal → SceneNavigator로 연결한다.
 
 signal start_game_requested
 signal shop_requested
 
 @export var roster: CharacterRoster
-@export var progression: ProgressionConfig
+## 판을 이만큼 하기 전까지 스와이프 안내를 보인다.
+@export var hint_games: int = 3
+## 블럭이 시작 칸으로 올라가는 시간, 안내가 깜빡이는 주기.
+@export var start_fly_time: float = 0.2
+@export var hint_period: float = 1.2
 ## 저장 파일. 비어 있으면 SaveData 기본 경로 (테스트·스모크는 SaveData.path_override).
 @export var save_path: String = ""
 
 var flow: TutorialFlow
 var unlocks: MenuUnlocks = MenuUnlocks.new()
+var _starting: bool = false
+var _reduce_motion: bool = false
 
-@onready var _level_label: Label = %LevelLabel
-@onready var _exp_fill: ColorRect = %ExpFill
-@onready var _wallet_label: WalletView = %WalletLabel
-@onready var _stage_label: Label = %StageLabel
-@onready var _character_button: Button = %CharacterButton
-@onready var _buttons: Dictionary[MenuUnlocks.Entry, Button] = {
-	MenuUnlocks.Entry.START: %StartButton,
-	MenuUnlocks.Entry.LEVEL: %LevelButton,
-	MenuUnlocks.Entry.SHOP: %ShopButton,
-	MenuUnlocks.Entry.CHARACTERS: %CharactersButton,
-	MenuUnlocks.Entry.ACHIEVEMENTS: %AchievementsButton,
-	MenuUnlocks.Entry.PUZZLES: %PuzzlesButton,
-	MenuUnlocks.Entry.OPTIONS: %OptionsButton,
-}
+@onready var _top_bar: TopBar = %TopBar
+@onready var _nav: BottomNav = %BottomNav
+@onready var _best_label: Label = %BestLabel
+@onready var _ghost: CharacterBlockView = %GhostBlock
+@onready var _hint: Control = %SwipeHint
 
 
 func _ready() -> void:
-	progression = ProgressionConfig.ensure_valid(progression)
-	var progress: ProgressStore = ProgressStore.new(save_path)
-	var collection: CharacterCollection = CharacterCollection.new(roster, progress, CharacterStore.new(save_path))
-	flow = TutorialFlow.new(TutorialStore.new(save_path), AchievementStore.new(save_path).stat("games"))
+	flow = TutorialFlow.current(save_path)
 	unlocks = flow.unlocks()
-	_show_level(progress)
-	_wallet_label.show_amounts(progress.coins, progress.diamonds)
-	_stage_label.text = "첫 캐릭터 뽑기" if flow.start_goes_to_shop() \
-		else MainMenu.stage_hint(progression, progress.level, BestScoreStore.new(save_path).best)
-	_character_button.text = "캐릭터 · %s" % collection.equipped_character().display_name
-	_apply_unlocks()
-	_glow(flow.highlighted_entry())
-
-
-## 게임 시작 버튼 아래 안내: 다음 보드 단계가 있으면 "Lv N에 …", 본 게임 보드면 최고점.
-static func stage_hint(config: ProgressionConfig, level: int, best: int) -> String:
-	var next: String = config.next_stage_description(level)
-	return "Lv %d에 %s" % [level + 1, next] if not next.is_empty() else "최고점 %d" % best
+	_reduce_motion = OptionsStore.new(save_path).reduce_motion
+	_top_bar.setup(save_path)
+	_nav.setup(save_path)
+	_best_label.text = str(BestScoreStore.new(save_path).best)
+	_show_ghost()
+	_show_hint()
 
 
 ## 지금 메뉴 버튼이 눌릴 수 있는지 (테스트/디버그용).
 func is_entry_enabled(entry: MenuUnlocks.Entry) -> bool:
-	return not _buttons[entry].disabled
+	return unlocks.is_open(entry)
 
 
 ## 빛나는 버튼 (없으면 -1).
@@ -63,28 +50,41 @@ func highlighted_entry() -> int:
 	return flow.highlighted_entry()
 
 
-## 게임 시작 (main_menu.tscn에서 연결): 첫 뽑기 유도 단계면 상점으로.
-func _on_start_pressed() -> void:
+## 스와이프 안내가 보이는지 (테스트/디버그용).
+func shows_swipe_hint() -> bool:
+	return _hint.visible
+
+
+func _show_ghost() -> void:
+	var collection: CharacterCollection = CharacterCollection.new(roster, ProgressStore.new(save_path), CharacterStore.new(save_path))
+	_ghost.show_character(collection.equipped_character())
+
+
+func _show_hint() -> void:
+	var games: int = AchievementStore.new(save_path).stat("games")
+	_hint.visible = games < hint_games and not flow.start_goes_to_shop()
+	if _hint.visible and is_inside_tree() and not _reduce_motion:
+		var tween: Tween = _hint.create_tween().set_loops()
+		tween.tween_property(_hint, "modulate:a", 0.35, hint_period / 2.0).set_trans(Tween.TRANS_SINE)
+		tween.tween_property(_hint, "modulate:a", 1.0, hint_period / 2.0).set_trans(Tween.TRANS_SINE)
+
+
+## 블럭을 위로 밀었다 (main_menu.tscn에서 BottomNav.start_swiped에 연결).
+func _on_start_swiped() -> void:
+	if _starting:
+		return
+	_starting = true
+	if flow.start_goes_to_shop() or _reduce_motion or not is_inside_tree():
+		_leave()
+		return
+	var block: Control = _nav.block()
+	var tween: Tween = create_tween()
+	tween.tween_property(block, "global_position", _ghost.global_position, start_fly_time).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_callback(_leave)
+
+
+func _leave() -> void:
 	if flow.start_goes_to_shop():
 		shop_requested.emit()
 	else:
 		start_game_requested.emit()
-
-
-func _show_level(progress: ProgressStore) -> void:
-	_level_label.text = "Lv %d" % progress.level
-	_exp_fill.anchor_right = clampf(float(progress.experience) / maxi(progression.exp_to_next(progress.level), 1), 0.0, 1.0)
-
-
-func _apply_unlocks() -> void:
-	for entry: MenuUnlocks.Entry in _buttons:
-		_buttons[entry].disabled = not unlocks.is_open(entry)
-	_character_button.disabled = not unlocks.is_open(MenuUnlocks.Entry.CHARACTERS)
-
-
-## 지금 누를 버튼을 노란 고리로 빛낸다 (HTML .glow, GlowRing).
-func _glow(entry: int) -> void:
-	if entry < 0 or not _buttons.has(entry as MenuUnlocks.Entry):
-		%Glow.follow(null)
-		return
-	%Glow.follow(_buttons[entry as MenuUnlocks.Entry])

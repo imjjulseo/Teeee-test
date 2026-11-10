@@ -125,6 +125,10 @@ target_scene = "res://scenes/main_menu.tscn"
 script = ExtResource("8_nav")
 target_scene = "res://scenes/character_select.tscn"
 
+[node name="ShopNavigator" type="Node" parent="."]
+script = ExtResource("8_nav")
+target_scene = "res://scenes/shop.tscn"
+
 [node name="Tutorial" type="Node" parent="." node_paths=PackedStringArray("board_channel", "spotlight", "hud", "board_view", "result_panel")]
 script = ExtResource("22_tutorial_dir")
 tutorial = ExtResource("23_tutorial")
@@ -153,6 +157,7 @@ target_scene = "res://scenes/main.tscn"
 script = ExtResource("16_audio_options")
 
 [connection signal="move_requested" from="InputRouter" to="GameController" method="_on_move_requested"]
+[connection signal="swiped" from="InputRouter" to="Hud" method="_on_swiped"]
 [connection signal="hold_started" from="InputRouter" to="GameController" method="_on_hold_started"]
 [connection signal="hold_released" from="InputRouter" to="GameController" method="_on_hold_released"]
 [connection signal="long_pressed" from="InputRouter" to="GameController" method="_on_long_pressed"]
@@ -204,9 +209,11 @@ script = ExtResource("16_audio_options")
 [connection signal="control_mode_ready" from="GameController/FlowChannel" to="LayoutLayer/GameLayout/SafeArea/Column/DpadSpace" method="_on_control_mode_ready"]
 [connection signal="quit_to_menu" from="GameController/FlowChannel" to="MenuNavigator" method="go"]
 [connection signal="result_ready" from="GameController/FlowChannel" to="ResultPanel" method="_on_result_ready"]
+[connection signal="character_best_ready" from="GameController/FlowChannel" to="ResultPanel" method="_on_character_best_ready"]
 [connection signal="rewards_ready" from="GameController/FlowChannel" to="ResultPanel" method="_on_rewards_ready"]
 [connection signal="achievements_ready" from="GameController/FlowChannel" to="ResultPanel" method="_on_achievements_ready"]
 [connection signal="revive_offered" from="GameController/FlowChannel" to="RevivePanel" method="_on_revive_offered"]
+[connection signal="revive_countdown" from="GameController/FlowChannel" to="RevivePanel" method="_on_revive_countdown"]
 [connection signal="state_changed" from="GameController/FlowChannel" to="RevivePanel" method="_on_state_changed"]
 [connection signal="revive_accepted" from="RevivePanel" to="GameController" method="_on_revive_accepted"]
 [connection signal="revive_declined" from="RevivePanel" to="GameController" method="_on_revive_declined"]
@@ -223,6 +230,7 @@ script = ExtResource("16_audio_options")
 [connection signal="resume_requested" from="PauseOverlay" to="GameController" method="_on_resume_requested"]
 [connection signal="main_menu_requested" from="ResultPanel" to="GameController" method="_on_result_menu_requested"]
 [connection signal="back_to_characters" from="GameController/FlowChannel" to="CharacterNavigator" method="go"]
+[connection signal="back_to_shop" from="GameController/FlowChannel" to="ShopNavigator" method="go"]
 [connection signal="trial_result_ready" from="GameController/FlowChannel" to="ResultPanel" method="_on_trial_result_ready"]
 [connection signal="retry_requested" from="ResultPanel" to="GameController" method="_on_retry_requested"]
 [connection signal="finished" from="Tutorial" to="GameController" method="_on_tutorial_finished"]

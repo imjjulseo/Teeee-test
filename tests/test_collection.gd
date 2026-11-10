@@ -51,19 +51,15 @@ func test_sorted_by_grade_then_roster_order() -> void:
 func test_card_status() -> void:
 	var collection: CharacterCollection = _collection()
 	assert_eq(collection.status_of(_find(&"basic")), Status.EQUIPPED, "only basic at start")
-	assert_eq(collection.status_of(_find(&"gardener")), Status.BUYABLE, "rare shop open from Lv1")
-	assert_eq(collection.status_text(_find(&"gardener")), "◆ 80")
-	assert_eq(collection.status_of(_find(&"wall")), Status.LOCKED, "hero shop opens at Lv8")
-	assert_eq(collection.status_text(_find(&"wall")), "상점 Lv 8")
+	assert_eq(collection.status_of(_find(&"gardener")), Status.UNOWNED)
+	assert_eq(collection.status_text(_find(&"gardener")), "미보유")
+	assert_eq(collection.status_text(_find(&"wall")), "미보유", "shop state does not show on the card (E36)")
 	assert_eq(collection.status_of(_find(&"racer")), Status.HIDDEN)
 	assert_eq(collection.status_text(_find(&"racer")), "히든 업적")
 	assert_true(collection.is_veiled(_find(&"racer")), "hidden character veiled")
 	assert_false(collection.is_veiled(_find(&"zeus")), "myth shown even when locked")
 	collection.progress.add_ticket(Grade.RARE)
-	assert_eq(collection.status_of(_find(&"gardener")), Status.TICKET, "rare ticket → rare cards unlockable")
-	assert_eq(collection.status_text(_find(&"gardener")), "선택권")
-	collection.progress.set_level(8)
-	assert_eq(collection.status_text(_find(&"wall")), "◆ 200", "hero shop open at Lv8")
+	assert_eq(collection.status_text(_find(&"gardener")), "미보유", "a ticket does not change the card")
 
 
 func test_unlock_with_ticket() -> void:
@@ -124,8 +120,6 @@ func test_next_stage_and_menu_hint() -> void:
 	var p: ProgressionConfig = _progression()
 	assert_eq([p.next_stage_description(1), p.next_stage_description(2), p.next_stage_description(3)],
 		["제한시간 45초", "4색 · 4칸 족보", ""])
-	assert_eq(MainMenu.stage_hint(p, 1, 0), "Lv 2에 제한시간 45초")
-	assert_eq(MainMenu.stage_hint(p, 3, 1234), "최고점 1234", "main board → best score")
 
 
 func test_level_row_state() -> void:
@@ -167,10 +161,10 @@ func test_main_menu_shows_level_wallet_stage_and_character() -> void:
 	var menu: MainMenu = (load("res://scenes/main_menu.tscn") as PackedScene).instantiate() as MainMenu
 	menu.save_path = TEST_SAVE
 	menu.notification(Node.NOTIFICATION_READY)
-	assert_eq((menu.get_node("%LevelLabel") as Label).text, "Lv 2")
-	assert_eq((menu.get_node("%WalletLabel") as WalletView).text, "● 120  ◆ 5")
-	assert_eq((menu.get_node("%StageLabel") as Label).text, "Lv 3에 4색 · 4칸 족보")
-	assert_eq((menu.get_node("%CharacterButton") as Button).text, "캐릭터 · 시계공")
+	assert_eq((menu.get_node("%TopBar/%LevelLabel") as Label).text, "Lv 2")
+	assert_eq((menu.get_node("%TopBar/%WalletLabel") as WalletView).text, "● 120  ◆ 5")
+	assert_eq((menu.get_node("%BestLabel") as Label).text, "0")
+	assert_eq((menu.get_node("%BottomNav") as BottomNav).block().shown_letter(), "시", "the equipped character on the block")
 	for entry: int in MenuUnlocks.Entry.values():
 		assert_true(menu.is_entry_enabled(entry), "entry %d open" % entry)
 	menu.free()
@@ -192,3 +186,18 @@ func test_trial_result_hides_rewards() -> void:
 	assert_eq((result.get_node("%FinalScoreLabel") as Label).text, "700", "score still shown")
 	result.free()
 	flow.free()
+
+
+func test_level_stem_fills_up_to_the_next_level() -> void:
+	assert_eq([LevelRewardsScreen.stem_ratio(3, 4, 0.5), LevelRewardsScreen.stem_ratio(4, 4, 0.5), LevelRewardsScreen.stem_ratio(5, 4, 0.5), LevelRewardsScreen.stem_ratio(6, 4, 0.5)],
+		[1.0, 1.0, 0.5, 0.0])
+
+
+func test_character_best_is_saved_per_character() -> void:
+	var store: BestScoreStore = BestScoreStore.new(TEST_SAVE)
+	assert_eq(store.best_of(&"clock"), 0)
+	assert_true(store.submit_character(&"clock", 500))
+	assert_false(store.submit_character(&"clock", 400), "lower score")
+	assert_true(store.submit_character(&"zeus", 900))
+	var again: BestScoreStore = BestScoreStore.new(TEST_SAVE)
+	assert_eq([again.best_of(&"clock"), again.best_of(&"zeus"), again.best], [500, 900, 0], "separate from the overall best")

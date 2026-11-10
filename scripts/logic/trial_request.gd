@@ -8,6 +8,14 @@ extends RefCounted
 static var character_id: StringName = &""
 ## 캐릭터 튜토리얼부터 (take가 함께 지운다).
 static var with_lesson: bool = false
+## 체험을 상점에서 열었다: 끝나면 상점(상점 탭)으로 돌아간다. 상점 화면이 take_back_to_shop으로 지운다 (E37).
+static var back_to_shop: bool = false
+
+
+static func take_back_to_shop() -> bool:
+	var back: bool = back_to_shop
+	back_to_shop = false
+	return back
 
 
 ## 요청이 있으면 꺼내고 지운다.

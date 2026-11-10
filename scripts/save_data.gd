@@ -6,22 +6,23 @@ extends RefCounted
 ## - 쓸 때는 항상 파일을 새로 읽은 뒤 바꿔 저장하므로(읽고-수정-쓰기) 다른 항목의 값을 지우지 않는다.
 ## - 테스트·스모크는 path_override로 사용자 저장 파일과 다른 파일을 쓴다.
 ##
-## 저장 형식 (version 4):
-##   [meta]    version = 4
-##   [score]   best = int
+## 저장 형식 (version 6):
+##   [meta]    version = 6
+##   [score]   best = int, characters = Dictionary (캐릭터 id → 그 캐릭터 최고 점수)
 ##   [player]  character = String (캐릭터 id, HTML 프로토타입 id)
 ##   [options] control_mode = "swipe" | "dpad"
 ##             master_volume = int 0~100 (없으면 100)
 ##             reduce_motion = bool (없으면 false)
 ##   [progress] level = int (1~), exp = int, coins = int, diamonds = int,
-##             tickets = Dictionary (등급 → 선택권 장 수), unlocked = PackedStringArray (해금한 캐릭터 id, 기본 캐릭터는 늘 해금)
+##             tickets = Dictionary (등급 → 선택권 장 수), unlocked = PackedStringArray (해금한 캐릭터 id, 기본 캐릭터는 늘 해금),
+##             reward_claims = PackedInt32Array (레벨 보상을 받은 레벨)
 ##   [achievements] [stats] [tutorial] [puzzle] — 각 Store 참고
 
 const DEFAULT_PATH: String = "user://save.cfg"
-const CURRENT_VERSION: int = 4
+const CURRENT_VERSION: int = 6
 const META_SECTION: String = "meta"
 const KEY_VERSION: String = "version"
-## version 4 미만 저장에서 남기는 항목 (팀 결정 11/04: 경험치·선택권 규칙이 바뀌어 진행을 초기화한다, 설정만 남김).
+## version 6 미만 저장에서 남기는 항목 (E38: UI 수정안과 함께 옛 저장을 초기화한다, 설정만 남김).
 const KEPT_ON_RESET: PackedStringArray = [OptionsStore.SECTION]
 
 ## 비어 있지 않으면 경로를 주지 않은 모든 SaveData가 이 파일을 쓴다 (테스트·스모크용).
@@ -91,9 +92,9 @@ static func write_value(p_path: String, section: String, key: String, value: Var
 ## 옛 형식을 현재 형식으로 옮긴다. 형식이 바뀔 때마다 단계를 추가한다.
 ## 옮긴 내용은 메모리에만 있고 다음 저장 때 파일에 기록된다.
 func _migrate() -> void:
-	# version 3 이하 (0 = 버전 기록 전): 진행·재화·캐릭터·업적·튜토리얼·퍼즐·최고 점수를 지우고 설정만 남긴다 (E26).
-	# 옛 버전의 캐릭터 id 이름 바꾸기(v1 → 2)와 [progress] 추가(v2 → 3)는 이 초기화에 포함된다.
-	if _loaded_version < 4:
+	# version 5 이하 (0 = 버전 기록 전): 진행·재화·캐릭터·업적·튜토리얼·퍼즐·최고 점수를 지우고 설정만 남긴다 (E26, E38).
+	# 그 전 단계(캐릭터 id 이름 바꾸기, [progress] 추가, 레벨 보상 받음 표시)는 이 초기화에 포함된다.
+	if _loaded_version < 6:
 		for section: String in _file.get_sections():
 			if not KEPT_ON_RESET.has(section):
 				_file.erase_section(section)

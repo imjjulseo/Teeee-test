@@ -44,6 +44,22 @@ theme_override_font_sizes/font_size = 144
 text = "0"
 horizontal_alignment = 1
 
+[node name="ReviveGauge" type="ColorRect" parent="Center"]
+custom_minimum_size = Vector2(0, 21)
+layout_mode = 2
+script = ExtResource("95_token_rect")
+token = &"track"
+
+[node name="ReviveGaugeFill" type="ColorRect" parent="Center/ReviveGauge"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 2
+script = ExtResource("95_token_rect")
+token = &"info"
+
 [node name="ReviveButton" type="Button" parent="Center"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)

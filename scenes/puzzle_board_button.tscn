@@ -2,48 +2,123 @@
 
 [ext_resource type="Script" path="res://scripts/puzzle_board_button.gd" id="1_button"]
 [ext_resource type="Script" path="res://scripts/puzzle_mini_view.gd" id="2_mini"]
+[ext_resource type="PackedScene" path="res://scenes/star_row.tscn" id="3_stars"]
+[ext_resource type="Script" path="res://scripts/ui_image.gd" id="4_image"]
+[ext_resource type="Resource" path="res://resources/ui_assets.tres" id="5_assets"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
 
 [node name="PuzzleBoardButton" type="Button"]
-custom_minimum_size = Vector2(225, 315)
+mouse_filter = 1
+custom_minimum_size = Vector2(555, 780)
 focus_mode = 0
+theme_type_variation = &"PuzzleCardButton"
 script = ExtResource("1_button")
+
+[node name="Link" type="ColorRect" parent="."]
+unique_name_in_owner = true
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -6.0
+offset_right = 48.0
+offset_bottom = 6.0
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"line"
 
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 22.5
-offset_top = 18.0
-offset_right = -22.5
-offset_bottom = -15.0
+offset_left = 36.0
+offset_top = 36.0
+offset_right = -36.0
+offset_bottom = -36.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 9
+theme_override_constants/separation = 30
+alignment = 1
 
 [node name="Number" type="Label" parent="VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 36
-text = "1"
+theme_override_font_sizes/font_size = 66
+text = "I"
 horizontal_alignment = 1
 
 [node name="Mini" type="Control" parent="VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(180, 180)
+custom_minimum_size = Vector2(390, 390)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 script = ExtResource("2_mini")
 
-[node name="Stars" type="Label" parent="VBox"]
+[node name="Stars" parent="VBox" instance=ExtResource("3_stars")]
 unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RewardLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 theme_type_variation = &"AccentLabel"
 theme_override_font_sizes/font_size = 36
-text = "● 20"
+text = "첫 클리어 보상 ● 20"
 horizontal_alignment = 1
+
+[node name="LockOverlay" type="ColorRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("95_token_rect")
+token = &"scrim_strong"
+
+[node name="LockLabel" type="Label" parent="LockOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+text = "잠김"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LockIcon" type="TextureRect" parent="LockOverlay" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -90.0
+offset_right = 90.0
+offset_bottom = 90.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("4_image")
+assets = ExtResource("5_assets")
+slot = &"lock_icon"
+fallback = NodePath("../LockLabel")
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]

@@ -230,7 +230,7 @@ func test_main_menu_locks_follow_the_flow() -> void:
 	var gacha_menu: MainMenu = (load("res://scenes/main_menu.tscn") as PackedScene).instantiate() as MainMenu
 	gacha_menu.save_path = TEST_SAVE
 	gacha_menu.notification(Node.NOTIFICATION_READY)
-	assert_eq((gacha_menu.get_node("%StageLabel") as Label).text, "첫 캐릭터 뽑기")
+	assert_false(gacha_menu.shows_swipe_hint(), "the shop glows instead of the swipe hint")
 	assert_true(gacha_menu.is_entry_enabled(MenuUnlocks.Entry.SHOP) and not gacha_menu.is_entry_enabled(MenuUnlocks.Entry.CHARACTERS))
 	for sig: Signal in [gacha_menu.shop_requested, gacha_menu.start_game_requested]:  # 씬 전환 노드는 떼어 둔다 (트리 밖)
 		for connection: Dictionary in sig.get_connections():
@@ -238,7 +238,7 @@ func test_main_menu_locks_follow_the_flow() -> void:
 	var routed: Array[String] = []
 	gacha_menu.shop_requested.connect(func() -> void: routed.append("shop"))
 	gacha_menu.start_game_requested.connect(func() -> void: routed.append("game"))
-	(gacha_menu.get_node("%StartButton") as Button).pressed.emit()
+	(gacha_menu.get_node("%BottomNav") as BottomNav).start_swiped.emit()
 	assert_eq(routed, ["shop"] as Array[String], "start goes to the shop for the first pull")
 	gacha_menu.free()
 

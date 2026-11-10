@@ -221,7 +221,7 @@ func _tick_flow() -> void:
 			if in_scene("MainMenu", 0.4):
 				expect(_menu().is_entry_enabled(E.START) and not _menu().is_entry_enabled(E.LEVEL), "only start after the tutorial")
 				expect(_menu().highlighted_entry() == E.START, "start glows")
-				click_control(node("%StartButton"))
+				(node("%BottomNav") as BottomNav).start_swiped.emit()
 				next_step()
 		1:
 			if playing(0.4):
@@ -247,7 +247,7 @@ func _tick_flow() -> void:
 			if in_scene("MainMenu", 0.4):
 				expect(_menu().is_entry_enabled(E.LEVEL) and not _menu().is_entry_enabled(E.SHOP), "level button opens")
 				expect(_menu().highlighted_entry() == E.LEVEL, "level button glows")
-				click_control(node("%LevelButton"))
+				click_control(node("%TopBar/%LevelButton"))
 				next_step()
 		4:
 			if in_scene("LevelRewards", 0.6):
@@ -260,13 +260,12 @@ func _tick_flow() -> void:
 		5:
 			if step_time > 0.3:
 				expect(not (current_scene as LevelRewardsScreen).is_guiding(), "tap closes the guide")
-				click_control(node("SafeArea/Content/Layout/BackButton"))
+				click_control(node("%BackButton"))
 				next_step()
 		6:
 			if in_scene("MainMenu", 0.4):
-				expect((node("%StageLabel") as Label).text == "첫 캐릭터 뽑기", "stage label")
 				expect(_menu().is_entry_enabled(E.SHOP) and _menu().highlighted_entry() == E.SHOP, "shop opens and glows")
-				click_control(node("%StartButton"))
+				(node("%BottomNav") as BottomNav).start_swiped.emit()
 				next_step()
 		7:
 			if in_scene("Shop", 0.6):
@@ -298,12 +297,12 @@ func _tick_flow() -> void:
 				next_step()
 		10:
 			if step_time > 0.3:
-				click_control(node("SafeArea/Content/Layout/BackButton"))
+				click_control(node("%BottomNav/%ShopButton"))
 				next_step()
 		11:
 			if in_scene("MainMenu", 0.4):
 				expect(_menu().is_entry_enabled(E.CHARACTERS) and _menu().highlighted_entry() == E.CHARACTERS, "characters open and glow")
-				click_control(node("%CharactersButton"))
+				click_control(node("%BottomNav/%BlockGesture"))
 				next_step()
 		12:
 			if in_scene("CharacterSelect", 0.4) and (current_scene as CharacterSelect).is_guiding():
@@ -312,12 +311,12 @@ func _tick_flow() -> void:
 				step_time = 0.0
 			elif in_scene("CharacterSelect", 0.4):
 				expect(TutorialStore.new().has_seen(TutorialStore.SEEN_CHARACTERS), "characters seen")
-				click_control(node("SafeArea/Content/Layout/BackButton"))
+				click_control(node("%BottomNav/%BlockGesture"))
 				next_step()
 		13:
 			if in_scene("MainMenu", 0.4):
 				expect(_menu().highlighted_entry() == E.START, "now start glows (play with the new character)")
-				click_control(node("%StartButton"))
+				(node("%BottomNav") as BottomNav).start_swiped.emit()
 				next_step()
 		14:
 			if playing(0.4):
@@ -338,7 +337,7 @@ func _tick_flow() -> void:
 			if in_scene("MainMenu", 0.4):
 				expect(_menu().is_entry_enabled(E.ACHIEVEMENTS) and _menu().highlighted_entry() == E.ACHIEVEMENTS, "achievements open and glow")
 				shot("flow_menu_glow")
-				click_control(node("%AchievementsButton"))
+				click_control(node("%BottomNav/%AchievementsButton"))
 				next_step()
 		17:
 			if in_scene("Achievements", 0.4) and (current_scene as AchievementsScreen).guide_key() != "":
@@ -347,12 +346,12 @@ func _tick_flow() -> void:
 				step_time = 0.0
 			elif in_scene("Achievements", 0.4):
 				expect(TutorialStore.new().has_seen(TutorialStore.SEEN_HIDDEN_ACHIEVEMENTS), "hidden achievements guide seen")
-				click_control(node("SafeArea/Content/Layout/BackButton"))
+				click_control(node("%BottomNav/%AchievementsButton"))
 				next_step()
 		18:
 			if in_scene("MainMenu", 0.4):
 				expect(_menu().is_entry_enabled(E.PUZZLES) and _menu().highlighted_entry() == E.PUZZLES, "puzzles open and glow (11/06)")
-				click_control(node("%PuzzlesButton"))
+				click_control(node("%BottomNav/%PuzzlesButton"))
 				next_step()
 		19:
 			if in_scene("PuzzleMenu", 0.4) and (current_scene as PuzzleMenuScreen).guide_key() != "":
@@ -362,7 +361,7 @@ func _tick_flow() -> void:
 				step_time = 0.0
 			elif in_scene("PuzzleMenu", 0.4):
 				expect(TutorialStore.new().has_seen(TutorialStore.SEEN_PUZZLES), "puzzle guide seen")
-				click_control(node("SafeArea/Content/Layout/BackButton"))
+				click_control(node("%BottomNav/%PuzzlesButton"))
 				next_step()
 		20:
 			if in_scene("MainMenu", 0.4):

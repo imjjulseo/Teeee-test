@@ -1,45 +1,81 @@
 class_name LevelRewardRow
-extends PanelContainer
-## 레벨 보상 화면의 한 줄: "Lv N", 그 레벨 보상 목록, 다음 레벨이면 경험치 바.
-## 상태(이미 받음 / 지금 레벨 / 다음 레벨 / 아직)에 따라 밝기·테두리만 바꾼다.
+extends HBoxContainer
+## 레벨 탑의 한 층 (기획서 8.1장, E38): 왼쪽 "Lv.N", 보상 칸(선택권이 있는 레벨은 큰 칸), 그 아래 기둥(아래 레벨로 이어짐, 경험치만큼 찬다).
+## 오른 레벨의 보상 칸을 누르면 받는다 (claim_requested, E36). 상태(지난 / 지금 / 다음 / 아직)에 따라 문구·밝기만 바꾼다.
+
+signal claim_requested(level: int)
 
 enum State { REACHED, CURRENT, NEXT, AHEAD }
 
-## 상태별 테두리 색과 글자 밝기.
-const BORDER_COLORS: Array[Color] = [Color(1, 1, 1, 0.1), Color(0.560784, 0.890196, 1, 1), Color(1, 1, 1, 0.35), Color(1, 1, 1, 0.08)]
+## 상태별 밝기.
 const TEXT_ALPHA: PackedFloat32Array = [0.55, 1.0, 1.0, 0.75]
+## 큰 보상 칸의 최소 높이.
+const BIG_NODE_HEIGHT: float = 210.0
 
 var level: int = 0
 var state: State = State.AHEAD
+var _claimable: bool = false
 
 @onready var _level_label: Label = %LevelLabel
 @onready var _rewards_label: Label = %RewardsLabel
 @onready var _state_label: Label = %StateLabel
-@onready var _exp_bar: Control = %ExpBar
-@onready var _exp_fill: ColorRect = %ExpFill
+@onready var _claim_label: Label = %ClaimLabel
+@onready var _node_button: Button = %NodeButton
+@onready var _stem: Control = %Stem
+@onready var _stem_fill: Control = %StemFill
 
 
-## exp_ratio는 다음 레벨 줄에서만 쓴다 (지금 레벨에서 모은 경험치 비율).
-func show_level(p_level: int, rewards: PackedStringArray, p_state: State, exp_ratio: float) -> void:
+## stem_ratio = 아래 레벨로 이어지는 기둥이 찬 비율 (지난 레벨 1, 다음 레벨은 지금 경험치 비율). big = 선택권이 있는 큰 칸.
+func show_level(p_level: int, rewards: PackedStringArray, p_state: State, stem_ratio: float, claimable: bool = false, big: bool = false) -> void:
 	level = p_level
 	state = p_state
-	_level_label.text = "Lv %d" % level
+	_level_label.text = "Lv.%d" % level
 	_rewards_label.text = "\n".join(rewards) if not rewards.is_empty() else "—"
-	_state_label.text = LevelRewardRow.state_text(state)
-	_exp_bar.visible = state == State.NEXT
-	_exp_fill.anchor_right = clampf(exp_ratio, 0.0, 1.0)
-	modulate.a = TEXT_ALPHA[state]
-	var box: StyleBox = get_theme_stylebox("panel")
-	if box is StyleBoxFlat:  # 상태 색 테두리 (이미지 판넬이면 그대로)
-		var style: StyleBoxFlat = box.duplicate() as StyleBoxFlat
-		style.border_color = BORDER_COLORS[state]
-		add_theme_stylebox_override("panel", style)
+	_stem.visible = level > 1
+	_stem_fill.anchor_top = 1.0 - clampf(stem_ratio, 0.0, 1.0)
+	if big:
+		_node_button.theme_type_variation = &"LevelBigNodeButton"
+		_node_button.custom_minimum_size.y = BIG_NODE_HEIGHT
+	show_claim(claimable)
 
 
-static func state_text(p_state: State) -> String:
+## 받을 보상이 있으면 눌러서 받는다.
+func show_claim(claimable: bool) -> void:
+	_claimable = claimable
+	_node_button.disabled = not claimable
+	_claim_label.visible = claimable
+	_state_label.visible = not claimable and not LevelRewardRow.state_text(state, level).is_empty()
+	_state_label.text = LevelRewardRow.state_text(state, level)
+	modulate.a = 1.0 if claimable else TEXT_ALPHA[state]
+
+
+func is_claimable() -> bool:
+	return _claimable
+
+
+## 보상 칸 (스모크가 누른다).
+func node_button() -> Button:
+	return _node_button
+
+
+func is_big() -> bool:
+	return _node_button.theme_type_variation == &"LevelBigNodeButton"
+
+
+## 기둥이 찬 비율 (테스트/디버그용).
+func stem_ratio() -> float:
+	return 1.0 - _stem_fill.anchor_top
+
+
+func _on_node_button_pressed() -> void:
+	claim_requested.emit(level)
+
+
+## Lv1은 보상이 없어 지난 뒤에도 "받음"이 아니다.
+static func state_text(p_state: State, p_level: int = 2) -> String:
 	match p_state:
 		State.REACHED:
-			return "받음"
+			return "받음" if p_level >= ProgressStore.FIRST_REWARD_LEVEL else ""
 		State.CURRENT:
 			return "지금"
 		State.NEXT:

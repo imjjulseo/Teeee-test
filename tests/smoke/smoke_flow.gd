@@ -30,7 +30,7 @@ func _tick_result() -> void:
 	match step:
 		0:
 			if in_scene("MainMenu"):
-				(node("%StartButton") as Button).pressed.emit()
+				(node("%BottomNav") as BottomNav).start_swiped.emit()
 				next_step()
 		1:
 			if playing(1.0):
@@ -60,13 +60,14 @@ func _tick_result() -> void:
 				shot("warning")
 				next_step()
 		4:
-			if flow().state == S.RESULT and step_time > 0.2:
+			if flow().state == S.RESULT and ((node("ResultPanel/%FinalScoreLabel") as Label).text == str(_points) or step_time > 16.0):  # 점수가 차오른 뒤
 				expect((node("ResultPanel/%FinalScoreLabel") as Label).text == str(_points), "final score %d" % _points)
-				expect((node("ResultPanel/%BestScoreLabel") as Label).text == "최고점 %d" % _points, "best 100 → %d" % _points)
-				var earned: int = progression.coins_for_run(_points, session().collected_coins())  # ⌊점수 ÷ 100⌋ + 주운 금화
-				expect((node("ResultPanel/%CoinLabel") as Label).text == "● +%d" % earned, "coins on the result (%s)" % (node("ResultPanel/%CoinLabel") as Label).text)
-				var with_level_ups: int = RunRewards.compute(_points, session().collected_coins(), 1, 0, progression).total_coins()  # + 레벨업 코인
-				expect(ProgressStore.new().coins == with_level_ups, "coins saved (%d, expected %d)" % [ProgressStore.new().coins, with_level_ups])
+				expect((node("ResultPanel/%CharacterBestLabel") as Label).text == "기본 최고점\n%d" % _points, "character best (%s)" % (node("ResultPanel/%CharacterBestLabel") as Label).text)
+				expect(BestScoreStore.new().best_of(&"basic") == _points, "character best saved")
+				expect((node("ResultPanel/%BestScoreLabel") as Label).text == "전체 최고점\n%d" % _points, "best 100 → %d" % _points)
+				expect(not (node("ResultPanel/%CoinLabel") as Label).text.contains("+"), "held coins, not the earned amount (%s)" % (node("ResultPanel/%CoinLabel") as Label).text)
+				var run_coins: int = RunRewards.compute(_points, session().collected_coins(), 1, 0, progression).coins  # 레벨 보상은 레벨 화면에서
+				expect(ProgressStore.new().coins == run_coins, "coins saved (%d, expected %d)" % [ProgressStore.new().coins, run_coins])
 				expect((node("ResultPanel/%NewBestLabel") as Label).visible, "NEW BEST shown")
 				expect(BestScoreStore.new().best == _points, "best saved")
 				var rows: Array[PackedStringArray] = smoke_log_rows()
@@ -90,7 +91,7 @@ func _tick_result() -> void:
 				next_step()
 		6:
 			if flow().state == S.RESULT and step_time > 0.2:
-				expect((node("ResultPanel/%BestScoreLabel") as Label).text == "최고점 %d" % _points, "best kept")
+				expect((node("ResultPanel/%BestScoreLabel") as Label).text == "전체 최고점\n%d" % _points, "best kept")
 				expect(not (node("ResultPanel/%NewBestLabel") as Label).visible, "no NEW BEST")
 				(node("ResultPanel/Center/MainMenuButton") as Button).pressed.emit()
 				controller = null

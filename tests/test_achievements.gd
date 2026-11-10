@@ -124,7 +124,7 @@ func test_design_doc_matches_the_book() -> void:
 
 # --- 평가 ------------------------------------------------------------------------
 
-func test_character_tiers_complete_in_order_and_pay() -> void:
+func test_character_tiers_complete_in_order_and_are_claimed_by_hand() -> void:
 	var session: GameSession = _session(&"gardener")
 	session.metrics.record_max(GrowAllAbility.METRIC_GROWN_ONCE, 8)
 	session.metrics.add(GrowAllAbility.METRIC_USES, 15)
@@ -135,9 +135,18 @@ func test_character_tiers_complete_in_order_and_pay() -> void:
 	assert_true(store.is_done("gardener_1") and store.is_done("gardener_2") and not store.is_done("gardener_3"))
 	assert_eq(store.progress_of("gardener_3"), 50, "progress kept")
 	var progress: ProgressStore = ProgressStore.new(TEST_SAVE)
-	assert_eq([progress.coins, progress.diamonds], [100, 10], "입문 ● 100 + 숙련 ◆ 10")
-	var status: Array[AchievementTracker.TierStatus] = _tracker().chain_status(&"gardener")
+	assert_eq([progress.coins, progress.diamonds], [0, 0], "nothing paid until claimed (E38)")
+	var tracker: AchievementTracker = _tracker()
+	var status: Array[AchievementTracker.TierStatus] = tracker.chain_status(&"gardener")
 	assert_eq([status[0].done, status[1].done, status[2].done, status[2].value, status[2].goal], [true, true, false, 50, 100])
+	assert_true(status[0].can_claim() and status[1].can_claim() and not status[2].can_claim())
+	assert_true(tracker.has_claimable())
+	assert_true(tracker.claim(status[0]) and tracker.claim(status[1]))
+	assert_false(tracker.claim(status[0]), "only once")
+	assert_false(tracker.claim(status[2]), "not reached")
+	progress = ProgressStore.new(TEST_SAVE)
+	assert_eq([progress.coins, progress.diamonds], [100, 10], "입문 ● 100 + 숙련 ◆ 10")
+	assert_false(_tracker().has_claimable(), "claims are saved")
 
 
 func test_locked_tier_does_not_progress() -> void:
@@ -168,8 +177,12 @@ func test_common_achievements_accumulate_over_games() -> void:
 			assert_true(_names(completions).has("블럭 부수기 I"), "320 blocks ≥ 300 on the 8th game (%s)" % [_names(completions)])
 	var store: AchievementStore = AchievementStore.new(TEST_SAVE)
 	assert_eq([store.stat("games"), store.stat("blocks")], [10, 400])
-	var games: AchievementTracker.TierStatus = _tracker().common_status(_book().common[3], 0)
-	assert_eq([games.name, games.text, games.value, games.goal], ["단골 II", "플레이한 판 100", 10, 100], "next tier shown")
+	var tracker: AchievementTracker = _tracker()
+	var games: AchievementTracker.TierStatus = tracker.common_status(_book().common[3], 0)
+	assert_eq([games.name, games.value, games.goal, games.can_claim()], ["단골 I", 10, 10, true], "reached tier waits for the claim")
+	assert_true(tracker.claim(games))
+	games = tracker.common_status(_book().common[3], 0)
+	assert_eq([games.name, games.text, games.value, games.goal, games.can_claim()], ["단골 II", "플레이한 판 100", 10, 100, false], "next tier shown after claiming")
 
 
 func test_best_score_and_owned_characters() -> void:
@@ -179,9 +192,13 @@ func test_best_score_and_owned_characters() -> void:
 	var tracker: AchievementTracker = AchievementTracker.new(_book(), AchievementStore.new(TEST_SAVE), progress)
 	assert_eq(_names(tracker.check_common(5000)), PackedStringArray(["최고 기록 I", "수집가 I"]))
 	assert_eq(tracker.check_common(5000).size(), 0, "once")
-	assert_eq(ProgressStore.new(TEST_SAVE).coins, 200)
+	assert_eq(ProgressStore.new(TEST_SAVE).coins, 0, "reaching pays nothing")
 	assert_eq(_names(_tracker().check_common(12000)), PackedStringArray(["최고 기록 II"]))
-	var best: AchievementTracker.TierStatus = _tracker().common_status(_book().common[2], 12000)
+	var fresh: AchievementTracker = _tracker()
+	assert_true(fresh.claim(fresh.common_status(_book().common[2], 12000)))
+	assert_true(fresh.claim(fresh.common_status(_book().common[2], 12000)))
+	assert_eq(ProgressStore.new(TEST_SAVE).coins, 100, "최고 기록 I ● 100")
+	var best: AchievementTracker.TierStatus = fresh.common_status(_book().common[2], 12000)
 	assert_eq([best.name, best.value, best.goal, best.done], ["최고 기록 III", 12000, 20000, false], "next tier after II")
 
 
@@ -197,7 +214,7 @@ func test_hidden_achievements_only_record_progress() -> void:
 
 func test_result_lines() -> void:
 	var completions: Array[AchievementTracker.Completion] = [AchievementTracker.Completion.new("단골 I", "● 100")]
-	assert_eq(GameController.achievement_lines(completions), [PackedStringArray(["업적 · 단골 I", "● 100"])] as Array[PackedStringArray])
+	assert_eq(GameController.achievement_lines(completions), [PackedStringArray(["업적 · 단골 I", "업적에서 받기"])] as Array[PackedStringArray], "the reward is claimed on the achievement screen")
 	assert_eq([AchievementTracker.format_count(30000), AchievementTracker.format_count(500), AchievementTracker.format_count(1234567)],
 		["30,000", "500", "1,234,567"])
 

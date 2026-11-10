@@ -88,9 +88,7 @@ func test_rewards_level_up_and_board_upgrade() -> void:
 	assert_true(r.board_upgraded())
 	assert_eq(r.upgraded_description, "제한시간 45초")
 	assert_eq(r.next_stage_description, "4색 · 4칸 족보")
-	assert_eq([r.total_coins(), r.total_diamonds()], [105, 10])
-	assert_eq(ResultPanel.reward_lines(r), [PackedStringArray(["레벨 2", "● 100  ◆ 10"]),
-		PackedStringArray(["보드 업그레이드", "제한시간 45초"])] as Array[PackedStringArray])
+	assert_eq(ResultPanel.reward_lines(r), [PackedStringArray(["보드 업그레이드", "제한시간 45초"])] as Array[PackedStringArray], "no level rewards on the result (E36)")
 
 
 func test_rewards_several_levels_milestone_and_ticket() -> void:
@@ -101,7 +99,56 @@ func test_rewards_several_levels_milestone_and_ticket() -> void:
 	assert_eq([r.level_ups[0].ticket_grade, r.level_ups[1].ticket_grade], [-1, Grade.HERO], "Lv10 hero ticket")
 	assert_false(r.board_upgraded(), "already the main board")
 	assert_eq(r.next_stage_description, "")
-	assert_eq(ResultPanel.reward_lines(r)[2], PackedStringArray(["선택권", "영웅 1장"]))
+	assert_eq(ResultPanel.reward_lines(r), [] as Array[PackedStringArray], "tickets are not on the result either")
+
+
+func test_bar_steps_fill_each_level_in_turn() -> void:
+	var p: ProgressionConfig = _progression()
+	var stay: RunRewards.Result = RunRewards.compute(0, 0, 3, 10, p)
+	assert_eq(stay.bar_steps.size(), 1)
+	assert_near(stay.bar_steps[0].from, 10.0 / p.exp_to_next(3))
+	assert_near(stay.bar_steps[0].to, 510.0 / p.exp_to_next(3))
+	var two: RunRewards.Result = RunRewards.compute(8000, 0, 8, 600, p)  # 2500 exp: Lv8 나머지 600 + Lv9 1300 + 600 남음
+	assert_eq(two.bar_steps.map(func(step: RunRewards.BarStep) -> int: return step.level), [8, 9, 10])
+	assert_near(two.bar_steps[0].from, 0.5)
+	assert_near(two.bar_steps[0].to, 1.0)
+	assert_near(two.bar_steps[1].from, 0.0)
+	assert_near(two.bar_steps[1].to, 1.0)
+	assert_near(two.bar_steps[2].to, float(two.exp_after) / two.exp_needed)
+
+
+# --- 레벨 보상 받기 (E36) ------------------------------------------------------
+
+func test_level_up_pays_nothing_until_claimed() -> void:
+	var p: ProgressionConfig = _progression()
+	var store: ProgressStore = ProgressStore.new(TEST_SAVE)
+	store.apply_rewards(RunRewards.compute(8000, 0, 8, 0, p))  # Lv8 → 10
+	assert_eq([store.level, store.coins, store.diamonds, store.ticket_count(Grade.HERO)], [10, 80, 0, 0], "only the run's coins")
+	assert_eq(store.claimable_levels(), [2, 3, 4, 5, 6, 7, 8, 9, 10] as Array[int], "every reached level")
+
+
+func test_claim_pays_once_and_is_saved() -> void:
+	var p: ProgressionConfig = _progression()
+	var store: ProgressStore = ProgressStore.new(TEST_SAVE)
+	store.set_level(10)
+	assert_true(store.claim_level_reward(p.level_up_for(10)))
+	assert_eq([store.coins, store.diamonds, store.ticket_count(Grade.HERO)], [100, 10, 1], "coins, diamonds and the milestone ticket")
+	assert_false(store.claim_level_reward(p.level_up_for(10)), "only once")
+	assert_eq(store.coins, 100)
+	assert_true(store.claim_level_reward(p.level_up_for(2)), "any order")
+	var again: ProgressStore = ProgressStore.new(TEST_SAVE)
+	assert_false(again.is_reward_claimable(10), "saved")
+	assert_true(again.is_reward_claimable(3))
+	assert_eq([again.coins, again.diamonds, again.ticket_count(Grade.HERO)], [200, 20, 1])
+
+
+func test_cannot_claim_unreached_or_level_one() -> void:
+	var p: ProgressionConfig = _progression()
+	var store: ProgressStore = ProgressStore.new(TEST_SAVE)
+	store.set_level(3)
+	assert_false(store.claim_level_reward(p.level_up_for(4)), "not reached")
+	assert_false(store.claim_level_reward(p.level_up_for(1)), "Lv1 has no reward")
+	assert_eq(store.coins, 0)
 
 
 func test_zero_score_gives_picked_coins_and_base_exp() -> void:
@@ -121,11 +168,13 @@ func test_progress_starts_with_only_the_basic_character() -> void:
 func test_progress_saves_and_reloads() -> void:
 	var store: ProgressStore = ProgressStore.new(TEST_SAVE)
 	store.apply_rewards(RunRewards.compute(36000, 5, 4, 0, _progression()))
+	store.add_currency(0, 80)
+	store.add_ticket(Grade.HERO)
 	store.unlock(&"clock")
 	assert_true(store.spend_diamonds(20))
 	assert_false(store.spend_diamonds(1000), "not enough")
 	var again: ProgressStore = ProgressStore.new(TEST_SAVE)
-	assert_eq([again.level, again.experience, again.coins, again.diamonds], [12, 300, 365 + 800, 80 - 20])
+	assert_eq([again.level, again.experience, again.coins, again.diamonds], [12, 300, 365, 80 - 20])
 	assert_eq(again.ticket_count(Grade.HERO), 1)
 	assert_true(again.is_unlocked(&"clock"))
 	assert_eq(SaveData.new(TEST_SAVE).loaded_version(), SaveData.CURRENT_VERSION)

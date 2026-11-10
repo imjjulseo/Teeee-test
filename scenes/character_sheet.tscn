@@ -1,10 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scripts/character_sheet.gd" id="1_sheet"]
-[ext_resource type="Resource" path="res://resources/board_theme.tres" id="2_theme"]
-[ext_resource type="PackedScene" path="res://scenes/recipe_view.tscn" id="3_recipe"]
-[ext_resource type="PackedScene" path="res://scenes/achievement_row.tscn" id="4_row"]
-[ext_resource type="Script" path="res://scripts/portrait_rect.gd" id="96_portrait"]
+[ext_resource type="PackedScene" path="res://scenes/character_info.tscn" id="2_info"]
 
 [node name="CharacterSheet" type="Control"]
 layout_mode = 3
@@ -14,8 +11,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sheet")
-theme_data = ExtResource("2_theme")
-achievement_row_scene = ExtResource("4_row")
 
 [node name="Dim" type="Button" parent="."]
 layout_mode = 1
@@ -27,231 +22,34 @@ grow_vertical = 2
 focus_mode = 0
 theme_type_variation = &"DimButton"
 
-[node name="Panel" type="PanelContainer" parent="."]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 0.14
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_type_variation = &"SheetPanel"
-
-[node name="VBox" type="VBoxContainer" parent="Panel"]
-layout_mode = 2
-theme_override_constants/separation = 27
-
-[node name="Header" type="HBoxContainer" parent="Panel/VBox"]
-layout_mode = 2
-theme_override_constants/separation = 30
-
-[node name="SheetPreview" type="Panel" parent="Panel/VBox/Header"]
+[node name="Info" parent="." instance=ExtResource("2_info")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 120)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-
-[node name="Portrait" type="TextureRect" parent="Panel/VBox/Header/SheetPreview"]
-unique_name_in_owner = true
-visible = false
 layout_mode = 1
 anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 6.0
-offset_top = 6.0
-offset_right = -6.0
-offset_bottom = -6.0
+anchor_left = 0.04
+anchor_top = 0.08
+anchor_right = 0.96
+anchor_bottom = 0.92
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
-expand_mode = 1
-stretch_mode = 5
-script = ExtResource("96_portrait")
-[node name="Titles" type="VBoxContainer" parent="Panel/VBox/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-alignment = 1
 
-[node name="SheetNameLabel" type="Label" parent="Panel/VBox/Header/Titles"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 60
-text = "Name"
-
-[node name="SheetGradeLabel" type="Label" parent="Panel/VBox/Header/Titles"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 36
-text = "희귀"
-
-[node name="CloseButton" type="Button" parent="Panel/VBox/Header"]
-custom_minimum_size = Vector2(180, 108)
-layout_mode = 2
-size_flags_vertical = 4
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 0.96
+anchor_top = 0.08
+anchor_right = 0.96
+anchor_bottom = 0.08
+offset_left = -192.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 120.0
+grow_horizontal = 0
 focus_mode = 0
 theme_override_font_sizes/font_size = 42
 text = "닫기"
 
-[node name="Scroll" type="ScrollContainer" parent="Panel/VBox"]
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="Details" type="VBoxContainer" parent="Panel/VBox/Scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 27
-
-[node name="SheetCondition" parent="Panel/VBox/Scroll/Details" instance=ExtResource("3_recipe")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-is_ability = true
-
-[node name="SheetPassiveLabel" type="Label" parent="Panel/VBox/Scroll/Details"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 39
-text = "상시형 · 항상 켜짐"
-
-[node name="EffectBox" type="VBoxContainer" parent="Panel/VBox/Scroll/Details"]
-layout_mode = 2
-theme_override_constants/separation = 9
-
-[node name="EffectTitle" type="Label" parent="Panel/VBox/Scroll/Details/EffectBox"]
-layout_mode = 2
-theme_type_variation = &"InfoLabel"
-theme_override_font_sizes/font_size = 39
-text = "효과"
-
-[node name="EffectLabel" type="Label" parent="Panel/VBox/Scroll/Details/EffectBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 39
-autowrap_mode = 3
-
-[node name="WhenBox" type="VBoxContainer" parent="Panel/VBox/Scroll/Details"]
-layout_mode = 2
-theme_override_constants/separation = 9
-
-[node name="WhenTitle" type="Label" parent="Panel/VBox/Scroll/Details/WhenBox"]
-layout_mode = 2
-theme_type_variation = &"InfoLabel"
-theme_override_font_sizes/font_size = 39
-text = "잘 맞는 때"
-
-[node name="WhenLabel" type="Label" parent="Panel/VBox/Scroll/Details/WhenBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 39
-autowrap_mode = 3
-
-[node name="TipBox" type="VBoxContainer" parent="Panel/VBox/Scroll/Details"]
-layout_mode = 2
-theme_override_constants/separation = 9
-
-[node name="TipTitle" type="Label" parent="Panel/VBox/Scroll/Details/TipBox"]
-layout_mode = 2
-theme_type_variation = &"InfoLabel"
-theme_override_font_sizes/font_size = 39
-text = "팁"
-
-[node name="TipLabel" type="Label" parent="Panel/VBox/Scroll/Details/TipBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 39
-autowrap_mode = 3
-
-[node name="AchievementsBox" type="VBoxContainer" parent="Panel/VBox/Scroll/Details"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 9
-
-[node name="AchievementsTitle" type="Label" parent="Panel/VBox/Scroll/Details/AchievementsBox"]
-layout_mode = 2
-theme_type_variation = &"InfoLabel"
-theme_override_font_sizes/font_size = 39
-text = "캐릭터 업적"
-
-[node name="AchievementsList" type="VBoxContainer" parent="Panel/VBox/Scroll/Details/AchievementsBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="AchievementsLabel" type="Label" parent="Panel/VBox/Scroll/Details/AchievementsBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 39
-text = "준비 중"
-
-[node name="HiddenNote" type="Label" parent="Panel/VBox/Scroll/Details"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 39
-text = "히든 업적을 달성하면 얻을 수 있어요. 조건은 숨겨져 있어요."
-autowrap_mode = 3
-
-[node name="EquipButton" type="Button" parent="Panel/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 144)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 54
-text = "장착하기"
-
-[node name="UnlockButton" type="Button" parent="Panel/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 144)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 48
-text = "선택권으로 해금"
-
-[node name="BuyButton" type="Button" parent="Panel/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 144)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 48
-text = "◆ 80로 해금"
-
-[node name="TrialButton" type="Button" parent="Panel/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 132)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 48
-text = "한 판 체험하기"
-
-[node name="TrialNote" type="Label" parent="Panel/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "체험 판은 보상과 기록이 남지 않아요"
-horizontal_alignment = 1
-
-[node name="LessonButton" type="Button" parent="Panel/VBox"]
-unique_name_in_owner = true
-visible = false
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 45
-text = "튜토리얼 다시 하기"
-flat = true
-
 [connection signal="pressed" from="Dim" to="." method="_on_close_pressed"]
-[connection signal="pressed" from="Panel/VBox/Header/CloseButton" to="." method="_on_close_pressed"]
-[connection signal="pressed" from="Panel/VBox/EquipButton" to="." method="_on_equip_button_pressed"]
-[connection signal="pressed" from="Panel/VBox/UnlockButton" to="." method="_on_unlock_button_pressed"]
-[connection signal="pressed" from="Panel/VBox/BuyButton" to="." method="_on_buy_button_pressed"]
-[connection signal="pressed" from="Panel/VBox/TrialButton" to="." method="_on_trial_button_pressed"]
-[connection signal="pressed" from="Panel/VBox/LessonButton" to="." method="_on_lesson_button_pressed"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_pressed"]
+[connection signal="purchase_requested" from="Info" to="." method="_on_info_purchase_requested"]
+[connection signal="lesson_requested" from="Info" to="." method="_on_info_lesson_requested"]

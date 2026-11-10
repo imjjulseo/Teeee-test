@@ -5,7 +5,8 @@ extends Node
 ## - 스와이프(조작 방법 = 스와이프): 화면 어디서든. 손가락을 떼지 않아도 swipe_threshold를 넘는 순간 1칸 (SwipeGesture).
 ##   움직이지 않고 뗀 탭은 tap_requested(화면 위치) → 보드가 칸으로 바꿔 옆 칸이면 이동.
 ##   움직이지 않고 long_press_time초 누르고 있으면 long_pressed (방화광 소화), 그 터치는 탭이 아니다.
-##   버튼이 먹은 터치는 _unhandled_input까지 오지 않는다.
+##   버튼이 먹은 터치는 _unhandled_input까지 오지 않는다. 일시정지 버튼은 터치를 흘려보내므로 그 위에서 시작해도 스와이프가 되고,
+##   스와이프가 되는 순간 swiped로 알려 버튼 누름을 취소한다 (Hud, E36).
 ## - 패드(조작 방법 = 패드): VirtualDpad.direction_pressed / direction_released를 연결받는다 (반복은 패드가 맡는다).
 ## - 방향을 누르고 있음: 키를 누른 채, 스와이프한 손가락을 뗀 채, 패드 버튼을 누른 채면 hold_started → 떼면 hold_released
 ##   (파키케팔로사우르스 돌진).
@@ -13,6 +14,8 @@ extends Node
 ## - 일시정지: pause 액션(ESC).
 
 signal move_requested(dir: Vector2i, hand: int)
+## 터치가 스와이프로 판정됐다 (move_requested 직전). 그 터치로 버튼이 눌리지 않게 한다.
+signal swiped
 ## 방향 입력을 누르고 있기 시작했다 (이동은 move_requested로 따로 온다).
 signal hold_started(dir: Vector2i, hand: int)
 ## 누르고 있던 방향 입력을 뗐다.
@@ -125,6 +128,7 @@ func _handle_touch(event: InputEvent) -> bool:
 		var dir: Vector2i = gesture.drag(drag.index, drag.position)
 		if dir == Vector2i.ZERO:
 			return false
+		swiped.emit()
 		hold_started.emit(dir, _touch_hand)  # 손가락을 떼지 않고 있는 동안 그 방향을 누르고 있다
 		move_requested.emit(dir, _touch_hand)
 		return true

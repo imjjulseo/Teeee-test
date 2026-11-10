@@ -7,11 +7,11 @@ signal chosen(grade: int)
 
 const ALL: int = -1
 
-var grade: int = ALL
+## 씬에서 칩마다 정한다 (CharacterData.Grade, ALL = 전체).
+@export var grade: int = ALL
 
 
-func setup(p_grade: int, label: String) -> void:
-	grade = p_grade
+func show_label(label: String) -> void:
 	text = label
 
 

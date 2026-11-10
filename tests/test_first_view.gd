@@ -78,4 +78,4 @@ func test_tips_are_the_html_texts() -> void:
 	assert_eq([tips.multi_head, tips.multi_text], ["족보 동시 진행", "두 족보를 동시에 올릴 수도 있어요"])
 	assert_eq([tips.experience_head, tips.experience_text], ["경험치", "점수만큼 경험치를 얻어요"])
 	assert_eq(tips.hidden_text, "조건은 비밀. 달성하면 히든 캐릭터를 얻어요")
-	assert_eq(tips.characters_text, "눌러서 능력 보기 · 다이아로 해금 · 한 판 체험 · 튜토리얼")
+	assert_eq(tips.characters_text, "좌우로 넘겨 능력을 보고 장착해요. 튜토리얼로 미리 써 볼 수 있어요")

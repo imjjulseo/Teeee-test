@@ -4,10 +4,10 @@
 [ext_resource type="Resource" path="res://resources/character_roster.tres" id="2_roster"]
 [ext_resource type="Resource" path="res://resources/progression.tres" id="3_progression"]
 [ext_resource type="Resource" path="res://resources/board_theme.tres" id="4_theme"]
-[ext_resource type="PackedScene" path="res://scenes/pool_chip.tscn" id="5_chip"]
-[ext_resource type="PackedScene" path="res://scenes/ticket_row.tscn" id="6_ticket"]
-[ext_resource type="PackedScene" path="res://scenes/grade_header.tscn" id="7_header"]
-[ext_resource type="PackedScene" path="res://scenes/shop_row.tscn" id="8_row"]
+[ext_resource type="PackedScene" path="res://scenes/shop_grade_section.tscn" id="6_section"]
+[ext_resource type="PackedScene" path="res://scenes/character_sheet.tscn" id="7_sheet"]
+[ext_resource type="PackedScene" path="res://scenes/confirm_dialog.tscn" id="8_confirm"]
+[ext_resource type="Resource" path="res://resources/character_tutorials.tres" id="14_lessons"]
 [ext_resource type="PackedScene" path="res://scenes/gacha_chest.tscn" id="9_chest"]
 [ext_resource type="PackedScene" path="res://scenes/gacha_reveal.tscn" id="10_reveal"]
 [ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="11_nav"]
@@ -15,7 +15,8 @@
 [ext_resource type="Resource" path="res://resources/tutorial.tres" id="12_tutorial"]
 [ext_resource type="PackedScene" path="res://scenes/spotlight_overlay.tscn" id="13_spotlight"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
-[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
+[ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="20_top"]
+[ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="21_bottom"]
 
 [node name="Shop" type="Control" node_paths=PackedStringArray("spotlight")]
 layout_mode = 3
@@ -28,10 +29,7 @@ script = ExtResource("1_shop")
 roster = ExtResource("2_roster")
 progression = ExtResource("3_progression")
 theme_data = ExtResource("4_theme")
-pool_chip_scene = ExtResource("5_chip")
-ticket_row_scene = ExtResource("6_ticket")
-grade_header_scene = ExtResource("7_header")
-shop_row_scene = ExtResource("8_row")
+lessons = ExtResource("14_lessons")
 tutorial = ExtResource("12_tutorial")
 spotlight = NodePath("SpotlightOverlay")
 
@@ -65,33 +63,31 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = 72.0
-offset_right = -48.0
-offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 21
 
-[node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 84
-text = "상점"
-
-[node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
+[node name="TopBar" parent="SafeArea/Content/Layout" instance=ExtResource("20_top")]
 unique_name_in_owner = true
 layout_mode = 2
-font_size = 48
 
-[node name="Tabs" type="HBoxContainer" parent="SafeArea/Content/Layout"]
+[node name="Page" type="MarginContainer" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 42
+theme_override_constants/margin_right = 42
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Content/Layout/Page"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 21
+
+[node name="Tabs" type="HBoxContainer" parent="SafeArea/Content/Layout/Page/Box"]
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="GachaTab" type="Button" parent="SafeArea/Content/Layout/Tabs"]
+[node name="GachaTab" type="Button" parent="SafeArea/Content/Layout/Page/Box/Tabs"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
@@ -102,7 +98,7 @@ theme_type_variation = &"TabButton"
 toggle_mode = true
 text = "뽑기"
 
-[node name="ShopTab" type="Button" parent="SafeArea/Content/Layout/Tabs"]
+[node name="ShopTab" type="Button" parent="SafeArea/Content/Layout/Page/Box/Tabs"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 108)
 layout_mode = 2
@@ -111,25 +107,45 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 45
 theme_type_variation = &"TabButton"
 toggle_mode = true
-text = "상점"
+text = "선택"
 
-[node name="GachaPage" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+[node name="GachaPage" type="ScrollContainer" parent="SafeArea/Content/Layout/Page/Box"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/GachaPage"]
+[node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/Page/Box/GachaPage"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 24
+size_flags_vertical = 3
+theme_override_constants/separation = 42
+alignment = 1
 
-[node name="Chest" parent="SafeArea/Content/Layout/GachaPage/VBox" instance=ExtResource("9_chest")]
+[node name="TierLabel" type="Label" parent="SafeArea/Content/Layout/Page/Box/GachaPage/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 54
+text = "뽑기 머신 1단계"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Chest" parent="SafeArea/Content/Layout/Page/Box/GachaPage/VBox" instance=ExtResource("9_chest")]
+mouse_filter = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="TapLabel" type="Label" parent="SafeArea/Content/Layout/GachaPage/VBox"]
+[node name="RateLabel" type="Label" parent="SafeArea/Content/Layout/Page/Box/GachaPage/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 39
+text = "신화 0.1% · 전설 0.9% · 영웅 34% · 희귀 65%"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TapLabel" type="Label" parent="SafeArea/Content/Layout/Page/Box/GachaPage/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MutedLabel"
@@ -137,60 +153,18 @@ theme_override_font_sizes/font_size = 39
 text = "상자를 눌러 열기"
 horizontal_alignment = 1
 
-[node name="PullButton" type="Button" parent="SafeArea/Content/Layout/GachaPage/VBox"]
+[node name="PullButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/GachaPage/VBox"]
+mouse_filter = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 54
-text = "열기 · ● 350"
+text = "뽑기 · ● 500"
 
-[node name="RateLabel" type="Label" parent="SafeArea/Content/Layout/GachaPage/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 36
-text = "신화 0.1% · 전설 0.9% · 영웅 34% · 희귀 65%"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="TierLabel" type="Label" parent="SafeArea/Content/Layout/GachaPage/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 33
-text = "뽑기 1단계"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="TierBar" type="ColorRect" parent="SafeArea/Content/Layout/GachaPage/VBox"]
-custom_minimum_size = Vector2(0, 15)
-layout_mode = 2
-mouse_filter = 2
-script = ExtResource("95_token_rect")
-token = &"track"
-
-[node name="TierFill" type="ColorRect" parent="SafeArea/Content/Layout/GachaPage/VBox/TierBar"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("95_token_rect")
-token = &"info"
-
-[node name="PoolTitle" type="Label" parent="SafeArea/Content/Layout/GachaPage/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 36
-text = "나오는 캐릭터"
-
-[node name="Pool" type="HFlowContainer" parent="SafeArea/Content/Layout/GachaPage/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 12
-
-[node name="AdButton" type="Button" parent="SafeArea/Content/Layout/GachaPage/VBox"]
+[node name="AdButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/GachaPage/VBox"]
+mouse_filter = 1
+visible = false
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
@@ -198,61 +172,80 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 39
 text = "광고 보고 ◆ 5 · 오늘 0/3"
 
-[node name="ShopPage" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+[node name="ShopPage" type="ScrollContainer" parent="SafeArea/Content/Layout/Page/Box"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/ShopPage"]
+[node name="Sections" type="VBoxContainer" parent="SafeArea/Content/Layout/Page/Box/ShopPage"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 18
+theme_override_constants/separation = 42
 
-[node name="TicketsTitle" type="Label" parent="SafeArea/Content/Layout/ShopPage/VBox"]
+[node name="RareSection" parent="SafeArea/Content/Layout/Page/Box/ShopPage/Sections" instance=ExtResource("6_section")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 45
-text = "선택권"
+grade = 1
 
-[node name="Tickets" type="VBoxContainer" parent="SafeArea/Content/Layout/ShopPage/VBox"]
+[node name="HeroSection" parent="SafeArea/Content/Layout/Page/Box/ShopPage/Sections" instance=ExtResource("6_section")]
+layout_mode = 2
+grade = 2
+
+[node name="LegendSection" parent="SafeArea/Content/Layout/Page/Box/ShopPage/Sections" instance=ExtResource("6_section")]
+layout_mode = 2
+grade = 3
+
+[node name="MythSection" parent="SafeArea/Content/Layout/Page/Box/ShopPage/Sections" instance=ExtResource("6_section")]
+layout_mode = 2
+grade = 4
+
+[node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("21_bottom")]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="CharactersTitle" type="Label" parent="SafeArea/Content/Layout/ShopPage/VBox"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 45
-text = "다이아 상점"
-
-[node name="Characters" type="VBoxContainer" parent="SafeArea/Content/Layout/ShopPage/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 144)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 60
-text = "뒤로"
+current = 2
+top_bar = NodePath("../TopBar")
 
 [node name="Reveal" parent="." instance=ExtResource("10_reveal")]
 unique_name_in_owner = true
 layout_mode = 1
 
+[node name="CharacterSheet" parent="." instance=ExtResource("7_sheet")]
+unique_name_in_owner = true
+layout_mode = 1
+
+[node name="ConfirmDialog" parent="." instance=ExtResource("8_confirm")]
+unique_name_in_owner = true
+layout_mode = 1
+
 [node name="SpotlightOverlay" parent="." instance=ExtResource("13_spotlight")]
 
-[node name="MenuNavigator" type="Node" parent="."]
+[node name="GameNavigator" type="Node" parent="."]
 script = ExtResource("11_nav")
-target_scene = "res://scenes/main_menu.tscn"
+target_scene = "res://scenes/main.tscn"
 
-[connection signal="pressed" from="SafeArea/Content/Layout/Tabs/GachaTab" to="." method="_on_gacha_tab_pressed"]
-[connection signal="pressed" from="SafeArea/Content/Layout/Tabs/ShopTab" to="." method="_on_shop_tab_pressed"]
-[connection signal="pressed" from="SafeArea/Content/Layout/GachaPage/VBox/Chest" to="." method="_on_pull_requested"]
-[connection signal="opened" from="SafeArea/Content/Layout/GachaPage/VBox/Chest" to="." method="_on_chest_opened"]
-[connection signal="pressed" from="SafeArea/Content/Layout/GachaPage/VBox/PullButton" to="." method="_on_pull_requested"]
-[connection signal="pressed" from="SafeArea/Content/Layout/GachaPage/VBox/AdButton" to="." method="_on_ad_button_pressed"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Tabs/GachaTab" to="." method="_on_gacha_tab_pressed"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Tabs/ShopTab" to="." method="_on_shop_tab_pressed"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/GachaPage/VBox/Chest" to="." method="_on_pull_requested"]
+[connection signal="opened" from="SafeArea/Content/Layout/Page/Box/GachaPage/VBox/Chest" to="." method="_on_chest_opened"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/GachaPage/VBox/PullButton" to="." method="_on_pull_requested"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/GachaPage/VBox/AdButton" to="." method="_on_ad_button_pressed"]
+[connection signal="character_chosen" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/RareSection" to="." method="_on_character_chosen"]
+[connection signal="use_toggled" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/RareSection" to="." method="_on_use_toggled"]
+[connection signal="fuse_requested" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/RareSection" to="." method="_on_fuse_requested"]
+[connection signal="character_chosen" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/HeroSection" to="." method="_on_character_chosen"]
+[connection signal="use_toggled" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/HeroSection" to="." method="_on_use_toggled"]
+[connection signal="fuse_requested" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/HeroSection" to="." method="_on_fuse_requested"]
+[connection signal="character_chosen" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/LegendSection" to="." method="_on_character_chosen"]
+[connection signal="use_toggled" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/LegendSection" to="." method="_on_use_toggled"]
+[connection signal="fuse_requested" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/LegendSection" to="." method="_on_fuse_requested"]
+[connection signal="character_chosen" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/MythSection" to="." method="_on_character_chosen"]
+[connection signal="use_toggled" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/MythSection" to="." method="_on_use_toggled"]
+[connection signal="fuse_requested" from="SafeArea/Content/Layout/Page/Box/ShopPage/Sections/MythSection" to="." method="_on_fuse_requested"]
+[connection signal="purchase_requested" from="CharacterSheet" to="." method="_on_purchase_requested"]
+[connection signal="lesson_requested" from="CharacterSheet" to="." method="_on_lesson_requested"]
+[connection signal="accepted" from="ConfirmDialog" to="." method="_on_confirm_accepted"]
+[connection signal="trial_started" from="." to="GameNavigator" method="go"]
 [connection signal="closed" from="Reveal" to="." method="_on_reveal_closed"]
-[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
 [connection signal="tapped" from="SpotlightOverlay" to="." method="_on_spotlight_tapped"]

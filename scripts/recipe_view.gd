@@ -13,7 +13,11 @@ extends PanelContainer
 @export var is_ability: bool = false
 ## 점만 (판넬·둘째 줄 없음): HUD 캐릭터 줄 오른쪽의 능력 발동 족보. 상태 문구는 줄이 따로 보인다.
 @export var dots_only: bool = false
+## 카드 모양은 그대로 두고 둘째 줄만 뺀다 (캐릭터 설명창: 점수가 없는 캐릭터 족보).
+@export var hide_points: bool = false
 
+## 칸은 씬에 최대 길이(건축가 5칸)만큼 있고, 족보 길이만큼만 보인다.
+var _shown_steps: int = 0
 var _panel_style: StyleBoxFlat
 var _steps_list: Array[Panel] = []
 var _step_styles: Array[StyleBoxFlat] = []
@@ -53,9 +57,30 @@ func _ready() -> void:
 		_panel_style.bg_color = Color.TRANSPARENT
 		_panel_style.set_border_width_all(0)
 		_points_label.visible = false
+	if hide_points:
+		_points_label.visible = false
 	add_theme_stylebox_override("panel", _panel_style)
 	if _step_size <= 0.0:
 		_step_size = theme_data.recipe_step_size
+	_collect_steps()
+
+
+## 씬에 있는 칸을 모은다. 칸마다 자기 스타일을 갖는다 (색·고리가 칸별로 다르다).
+func _collect_steps() -> void:
+	for node: Node in _steps.get_children():
+		var step: Panel = node as Panel
+		var style: StyleBoxFlat = StyleBoxFlat.new()
+		step.add_theme_stylebox_override("panel", style)
+		_steps_list.append(step)
+		_step_styles.append(style)
+		_step_glyphs.append(step.get_node("Glyph") as GlyphView)
+		_step_arts.append(step.get_node("Art") as TextureRect)
+		_apply_step_size(step, _step_glyphs.back())
+
+
+## 지금 보이는 칸 수.
+func shown_step_count() -> int:
+	return _shown_steps
 
 
 ## 족보 칸 크기(px)를 바꾼다. 족보 박스가 4개일 때 작게 한다.
@@ -172,7 +197,7 @@ func show_recipe(recipe: RecipeSet.Recipe, caption: String = "") -> void:
 	_ensure_steps(recipe.length())
 	var reversed: bool = _display != null and _display.reversed_recipes
 	var next: int = recipe.next_index() if not recipe.is_complete() else -1
-	for slot_index: int in recipe.length():
+	for slot_index: int in _shown_steps:
 		# 거울세계에서는 칸 순서를 거꾸로 보여 준다 (뒤에서부터 채우는 칸이 왼쪽에 온다).
 		var i: int = recipe.length() - 1 - slot_index if reversed else slot_index
 		var style: StyleBoxFlat = _step_styles[slot_index]
@@ -239,7 +264,7 @@ func _hit_step(slot_index: int) -> void:
 
 ## 완성: 모든 칸을 채운 모양으로 바꾸고 함께 번쩍인다 (HTML: 점 전부 'got hit').
 func _mark_all_done() -> void:
-	for slot_index: int in _steps_list.size():
+	for slot_index: int in _shown_steps:
 		var style: StyleBoxFlat = _step_styles[slot_index]
 		style.bg_color.a = 1.0 if not _step_arts[slot_index].visible else 0.0
 		_step_arts[slot_index].modulate.a = 1.0
@@ -301,38 +326,13 @@ func _refresh_caption() -> void:
 		_points_label.text = "+%d" % _points
 
 
-## 족보 길이만큼 칸(Panel)을 맞춘다. 길이는 데이터로 정해지므로 코드에서 만든다.
+## 족보 길이만큼 칸을 보인다. 씬의 칸보다 길면 (설정 오류) 알리고 있는 칸까지만.
 func _ensure_steps(count: int) -> void:
-	if _steps_list.size() == count:
-		return
-	for step: Panel in _steps_list:
-		_steps.remove_child(step)
-		step.queue_free()
-	_steps_list.clear()
-	_step_styles.clear()
-	_step_glyphs.clear()
-	_step_arts.clear()
-	for _i: int in count:
-		var style: StyleBoxFlat = StyleBoxFlat.new()
-		var step: Panel = Panel.new()
-		step.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		step.add_theme_stylebox_override("panel", style)
-		var art: TextureRect = TextureRect.new()
-		art.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		art.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		art.visible = false
-		step.add_child(art)
-		var glyph: GlyphView = GlyphView.new()
-		glyph.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		step.add_child(glyph)
-		_apply_step_size(step, glyph)
-		_steps.add_child(step)
-		_steps_list.append(step)
-		_step_styles.append(style)
-		_step_glyphs.append(glyph)
-		_step_arts.append(art)
+	if count > _steps_list.size():
+		push_error("RecipeView: recipe of %d steps, the scene has %d" % [count, _steps_list.size()])
+	_shown_steps = mini(count, _steps_list.size())
+	for i: int in _steps_list.size():
+		_steps_list[i].visible = i < _shown_steps
 
 
 ## 다음 칸: 칸 바깥으로 흰 고리 (HTML box-shadow 0 0 0 3px).

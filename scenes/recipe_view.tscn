@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/recipe_view.gd" id="1_recipe"]
 [ext_resource type="Resource" path="res://resources/board_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" path="res://scenes/recipe_step.tscn" id="3_step"]
 
 [node name="RecipeView" type="PanelContainer"]
 mouse_filter = 2
@@ -19,6 +20,26 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 9
+
+[node name="Step0" parent="VBox/Steps" instance=ExtResource("3_step")]
+visible = false
+layout_mode = 2
+
+[node name="Step1" parent="VBox/Steps" instance=ExtResource("3_step")]
+visible = false
+layout_mode = 2
+
+[node name="Step2" parent="VBox/Steps" instance=ExtResource("3_step")]
+visible = false
+layout_mode = 2
+
+[node name="Step3" parent="VBox/Steps" instance=ExtResource("3_step")]
+visible = false
+layout_mode = 2
+
+[node name="Step4" parent="VBox/Steps" instance=ExtResource("3_step")]
+visible = false
+layout_mode = 2
 
 [node name="PointsLabel" type="Label" parent="VBox"]
 unique_name_in_owner = true

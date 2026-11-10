@@ -3,12 +3,17 @@
 [ext_resource type="Script" path="res://scripts/achievements_screen.gd" id="1_screen"]
 [ext_resource type="Resource" path="res://resources/achievements.tres" id="2_book"]
 [ext_resource type="PackedScene" path="res://scenes/achievement_row.tscn" id="3_row"]
-[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="4_nav"]
+[ext_resource type="PackedScene" path="res://scenes/character_chain_group.tscn" id="5_group"]
+[ext_resource type="Resource" path="res://resources/character_roster.tres" id="6_roster"]
+[ext_resource type="Resource" path="res://resources/board_theme.tres" id="7_theme"]
 [ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
 [ext_resource type="PackedScene" path="res://scenes/spotlight_overlay.tscn" id="80_spot"]
 [ext_resource type="Resource" path="res://resources/first_view_tips.tres" id="81_tips"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
-[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
+[ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="20_top"]
+[ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="21_bottom"]
+[ext_resource type="PackedScene" path="res://scenes/filter_chip.tscn" id="22_chip"]
+[ext_resource type="PackedScene" path="res://scenes/achievement_grade_section.tscn" id="23_section"]
 
 [node name="Achievements" type="Control" node_paths=PackedStringArray("spotlight")]
 layout_mode = 3
@@ -20,6 +25,9 @@ grow_vertical = 2
 script = ExtResource("1_screen")
 achievements = ExtResource("2_book")
 row_scene = ExtResource("3_row")
+group_scene = ExtResource("5_group")
+roster = ExtResource("6_roster")
+theme_data = ExtResource("7_theme")
 tips = ExtResource("81_tips")
 spotlight = NodePath("Spotlight")
 
@@ -53,79 +61,178 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = 72.0
-offset_right = -48.0
-offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 21
 
-[node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 84
-text = "업적"
-
-[node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
+[node name="TopBar" parent="SafeArea/Content/Layout" instance=ExtResource("20_top")]
 unique_name_in_owner = true
 layout_mode = 2
-font_size = 48
 
-[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+[node name="Page" type="MarginContainer" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 42
+theme_override_constants/margin_right = 42
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Content/Layout/Page"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 21
+
+[node name="Tabs" type="HBoxContainer" parent="SafeArea/Content/Layout/Page/Box"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="CommonTab" type="Button" parent="SafeArea/Content/Layout/Page/Box/Tabs"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"TabButton"
+theme_override_font_sizes/font_size = 45
+toggle_mode = true
+text = "일반"
+
+[node name="CharacterTab" type="Button" parent="SafeArea/Content/Layout/Page/Box/Tabs"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_type_variation = &"TabButton"
+theme_override_font_sizes/font_size = 45
+toggle_mode = true
+text = "캐릭터"
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout/Page/Box"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
+[node name="VBox" type="VBoxContainer" parent="SafeArea/Content/Layout/Page/Box/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 18
 
-[node name="CommonTitle" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
+[node name="CommonTitle" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/VBox"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 45
 text = "공통 업적"
 
-[node name="CommonList" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll/VBox"]
+[node name="CommonList" type="VBoxContainer" parent="SafeArea/Content/Layout/Page/Box/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="HiddenTitle" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
+[node name="HiddenTitle" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 45
 text = "히든 업적"
 
-[node name="HiddenList" type="VBoxContainer" parent="SafeArea/Content/Layout/Scroll/VBox"]
+[node name="HiddenList" type="VBoxContainer" parent="SafeArea/Content/Layout/Page/Box/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 15
 
-[node name="CharacterNote" type="Label" parent="SafeArea/Content/Layout/Scroll/VBox"]
+[node name="CharacterPage" type="VBoxContainer" parent="SafeArea/Content/Layout/Page/Box"]
+unique_name_in_owner = true
+visible = false
 layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "캐릭터 업적은 캐릭터 화면의 상세에서 볼 수 있어요"
-autowrap_mode = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 18
 
-[node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 144)
+[node name="ChipScroll" type="ScrollContainer" parent="SafeArea/Content/Layout/Page/Box/CharacterPage"]
+custom_minimum_size = Vector2(0, 114)
 layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 60
-text = "뒤로"
+vertical_scroll_mode = 0
 
-[node name="MenuNavigator" type="Node" parent="."]
-script = ExtResource("4_nav")
-target_scene = "res://scenes/main_menu.tscn"
+[node name="Chips" type="HBoxContainer" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="CommonChip" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips" instance=ExtResource("22_chip")]
+layout_mode = 2
+grade = 0
+
+[node name="RareChip" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips" instance=ExtResource("22_chip")]
+layout_mode = 2
+grade = 1
+
+[node name="HeroChip" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips" instance=ExtResource("22_chip")]
+layout_mode = 2
+grade = 2
+
+[node name="LegendChip" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips" instance=ExtResource("22_chip")]
+layout_mode = 2
+grade = 3
+
+[node name="MythChip" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips" instance=ExtResource("22_chip")]
+layout_mode = 2
+grade = 4
+
+[node name="HiddenChip" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips" instance=ExtResource("22_chip")]
+layout_mode = 2
+grade = 5
+
+[node name="CharacterScroll" type="ScrollContainer" parent="SafeArea/Content/Layout/Page/Box/CharacterPage"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="CharacterList" type="VBoxContainer" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/CharacterScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 60
+
+[node name="CommonSection" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/CharacterScroll/CharacterList" instance=ExtResource("23_section")]
+layout_mode = 2
+grade = 0
+title = "일반"
+
+[node name="RareSection" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/CharacterScroll/CharacterList" instance=ExtResource("23_section")]
+layout_mode = 2
+grade = 1
+
+[node name="HeroSection" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/CharacterScroll/CharacterList" instance=ExtResource("23_section")]
+layout_mode = 2
+grade = 2
+
+[node name="LegendSection" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/CharacterScroll/CharacterList" instance=ExtResource("23_section")]
+layout_mode = 2
+grade = 3
+
+[node name="MythSection" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/CharacterScroll/CharacterList" instance=ExtResource("23_section")]
+layout_mode = 2
+grade = 4
+
+[node name="HiddenSection" parent="SafeArea/Content/Layout/Page/Box/CharacterPage/CharacterScroll/CharacterList" instance=ExtResource("23_section")]
+layout_mode = 2
+grade = 5
+
+[node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("21_bottom")]
+unique_name_in_owner = true
+layout_mode = 2
+current = 4
+top_bar = NodePath("../TopBar")
 
 [node name="Spotlight" parent="." instance=ExtResource("80_spot")]
 
-[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Tabs/CommonTab" to="." method="_on_common_tab_pressed"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Tabs/CharacterTab" to="." method="_on_character_tab_pressed"]
+[connection signal="chosen" from="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips/CommonChip" to="." method="jump_to_grade"]
+[connection signal="chosen" from="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips/RareChip" to="." method="jump_to_grade"]
+[connection signal="chosen" from="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips/HeroChip" to="." method="jump_to_grade"]
+[connection signal="chosen" from="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips/LegendChip" to="." method="jump_to_grade"]
+[connection signal="chosen" from="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips/MythChip" to="." method="jump_to_grade"]
+[connection signal="chosen" from="SafeArea/Content/Layout/Page/Box/CharacterPage/ChipScroll/Chips/HiddenChip" to="." method="jump_to_grade"]
 [connection signal="tapped" from="Spotlight" to="." method="_on_spotlight_tapped"]

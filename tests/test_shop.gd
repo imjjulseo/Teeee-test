@@ -162,8 +162,45 @@ func test_ticket_works_before_the_shop_opens() -> void:
 	var collection: CharacterCollection = _collection()
 	collection.progress.add_ticket(Grade.MYTH)
 	var zeus: CharacterData = _roster().find(&"zeus")
-	assert_eq(collection.status_of(zeus), CharacterCollection.Status.TICKET)
 	assert_true(collection.unlock_with_ticket(zeus), "myth ticket at Lv1")
+
+
+func _action(collection: CharacterCollection, id: StringName, use_ticket: bool = false) -> Array:
+	var action: CharacterCollection.PurchaseAction = collection.purchase_action(_roster().find(id), use_ticket)
+	return [action.kind, action.text, action.enabled]
+
+
+func test_purchase_action_on_the_sheet() -> void:
+	const P = CharacterCollection.Purchase
+	var collection: CharacterCollection = _collection()
+	assert_eq(_action(collection, &"gardener"), [P.DIAMOND, "◆ 80", false], "not enough diamonds")
+	collection.progress.add_currency(0, 80)
+	assert_eq(_action(collection, &"gardener"), [P.DIAMOND, "◆ 80", true])
+	assert_eq(_action(collection, &"wall"), [P.CLOSED, "Lv 8에 열림", false], "hero shop opens at Lv8")
+	collection.progress.add_ticket(Grade.HERO)
+	assert_eq(_action(collection, &"wall"), [P.CLOSED, "Lv 8에 열림", false], "a ticket alone does not change it")
+	assert_eq(_action(collection, &"wall", true), [P.TICKET, "선택권 사용", true], "use is on: works before the shop opens")
+	assert_eq(_action(collection, &"gardener", true), [P.DIAMOND, "◆ 80", true], "no rare ticket: still the price")
+	collection.progress.unlock(&"gardener")
+	assert_eq(_action(collection, &"gardener"), [P.OWNED, "보유", false])
+	assert_eq(_action(collection, &"gardener", true), [P.OWNED, "보유", false], "owned wins over use")
+
+
+func test_ticket_selection_toggles_and_clears() -> void:
+	var selection: TicketSelection = TicketSelection.new()
+	assert_false(selection.is_on(Grade.RARE))
+	selection.toggle(Grade.RARE, 0)
+	assert_false(selection.is_on(Grade.RARE), "no ticket, no use")
+	selection.toggle(Grade.RARE, 2)
+	assert_true(selection.is_on(Grade.RARE))
+	assert_false(selection.is_on(Grade.HERO), "per grade")
+	selection.toggle(Grade.RARE, 2)
+	assert_false(selection.is_on(Grade.RARE), "again = cancel")
+	selection.toggle(Grade.RARE, 2)
+	selection.sync(Grade.RARE, 1)
+	assert_true(selection.is_on(Grade.RARE), "still has tickets")
+	selection.sync(Grade.RARE, 0)
+	assert_false(selection.is_on(Grade.RARE), "off when they run out")
 
 
 func test_offer_for_the_sheet() -> void:
@@ -226,3 +263,17 @@ func test_design_doc_matches_gacha() -> void:
 	]
 	for row: String in rows:
 		assert_true(doc.contains(row), "doc has '%s'" % row)
+
+
+func test_card_text_follows_the_purchase_action() -> void:
+	var progress: ProgressStore = ProgressStore.new(TEST_SAVE)
+	var roster: CharacterRoster = load("res://resources/character_roster.tres")
+	var collection: CharacterCollection = CharacterCollection.new(roster, progress, CharacterStore.new(TEST_SAVE), (load("res://resources/progression.tres") as ProgressionConfig).gacha)
+	var gardener: CharacterData = roster.find(&"gardener")
+	var wall: CharacterData = roster.find(&"wall")
+	assert_eq(collection.purchase_action(gardener, false).card_text, "◆ 80")
+	assert_eq(collection.purchase_action(wall, false).card_text, "Lv 8", "closed grade")
+	progress.add_ticket(wall.grade)
+	assert_eq(collection.purchase_action(wall, true).card_text, "선택", "use is on")
+	progress.unlock(gardener.id)
+	assert_eq(collection.purchase_action(gardener, false).card_text, "보유")

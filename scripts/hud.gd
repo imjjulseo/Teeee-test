@@ -340,6 +340,11 @@ func _on_pause_button_pressed() -> void:
 	pause_requested.emit()
 
 
+## 터치가 스와이프가 됐다: 일시정지 버튼 위에서 시작했어도 이동이지 일시정지가 아니다 (E36, 버튼의 누름을 스크롤 때처럼 취소).
+func _on_swiped() -> void:
+	_pause_button.notification(Control.NOTIFICATION_SCROLL_BEGIN)
+
+
 ## 시간 색은 실제로 바뀔 때만 다시 설정한다 (테마 재계산 비용). 글자와 막대를 같은 색으로.
 func _set_time_color(color: Color) -> void:
 	if _time_color == color:

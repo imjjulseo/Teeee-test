@@ -301,3 +301,19 @@ func test_first_clear_reward_once() -> void:
 	assert_eq(menu.pending_reward("2a"), 0)
 	var saved: PuzzleStore = PuzzleStore.new(TEST_SAVE)
 	assert_eq([ProgressStore.new(TEST_SAVE).coins, saved.is_rewarded("2a"), saved.stars_of("2a")], [20, true, 1], "saved")
+
+
+func test_menu_boards_open_in_order() -> void:
+	var store: PuzzleStore = PuzzleStore.new(TEST_SAVE)
+	var menu: PuzzleMenu = PuzzleMenu.new(load("res://resources/puzzles.tres") as PuzzleBook, store)
+	var boards: Array[PuzzleDef] = menu.boards()
+	assert_true(menu.is_open(boards[0].id), "first board")
+	assert_false(menu.is_open(boards[1].id), "locked until the one before is solved")
+	assert_false(menu.is_open("nope"))
+	store.record_board(boards[0].id, 1)
+	assert_true(menu.is_open(boards[1].id))
+	assert_false(menu.is_open(boards[2].id))
+
+
+func test_board_numbers_are_roman() -> void:
+	assert_eq([PuzzleMenu.roman(1), PuzzleMenu.roman(4), PuzzleMenu.roman(9), PuzzleMenu.roman(11)], ["I", "IV", "IX", "XI"])

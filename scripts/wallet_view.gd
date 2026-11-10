@@ -3,6 +3,9 @@ extends HBoxContainer
 ## 지갑 표시 (메뉴·상점·캐릭터·업적 화면 위): 코인과 다이아. UiAssets에 아이콘 이미지가 있으면 "●" "◆" 대신 아이콘.
 ## 주인이 show_amounts를 _ready보다 먼저 불러도 되게 자식은 그때그때 찾는다.
 
+## 다이아를 눌렀다 (BM이 정해지면 구매창으로, E38).
+signal diamond_pressed
+
 @export var assets: UiAssets
 @export var font_size: int = 48
 
@@ -33,6 +36,10 @@ func _apply_style() -> void:
 		label.add_theme_font_size_override("font_size", font_size)
 	_set_icon(%CoinIcon as TextureRect, assets.coin_icon if assets != null else null)
 	_set_icon(%DiamondIcon as TextureRect, assets.diamond_icon if assets != null else null)
+
+
+func _on_diamond_button_pressed() -> void:
+	diamond_pressed.emit()
 
 
 func _set_icon(icon: TextureRect, texture: Texture2D) -> void:

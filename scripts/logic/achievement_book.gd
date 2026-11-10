@@ -21,7 +21,7 @@ extends Resource
 @export var straight_run: int = 5
 
 
-## 캐릭터의 업적 3단계 (없으면 null → 화면은 "준비 중").
+## 캐릭터의 업적 3단계 (없으면 null → 업적 화면에 나오지 않는다).
 func chain_for(character_id: StringName) -> CharacterAchievementChain:
 	for chain: CharacterAchievementChain in chains:
 		if chain.character_id == character_id:

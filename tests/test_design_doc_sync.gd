@@ -37,6 +37,7 @@ func test_balance_table_matches_game_config() -> void:
 		"| CoinChance / Life / Max / ChainGap | %d%% / %s초 / %d개 / %s초 |" % [
 			roundi(config.coin_chance * 100.0), _num(config.coin_life), config.coin_max, _num(config.coin_chain_gap)]: "coins",
 		"/ %s초 |" % _num(config.revive_time): "revive time",
+		"| ReviveDecisionTime | %s초 |" % _num(config.revive_decision_time): "revive decision time",
 		"| SwipeThreshold | %dpx |" % roundi(config.swipe_threshold): "swipe threshold",
 		"| PadRepeatDelay / Interval | %s초 / %s초 |" % [_num(config.pad_repeat_delay), _num(config.pad_repeat_interval)]: "pad repeat",
 		"| MaxFrameDelta | %s초 |" % _num(config.max_frame_delta): "max frame delta",

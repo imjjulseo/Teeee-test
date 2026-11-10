@@ -1,7 +1,7 @@
 class_name PuzzleMenu
 extends RefCounted
 ## 메뉴 > 퍼즐의 판 목록과 첫 클리어 보상 (기획서 8.8장, 팀 결정 11/06, E28).
-## - 판은 PuzzleBook.menu_boards() 순서(Lv.2~4, 단계 구분 없이)로 1번부터 번호를 붙인다. 모든 판이 처음부터 열려 있다.
+## - 판은 PuzzleBook.menu_boards() 순서(Lv.2~4, 단계 구분 없이)로 1번부터 번호를 붙인다. 앞 판을 풀어야 다음 판이 열린다 (E38).
 ## - 판을 처음 풀면 PuzzleBook.menu_clear_coins를 한 번 준다 (PuzzleStore.rewarded).
 ## 저장은 PuzzleStore(별·보상 기록)와 ProgressStore(코인)가 한다. 화면은 이 결과를 보여 주기만 한다.
 
@@ -24,6 +24,27 @@ func boards() -> Array[PuzzleDef]:
 ## 목록 번호 (1부터, 목록에 없으면 0).
 func number_of(id: String) -> int:
 	return _index_of(id) + 1
+
+
+## 풀 수 있는 판인지: 첫 판이거나 앞 판을 풀었다 (E38).
+func is_open(id: String) -> bool:
+	var index: int = _index_of(id)
+	if index < 0:
+		return false
+	return index == 0 or store.stars_of(_boards[index - 1].id) > 0
+
+
+## 목록 번호를 로마 숫자로 (1 → I, 11 → XI).
+static func roman(number: int) -> String:
+	var values: PackedInt32Array = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
+	var symbols: PackedStringArray = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
+	var left: int = number
+	var out: String = ""
+	for i: int in values.size():
+		while left >= values[i]:
+			out += symbols[i]
+			left -= values[i]
+	return out
 
 
 ## 다음 판 (마지막이거나 목록에 없으면 null).

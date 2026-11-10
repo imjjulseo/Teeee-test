@@ -1,6 +1,6 @@
 extends "res://tests/smoke/smoke_base.gd"
 ## 캐릭터 선택과 능력 (기획서 5.2장). 모드:
-## - select : 메뉴 → 캐릭터 → 등급순 32장, 상태·족보 표시, 카드 넘침 없음, 가로 스크롤, 등급 필터, 상세 시트 열기·닫기
+## - select : 메인 → 블럭 → 캐릭터 정보, 등급순 32명, 능력명·족보·설명, 히든은 가림, 화살표, 다시 누르면 메인
 ## - basic / gardener / clock / gambler / fever / joker : 해당 캐릭터로 게임, 실제 매치로 능력 발동
 ##   → 배너("이름!"), 메시지 줄 결과 문구, 캐릭터 카드 둘째 줄 상태, 배경 효과, 그리고 능력별 후속 확인
 
@@ -41,7 +41,7 @@ func _tick_passive() -> void:
 			if playing():
 				var card: RecipeView = node("Hud/%AbilityView")
 				expect(card.visible, "character card shown")
-				expect(card.get_node("%Steps").get_child_count() == 0, "passive card has no recipe steps")
+				expect((card as RecipeView).shown_step_count() == 0, "passive card has no recipe steps")
 				expect(_card() == session().ability.status_text(), "card shows the status (%s)" % _card())
 				expect(_recipes_fit(), "cards fit on screen")
 				_check_passive_start()
@@ -59,7 +59,7 @@ func _check_passive_start() -> void:
 	match mode:
 		"artisan":
 			expect(not (node("Hud/%Recipe2") as Control).visible, "only two recipe cards")
-			expect((node("Hud/%Recipe0") as RecipeView).get_node("%Steps").get_child_count() == 3, "3-step recipe")
+			expect((node("Hud/%Recipe0") as RecipeView).shown_step_count() == 3, "3-step recipe")
 		"marathon":
 			expect(_marks().size() == 2 and _marks()[0].rect.position == Vector2i(0, 0), "flag at the top-left + next flag drawn")
 		"explorer":
@@ -192,75 +192,57 @@ func _prepare_wall_match(color: int) -> void:
 	redraw_board()
 
 
-## 메뉴 → 캐릭터 화면: 등급순 32장(히든은 ???), 상태, 족보 또는 "항상 켜짐", 카드 넘침 없음, 가로 스크롤 끝 카드,
-## 등급 필터 실제 클릭, 카드 실제 클릭 → 상세 시트, 닫기 → 메뉴. 해금·장착·체험은 smoke_menu sheet.
+## 메인 → 캐릭터 화면. 장착·체험은 smoke_menu sheet, 끌어서 넘기기는 smoke_scroll characters · flick.
 func _tick_select() -> void:
 	var select: CharacterSelect = current_scene as CharacterSelect
 	match step:
 		0:
 			if in_scene("MainMenu"):
-				expect((node("%CharacterButton") as Button).text == "캐릭터 · 기본", "menu shows the equipped character")
-				click_control(node("%CharacterButton"))
+				expect((node("%BottomNav") as BottomNav).block().shown_letter() == "기", "the block shows the equipped character")
+				click_control(node("%BottomNav/%BlockGesture"))
 				next_step()
 		1:
-			if in_scene("CharacterSelect", 0.5):
-				var cards: Array[CharacterCard] = select.cards()
-				var sorted: Array[CharacterData] = select.collection.sorted()
-				expect(cards.size() == 32, "32 cards (%d)" % cards.size())
-				for i: int in cards.size():
-					var data: CharacterData = sorted[i]
-					var card: CharacterCard = cards[i]
-					expect(card.character == data, "%s in grade order" % data.display_name)
-					var hidden: bool = data.grade == CharacterData.Grade.HIDDEN
-					expect(card.shown_name() == ("???" if hidden else data.display_name), "%s name (%s)" % [data.display_name, card.shown_name()])
-					expect((card.get_node("%Condition") as Control).visible == (data.has_recipe() and not hidden), "%s recipe dots" % data.display_name)
-					var content: float = (card.get_node("Margin") as Control).get_combined_minimum_size().y
-					expect(content <= card.size.y + 0.5, "%s content fits card" % data.display_name)
-				expect(cards[0].shown_status() == "장착 중" and cards[1].shown_status() == "◆ 80", "basic equipped, rares in the shop")
-				expect(select.card_for(&"wall").shown_status() == "상점 Lv 8", "hero shop opens at Lv8")
-				expect(cards[31].shown_status() == "히든 업적", "hidden card status")
-				expect((node("%Filters").get_child(1) as Button).text == "희귀 0/4", "rare chip counts (%s)" % (node("%Filters").get_child(1) as Button).text)
+			if in_scene("CharacterSelect", 0.7):
+				var page: CharacterInfo = select.carousel().current_page()
+				expect(select.shown_character().id == &"basic", "starts on the equipped character")
+				expect(page.shown_actions() == PackedStringArray(["장착 중"]), "basic: equipped, no tutorial (%s)" % [page.shown_actions()])
+				expect((page.block() as Control).modulate.a == 1.0, "block rise finished")
 				shot("select_start")
-				(node("%Scroll") as ScrollContainer).scroll_horizontal = 100000
+				select.show_character(&"gardener")
 				next_step()
 		2:
-			if step_time > 0.3:
-				var last: CharacterCard = select.cards()[31]
-				expect(last.get_global_rect().end.x <= root.get_visible_rect().size.x + 0.5, "last card visible after scroll")
-				click_control(node("%Filters").get_child(1))  # 희귀
+			if step_time > 0.2:
+				var page: CharacterInfo = select.carousel().current_page()
+				expect(page.character.id == &"gardener", "gardener page")
+				expect(page.shown_actions() == PackedStringArray(["미보유", "튜토리얼 및 체험"]), "unowned (%s)" % [page.shown_actions()])
+				expect((page.get_node("%EffectLabel") as Label).text == page.character.detail_effect, "effect detail shown")
+				expect((page.get_node("%AbilityName") as Label).text == "촉진" and (page.get_node("%AbilityKind") as Label).text == "족보형", "ability name and kind")
+				var condition: RecipeView = page.get_node("%SheetCondition")
+				expect(condition.visible and condition.shown_step_count() == 2 and not (condition.get_node("%PointsLabel") as Control).visible, "the recipe card, without the ability name")
+				expect(page.get_global_rect().end.y <= (node("%BottomNav") as Control).get_global_rect().position.y + 0.5, "page above the nav")
+				shot("select_sheet")
+				select.show_character(&"wall")
 				next_step()
 		3:
-			if step_time > 0.3:
-				var visible: int = 0
-				for card: CharacterCard in select.cards():
-					visible += 1 if card.visible else 0
-				expect(select.filter_grade == CharacterData.Grade.RARE and visible == 4, "rare filter shows 4 cards (%d)" % visible)
-				expect((node("%Filters").get_child(1) as Button).button_pressed, "rare chip highlighted")
-				(node("%Scroll") as ScrollContainer).scroll_horizontal = 0
+			if step_time > 0.2:
+				var page: CharacterInfo = select.carousel().current_page()
+				expect((page.get_node("%AbilityKind") as Label).text == "상시형" and not (page.get_node("%SheetCondition") as Control).visible, "passive: no recipe")
+				select.show_character(&"racer")
 				next_step()
 		4:
-			if step_time > 0.3:
-				click_control(select.card_for(&"gardener"))
+			if step_time > 0.2:
+				var page: CharacterInfo = select.carousel().current_page()
+				expect((page.get_node("%SheetNameLabel") as Label).text == "???" and (page.get_node("%HiddenNote") as Control).visible, "hidden stays veiled")
+				expect(not (page.get_node("%EffectBox") as Control).visible and not (page.get_node("%LessonButton") as Control).visible, "no ability, no trial")
+				shot("select_hidden")
+				for character: CharacterData in select.collection.sorted():
+					select.show_character(character.id)  # 32명 모두 그려진다
+				expect(select.shown_character() == select.collection.sorted().back(), "32 pages")
+				click_control(node("%BottomNav/%BlockGesture"))
 				next_step()
 		5:
-			if step_time > 0.3:
-				var sheet: CharacterSheet = node("%CharacterSheet")
-				expect(sheet.visible and sheet.character.id == &"gardener", "real click opens the sheet")
-				expect(sheet.shown_actions() == PackedStringArray(["◆ 80로 해금", "한 판 체험하기"]), "locked actions (%s)" % [sheet.shown_actions()])
-				expect((sheet.get_node("%BuyButton") as Button).disabled, "no diamonds → buy disabled")
-				expect((sheet.get_node("%EffectLabel") as Label).text == select.card_for(&"gardener").character.detail_effect, "effect detail shown")
-				shot("select_sheet")
-				click_control(sheet.get_node("Panel/VBox/Header/CloseButton"))
-				next_step()
-		6:
-			if step_time > 0.3:
-				expect(not (node("%CharacterSheet") as Control).visible, "close button hides the sheet")
-				click_control(node("SafeArea/Content/Layout/BackButton"))
-				next_step()
-		7:
 			if in_scene("MainMenu"):
 				finish()
-
 
 func _tick_basic() -> void:
 	if step == 0 and playing():
@@ -421,7 +403,7 @@ func _paint_loop_area() -> void:
 func _recipe_steps_total() -> int:
 	var total: int = 0
 	for path: String in ["Hud/%Recipe0", "Hud/%Recipe1", "Hud/%Recipe2"]:
-		total += node(path).get_node("%Steps").get_child_count()
+		total += (node(path) as RecipeView).shown_step_count()
 	return total
 
 

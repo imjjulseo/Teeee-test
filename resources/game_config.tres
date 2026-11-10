@@ -14,6 +14,7 @@ clear_time_min = 0.8
 max_frame_delta = 0.1
 warning_time_threshold = 5.0
 revive_time = 10.0
+revive_decision_time = 5.0
 refill_total_start = 8.0
 refill_total_end = 2.0
 refill_ramp_time = 90.0

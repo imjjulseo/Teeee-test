@@ -35,9 +35,7 @@ func _tick_options() -> void:
 	match step:
 		0:
 			if in_scene("MainMenu"):
-				var options: Button = node("%OptionsButton")
-				expect(options.get_global_rect().position.y > (node("%CharacterButton") as Control).get_global_rect().end.y, "설정 below the character button")
-				click_control(options)
+				click_control(node("%BottomNav/%OptionsButton"))
 				next_step()
 		1:
 			if in_scene("OptionsMenu"):
@@ -62,12 +60,12 @@ func _tick_options() -> void:
 				expect((node("%MasterVolumeLabel") as Label).text == str(saved), "label shows the value")
 				expect(is_equal_approx(_master_db(), OptionsStore.volume_to_db(saved)), "Master bus follows the slider")
 				(node("%MasterVolumeSlider") as HSlider).value = 30  # 손을 떼는 신호 없이 바뀜 (마우스 휠 등)
-				(node("SafeArea/Content/Layout/BackButton") as Button).pressed.emit()
+				click_control(node("%BottomNav/%OptionsButton"))  # 지금 화면 버튼을 다시 누르면 메인
 				next_step()
 		4:
 			if in_scene("MainMenu", 0.2):
 				expect(OptionsStore.new().master_volume == 30, "unsaved change saved when leaving options")
-				(node("%StartButton") as Button).pressed.emit()
+				(node("%BottomNav") as BottomNav).start_swiped.emit()
 				next_step()
 		5:
 			if playing():

@@ -30,6 +30,11 @@ func _init(p_store: TutorialStore, p_games_played: int, p_games_before_gacha: in
 	games_before_gacha = p_games_before_gacha
 
 
+## 저장 파일에서 읽은 지금 흐름 (공통 위·아래 줄이 쓴다).
+static func current(save_path: String = "") -> TutorialFlow:
+	return TutorialFlow.new(TutorialStore.new(save_path), AchievementStore.new(save_path).stat("games"))
+
+
 func stage() -> Stage:
 	if not store.done:
 		return Stage.START

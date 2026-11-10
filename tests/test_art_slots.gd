@@ -31,7 +31,7 @@ func test_shipped_slots_are_empty() -> void:
 	assert_eq([theme.block_textures.size(), theme.seed_texture, theme.coin_texture, theme.player_texture, theme.mark_textures.size()],
 		[0, null, null, null, 0], "no art yet → the drawn look")
 	var assets: UiAssets = load("res://resources/ui_assets.tres") as UiAssets
-	assert_eq([assets.logo, assets.coin_icon, assets.diamond_icon], [null, null, null])
+	assert_eq([assets.logo, assets.coin_icon, assets.diamond_icon, assets.shop_icon, assets.lock_icon, assets.star_on], [null, null, null, null, null, null])
 
 
 func test_block_art_falls_back_while_colors_change() -> void:
@@ -106,6 +106,54 @@ func test_wallet_icons() -> void:
 	with_icons.show_amounts(340, 25)
 	assert_eq(with_icons.text, "340  25", "icons replace the symbols")
 	with_icons.free()
+
+
+func test_ui_image_shows_art_or_fallback() -> void:
+	var assets: UiAssets = UiAssets.new()
+	var fallback: Label = Label.new()
+	var image: UiImage = UiImage.new()
+	image.assets = assets
+	image.slot = &"lock_icon"
+	image.fallback = fallback
+	image.refresh()
+	assert_eq([image.visible, fallback.visible], [false, true], "no image → the text")
+	assets.lock_icon = _texture()
+	image.refresh()
+	assert_eq([image.visible, fallback.visible], [true, false], "image replaces the text")
+	image.free()
+	fallback.free()
+
+
+func test_every_ui_image_slot_exists() -> void:
+	var assets: UiAssets = UiAssets.new()
+	var names: Array[StringName] = []
+	for property: Dictionary in assets.get_property_list():
+		names.append(StringName(property["name"]))
+	var dir: DirAccess = DirAccess.open("res://scenes")
+	for file: String in dir.get_files():
+		if not file.ends_with(".tscn"):
+			continue
+		var state: SceneState = (load("res://scenes/" + file) as PackedScene).get_state()
+		for i: int in state.get_node_count():
+			for p: int in state.get_node_property_count(i):
+				var value: Variant = state.get_node_property_value(i, p)
+				if state.get_node_property_name(i, p) == &"slot" and value is StringName:  # 족보 칸의 slot은 번호
+					assert_true(names.has(value), "%s: slot %s" % [file, value])
+
+
+func test_star_row_uses_art_when_given() -> void:
+	var stars: StarRow = (load("res://scenes/star_row.tscn") as PackedScene).instantiate() as StarRow
+	stars.show_stars(2)
+	assert_eq(stars.shown_text(), "★★☆")
+	assert_true((stars.get_node("%StarsLabel") as Control).visible, "no art → text")
+	var assets: UiAssets = UiAssets.new()
+	assets.star_on = _texture()
+	assets.star_off = _texture()
+	stars.assets = assets
+	stars.show_stars(1)
+	assert_false((stars.get_node("%StarsLabel") as Control).visible, "art replaces the text")
+	assert_true((stars.get_node("%Star0") as Control).visible)
+	stars.free()
 
 
 func test_chest_image() -> void:

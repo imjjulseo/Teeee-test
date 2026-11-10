@@ -4,6 +4,8 @@ extends "res://tests/smoke/smoke_base.gd"
 ##             → 다음 판이 Lv2 단계(45초)
 ## - revive  : 다이아 30 → 0초에 부활 창 → 실제 클릭 "부활" → +10초·다이아 −20 → 다시 0초면 부활 없이 결과
 ## - decline : 부활 창에서 실제 클릭 "끝내기" → 결과, 다이아 그대로
+## - timeout : 부활 창에서 아무것도 안 누르면 게이지가 줄고 시간이 다 되면 결과, 다이아 그대로
+## - claim   : 메뉴의 받기 표시 → 레벨 보상 화면에서 눌러서 받기
 ## - debug   : 설정의 디버그(개발 빌드) 실제 클릭 → 재화 지급이 저장됨
 
 var _score_before: int = 0
@@ -19,10 +21,14 @@ func _setup() -> void:
 			store.experience = 29  # 점수 500 → 경험치 500 + 125 → Lv2 (Lv2는 600 필요라 한 레벨만)
 			store.save()
 			change_scene_to_file("res://scenes/main.tscn")
-		"revive", "decline":
+		"revive", "decline", "timeout":
 			config.game_duration = 1.0
+			config.revive_decision_time = 1.0 if mode == "timeout" else 5.0
 			ProgressStore.new().add_currency(0, 30)
 			change_scene_to_file("res://scenes/main.tscn")
+		"claim":
+			ProgressStore.new().set_level(10)
+			change_scene_to_file("res://scenes/main_menu.tscn")
 		"debug":
 			change_scene_to_file("res://scenes/options.tscn")
 
@@ -35,6 +41,10 @@ func _tick() -> void:
 			_tick_revive(true)
 		"decline":
 			_tick_revive(false)
+		"timeout":
+			_tick_timeout()
+		"claim":
+			_tick_claim()
 		"debug":
 			_tick_debug()
 
@@ -58,15 +68,23 @@ func _tick_stage() -> void:
 			if flow().state == S.RESULT and step_time > 0.3:
 				var result: ResultPanel = _result()
 				expect(result.visible, "result shown")
-				expect((result.get_node("%CoinLabel") as Label).text.begins_with("● +5"), "coins ⌊500 ÷ 100⌋ (+ picked)")
-				expect((result.get_node("%LevelLabel") as Label).text == "Lv 2 · 다음 4색 · 4칸 족보", "level and next stage (%s)" % (result.get_node("%LevelLabel") as Label).text)
+				expect((result.get_node("%CoinLabel") as Label).text.begins_with("보유 코인 ● "), "held coins, no \"+N\" (%s)" % (result.get_node("%CoinLabel") as Label).text)
 				var lines: Array[PackedStringArray] = result.shown_rewards()
-				expect(lines.size() == 2 and lines[0][0] == "레벨 2" and lines[1][0] == "보드 업그레이드", "rewards list (%s)" % [lines])
+				expect(lines.size() == 1 and lines[0][0] == "보드 업그레이드", "no level rewards in the list (%s)" % [lines])
 				expect(ProgressStore.new().level == 2, "level saved")
+				expect(ProgressStore.new().diamonds == 0, "level rewards are not paid automatically")
+				expect(result.find_child("WalletLabel", true, false) == null, "no held diamonds")
+				next_step()
+		2:
+			if step_time > 1.5:  # 연출이 끝난 뒤
+				var result: ResultPanel = _result()
+				expect((result.get_node("%CoinLabel") as Label).text == "보유 코인 ● %d" % ProgressStore.new().coins, "coins counted up to the held amount (%s)" % (result.get_node("%CoinLabel") as Label).text)
+				expect((result.get_node("%LevelLabel") as Label).text == "Lv 2 · 다음 4색 · 4칸 족보", "level and next stage (%s)" % (result.get_node("%LevelLabel") as Label).text)
+				expect((result.get_node("%LevelUpLabel") as Control).visible, "level up shown")
 				shot("result_levelup")
 				click_control(result.get_node("Center/RetryButton"))
 				next_step()
-		2:
+		3:
 			if playing(0.2):
 				expect(is_equal_approx(session().remaining_time(), 45.0), "retry uses the Lv2 stage (45 s, %.1f)" % session().remaining_time())
 				finish()
@@ -91,7 +109,7 @@ func _tick_revive(accept: bool) -> void:
 			if step_time > 0.3:
 				if not accept:
 					expect(flow().state == S.RESULT, "declined → result")
-					expect(ProgressStore.new().diamonds == 30 + _level_up_diamonds(), "diamonds kept (+ level-up %d)" % _level_up_diamonds())
+					expect(ProgressStore.new().diamonds == 30, "diamonds kept")
 					finish()
 					return
 				expect(flow().state == S.PLAYING, "revived")
@@ -103,32 +121,76 @@ func _tick_revive(accept: bool) -> void:
 		3:
 			if step_time > 0.3:
 				expect(flow().state == S.RESULT, "no second revive in the same game")
-				expect((_result().get_node("%WalletLabel") as Label).text.ends_with("◆ %d" % (10 + _level_up_diamonds())), "wallet on the result (%s)" % (_result().get_node("%WalletLabel") as Label).text)
+				expect(ProgressStore.new().diamonds == 10, "diamonds unchanged by the result")
 				finish()
 
 
-## 이 판의 레벨업 다이아 (Lv1에서 시작, 경험치 = 500 + 0.25 × 점수라 결과까지 간 판은 늘 레벨이 오른다).
-func _level_up_diamonds() -> int:
-	return RunRewards.compute(session().score, session().collected_coins(), 1, 0, progression).total_diamonds()
+## 메뉴의 받기 표시 → 레벨 화면 → 지금 레벨 줄의 "받기" 실제 클릭 → 재화·선택권 지급, 버튼 사라짐.
+func _tick_claim() -> void:
+	match step:
+		0:
+			if in_scene("MainMenu", 0.4):
+				expect((node("%TopBar/%ClaimMark") as Control).visible, "menu shows there is something to claim")
+				click_control(node("%TopBar/%LevelButton"))
+				next_step()
+		1:
+			if in_scene("LevelRewards", 0.5):
+				var row: LevelRewardRow = (current_scene as LevelRewardsScreen).current_row()
+				expect(row.level == 10 and row.is_claimable(), "reached level has a claim button")
+				shot("claim")
+				click_control(row.node_button())
+				next_step()
+		2:
+			if step_time > 0.3:
+				var store: ProgressStore = ProgressStore.new()
+				expect([store.coins, store.diamonds, store.ticket_count(CharacterData.Grade.HERO)] == [100, 10, 1], "paid on press (%d, %d)" % [store.coins, store.diamonds])
+				var row: LevelRewardRow = (current_scene as LevelRewardsScreen).current_row()
+				expect(not row.is_claimable(), "the button is gone")
+				finish()
+
+
+func _tick_timeout() -> void:
+	var panel: RevivePanel = node("RevivePanel") as RevivePanel
+	match step:
+		0:
+			if playing():
+				flow().request_move(Vector2i.UP)
+				next_step()
+		1:
+			if flow().state == S.REVIVE:
+				next_step()
+		2:
+			if step_time > 0.3:
+				expect(panel.visible and panel.gauge_ratio() < 1.0 and panel.gauge_ratio() > 0.0, "gauge runs down (%.2f)" % panel.gauge_ratio())
+				shot("revive_gauge")
+				next_step()
+		3:
+			if flow().state == S.RESULT and step_time > 0.1:
+				expect(not panel.visible, "window closed on timeout")
+				expect(ProgressStore.new().diamonds == 30, "diamonds kept")
+				finish()
+			elif step_time > 3.0:
+				fail("revive did not time out")
+				finish()
 
 
 func _tick_debug() -> void:
 	match step:
 		0:
 			if in_scene("OptionsMenu"):
-				var panel: DebugPanel = node("SafeArea/Content/Layout/Scroll/Inner/DebugPanel") as DebugPanel
+				var panel: DebugPanel = node("SafeArea/Content/Layout/Page/Box/Scroll/Inner/DebugPanel") as DebugPanel
 				expect(panel.visible, "debug panel in a dev build")
-				(node("SafeArea/Content/Layout/Scroll") as ScrollContainer).ensure_control_visible(panel.get_node("%GrantButton"))  # 스크롤 아래쪽
+				(node("SafeArea/Content/Layout/Page/Box/Scroll") as ScrollContainer).ensure_control_visible(panel.get_node("%GrantButton"))  # 스크롤 아래쪽
 				next_step()
 		1:
 			if step_time > 0.3:
-				click_control(node("SafeArea/Content/Layout/Scroll/Inner/DebugPanel").get_node("%GrantButton"))
+				click_control(node("SafeArea/Content/Layout/Page/Box/Scroll/Inner/DebugPanel").get_node("%GrantButton"))
 				next_step()
 		2:
 			if step_time > 0.3:
 				var store: ProgressStore = ProgressStore.new()
 				expect(store.coins == 1000 and store.diamonds == 100, "grant saved (%d, %d)" % [store.coins, store.diamonds])
-				var panel: DebugPanel = node("SafeArea/Content/Layout/Scroll/Inner/DebugPanel") as DebugPanel
+				var panel: DebugPanel = node("SafeArea/Content/Layout/Page/Box/Scroll/Inner/DebugPanel") as DebugPanel
 				expect(panel.status_text().contains("● 1000"), "status updated (%s)" % panel.status_text())
 				shot("debug_panel")
 				finish()

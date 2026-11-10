@@ -12,6 +12,7 @@ extends RefCounted
 ## - WAITING: 판이 깔리고 첫 이동을 기다림. 시계·리필 정지. 이동하면 PLAYING (E5).
 ## - PAUSED: WAITING·PLAYING에서 진입, resume하면 원래 상태로. 시계·리필·능력 정지, 입력 불가.
 ## - REVIVE: 0초 도달 후 부활 확인. 제안 여부는 RevivePolicy가 정한다 (E10).
+##   revive_decision_time초 안에 고르지 않으면 끝내기와 같이 RESULT. 앱이 포커스를 잃은 동안은 멈춘다 (E36).
 ## - RESULT: 들어가기 직전 session.finish()로 능력의 남은 효과를 정산한다 (피버 스택 점수).
 ## - ABANDONED: 일시정지에서 메뉴로 나감. 결과를 거치지 않으므로 점수·보상이 기록되지 않는다.
 
@@ -40,6 +41,10 @@ var _config: GameConfig
 var _character: CharacterData
 ## 일시정지 전 상태 (resume하면 돌아간다).
 var _paused_from: GameState = GameState.PLAYING
+## 부활 확인의 남은 시간(초).
+var _revive_left: float = 0.0
+## 앱이 포커스를 잃어 부활 확인 시간이 멈췄다.
+var _revive_held: bool = false
 
 
 ## 설정이 잘못됐으면 오류를 알리고 기본값으로 진행한다 (GameConfig.ensure_valid, 배포 빌드에서도).
@@ -67,8 +72,24 @@ func start_new_game(rng: RandomNumberGenerator = null) -> void:
 
 
 func advance(delta: float) -> void:
-	if delta > 0.0 and state == GameState.PLAYING:
+	if delta <= 0.0:
+		return
+	if state == GameState.PLAYING:
 		session.advance(delta)
+	elif state == GameState.REVIVE and not _revive_held:
+		_revive_left -= delta
+		if _revive_left <= 0.0:
+			decline_revive()
+
+
+## 부활 확인의 남은 시간 비율 (1 → 0, 게이지용).
+func revive_ratio() -> float:
+	return clampf(_revive_left / _config.revive_decision_time, 0.0, 1.0)
+
+
+## 앱이 포커스를 잃음 / 되찾음: 잃은 동안 부활 확인 시간을 멈춘다.
+func hold_revive(held: bool) -> void:
+	_revive_held = held
 
 
 ## WAITING·PLAYING일 때만 이동을 전달한다. 전달했으면 true. 첫 이동이면 PLAYING이 된다.
@@ -198,5 +219,7 @@ func _disconnect_session() -> void:
 func _enter(next: GameState) -> void:
 	if next == GameState.RESULT:
 		session.finish()  # 능력이 남은 효과를 정산한 점수로 결과를 낸다 (피버)
+	elif next == GameState.REVIVE:
+		_revive_left = _config.revive_decision_time
 	state = next
 	state_changed.emit(next)

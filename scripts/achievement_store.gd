@@ -1,10 +1,11 @@
 class_name AchievementStore
 extends RefCounted
 ## 업적 진행·달성과 누적 통계 (기획서 8.9장). 저장 파일 입출력은 SaveData가 한다
-## ([achievements] done · progress, [stats] games · blocks · recipes · coins). 바꿀 때마다 전체를 한 번에 저장한다.
+## ([achievements] done · claimed · progress, [stats] games · blocks · recipes · coins). 바꿀 때마다 전체를 한 번에 저장한다.
 
 const SECTION: String = "achievements"
 const KEY_DONE: String = "done"
+const KEY_CLAIMED: String = "claimed"
 const KEY_PROGRESS: String = "progress"
 const STATS_SECTION: String = "stats"
 ## 누적 통계 이름 (CommonAchievement.stat과 같은 이름).
@@ -13,6 +14,8 @@ const STAT_KEYS: PackedStringArray = ["games", "blocks", "recipes", "coins"]
 var path: String
 ## 달성한 업적 id.
 var done: Dictionary[String, bool] = {}
+## 보상을 받은 업적 id (E38: 달성해도 업적 화면에서 눌러야 받는다).
+var claimed: Dictionary[String, bool] = {}
 ## 업적 id → 지금까지 가장 큰 진행 값 (달성 전).
 var progress: Dictionary[String, int] = {}
 ## 누적 통계.
@@ -28,6 +31,11 @@ func _init(p_path: String = "") -> void:
 		for id: Variant in saved_done:
 			if typeof(id) == TYPE_STRING:
 				done[id] = true
+	var saved_claimed: Variant = data.get_value(SECTION, KEY_CLAIMED, PackedStringArray())
+	if saved_claimed is PackedStringArray or saved_claimed is Array:
+		for id: Variant in saved_claimed:
+			if typeof(id) == TYPE_STRING:
+				claimed[id] = true
 	var saved_progress: Variant = data.get_value(SECTION, KEY_PROGRESS, {})
 	if saved_progress is Dictionary:
 		for id: Variant in saved_progress:
@@ -40,6 +48,14 @@ func _init(p_path: String = "") -> void:
 
 func is_done(id: String) -> bool:
 	return done.has(id)
+
+
+func is_claimed(id: String) -> bool:
+	return claimed.has(id)
+
+
+func mark_claimed(id: String) -> void:
+	claimed[id] = true
 
 
 func progress_of(id: String) -> int:
@@ -66,6 +82,7 @@ func mark_done(id: String) -> void:
 func save() -> void:
 	var data: SaveData = SaveData.new(path)
 	data.set_value(SECTION, KEY_DONE, PackedStringArray(done.keys()))
+	data.set_value(SECTION, KEY_CLAIMED, PackedStringArray(claimed.keys()))
 	data.set_value(SECTION, KEY_PROGRESS, progress.duplicate())
 	for key: String in STAT_KEYS:
 		data.set_value(STATS_SECTION, key, stat(key))

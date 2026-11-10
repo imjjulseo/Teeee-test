@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/shop_card.gd" id="1_card"]
+[ext_resource type="PackedScene" path="res://scenes/character_block.tscn" id="2_block"]
+
+[node name="ShopCard" type="PanelContainer"]
+mouse_filter = 2
+theme_type_variation = &"ShopCardPanel"
+script = ExtResource("1_card")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 9
+
+[node name="CardBlock" parent="VBox" instance=ExtResource("2_block")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(135, 135)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="CardName" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "이름"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="CardPrice" type="Label" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 33
+text = "◆ 80"
+horizontal_alignment = 1
+
+[node name="Press" type="Button" parent="."]
+layout_mode = 2
+focus_mode = 0
+mouse_filter = 1
+flat = true
+
+[connection signal="pressed" from="Press" to="." method="_on_press_pressed"]

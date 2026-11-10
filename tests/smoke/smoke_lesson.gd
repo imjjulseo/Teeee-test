@@ -2,10 +2,10 @@ extends "res://tests/smoke/smoke_base.gd"
 ## 6c 캐릭터 튜토리얼 (기획서 8.8장). 모드:
 ## - first : 첫 뽑기로 받은 시계공으로 시작 → 캐릭터 튜토리얼 판(시간 안 흐름) → 소개·캐릭터 족보 설명 클릭 → 발동해 보기 퍼즐(실제 방향키)
 ##           → 발동 순간 설명 → 정지 중 매치(활용) → 준비 끝 "시작" → 같은 캐릭터 실전 판 (보상 있는 판, 순간 설명 이어짐)
-## - wall  : 튜토리얼 다시 하기 요청(체험)으로 벽 타는 자 → 연습 판에서 실제 위 키로 벽 매치 → 벽 매치 순간 설명 → 한 번 더 → 체험 판
+## - wall  : 튜토리얼 및 체험 요청(체험)으로 벽 타는 자 → 연습 판에서 실제 위 키로 벽 매치 → 벽 매치 순간 설명 → 한 번 더 → 캐릭터 화면으로
 ## - offer : 처음 쓰는 축제꾼 → "튜토리얼 / 바로 시작" 질문 → 바로 시작 실제 클릭 → 그냥 판, 처음 사용 기록
 ## - accept: 같은 질문에서 튜토리얼 실제 클릭 → 캐릭터 튜토리얼
-## - redo  : 캐릭터 화면 → 가진 시계공 상세 → 튜토리얼 다시 하기 실제 클릭 → 체험 튜토리얼 판 → 건너뛰기 → 체험 판
+## - redo  : 캐릭터 화면 → 가진 시계공 → 튜토리얼 및 체험 실제 클릭 → 체험 튜토리얼 판 → 건너뛰기 → 캐릭터 화면
 
 const KEYS: Dictionary[Vector2i, Key] = {Vector2i.UP: KEY_UP, Vector2i.DOWN: KEY_DOWN, Vector2i.LEFT: KEY_LEFT, Vector2i.RIGHT: KEY_RIGHT}
 
@@ -83,6 +83,11 @@ func _tick_lesson() -> void:
 				_lesson_session = session()
 				next_step()
 		1:
+			if not is_instance_valid(controller):  # 체험은 튜토리얼이 끝나면 연 화면으로 돌아간다 (E38)
+				if mode == "wall" and current_scene != null and current_scene.name == "CharacterSelect":
+					expect(smoke_log_rows().is_empty(), "no playtest row")
+					finish()
+				return
 			if not controller.is_lesson():
 				next_step()
 				return
@@ -186,32 +191,26 @@ func _tick_offer() -> void:
 func _tick_redo() -> void:
 	match step:
 		0:
-			if in_scene("CharacterSelect", 0.4):
+			if in_scene("CharacterSelect", 0.6):
 				var select: CharacterSelect = current_scene as CharacterSelect
-				(node("%Scroll") as ScrollContainer).ensure_control_visible(select.card_for(&"clock"))
+				select.show_character(&"clock")
 				next_step()
 		1:
 			if step_time > 0.3:
-				click_control((current_scene as CharacterSelect).card_for(&"clock"))
+				var page: CharacterInfo = (current_scene as CharacterSelect).carousel().current_page()
+				expect(page.shown_actions().has("튜토리얼 및 체험"), "owned character → tutorial and trial (%s)" % ", ".join(page.shown_actions()))
+				shot("redo_sheet")
+				click_control(page.get_node("%LessonButton"))
 				next_step()
 		2:
-			if step_time > 0.3:
-				var sheet: CharacterSheet = node("%CharacterSheet") as CharacterSheet
-				expect(sheet.shown_actions().has("튜토리얼 다시 하기"), "owned character → tutorial again (%s)" % ", ".join(sheet.shown_actions()))
-				shot("redo_sheet")
-				click_control(sheet.get_node("%LessonButton"))
+			if playing(0.5):
+				expect(controller.is_trial() and controller.is_lesson(), "trial game that is the tutorial")
+				click_control(_spot().get_node("%SkipButton"))
+				controller = null
 				next_step()
 		3:
-			if playing(0.5):
-				expect(controller.is_trial() and controller.is_lesson(), "trial game that starts with the tutorial")
-				click_control(_spot().get_node("%SkipButton"))
-				next_step()
-		4:
-			if step_time > 0.5:
-				expect(controller.is_trial() and not controller.is_lesson(), "skip → trial game")
-				expect(session().character.id == &"clock" and flow().state == S.WAITING, "same character, waiting")
+			if in_scene("CharacterSelect", 0.3):
 				finish()
-
 
 func _shot_once(shot_name: String) -> void:
 	if not _shots.has(shot_name):

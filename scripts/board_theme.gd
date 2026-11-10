@@ -231,6 +231,11 @@ extends Resource
 ## 상자가 열린 뒤 카드가 나오기까지(초), 카드 뒤집기(초).
 @export var chest_open_time: float = 0.7
 @export var card_flip_time: float = 0.3
+## 결과 화면: 보유 코인이 차오르는 시간, 경험치 바 한 칸을 다 채우는 시간 (E36).
+## 점수가 0부터 차오르는 시간 (E38).
+@export var result_score_time: float = 0.7
+@export var result_coin_time: float = 0.9
+@export var result_exp_time: float = 0.8
 
 @export_group("Art")
 ## 디자인 이미지 자리 (한 장 이미지). 비어 있으면 지금처럼 색·문양을 코드로 그린다.

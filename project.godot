@@ -28,6 +28,7 @@ window/handheld/orientation=1
 
 [gui]
 
+common/default_scroll_deadzone=24
 theme/custom="res://resources/ui_theme.tres"
 
 [input]
@@ -72,7 +73,7 @@ pointing/emulate_touch_from_mouse=true
 
 [rendering]
 
-environment/defaults/default_clear_color=Color(0.0470588, 0.121569, 0.14902, 1)
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="mobile"
 textures/vram_compression/import_etc2_astc=true
+environment/defaults/default_clear_color=Color(0.0470588, 0.121569, 0.14902, 1)

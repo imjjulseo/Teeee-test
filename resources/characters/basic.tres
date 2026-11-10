@@ -8,7 +8,5 @@ id = &"basic"
 display_name = "기본"
 ability_description = "능력 없음"
 detail_effect = "능력이 없어요. 기본 규칙만으로 플레이해요."
-detail_when = "규칙을 익히거나 순수한 실력을 재 보고 싶을 때"
-detail_tip = "어떤 캐릭터든 결국 내 주변 4칸 맞추기와 족보 순서 맞추기가 기본이에요."
 condition_colors = PackedInt32Array()
 player_fill = Color(0.113725, 0.121569, 0.14902, 1)

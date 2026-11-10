@@ -127,7 +127,7 @@ func test_revive_offer_accept_continues_with_revive_time() -> void:
 	_run(flow, 1.5)
 	assert_eq(flow.state, S.REVIVE)
 	assert_false(flow.request_move(Vector2i.UP), "no moves while asking")
-	_run(flow, 5.0)
+	_run(flow, 4.0)
 	assert_eq(flow.state, S.REVIVE, "waits for the answer")
 	assert_true(flow.accept_revive())
 	assert_eq(policy.consumed, 1)
@@ -144,6 +144,59 @@ func test_revive_offer_decline_goes_to_result() -> void:
 	assert_true(flow.decline_revive())
 	assert_eq(flow.state, S.RESULT)
 	assert_false(flow.accept_revive(), "only from REVIVE")
+
+
+func test_revive_times_out_to_result() -> void:
+	var config: GameConfig = _config(1.0)
+	var policy: AlwaysRevive = AlwaysRevive.new()
+	var flow: GameFlow = _flow(config, policy)
+	_start(flow)
+	flow.advance(1.0)
+	assert_eq(flow.state, S.REVIVE)
+	assert_near(flow.revive_ratio(), 1.0)
+	flow.advance(config.revive_decision_time / 2.0)
+	assert_near(flow.revive_ratio(), 0.5)
+	assert_eq(flow.state, S.REVIVE)
+	flow.advance(config.revive_decision_time / 2.0)
+	assert_eq(flow.state, S.RESULT, "time out = decline")
+	assert_eq(policy.consumed, 0, "the revive is not spent")
+
+
+func test_revive_countdown_is_frame_independent() -> void:
+	var config: GameConfig = _config(1.0)
+	var flow: GameFlow = _flow(config, AlwaysRevive.new())
+	_start(flow)
+	flow.advance(1.0)
+	for _i: int in 40:
+		flow.advance(0.1)
+	assert_near(flow.revive_ratio(), 1.0 - 4.0 / config.revive_decision_time, 1e-4, "0.1 s steps")
+	assert_eq(flow.state, S.REVIVE)
+
+
+func test_revive_countdown_stops_while_focus_is_lost() -> void:
+	var config: GameConfig = _config(1.0)
+	var flow: GameFlow = _flow(config, AlwaysRevive.new())
+	_start(flow)
+	flow.advance(1.0)
+	flow.hold_revive(true)
+	flow.advance(config.revive_decision_time * 2.0)
+	assert_eq(flow.state, S.REVIVE, "no time out without focus")
+	assert_near(flow.revive_ratio(), 1.0)
+	flow.hold_revive(false)
+	flow.advance(config.revive_decision_time)
+	assert_eq(flow.state, S.RESULT, "runs again with focus")
+
+
+func test_second_revive_offer_gets_the_full_time() -> void:
+	var config: GameConfig = _config(1.0)
+	var flow: GameFlow = _flow(config, AlwaysRevive.new())
+	_start(flow)
+	flow.advance(1.0)
+	flow.advance(config.revive_decision_time / 2.0)
+	flow.accept_revive()
+	flow.advance(config.revive_time)
+	assert_eq(flow.state, S.REVIVE)
+	assert_near(flow.revive_ratio(), 1.0, 1e-6, "new offer, full gauge")
 
 
 func test_retry_only_from_result_and_resets() -> void:

@@ -25,30 +25,33 @@ func _tick() -> void:
 				next_step()
 		1:
 			if in_scene("CharacterSelect", 0.4):
-				_inside_safe("SafeArea/Content/Layout/Header", "character title and wallet")
-				_inside_safe("SafeArea/Content/Layout/Scroll", "character cards")
-				_inside_safe("SafeArea/Content/Layout/BackButton", "character back")
+				_inside_safe("SafeArea/Content/Layout/TopBar", "character top bar")
+				_inside_safe("SafeArea/Content/Layout/Carousel", "character page")
+				_inside_safe("SafeArea/Content/Layout/BottomNav", "character bottom nav")
+				var page: CharacterInfo = (current_scene as CharacterSelect).carousel().current_page()
+				expect(page.get_global_rect().end.y <= (node("SafeArea/Content/Layout/BottomNav") as Control).get_global_rect().position.y + 0.5, "page above the nav")
 				change_scene_to_file("res://scenes/options.tscn")
 				next_step()
 		2:
 			if in_scene("OptionsMenu", 0.4):
-				_inside_safe("SafeArea/Content/Layout/Title", "options title")
-				_inside_safe("SafeArea/Content/Layout/BackButton", "options back")
+				_inside_safe("SafeArea/Content/Layout/TopBar", "options top bar")
+				_inside_safe("SafeArea/Content/Layout/BottomNav", "options bottom nav")
 				change_scene_to_file("res://scenes/main_menu.tscn")
 				next_step()
 		3:
 			if in_scene("MainMenu", 0.4):
-				_inside_safe("SafeArea/Content/TopBar", "menu level and wallet")
-				_inside_safe("SafeArea/Content/BottomBar", "menu bottom buttons")
-				var center: Rect2 = (node("SafeArea/Content/Center") as Control).get_global_rect()
-				expect(center.position.y >= (node("SafeArea/Content/TopBar") as Control).get_global_rect().end.y, "menu center below the top bar")
-				expect(center.end.y <= (node("SafeArea/Content/BottomBar") as Control).get_global_rect().position.y, "menu center above the bottom bar")
+				_inside_safe("SafeArea/Content/Layout/TopBar", "menu level and wallet")
+				_inside_safe("SafeArea/Content/Layout/BottomNav", "menu bottom buttons")
+				var center: Rect2 = (node("SafeArea/Content/Layout/Center") as Control).get_global_rect()
+				expect(center.position.y >= (node("SafeArea/Content/Layout/TopBar") as Control).get_global_rect().end.y, "menu center below the top bar")
+				expect(center.end.y <= (node("SafeArea/Content/Layout/BottomNav") as Control).get_global_rect().position.y + 0.5, "menu center above the bottom bar")
+				expect((node("SafeArea/Content/Layout/Center") as Control).get_combined_minimum_size().y <= center.size.y + 0.5, "menu content fits")
 				change_scene_to_file("res://scenes/level_rewards.tscn")
 				next_step()
 		4:
 			if in_scene("LevelRewards", 0.4):
-				_inside_safe("SafeArea/Content/Layout/Title", "level rewards title")
-				_inside_safe("SafeArea/Content/Layout/BackButton", "level rewards back")
+				_inside_safe("SafeArea/Content/Layout/Header/BackButton", "level back")
+				_inside_safe("SafeArea/Content/Layout/LevelHud", "level bar")
 				finish()
 
 

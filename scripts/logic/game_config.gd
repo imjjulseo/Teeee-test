@@ -23,6 +23,8 @@ extends Resource
 @export var warning_time_threshold: float = 5.0
 ## 부활하면 남은 시간이 이 값이 된다 (E10).
 @export var revive_time: float = 10.0
+## 부활 확인을 기다리는 시간(초). 지나면 끝내기와 같이 결과로 (E36).
+@export var revive_decision_time: float = 5.0
 
 @export_group("Refill")
 ## 씨앗이 블록이 되기까지 총시간(초): 판 경과 0초에 start, refill_ramp_time초에 end, 그 사이 선형 (4.3장, E6).
@@ -99,6 +101,8 @@ func validate() -> PackedStringArray:
 		errors.append("max_frame_delta must be > 0")
 	if revive_time <= 0.0:
 		errors.append("revive_time must be > 0")
+	if revive_decision_time <= 0.0:
+		errors.append("revive_decision_time must be > 0")
 	if refill_total_start <= 0.0 or refill_total_end <= 0.0:
 		errors.append("refill totals must be > 0")
 	if refill_ramp_time < 0.0:

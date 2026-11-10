@@ -22,10 +22,8 @@ const GRADE_LETTERS: PackedStringArray = ["", "C", "B", "A", "S", "H"]
 @export var ability_name: String = ""
 ## 캐릭터 선택 화면과 발동 배너의 능력 설명 (기획서 5.2장 표의 "능력" 칸).
 @export_multiline var ability_description: String = ""
-## 캐릭터 상세 시트 (8.1장): 효과 자세한 설명, 잘 맞는 때, 팁. 비어 있으면 그 칸을 보이지 않는다.
+## 캐릭터 상세 시트 (8.1장)의 효과 자세한 설명. 비어 있으면 능력 설명을 쓴다.
 @export_multiline var detail_effect: String = ""
-@export_multiline var detail_when: String = ""
-@export_multiline var detail_tip: String = ""
 ## 캐릭터 족보: 이 색 순서대로 블록을 깨면 능력 발동. 비어 있으면 발동형이 아니다.
 @export var condition_colors: PackedInt32Array = PackedInt32Array()
 

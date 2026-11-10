@@ -8,7 +8,8 @@
 [ext_resource type="Resource" path="res://resources/first_view_tips.tres" id="81_tips"]
 [ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
-[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
+[ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="20_top"]
+[ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="21_bottom"]
 
 [node name="PuzzleMenu" type="Control" node_paths=PackedStringArray("spotlight")]
 layout_mode = 3
@@ -53,60 +54,40 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = 72.0
-offset_right = -48.0
-offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 21
 
-[node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 84
-text = "퍼즐"
-
-[node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
+[node name="TopBar" parent="SafeArea/Content/Layout" instance=ExtResource("20_top")]
 unique_name_in_owner = true
 layout_mode = 2
-font_size = 48
-
-[node name="Note" type="Label" parent="SafeArea/Content/Layout"]
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 36
-text = "T 모양을 만들어 매치해요 · 처음 깨면 코인"
-horizontal_alignment = 1
-autowrap_mode = 3
 
 [node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
 
-[node name="Boards" type="GridContainer" parent="SafeArea/Content/Layout/Scroll"]
-unique_name_in_owner = true
+[node name="Margin" type="MarginContainer" parent="SafeArea/Content/Layout/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/h_separation = 21
-theme_override_constants/v_separation = 21
-columns = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 262
+theme_override_constants/margin_right = 262
 
-[node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 144)
+[node name="Boards" type="HBoxContainer" parent="SafeArea/Content/Layout/Scroll/Margin"]
+unique_name_in_owner = true
 layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 60
-text = "뒤로"
+mouse_filter = 2
+theme_override_constants/separation = 48
+alignment = 1
 
-[node name="MenuNavigator" type="Node" parent="."]
-script = ExtResource("5_nav")
-target_scene = "res://scenes/main_menu.tscn"
+[node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("21_bottom")]
+unique_name_in_owner = true
+layout_mode = 2
+current = 6
+top_bar = NodePath("../TopBar")
 
 [node name="PlayNavigator" type="Node" parent="."]
 script = ExtResource("5_nav")
@@ -114,6 +95,5 @@ target_scene = "res://scenes/puzzle_play.tscn"
 
 [node name="Spotlight" parent="." instance=ExtResource("80_spot")]
 
-[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
 [connection signal="play_requested" from="." to="PlayNavigator" method="go"]
 [connection signal="tapped" from="Spotlight" to="." method="_on_spotlight_tapped"]

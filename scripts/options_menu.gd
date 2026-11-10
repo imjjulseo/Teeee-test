@@ -33,6 +33,8 @@ var _reset_armed_left: float = 0.0
 
 func _ready() -> void:
 	_store = OptionsStore.new(save_path)
+	(%TopBar as TopBar).setup(save_path)
+	(%BottomNav as BottomNav).setup(save_path)
 	_refresh()
 
 

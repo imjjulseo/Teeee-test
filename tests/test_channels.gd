@@ -4,7 +4,7 @@ extends "res://tests/framework/test_case.gd"
 const CHANNELS: Dictionary = {
 	"GameController/BoardChannel": ["BoardView", "SfxPlayer"],
 	"GameController/HudChannel": ["Hud", "SfxPlayer", "EffectBackground"],
-	"GameController/FlowChannel": ["InputRouter", "BoardView", "Hud", "VirtualDpad", "LayoutLayer/GameLayout/SafeArea/Column/DpadSpace", "PauseOverlay", "ResultPanel", "RevivePanel", "SfxPlayer", "MenuNavigator", "CharacterNavigator", "TutorialNavigator", "EffectBackground"],
+	"GameController/FlowChannel": ["InputRouter", "BoardView", "Hud", "VirtualDpad", "LayoutLayer/GameLayout/SafeArea/Column/DpadSpace", "PauseOverlay", "ResultPanel", "RevivePanel", "SfxPlayer", "MenuNavigator", "CharacterNavigator", "ShopNavigator", "TutorialNavigator", "EffectBackground"],
 }
 
 

@@ -12,26 +12,40 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 42
+theme_override_font_sizes/font_size = 39
 text = "희귀 선택권"
 
 [node name="TicketCount" type="Label" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 0)
+custom_minimum_size = Vector2(90, 0)
 layout_mode = 2
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 42
+theme_override_font_sizes/font_size = 39
 text = "0장"
 horizontal_alignment = 2
 
-[node name="FuseButton" type="Button" parent="."]
+[node name="UseButton" type="Button" parent="."]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(285, 96)
+custom_minimum_size = Vector2(150, 96)
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
+mouse_filter = 1
+theme_type_variation = &"ChipButton"
+theme_override_font_sizes/font_size = 36
+toggle_mode = true
+text = "사용"
+
+[node name="FuseButton" type="Button" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 96)
+layout_mode = 2
+size_flags_vertical = 4
+focus_mode = 0
+mouse_filter = 1
 theme_override_font_sizes/font_size = 36
 disabled = true
-text = "3장 → 영웅"
+text = "합성"
 
+[connection signal="pressed" from="UseButton" to="." method="_on_use_button_pressed"]
 [connection signal="pressed" from="FuseButton" to="." method="_on_fuse_button_pressed"]

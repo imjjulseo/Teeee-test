@@ -105,9 +105,12 @@ func _in_lesson() -> bool:
 	return tutorial_director != null and tutorial_director.is_lesson()
 
 
-## 캐릭터 튜토리얼이 끝났다: 같은 캐릭터로 실전 판 (체험이면 체험 판), 남은 순간 설명은 이어서.
+## 캐릭터 튜토리얼이 끝났다: 실전 판이면 같은 캐릭터로 새 판 (남은 순간 설명은 이어서), 체험이면 연 화면으로 (체험 = 튜토리얼, E38).
 func _on_lesson_finished() -> void:
 	if not is_running():
+		return
+	if _trial:
+		_leave_trial()
 		return
 	_carry_guide = tutorial_director.guide
 	_flow.set_config(_stage_config())
@@ -168,6 +171,8 @@ func _process(_delta: float) -> void:
 	_last_ticks_usec = now
 	if not _tutorial_halts():  # 튜토리얼 설명 중에는 판이 멈춘다
 		_flow.advance(delta)
+	if _flow.state == GameFlow.GameState.REVIVE:
+		flow_channel.revive_countdown.emit(_flow.revive_ratio())
 	hud_channel.publish_frame(_flow.session)
 
 
@@ -178,6 +183,9 @@ func _notification(what: int) -> void:
 	match what:
 		NOTIFICATION_APPLICATION_FOCUS_OUT, NOTIFICATION_APPLICATION_PAUSED:
 			_flow.pause()
+			_flow.hold_revive(true)
+		NOTIFICATION_APPLICATION_FOCUS_IN, NOTIFICATION_APPLICATION_RESUMED:
+			_flow.hold_revive(false)
 		NOTIFICATION_WM_GO_BACK_REQUEST:
 			_flow.toggle_pause()
 
@@ -224,7 +232,7 @@ func _on_restart_requested() -> void:
 		return
 	if _trial and not _in_lesson():
 		if _flow.abandon():
-			flow_channel.back_to_characters.emit()
+			_leave_trial()
 		return
 	_lesson_pending = _in_lesson()  # 튜토리얼 판의 다시 시작은 튜토리얼을 처음부터
 	_flow.set_config(_stage_config())
@@ -236,9 +244,17 @@ func _on_result_menu_requested() -> void:
 	if not is_running():
 		return
 	if _trial:
-		flow_channel.back_to_characters.emit()
+		_leave_trial()
 	else:
 		flow_channel.quit_to_menu.emit()
+
+
+## 체험 판을 마치고 체험을 연 화면으로 (캐릭터 화면 / 상점).
+func _leave_trial() -> void:
+	if TrialRequest.back_to_shop:
+		flow_channel.back_to_shop.emit()
+	else:
+		flow_channel.back_to_characters.emit()
 
 
 ## 체험 판인지 (테스트/디버그용).
@@ -285,7 +301,7 @@ func _on_retry_requested() -> void:
 func _on_quit_to_menu_requested() -> void:
 	if is_running() and _flow.abandon():
 		if _trial:
-			flow_channel.back_to_characters.emit()
+			_leave_trial()
 		else:
 			flow_channel.quit_to_menu.emit()
 
@@ -311,14 +327,18 @@ func _on_flow_state_changed(state: GameFlow.GameState) -> void:
 		GameFlow.GameState.RESULT:
 			var score: int = _flow.session.score
 			var is_new_best: bool = _best_store.submit(score)
+			if _character != null:
+				_best_store.submit_character(_character.id, score)
+				flow_channel.character_best_ready.emit(_character.display_name, _best_store.best_of(_character.id))
 			var rewards: RunRewards.Result = RunRewards.compute(score, _flow.session.collected_coins(),
 				_progress.level, _progress.experience, progression)
+			var coins_before: int = _progress.coins
 			_progress.apply_rewards(rewards)
 			var tracker: AchievementTracker = AchievementTracker.new(achievements, AchievementStore.new(save_path), _progress)
 			var completions: Array[AchievementTracker.Completion] = tracker.record_game(_flow.session, _best_store.best)
 			_log_playtest(PlaytestLog.END_RESULT)
 			flow_channel.result_ready.emit(score, _best_store.best, is_new_best, _flow.session.collected_coins())
-			flow_channel.rewards_ready.emit(rewards, _progress.coins, _progress.diamonds)
+			flow_channel.rewards_ready.emit(rewards, coins_before, _progress.coins)
 			flow_channel.achievements_ready.emit(GameController.achievement_lines(completions))
 			var flow: TutorialFlow = TutorialFlow.new(TutorialStore.new(save_path), tracker.store.stat("games"))
 			flow_channel.result_guided.emit(flow.guides_to_menu())
@@ -343,7 +363,7 @@ func _log_playtest(end: String) -> void:
 static func achievement_lines(completions: Array[AchievementTracker.Completion]) -> Array[PackedStringArray]:
 	var lines: Array[PackedStringArray] = []
 	for completion: AchievementTracker.Completion in completions:
-		lines.append(PackedStringArray(["업적 · %s" % completion.name, completion.reward]))
+		lines.append(PackedStringArray(["업적 · %s" % completion.name, "업적에서 받기"]))
 	return lines
 
 

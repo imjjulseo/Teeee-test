@@ -4,14 +4,13 @@
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="2_menu"]
 [ext_resource type="Resource" path="res://resources/character_roster.tres" id="3_roster"]
 [ext_resource type="Script" path="res://scripts/audio_options_loader.gd" id="4_audio"]
-[ext_resource type="Resource" path="res://resources/progression.tres" id="5_progression"]
+[ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="5_top"]
+[ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="6_bottom"]
+[ext_resource type="PackedScene" path="res://scenes/character_block.tscn" id="7_block"]
+[ext_resource type="Script" path="res://scripts/ui_image.gd" id="8_image"]
+[ext_resource type="Resource" path="res://resources/ui_assets.tres" id="9_assets"]
 [ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
-[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
-
-[ext_resource type="Script" path="res://scripts/glow_ring.gd" id="40_glow"]
-[ext_resource type="Script" path="res://scripts/caption_icon.gd" id="41_logo"]
-[ext_resource type="Resource" path="res://resources/board_theme.tres" id="42_board_theme"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -22,7 +21,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_menu")
 roster = ExtResource("3_roster")
-progression = ExtResource("5_progression")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -49,233 +47,198 @@ script = ExtResource("90_safe")
 layout_mode = 2
 mouse_filter = 2
 
-[node name="TopBar" type="HBoxContainer" parent="SafeArea/Content"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 48.0
-offset_top = 48.0
-offset_right = -48.0
-offset_bottom = 192.0
-grow_horizontal = 2
-theme_override_constants/separation = 36
-
-[node name="LevelButton" type="Button" parent="SafeArea/Content/TopBar"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(360, 144)
-layout_mode = 2
-focus_mode = 0
-
-[node name="LevelBox" type="VBoxContainer" parent="SafeArea/Content/TopBar/LevelButton"]
+[node name="Layout" type="VBoxContainer" parent="SafeArea/Content"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 30.0
-offset_top = 18.0
-offset_right = -30.0
-offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="TopBar" parent="SafeArea/Content/Layout" instance=ExtResource("5_top")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="BoostRow" type="HBoxContainer" parent="SafeArea/Content/Layout"]
+custom_minimum_size = Vector2(0, 66)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 9
+alignment = 1
+
+[node name="BoostLabel" type="Label" parent="SafeArea/Content/Layout/BoostRow"]
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 33
+text = "경험치 2배"
+
+[node name="Cell0" type="Panel" parent="SafeArea/Content/Layout/BoostRow"]
+custom_minimum_size = Vector2(114, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"BoostCellPanel"
+
+[node name="Cell1" type="Panel" parent="SafeArea/Content/Layout/BoostRow"]
+custom_minimum_size = Vector2(114, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"BoostCellPanel"
+
+[node name="Cell2" type="Panel" parent="SafeArea/Content/Layout/BoostRow"]
+custom_minimum_size = Vector2(114, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"BoostCellPanel"
+
+[node name="Cell3" type="Panel" parent="SafeArea/Content/Layout/BoostRow"]
+custom_minimum_size = Vector2(114, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"BoostCellPanel"
+
+[node name="Cell4" type="Panel" parent="SafeArea/Content/Layout/BoostRow"]
+custom_minimum_size = Vector2(114, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_type_variation = &"BoostCellPanel"
+
+[node name="Center" type="VBoxContainer" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="LogoBox" type="Control" parent="SafeArea/Content/Layout/Center"]
+custom_minimum_size = Vector2(900, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="SafeArea/Content/Layout/Center/LogoBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 132
+text = "Swap match"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LogoImage" type="TextureRect" parent="SafeArea/Content/Layout/Center/LogoBox" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 12
-alignment = 1
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("8_image")
+assets = ExtResource("9_assets")
+slot = &"logo"
+fallback = NodePath("../Title")
 
-[node name="LevelLabel" type="Label" parent="SafeArea/Content/TopBar/LevelButton/LevelBox"]
+[node name="BestCaption" type="Label" parent="SafeArea/Content/Layout/Center"]
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 42
+text = "BEST"
+horizontal_alignment = 1
+
+[node name="BestLabel" type="Label" parent="SafeArea/Content/Layout/Center"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 51
-text = "Lv 1"
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 84
+text = "0"
+horizontal_alignment = 1
 
-[node name="ExpBar" type="ColorRect" parent="SafeArea/Content/TopBar/LevelButton/LevelBox"]
-custom_minimum_size = Vector2(0, 18)
-layout_mode = 2
-mouse_filter = 2
-script = ExtResource("95_token_rect")
-token = &"track"
-
-[node name="ExpFill" type="ColorRect" parent="SafeArea/Content/TopBar/LevelButton/LevelBox/ExpBar"]
+[node name="StartSlot" type="Panel" parent="SafeArea/Content/Layout/Center"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-grow_vertical = 2
-mouse_filter = 2
-script = ExtResource("95_token_rect")
-token = &"info"
-
-[node name="Spacer" type="Control" parent="SafeArea/Content/TopBar"]
+custom_minimum_size = Vector2(240, 240)
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 4
 mouse_filter = 2
+theme_type_variation = &"StartSlotPanel"
 
-[node name="WalletLabel" parent="SafeArea/Content/TopBar" instance=ExtResource("97_wallet")]
+[node name="GhostBlock" parent="SafeArea/Content/Layout/Center/StartSlot" instance=ExtResource("7_block")]
 unique_name_in_owner = true
-layout_mode = 2
-font_size = 51
-
-[node name="Center" type="VBoxContainer" parent="SafeArea/Content"]
+modulate = Color(1, 1, 1, 0.75)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -427.5
-offset_top = -480.0
-offset_right = 427.5
-offset_bottom = 450.0
+offset_left = -78.0
+offset_top = -78.0
+offset_right = 78.0
+offset_bottom = 78.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 36
-alignment = 1
 
-[node name="Logo" type="Control" parent="SafeArea/Content/Center"]
-custom_minimum_size = Vector2(195, 195)
-layout_mode = 2
-size_flags_horizontal = 4
-mouse_filter = 2
-script = ExtResource("41_logo")
-theme_data = ExtResource("42_board_theme")
-preset = 1
-preset_colors = PackedInt32Array(1)
-
-[node name="Title" type="Label" parent="SafeArea/Content/Center"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 120
-text = "Swap match"
-horizontal_alignment = 1
-
-[node name="StartButton" type="Button" parent="SafeArea/Content/Center"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 171)
-layout_mode = 2
-focus_mode = 0
-theme_type_variation = &"HotButton"
-theme_override_font_sizes/font_size = 60
-text = "게임 시작"
-
-[node name="StageLabel" type="Label" parent="SafeArea/Content/Center"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 42
-text = "최고점 0"
-horizontal_alignment = 1
-
-[node name="CharacterButton" type="Button" parent="SafeArea/Content/Center"]
+[node name="SwipeHint" type="Control" parent="SafeArea/Content/Layout/Center"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 96)
 layout_mode = 2
-size_flags_horizontal = 4
-focus_mode = 0
-theme_type_variation = &"PillButton"
-theme_override_font_sizes/font_size = 39
-text = "캐릭터 · 기본"
+mouse_filter = 2
 
-[node name="BottomBar" type="HBoxContainer" parent="SafeArea/Content"]
+[node name="HintLabel" type="Label" parent="SafeArea/Content/Layout/Center/SwipeHint"]
 layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 42.0
-offset_top = -198.0
-offset_right = -42.0
-offset_bottom = -60.0
 grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/separation = 21
+grow_vertical = 2
+theme_type_variation = &"AccentLabel"
+theme_override_font_sizes/font_size = 42
+text = "▲ 블럭을 위로 밀어 시작"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="ShopButton" type="Button" parent="SafeArea/Content/BottomBar"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 39
-text = "상점"
-
-[node name="CharactersButton" type="Button" parent="SafeArea/Content/BottomBar"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 39
-text = "캐릭터"
-
-[node name="AchievementsButton" type="Button" parent="SafeArea/Content/BottomBar"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 39
-text = "업적"
-
-[node name="PuzzlesButton" type="Button" parent="SafeArea/Content/BottomBar"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 39
-text = "퍼즐"
-
-[node name="OptionsButton" type="Button" parent="SafeArea/Content/BottomBar"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 39
-text = "설정"
-
-[node name="Glow" type="Control" parent="."]
-unique_name_in_owner = true
-layout_mode = 3
+[node name="HintImage" type="TextureRect" parent="SafeArea/Content/Layout/Center/SwipeHint" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("40_glow")
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("8_image")
+assets = ExtResource("9_assets")
+slot = &"swipe_hint"
+fallback = NodePath("../HintLabel")
+
+[node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("6_bottom")]
+unique_name_in_owner = true
+layout_mode = 2
+top_bar = NodePath("../TopBar")
 
 [node name="GameNavigator" type="Node" parent="."]
 script = ExtResource("1_nav")
 target_scene = "res://scenes/main.tscn"
 
-[node name="CharacterNavigator" type="Node" parent="."]
-script = ExtResource("1_nav")
-target_scene = "res://scenes/character_select.tscn"
-
-[node name="OptionsNavigator" type="Node" parent="."]
-script = ExtResource("1_nav")
-target_scene = "res://scenes/options.tscn"
-
-[node name="LevelNavigator" type="Node" parent="."]
-script = ExtResource("1_nav")
-target_scene = "res://scenes/level_rewards.tscn"
-
 [node name="ShopNavigator" type="Node" parent="."]
 script = ExtResource("1_nav")
 target_scene = "res://scenes/shop.tscn"
 
-[node name="PuzzlesNavigator" type="Node" parent="."]
-script = ExtResource("1_nav")
-target_scene = "res://scenes/puzzle_menu.tscn"
-
-[node name="AchievementsNavigator" type="Node" parent="."]
-script = ExtResource("1_nav")
-target_scene = "res://scenes/achievements.tscn"
-
 [node name="AudioOptionsLoader" type="Node" parent="."]
 script = ExtResource("4_audio")
 
-[connection signal="pressed" from="SafeArea/Content/Center/StartButton" to="." method="_on_start_pressed"]
+[connection signal="start_swiped" from="SafeArea/Content/Layout/BottomNav" to="." method="_on_start_swiped"]
 [connection signal="start_game_requested" from="." to="GameNavigator" method="go"]
 [connection signal="shop_requested" from="." to="ShopNavigator" method="go"]
-[connection signal="pressed" from="SafeArea/Content/Center/CharacterButton" to="CharacterNavigator" method="go"]
-[connection signal="pressed" from="SafeArea/Content/BottomBar/CharactersButton" to="CharacterNavigator" method="go"]
-[connection signal="pressed" from="SafeArea/Content/BottomBar/OptionsButton" to="OptionsNavigator" method="go"]
-[connection signal="pressed" from="SafeArea/Content/TopBar/LevelButton" to="LevelNavigator" method="go"]
-[connection signal="pressed" from="SafeArea/Content/BottomBar/ShopButton" to="ShopNavigator" method="go"]
-[connection signal="pressed" from="SafeArea/Content/BottomBar/AchievementsButton" to="AchievementsNavigator" method="go"]
-[connection signal="pressed" from="SafeArea/Content/BottomBar/PuzzlesButton" to="PuzzlesNavigator" method="go"]

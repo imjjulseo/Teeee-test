@@ -72,6 +72,11 @@ func diamonds_for_level(_level: int) -> int:
 	return level_up_diamonds
 
 
+## level에 올랐을 때의 보상 (레벨 보상 화면에서 받는다, E36).
+func level_up_for(level: int) -> RunRewards.LevelUp:
+	return RunRewards.LevelUp.new(level, level_up_coins, diamonds_for_level(level), ticket_levels.get(level, -1))
+
+
 ## level의 보드 단계 (단계 표보다 높으면 마지막 단계). 표가 비어 있으면 null.
 func stage_for_level(level: int) -> BoardStage:
 	if stages.is_empty():

@@ -29,6 +29,8 @@ func _setup() -> void:
 	assets.logo = art
 	assets.coin_icon = art
 	assets.diamond_icon = art
+	for slot: StringName in [&"shop_icon", &"achievements_icon", &"puzzle_icon", &"options_icon", &"swipe_hint", &"back_icon", &"left_arrow", &"right_arrow", &"lock_icon", &"star_on", &"star_off"]:
+		assets.set(slot, art)
 	var progress: ProgressStore = ProgressStore.new()
 	progress.unlock(&"clock")
 	progress.add_currency(1000, 30)
@@ -46,7 +48,8 @@ func _tick() -> void:
 				next_step()
 		1:
 			if in_scene("MainMenu", 0.4):
-				expect((node("%WalletLabel") as WalletView).text == "1000  30", "wallet icons (%s)" % (node("%WalletLabel") as WalletView).text)
+				expect((node("%TopBar/%WalletLabel") as WalletView).text == "1000  30", "wallet icons (%s)" % (node("%TopBar/%WalletLabel") as WalletView).text)
+				expect((node("%BottomNav/%ShopButton/Icon") as Control).visible and not (node("%BottomNav/%ShopButton/Label") as Control).visible, "nav icon replaces the text")
 				shot("menu")
 				change_scene_to_file("res://scenes/main.tscn")
 				next_step()
@@ -70,18 +73,14 @@ func _tick() -> void:
 				next_step()
 		5:
 			if in_scene("CharacterSelect", 0.5):
-				var card: CharacterCard = (current_scene as CharacterSelect).card_for(&"clock")
-				expect((card.get_node("%Portrait") as Control).visible, "card portrait")
+				var page: CharacterInfo = (current_scene as CharacterSelect).carousel().current_page()
+				expect((page.get_node("%InfoBlock/%Portrait") as Control).visible, "page portrait")
 				shot("characters")
-				(node("%Scroll") as ScrollContainer).ensure_control_visible(card)  # 화면 밖 카드
 				next_step()
 		6:
-			if step_time > 0.3:
-				click_control((current_scene as CharacterSelect).card_for(&"clock"))
-				next_step()
+			next_step()
 		7:
-			if step_time > 0.4:
-				expect((node("%CharacterSheet").get_node("%Portrait") as Control).visible, "sheet portrait")
+			if step_time > 0.1:
 				shot("sheet")
 				change_scene_to_file("res://scenes/shop.tscn")
 				next_step()
@@ -95,7 +94,14 @@ func _tick() -> void:
 			if (node("%Reveal") as Control).visible and step_time > 2.5:
 				expect((node("%Reveal").get_node("%Portrait") as Control).visible, "reveal portrait")
 				shot("reveal")
-				finish()
+				change_scene_to_file("res://scenes/puzzle_menu.tscn")
+				next_step()
 			elif step_time > 8.0:
 				fail("chest did not open")
+				finish()
+		10:
+			if in_scene("PuzzleMenu", 0.5):
+				var locked: PuzzleBoardButton = (current_scene as PuzzleMenuScreen).buttons()[1]
+				expect((locked.get_node("LockOverlay/LockIcon") as Control).visible, "lock image")
+				shot("puzzles")
 				finish()

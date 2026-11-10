@@ -2,18 +2,19 @@
 
 [ext_resource type="Script" path="res://scripts/character_select.gd" id="1_select"]
 [ext_resource type="Resource" path="res://resources/character_roster.tres" id="2_roster"]
-[ext_resource type="PackedScene" path="res://scenes/character_card.tscn" id="3_card"]
+[ext_resource type="PackedScene" path="res://scenes/character_info.tscn" id="3_info"]
 [ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="4_nav"]
-[ext_resource type="PackedScene" path="res://scenes/filter_chip.tscn" id="5_chip"]
-[ext_resource type="PackedScene" path="res://scenes/character_sheet.tscn" id="6_sheet"]
-[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
-[ext_resource type="Resource" path="res://resources/progression.tres" id="7_progression"]
-[ext_resource type="Resource" path="res://resources/achievements.tres" id="8_achievements"]
+[ext_resource type="Script" path="res://scripts/character_carousel.gd" id="5_carousel"]
+[ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="6_top"]
+[ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="7_bottom"]
+[ext_resource type="PackedScene" path="res://scenes/character_block.tscn" id="8_block"]
 [ext_resource type="Resource" path="res://resources/character_tutorials.tres" id="9_lessons"]
+[ext_resource type="Script" path="res://scripts/ui_image.gd" id="10_image"]
+[ext_resource type="Resource" path="res://resources/ui_assets.tres" id="11_assets"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
 [ext_resource type="PackedScene" path="res://scenes/spotlight_overlay.tscn" id="80_spot"]
 [ext_resource type="Resource" path="res://resources/first_view_tips.tres" id="81_tips"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
-[ext_resource type="PackedScene" path="res://scenes/wallet_view.tscn" id="97_wallet"]
 
 [node name="CharacterSelect" type="Control" node_paths=PackedStringArray("spotlight")]
 layout_mode = 3
@@ -24,11 +25,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_select")
 roster = ExtResource("2_roster")
-progression = ExtResource("7_progression")
-achievements = ExtResource("8_achievements")
 lessons = ExtResource("9_lessons")
-card_scene = ExtResource("3_card")
-chip_scene = ExtResource("5_chip")
 tips = ExtResource("81_tips")
 spotlight = NodePath("Spotlight")
 
@@ -62,70 +59,132 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 48.0
-offset_top = 72.0
-offset_right = -48.0
-offset_bottom = -72.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 36
+theme_override_constants/separation = 24
 
-[node name="Header" type="HBoxContainer" parent="SafeArea/Content/Layout"]
-layout_mode = 2
-
-[node name="Title" type="Label" parent="SafeArea/Content/Layout/Header"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 84
-text = "캐릭터"
-
-[node name="WalletLabel" parent="SafeArea/Content/Layout/Header" instance=ExtResource("97_wallet")]
+[node name="TopBar" parent="SafeArea/Content/Layout" instance=ExtResource("6_top")]
 unique_name_in_owner = true
 layout_mode = 2
-font_size = 48
 
-[node name="EquippedLabel" type="Label" parent="SafeArea/Content/Layout"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "장착 중 · 기본"
-
-[node name="FilterScroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 114)
-layout_mode = 2
-vertical_scroll_mode = 0
-
-[node name="Filters" type="HBoxContainer" parent="SafeArea/Content/Layout/FilterScroll"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 18
-
-[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout"]
+[node name="Carousel" type="Control" parent="SafeArea/Content/Layout"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-vertical_scroll_mode = 0
+script = ExtResource("5_carousel")
 
-[node name="Cards" type="HBoxContainer" parent="SafeArea/Content/Layout/Scroll"]
+[node name="Page0" parent="SafeArea/Content/Layout/Carousel" instance=ExtResource("3_info")]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 30
+layout_mode = 0
 
-[node name="BackButton" type="Button" parent="SafeArea/Content/Layout"]
-custom_minimum_size = Vector2(0, 144)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 60
-text = "뒤로"
-
-[node name="CharacterSheet" parent="." instance=ExtResource("6_sheet")]
+[node name="Page1" parent="SafeArea/Content/Layout/Carousel" instance=ExtResource("3_info")]
 unique_name_in_owner = true
+layout_mode = 0
+
+[node name="Page2" parent="SafeArea/Content/Layout/Carousel" instance=ExtResource("3_info")]
+unique_name_in_owner = true
+layout_mode = 0
+
+[node name="LeftButton" type="Button" parent="SafeArea/Content/Layout/Carousel"]
 layout_mode = 1
+anchors_preset = 15
+anchor_left = 0.0
+anchor_top = 0.5
+anchor_right = 0.0
+anchor_bottom = 0.5
+offset_left = 0.0
+offset_top = -90.0
+offset_right = 66.0
+offset_bottom = 90.0
+grow_vertical = 2
+focus_mode = 0
+flat = true
 
-[node name="MenuNavigator" type="Node" parent="."]
-script = ExtResource("4_nav")
-target_scene = "res://scenes/main_menu.tscn"
+[node name="Label" type="Label" parent="SafeArea/Content/Layout/Carousel/LeftButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 90
+text = "‹"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="SafeArea/Content/Layout/Carousel/LeftButton" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("10_image")
+assets = ExtResource("11_assets")
+slot = &"left_arrow"
+fallback = NodePath("../Label")
+
+[node name="RightButton" type="Button" parent="SafeArea/Content/Layout/Carousel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -66.0
+offset_top = -90.0
+offset_right = 0.0
+offset_bottom = 90.0
+grow_vertical = 2
+focus_mode = 0
+flat = true
+
+[node name="Label" type="Label" parent="SafeArea/Content/Layout/Carousel/RightButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 90
+text = "›"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="SafeArea/Content/Layout/Carousel/RightButton" node_paths=PackedStringArray("fallback")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("10_image")
+assets = ExtResource("11_assets")
+slot = &"right_arrow"
+fallback = NodePath("../Label")
+
+[node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("7_bottom")]
+unique_name_in_owner = true
+layout_mode = 2
+current = 3
+top_bar = NodePath("../TopBar")
+
+[node name="FlyingBlock" parent="." instance=ExtResource("8_block")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 150.0
 
 [node name="GameNavigator" type="Node" parent="."]
 script = ExtResource("4_nav")
@@ -133,11 +192,13 @@ target_scene = "res://scenes/main.tscn"
 
 [node name="Spotlight" parent="." instance=ExtResource("80_spot")]
 
-[connection signal="pressed" from="SafeArea/Content/Layout/BackButton" to="MenuNavigator" method="go"]
-[connection signal="equip_requested" from="CharacterSheet" to="." method="_on_equip_requested"]
-[connection signal="unlock_requested" from="CharacterSheet" to="." method="_on_unlock_requested"]
-[connection signal="buy_requested" from="CharacterSheet" to="." method="_on_buy_requested"]
-[connection signal="trial_requested" from="CharacterSheet" to="." method="_on_trial_requested"]
-[connection signal="lesson_requested" from="CharacterSheet" to="." method="_on_lesson_requested"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Carousel/LeftButton" to="SafeArea/Content/Layout/Carousel" method="_on_left_pressed"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Carousel/RightButton" to="SafeArea/Content/Layout/Carousel" method="_on_right_pressed"]
+[connection signal="equip_requested" from="SafeArea/Content/Layout/Carousel/Page0" to="." method="_on_equip_requested"]
+[connection signal="lesson_requested" from="SafeArea/Content/Layout/Carousel/Page0" to="." method="_on_lesson_requested"]
+[connection signal="equip_requested" from="SafeArea/Content/Layout/Carousel/Page1" to="." method="_on_equip_requested"]
+[connection signal="lesson_requested" from="SafeArea/Content/Layout/Carousel/Page1" to="." method="_on_lesson_requested"]
+[connection signal="equip_requested" from="SafeArea/Content/Layout/Carousel/Page2" to="." method="_on_equip_requested"]
+[connection signal="lesson_requested" from="SafeArea/Content/Layout/Carousel/Page2" to="." method="_on_lesson_requested"]
 [connection signal="trial_started" from="." to="GameNavigator" method="go"]
 [connection signal="tapped" from="Spotlight" to="." method="_on_spotlight_tapped"]

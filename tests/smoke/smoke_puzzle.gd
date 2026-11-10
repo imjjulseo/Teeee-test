@@ -65,7 +65,7 @@ func _tick_menu() -> void:
 		0:
 			if in_scene("MainMenu", 0.3):
 				expect((current_scene as MainMenu).is_entry_enabled(MenuUnlocks.Entry.PUZZLES), "puzzle button open")
-				click_control(node("%PuzzlesButton"))
+				click_control(node("%BottomNav/%PuzzlesButton"))
 				next_step()
 		1:
 			if in_scene("PuzzleMenu", 0.4):
@@ -73,10 +73,10 @@ func _tick_menu() -> void:
 				var texts: PackedStringArray = PackedStringArray()
 				for button: PuzzleBoardButton in _list().buttons():
 					numbers.append(button.number_text())
-					texts.append(button.stars_text())
-					expect(not button.disabled, "%s open" % button.board_id)
-				expect(numbers == PackedStringArray(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]), "numbered 1-11 (%s)" % ", ".join(numbers))
-				expect(texts.count("● 20") == 11, "first-clear coins on every board (%s)" % ", ".join(texts))
+					texts.append(button.reward_text())
+				expect(numbers == PackedStringArray(["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"]), "numbered I-XI (%s)" % ", ".join(numbers))
+				expect(texts.count("첫 클리어 보상 ● 20") == 11, "first-clear coins on every board (%s)" % ", ".join(texts))
+				expect(not _list().buttons()[0].is_locked() and _list().buttons()[1].is_locked(), "only the first board is open")
 				expect(_list().buttons()[0].board_id == "2a", "starts at Lv.2")
 				shot("menu_list")
 				click_control(_list().buttons()[0])
@@ -111,7 +111,9 @@ func _tick_menu() -> void:
 		6:
 			if in_scene("PuzzleMenu", 0.3):
 				expect(_list().buttons()[0].stars_text() == "★★★", "list shows the stars (%s)" % _list().buttons()[0].stars_text())
-				expect(_list().buttons()[1].stars_text() == "● 20", "puzzle 2 still has its reward")
+				expect(_list().buttons()[0].reward_text() == "", "reward received")
+				expect(_list().buttons()[1].reward_text() == "첫 클리어 보상 ● 20" and not _list().buttons()[1].is_locked(), "puzzle 2 is now open, still has its reward")
+				expect(_list().buttons()[2].is_locked(), "puzzle 3 still locked")
 				PuzzleRequest.board("2a")
 				change_scene_to_file("res://scenes/puzzle_play.tscn")
 				next_step()

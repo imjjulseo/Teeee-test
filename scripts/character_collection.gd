@@ -1,25 +1,37 @@
 class_name CharacterCollection
 extends RefCounted
-## 캐릭터 모음 규칙 (기획서 8.3 · 8.5장): 카드 상태(장착 중·보유·선택권·히든 업적·상점 잠김·다이아로 살 수 있음),
-## 등급순 목록, 선택권·다이아로 해금, 장착. 진행 저장은 ProgressStore, 장착 저장은 CharacterStore가 한다.
+## 캐릭터 모음 규칙 (기획서 8.3 · 8.5장): 카드 상태(장착 중·보유·미보유·히든 업적), 등급순 목록, 선택권·다이아로 해금, 장착. 진행 저장은 ProgressStore, 장착 저장은 CharacterStore가 한다.
 ## 화면은 이 클래스의 결과를 보여 주기만 한다. 뽑기·선택권 합성은 CharacterShop.
 
 enum Status {
 	EQUIPPED,  ## 장착 중
 	OWNED,  ## 보유
-	TICKET,  ## 그 등급 선택권이 있어 바로 해금할 수 있음
 	HIDDEN,  ## 히든 캐릭터: 히든 업적으로만 (얻기 전까지 정체를 숨김)
-	LOCKED,  ## 다이아 상점에 그 등급이 아직 열리지 않음 (뽑기로는 얻을 수 있음)
-	BUYABLE,  ## 다이아 상점에서 살 수 있음
+	UNOWNED,  ## 미보유 (뽑기·상점에서 얻는다)
 }
 
-## 상세 시트의 해금 방법: 선택권 수, 다이아 가격, 상점에 등급이 열리는 레벨과 열렸는지, 다이아가 충분한지.
+## 상점 한 줄의 해금 방법: 선택권 수, 다이아 가격, 상점에 등급이 열리는 레벨과 열렸는지, 다이아가 충분한지.
 class Offer:
 	var tickets: int = 0
 	var diamond_price: int = 0
 	var shop_level: int = 1
 	var shop_open: bool = false
 	var affordable: bool = false
+
+## 상점 설명창의 구매 자리 (E37).
+class PurchaseAction:
+	var kind: Purchase = Purchase.OWNED
+	var text: String = ""
+	## 상점 카드 아래의 짧은 문구 (◆ 80 · 선택 · 보유 · Lv 8, E38).
+	var card_text: String = ""
+	var enabled: bool = false
+
+enum Purchase {
+	OWNED,  ## 이미 가짐
+	DIAMOND,  ## 다이아로 구매
+	TICKET,  ## 선택권 사용
+	CLOSED,  ## 그 등급 상점이 아직 안 열림
+}
 
 var roster: CharacterRoster
 var progress: ProgressStore
@@ -69,27 +81,19 @@ func equipped_character() -> CharacterData:
 func status_of(character: CharacterData) -> Status:
 	if progress.is_unlocked(character.id):
 		return Status.EQUIPPED if character == equipped_character() else Status.OWNED
-	if character.grade == CharacterData.Grade.HIDDEN:
-		return Status.HIDDEN
-	if progress.ticket_count(character.grade) > 0:
-		return Status.TICKET
-	return Status.BUYABLE if gacha.is_shop_open(character.grade, progress.level) else Status.LOCKED
+	return Status.HIDDEN if character.grade == CharacterData.Grade.HIDDEN else Status.UNOWNED
 
 
-## 카드에 보이는 상태 문구 (HTML과 같음).
+## 카드에 보이는 상태 문구.
 func status_text(character: CharacterData) -> String:
 	match status_of(character):
 		Status.EQUIPPED:
 			return "장착 중"
 		Status.OWNED:
 			return "보유"
-		Status.TICKET:
-			return "선택권"
 		Status.HIDDEN:
 			return "히든 업적"
-		Status.BUYABLE:
-			return "◆ %d" % gacha.shop_price(character.grade)
-	return "상점 Lv %d" % gacha.shop_level(character.grade)
+	return "미보유"
 
 
 func offer_for(character: CharacterData) -> Offer:
@@ -100,6 +104,30 @@ func offer_for(character: CharacterData) -> Offer:
 	offer.shop_open = gacha.is_shop_open(character.grade, progress.level)
 	offer.affordable = progress.diamonds >= offer.diamond_price
 	return offer
+
+
+## 상점 설명창의 구매 자리: use_ticket = 그 등급의 [사용]이 켜져 있다 (선택권은 상점이 열리기 전에도 쓴다).
+func purchase_action(character: CharacterData, use_ticket: bool) -> PurchaseAction:
+	var action: PurchaseAction = PurchaseAction.new()
+	var offer: Offer = offer_for(character)
+	if progress.is_unlocked(character.id):
+		action.text = "보유"
+		action.card_text = action.text
+	elif use_ticket and offer.tickets > 0:
+		action.kind = Purchase.TICKET
+		action.text = "선택권 사용"
+		action.card_text = "선택"
+		action.enabled = true
+	elif offer.shop_open:
+		action.kind = Purchase.DIAMOND
+		action.text = "◆ %d" % offer.diamond_price
+		action.card_text = action.text
+		action.enabled = offer.affordable
+	else:
+		action.kind = Purchase.CLOSED
+		action.text = "Lv %d에 열림" % offer.shop_level
+		action.card_text = "Lv %d" % offer.shop_level
+	return action
 
 
 ## 히든 캐릭터는 얻기 전까지 정체를 숨긴다.

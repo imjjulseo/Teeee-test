@@ -22,9 +22,9 @@ func test_save_writes_current_version() -> void:
 	_clean()
 
 
-## version 4 미만 저장(0 = 버전 기록 전)은 처음 읽을 때 설정만 남기고 초기화한다 (팀 결정 11/04, E26).
+## version 6 미만 저장(0 = 버전 기록 전)은 처음 읽을 때 설정만 남기고 초기화한다 (E26, E38).
 func test_old_saves_are_reset_except_options() -> void:
-	for version: int in [0, 1, 2, 3]:
+	for version: int in [0, 1, 2, 3, 4, 5]:
 		_clean()
 		var old: ConfigFile = ConfigFile.new()
 		if version > 0:
@@ -56,8 +56,9 @@ func test_current_version_file_is_kept() -> void:
 	_clean()
 	BestScoreStore.new(TEST_PATH).submit(900)
 	ProgressStore.new(TEST_PATH).add_currency(100, 0)
-	assert_eq([BestScoreStore.new(TEST_PATH).best, ProgressStore.new(TEST_PATH).coins], [900, 100], "no reset at version 4")
+	assert_eq([BestScoreStore.new(TEST_PATH).best, ProgressStore.new(TEST_PATH).coins], [900, 100], "no reset at the current version")
 	_clean()
+
 
 func test_path_resolution_order() -> void:
 	SaveData.path_override = ""
