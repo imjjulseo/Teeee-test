@@ -39,9 +39,9 @@ func _tick_options() -> void:
 				next_step()
 		1:
 			if in_scene("OptionsMenu"):
-				expect((node("%SwipeButton") as Button).button_pressed, "swipe selected by default")
-				expect(not (node("%ReduceMotionToggle") as CheckButton).button_pressed, "reduce motion off by default")
-				click_control(node("%DpadButton") if mode == "dpad" else node("%ReduceMotionToggle"))
+				expect((node("%QuickOptions/%SwipeButton") as Button).button_pressed, "swipe selected by default")
+				expect(not (node("%QuickOptions/%ReduceMotionToggle") as CheckButton).button_pressed, "reduce motion off by default")
+				click_control(node("%QuickOptions/%DpadButton") if mode == "dpad" else node("%QuickOptions/%ReduceMotionToggle"))
 				next_step()
 		2:
 			if step_time > 0.3:
@@ -49,7 +49,7 @@ func _tick_options() -> void:
 				expect(OptionsStore.new().control_mode == expected, "saved control mode = " + mode)
 				expect(OptionsStore.new().reduce_motion == (mode == "swipe"), "reduce motion click saved")
 				shot("options_" + mode)
-				var slider: HSlider = node("%MasterVolumeSlider")
+				var slider: HSlider = node("%QuickOptions/%MasterVolumeSlider")
 				expect(slider.is_visible_in_tree() and slider.value == 100.0, "master volume 100 by default")
 				click_control(slider)  # 가운데를 실제 클릭 → 약 50
 				next_step()
@@ -57,9 +57,9 @@ func _tick_options() -> void:
 			if step_time > 0.3:
 				var saved: int = OptionsStore.new().master_volume
 				expect(saved > 35 and saved < 65, "click on the slider middle saved about 50 (%d)" % saved)
-				expect((node("%MasterVolumeLabel") as Label).text == str(saved), "label shows the value")
+				expect((node("%QuickOptions/%MasterVolumeLabel") as Label).text == str(saved), "label shows the value")
 				expect(is_equal_approx(_master_db(), OptionsStore.volume_to_db(saved)), "Master bus follows the slider")
-				(node("%MasterVolumeSlider") as HSlider).value = 30  # 손을 떼는 신호 없이 바뀜 (마우스 휠 등)
+				(node("%QuickOptions/%MasterVolumeSlider") as HSlider).value = 30  # 손을 떼는 신호 없이 바뀜 (마우스 휠 등)
 				click_control(node("%BottomNav/%OptionsButton"))  # 지금 화면 버튼을 다시 누르면 메인
 				next_step()
 		4:

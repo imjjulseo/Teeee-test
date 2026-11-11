@@ -233,7 +233,6 @@ script = ExtResource("16_audio_options")
 [connection signal="main_menu_requested" from="ResultPanel" to="GameController" method="_on_result_menu_requested"]
 [connection signal="back_to_characters" from="GameController/FlowChannel" to="CharacterNavigator" method="go"]
 [connection signal="back_to_shop" from="GameController/FlowChannel" to="ShopNavigator" method="go"]
-[connection signal="trial_result_ready" from="GameController/FlowChannel" to="ResultPanel" method="_on_trial_result_ready"]
 [connection signal="retry_requested" from="ResultPanel" to="GameController" method="_on_retry_requested"]
 [connection signal="finished" from="Tutorial" to="GameController" method="_on_tutorial_finished"]
 [connection signal="lesson_finished" from="Tutorial" to="GameController" method="_on_lesson_finished"]

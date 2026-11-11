@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="2_nav"]
 [ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
 [ext_resource type="PackedScene" path="res://scenes/debug_panel.tscn" id="3_debug"]
+[ext_resource type="PackedScene" path="res://scenes/quick_options.tscn" id="4_quick"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
 [ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="20_top"]
 [ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="21_bottom"]
@@ -75,98 +76,24 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 36
 
-[node name="ControlHeading" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
+[node name="QuickOptions" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("4_quick")]
+unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "조작"
 
-[node name="ControlRow" type="HBoxContainer" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="SwipeButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow"]
+[node name="TutorialButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
 mouse_filter = 1
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 180)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 45
-theme_type_variation = &"ChoiceButton"
-toggle_mode = true
-text = "스와이프
-밀거나 옆 칸 탭"
-
-[node name="DpadButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow"]
-mouse_filter = 1
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 180)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 45
-theme_type_variation = &"ChoiceButton"
-toggle_mode = true
-text = "패드
-누르고 있으면 반복"
-
-[node name="ControlNote" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "키보드(방향키, WASD)는 언제나 쓸 수 있어요"
-autowrap_mode = 3
-
-[node name="VolumeHeading" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "소리"
-
-[node name="MasterRow" type="HBoxContainer" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_override_constants/separation = 36
-
-[node name="MasterVolumeSlider" type="HSlider" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner/MasterRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-focus_mode = 0
-theme_type_variation = &"VolumeSlider"
-max_value = 100.0
-rounded = true
-value = 100.0
-
-[node name="MasterVolumeLabel" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner/MasterRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(135, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 54
-text = "100"
-horizontal_alignment = 2
-
-[node name="VolumeNote" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "효과음과 배경음 크기예요. 0이면 소리가 꺼져요"
-autowrap_mode = 3
-
-[node name="ReduceMotionToggle" type="CheckButton" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-mouse_filter = 1
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 48
-text = "효과 줄이기"
+text = "튜토리얼 다시 보기"
 
-[node name="ReduceMotionNote" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
+[node name="TutorialNote" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
 layout_mode = 2
 theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 33
-text = "흔들림, 파편, 떠오르는 숫자를 꺼요"
+text = "게임 규칙을 처음부터 다시 배워요. 기록과 보상은 바뀌지 않아요"
 autowrap_mode = 3
 
 [node name="ResetButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
@@ -195,14 +122,16 @@ layout_mode = 2
 current = 5
 top_bar = NodePath("../TopBar")
 
+[node name="GameNavigator" type="Node" parent="."]
+script = ExtResource("2_nav")
+target_scene = "res://scenes/main.tscn"
+
 [node name="MenuNavigator" type="Node" parent="."]
 script = ExtResource("2_nav")
 target_scene = "res://scenes/main_menu.tscn"
 
-[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow/SwipeButton" to="." method="_on_swipe_button_pressed"]
-[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow/DpadButton" to="." method="_on_dpad_button_pressed"]
-[connection signal="value_changed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/MasterRow/MasterVolumeSlider" to="." method="_on_master_volume_changed"]
-[connection signal="drag_ended" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/MasterRow/MasterVolumeSlider" to="." method="_on_master_volume_drag_ended"]
-[connection signal="toggled" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ReduceMotionToggle" to="." method="_on_reduce_motion_toggled"]
 [connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="progress_reset" from="." to="MenuNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/TutorialButton" to="." method="_on_tutorial_button_pressed"]
+[connection signal="tutorial_replay_requested" from="." to="GameNavigator" method="go"]
+[connection signal="progress_changed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/DebugPanel" to="." method="_on_debug_progress_changed"]

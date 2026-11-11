@@ -202,11 +202,12 @@ func _open_options() -> OptionsMenu:
 	var menu: OptionsMenu = (load("res://scenes/options.tscn") as PackedScene).instantiate() as OptionsMenu
 	menu.save_path = TEST_SAVE
 	menu.notification(Node.NOTIFICATION_READY)
+	(menu.get_node("%QuickOptions") as QuickOptions).notification(Node.NOTIFICATION_READY)  # 설정 부품은 자기 _ready에서 값을 읽는다
 	return menu
 
 
 func _slider(menu: OptionsMenu) -> HSlider:
-	return menu.get_node("%MasterVolumeSlider")
+	return menu.get_node("%QuickOptions/%MasterVolumeSlider")
 
 
 ## 사용자가 슬라이더를 value로 옮긴 것처럼: 값 + value_changed (Range는 트리 밖에서 signal을 보내지 않는다).
@@ -265,7 +266,7 @@ func test_options_screen_slider_applies_immediately_and_saves_on_release() -> vo
 	_clean()
 	var menu: OptionsMenu = _open_options()
 	var slider: HSlider = _slider(menu)
-	var label: Label = menu.get_node("%MasterVolumeLabel")
+	var label: Label = menu.get_node("%QuickOptions/%MasterVolumeLabel")
 	assert_eq(slider.min_value, 0.0)
 	assert_eq(slider.max_value, 100.0)
 	assert_eq(slider.value, 100.0, "shows the default")
@@ -289,7 +290,7 @@ func test_options_screen_mutes_at_zero_and_shows_saved_value_next_time() -> void
 	OptionsStore.apply_master_volume(100)
 	var reopened: OptionsMenu = _open_options()
 	assert_eq(_slider(reopened).value, 0.0, "slider shows the saved value")
-	assert_eq((reopened.get_node("%MasterVolumeLabel") as Label).text, "0")
+	assert_eq((reopened.get_node("%QuickOptions/%MasterVolumeLabel") as Label).text, "0")
 	reopened.free()
 
 
@@ -323,14 +324,14 @@ func test_reduce_motion_defaults_off_and_persists() -> void:
 func test_options_screen_toggle_saves_reduce_motion() -> void:
 	_clean()
 	var menu: OptionsMenu = _open_options()
-	var toggle: CheckButton = menu.get_node("%ReduceMotionToggle")
+	var toggle: CheckButton = menu.get_node("%QuickOptions/%ReduceMotionToggle")
 	assert_false(toggle.button_pressed)
 	toggle.toggled.emit(true)
 	assert_true(OptionsStore.new(TEST_SAVE).reduce_motion)
 	assert_true(menu.reduce_motion())
 	menu.free()
 	var reopened: OptionsMenu = _open_options()
-	assert_true((reopened.get_node("%ReduceMotionToggle") as CheckButton).button_pressed, "shows the saved value")
+	assert_true((reopened.get_node("%QuickOptions/%ReduceMotionToggle") as CheckButton).button_pressed, "shows the saved value")
 	reopened.free()
 
 # 설정 화면의 실제 클릭(조작 방법·볼륨)은 실제 창 스모크 테스트(smoke_input)로 확인한다.
@@ -439,5 +440,46 @@ func test_pause_overlay_opens_settings_and_forwards_changes() -> void:
 	(overlay.get_node("%BackButton") as Button).pressed.emit()
 	assert_false(overlay.is_options_open())
 	overlay.free()
+	SaveData.path_override = ""
+	_clean()
+
+
+func test_tutorial_replay_button_requests_the_rule_tutorial() -> void:
+	_clean()
+	var menu: OptionsMenu = _open_options()
+	var asked: Array[bool] = []
+	for connection: Dictionary in menu.tutorial_replay_requested.get_connections():  # 씬 전환은 트리 안에서만 (스모크)
+		menu.tutorial_replay_requested.disconnect(connection["callable"])
+	menu.tutorial_replay_requested.connect(func() -> void: asked.append(true))
+	(menu.get_node("%TutorialButton") as Button).pressed.emit()
+	assert_eq(asked, [true] as Array[bool], "goes to the game scene")
+	assert_true(PlayRequest.take_replay_tutorial(), "the game scene opens as the rule tutorial")
+	menu.free()
+	_clean()
+
+
+func test_debug_panel_skips_the_tutorial_and_asks_for_special_games() -> void:
+	_clean()
+	SaveData.path_override = TEST_SAVE
+	TutorialStore.new().restart_all()
+	var panel: DebugPanel = (load("res://scenes/debug_panel.tscn") as PackedScene).instantiate() as DebugPanel
+	panel.notification(Node.NOTIFICATION_READY)
+	var games: Array[bool] = []
+	for connection: Dictionary in panel.game_requested.get_connections():  # 씬 전환은 트리 안에서만 (스모크)
+		panel.game_requested.disconnect(connection["callable"])
+	panel.game_requested.connect(func() -> void: games.append(true))
+	assert_true(panel.visible, "shown in release builds too while testing")
+	(panel.get_node("%UnlockMenusButton") as Button).pressed.emit()
+	var tutorial: TutorialStore = TutorialStore.new()
+	assert_true(tutorial.done and tutorial.flow == TutorialStore.Flow.DONE, "tutorial and flow finished")
+	var unlocks: MenuUnlocks = TutorialFlow.current().unlocks()
+	for entry: int in MenuUnlocks.Entry.values():
+		assert_true(unlocks.is_open(entry), "entry %d open" % entry)
+	(panel.get_node("%ShortGameButton") as Button).pressed.emit()
+	assert_near(PlayRequest.take_game_seconds(), panel.short_game_seconds, 1e-9)
+	(panel.get_node("%RuleTutorialButton") as Button).pressed.emit()
+	assert_true(PlayRequest.take_replay_tutorial())
+	assert_eq(games.size(), 2)
+	panel.free()
 	SaveData.path_override = ""
 	_clean()

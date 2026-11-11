@@ -38,7 +38,6 @@ func _setup() -> void:
 			store.mark_seen(TutorialStore.SEEN_REAL_GAME)
 		"wall":
 			TrialRequest.character_id = &"wall"
-			TrialRequest.with_lesson = true
 	if mode == "redo":
 		change_scene_to_file("res://scenes/character_select.tscn")
 	else:

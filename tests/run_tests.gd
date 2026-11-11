@@ -79,9 +79,10 @@ func _reset_global_state() -> PackedStringArray:
 	if TrialRequest.character_id != &"":
 		leaks.append("leaked global state: TrialRequest.character_id = \"%s\" (reset)" % TrialRequest.character_id)
 		TrialRequest.character_id = &""
-	if TrialRequest.with_lesson:
-		leaks.append("leaked global state: TrialRequest.with_lesson (reset)")
-		TrialRequest.with_lesson = false
+	if PlayRequest.is_pending():
+		leaks.append("leaked global state: PlayRequest (reset)")
+		PlayRequest.take_replay_tutorial()
+		PlayRequest.take_game_seconds()
 	if PuzzleRequest.is_pending():
 		leaks.append("leaked global state: PuzzleRequest (reset)")
 		PuzzleRequest.take()

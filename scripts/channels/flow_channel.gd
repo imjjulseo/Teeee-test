@@ -25,7 +25,6 @@ signal reduce_motion_ready(enabled: bool)
 ## 일시정지에서 메뉴로 나가기로 판을 포기함 (점수 미반영).
 signal quit_to_menu
 ## 체험 판이 결과에 도착 (보상 없음). character_name = 체험한 캐릭터.
-signal trial_result_ready(character_name: String)
 ## 체험 판을 마치고 캐릭터 화면으로.
 signal back_to_characters
 ## 상점에서 연 체험 판을 마치고 상점으로.

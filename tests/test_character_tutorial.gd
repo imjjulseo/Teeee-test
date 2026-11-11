@@ -203,9 +203,12 @@ func test_character_seen_is_saved() -> void:
 	assert_true(TutorialStore.new(TEST_SAVE).has_seen_character(&"fever"), "finished saves never ask")
 
 
-func test_lesson_request_is_taken_once() -> void:
-	TrialRequest.character_id = &"clock"
-	TrialRequest.with_lesson = true
-	assert_true(TrialRequest.take_lesson())
-	assert_false(TrialRequest.take_lesson())
-	assert_eq(TrialRequest.take(), &"clock")
+func test_play_requests_are_taken_once() -> void:
+	PlayRequest.replay_tutorial = true
+	PlayRequest.game_seconds = 5.0
+	assert_true(PlayRequest.is_pending())
+	assert_true(PlayRequest.take_replay_tutorial())
+	assert_false(PlayRequest.take_replay_tutorial())
+	assert_near(PlayRequest.take_game_seconds(), 5.0, 1e-9)
+	assert_near(PlayRequest.take_game_seconds(), 0.0, 1e-9)
+	assert_false(PlayRequest.is_pending())

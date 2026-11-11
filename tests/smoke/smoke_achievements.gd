@@ -158,15 +158,18 @@ func _tick_trial() -> void:
 	match step:
 		0:
 			if playing(0.5):
+				expect(controller.is_trial() and controller.is_lesson(), "trial = the character tutorial")
 				session().metrics.record_max(GrowAllAbility.METRIC_GROWN_ONCE, 8)
-				flow().request_move(Vector2i.UP)
+				auto_resume = false
+				flow().pause()
 				next_step()
 		1:
-			if flow().state == S.RESULT and step_time > 0.4:
+			if step_time > 0.3:
+				click_control(node("PauseOverlay/Center/MainMenuButton"))
+				controller = null
+				next_step()
+		2:
+			if in_scene("CharacterSelect", 0.3):
 				var store: AchievementStore = AchievementStore.new()
 				expect(store.stat("games") == 0 and not store.is_done("gardener_1"), "trial leaves no achievements or stats")
-				expect((node("ResultPanel") as ResultPanel).shown_rewards().is_empty(), "no reward rows")
-				finish()
-			elif step_time > 6.0:
-				fail("trial did not end")
 				finish()

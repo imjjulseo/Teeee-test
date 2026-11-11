@@ -312,6 +312,5 @@ func _on_confirm_accepted() -> void:
 ## 설명창의 튜토리얼 · 체험: 끝나면 상점으로 돌아온다.
 func _on_lesson_requested(character: CharacterData) -> void:
 	TrialRequest.character_id = character.id
-	TrialRequest.with_lesson = true
 	TrialRequest.back_to_shop = true
 	trial_started.emit()

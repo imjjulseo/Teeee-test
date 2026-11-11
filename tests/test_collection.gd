@@ -170,24 +170,6 @@ func test_main_menu_shows_level_wallet_stage_and_character() -> void:
 	menu.free()
 
 
-func test_trial_result_hides_rewards() -> void:
-	var result: ResultPanel = (load("res://scenes/result_panel.tscn") as PackedScene).instantiate() as ResultPanel
-	result.notification(Node.NOTIFICATION_READY)
-	var flow: FlowChannel = FlowChannel.new()
-	var wired: int = SceneWiring.connect_like("res://scenes/main.tscn", {"GameController/FlowChannel": flow, "ResultPanel": result},
-		PackedStringArray(["ResultPanel"]))
-	assert_true(wired >= 4, "flow → result wired (%d)" % wired)
-	flow.result_ready.emit(700, 0, false, 2)
-	flow.trial_result_ready.emit("시계공")
-	assert_eq((result.get_node("%Title") as Label).text, "시계공 체험 끝")
-	assert_true(result.is_trial_result())
-	assert_false((result.get_node("%RewardsList") as Control).visible)
-	assert_eq((result.get_node("%MainMenuButton") as Button).text, "캐릭터", "back to the character screen")
-	assert_eq((result.get_node("%FinalScoreLabel") as Label).text, "700", "score still shown")
-	result.free()
-	flow.free()
-
-
 func test_level_stem_fills_up_to_the_next_level() -> void:
 	assert_eq([LevelRewardsScreen.stem_ratio(3, 4, 0.5), LevelRewardsScreen.stem_ratio(4, 4, 0.5), LevelRewardsScreen.stem_ratio(5, 4, 0.5), LevelRewardsScreen.stem_ratio(6, 4, 0.5)],
 		[1.0, 1.0, 0.5, 0.0])

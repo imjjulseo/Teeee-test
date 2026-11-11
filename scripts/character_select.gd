@@ -130,5 +130,4 @@ func _on_equip_requested(character: CharacterData) -> void:
 ## 판의 튜토리얼 · 체험: 체험 판을 캐릭터 튜토리얼부터 (끝나면 이 화면으로).
 func _on_lesson_requested(character: CharacterData) -> void:
 	TrialRequest.character_id = character.id
-	TrialRequest.with_lesson = true
 	trial_started.emit()

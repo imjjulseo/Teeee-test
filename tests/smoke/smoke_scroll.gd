@@ -63,7 +63,7 @@ func _pick() -> void:
 			_axis = Vector2.LEFT
 		"options":
 			_scroll = node("SafeArea/Content/Layout/Page/Box/Scroll")
-			_target = node("SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow/SwipeButton")
+			_target = node("%QuickOptions/%DpadButton")  # 끌어도 패드로 바뀌면 안 된다
 		"achievements":
 			_scroll = node("%Scroll")
 			_target = (current_scene as AchievementsScreen).common_rows()[1]
