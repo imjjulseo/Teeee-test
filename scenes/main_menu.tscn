@@ -203,11 +203,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_type_variation = &"AccentLabel"
 theme_override_font_sizes/font_size = 42
-<<<<<<< HEAD
 text = "▲ 블록을 위로 밀어 시작"
-=======
-text = "▲ 블럭을 위로 밀어 시작"
->>>>>>> Choi
 horizontal_alignment = 1
 vertical_alignment = 1
 

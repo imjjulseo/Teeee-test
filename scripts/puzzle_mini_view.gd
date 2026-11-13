@@ -1,10 +1,6 @@
 class_name PuzzleMiniView
 extends Control
-<<<<<<< HEAD
 ## 퍼즐 판 모양 미리보기 (설정 > 블록 모으기 목록): 모을 블록 칸·내 칸·나머지를 작은 칸으로 그린다.
-=======
-## 퍼즐 판 모양 미리보기 (설정 > 블럭 모으기 목록): 모을 블록 칸·내 칸·나머지를 작은 칸으로 그린다.
->>>>>>> Choi
 
 @export var target_color: Color = Color("5b8def")
 @export var player_color: Color = Color.WHITE

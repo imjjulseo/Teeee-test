@@ -1,10 +1,6 @@
 class_name PuzzleDifficulty
 extends Resource
-<<<<<<< HEAD
 ## 블록 모으기 연습 난이도 (쉬움 · 보통 · 어려움 · 속 빈 모양): 최소 수 구간 안의 문제를 무작위로 만든다.
-=======
-## 블럭 모으기 연습 난이도 (쉬움 · 보통 · 어려움 · 속 빈 모양): 최소 수 구간 안의 문제를 무작위로 만든다.
->>>>>>> Choi
 
 @export var id: StringName = &""
 @export var name: String = ""

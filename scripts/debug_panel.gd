@@ -1,6 +1,5 @@
 class_name DebugPanel
 extends VBoxContainer
-<<<<<<< HEAD
 ## 설정 화면 맨 위의 디버그 (기획서 8.1장): "디버그" 버튼을 누르면 펼쳐진다 (개발 빌드는 펼친 채로 시작).
 ## 버튼에는 배포 빌드 이름(application/config/version, 배포 워크플로가 날짜와 커밋으로 적는다)이 함께 보인다.
 ## 재화 지급, 레벨 올리기, 캐릭터 전부 해금, 튜토리얼 단계 이동, 튜토리얼 건너뛰고 메뉴 모두 열기,
@@ -16,10 +15,6 @@ signal game_requested
 @export var show_in_release: bool = true
 ## "짧은 판"의 제한시간(초): 결과·부활 화면을 빨리 본다.
 @export var short_game_seconds: float = 5.0
-=======
-## 설정 화면의 디버그 (기획서 8.1장, 개발 빌드만): 재화 지급, 레벨 올리기, 캐릭터 전부 해금.
-## 배포 빌드에서는 숨긴다. 진행 저장은 ProgressStore로만 한다.
->>>>>>> Choi
 
 ## 전부 해금할 캐릭터 목록.
 @export var roster: CharacterRoster
@@ -28,7 +23,6 @@ signal game_requested
 @export var grant_diamonds: int = 100
 
 @onready var _status_label: Label = %DebugStatusLabel
-<<<<<<< HEAD
 @onready var _toggle: Button = %DebugToggle
 
 
@@ -76,28 +70,12 @@ func _show_body(on: bool) -> void:
 func _on_grant_button_pressed() -> void:
 	ProgressStore.new().add_currency(grant_coins, grant_diamonds)
 	_changed()
-=======
-
-
-func _ready() -> void:
-	visible = OS.is_debug_build()
-	_refresh()
-
-
-func _on_grant_button_pressed() -> void:
-	ProgressStore.new().add_currency(grant_coins, grant_diamonds)
-	_refresh()
->>>>>>> Choi
 
 
 func _on_level_button_pressed() -> void:
 	var store: ProgressStore = ProgressStore.new()
 	store.set_level(store.level + 1)
-<<<<<<< HEAD
 	_changed()
-=======
-	_refresh()
->>>>>>> Choi
 
 
 func _on_unlock_all_button_pressed() -> void:
@@ -106,31 +84,19 @@ func _on_unlock_all_button_pressed() -> void:
 	var store: ProgressStore = ProgressStore.new()
 	for character: CharacterData in roster.characters:
 		store.unlock(character.id)
-<<<<<<< HEAD
 	_changed()
-=======
-	_refresh()
->>>>>>> Choi
 
 
 ## 튜토리얼을 처음부터 (다음 게임 시작이 규칙 튜토리얼).
 func _on_tutorial_restart_pressed() -> void:
 	TutorialStore.new().restart_all()
-<<<<<<< HEAD
 	_changed()
-=======
-	_refresh()
->>>>>>> Choi
 
 
 ## 튜토리얼과 흐름을 모두 끝낸 상태로.
 func _on_tutorial_finish_pressed() -> void:
 	TutorialStore.new().finish_all()
-<<<<<<< HEAD
 	_changed()
-=======
-	_refresh()
->>>>>>> Choi
 
 
 ## 흐름 단계로 바로: 첫 뽑기 직전 (튜토리얼 끝 · 실전 판 1번 · 레벨 보상 화면 봄).
@@ -141,11 +107,7 @@ func _on_tutorial_gacha_pressed() -> void:
 	tutorial.mark_seen(TutorialStore.SEEN_REAL_GAME)
 	tutorial.mark_seen(TutorialStore.SEEN_LEVEL_SCREEN)
 	_ensure_games_played(1)
-<<<<<<< HEAD
 	_changed()
-=======
-	_refresh()
->>>>>>> Choi
 
 
 ## 흐름 단계로 바로: 첫 캐릭터(첫 뽑기 후보의 첫 캐릭터)를 받음.
@@ -159,11 +121,7 @@ func _on_tutorial_character_pressed() -> void:
 	var tutorial: TutorialStore = TutorialStore.new()
 	tutorial.mark_seen(TutorialStore.SEEN_GACHA_GIFT)
 	tutorial.got_first_character(id)
-<<<<<<< HEAD
 	_changed()
-=======
-	_refresh()
->>>>>>> Choi
 
 
 func _ensure_games_played(count: int) -> void:
@@ -183,12 +141,9 @@ func _refresh() -> void:
 	var tutorial: TutorialStore = TutorialStore.new()
 	_status_label.text = "Lv %d · ● %d · ◆ %d · 해금 %d\n튜토리얼 %s · 흐름 %d" % [store.level, store.coins, store.diamonds,
 		store.unlocked.size(), "끝" if tutorial.done else "전", tutorial.flow]
-<<<<<<< HEAD
 
 
 ## 진행을 바꾼 뒤: 상태 문구를 고치고 화면에 알린다.
 func _changed() -> void:
 	_refresh()
 	progress_changed.emit()
-=======
->>>>>>> Choi

@@ -42,11 +42,7 @@ stretch_mode = 5
 [node name="DiamondAmount" type="Label" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-<<<<<<< HEAD
 theme_type_variation = &"DiamondLabel"
-=======
-theme_type_variation = &"AccentLabel"
->>>>>>> Choi
 text = "◆ 0"
 
 [node name="DiamondButton" type="Button" parent="DiamondAmount"]

@@ -5,11 +5,7 @@ extends RefCounted
 ## (메뉴로 나간 판·체험 판은 부르지 않는다 → 업적 진행 없음). 달성한 업적의 보상은 업적 화면에서 claim으로 받는다 (E38).
 ## - 공통 업적: 누적 통계·최고 점수·모은 캐릭터 수가 단계 목표를 넘을 때마다 달성.
 ## - 캐릭터 업적: 그 캐릭터로 한 판의 지표(RunMetrics)가 목표 이상이면 달성. 앞 단계를 깨야 다음 단계가 열린다.
-<<<<<<< HEAD
 ## - 히든 업적: 한 판의 지표가 목표 이상이면 달성하고 그 자리에서 히든 캐릭터를 해금한다 (E39, 받기 없음).
-=======
-## - 히든 업적: 진행 값만 기록한다 (달성 판정·캐릭터 지급은 조건 확정 뒤, 5a 결정).
->>>>>>> Choi
 
 ## 화면에 보일 업적 한 단계.
 class TierStatus:
@@ -36,7 +32,6 @@ class TierStatus:
 class Completion:
 	var name: String = ""
 	var reward: String = ""
-<<<<<<< HEAD
 	## 업적 화면에서 눌러 받는 보상이다 (히든 업적은 달성하면 바로 해금되어 false).
 	var needs_claim: bool = true
 
@@ -44,12 +39,6 @@ class Completion:
 		name = p_name
 		reward = p_reward
 		needs_claim = p_needs_claim
-=======
-
-	func _init(p_name: String, p_reward: String) -> void:
-		name = p_name
-		reward = p_reward
->>>>>>> Choi
 
 
 var book: AchievementBook
@@ -77,11 +66,7 @@ func record_game(session: GameSession, best: int) -> Array[Completion]:
 		if chain != null:
 			_advance_chain(chain, session.character.display_name, metrics, completions)
 	for item: HiddenAchievement in book.hidden:
-<<<<<<< HEAD
 		_advance_hidden(item, metrics, completions)
-=======
-		store.record_progress(item.id(), metrics.value(item.metric))
->>>>>>> Choi
 	completions.append_array(_check_common(best))
 	store.save()
 	return completions
@@ -174,7 +159,6 @@ func chain_status(character_id: StringName) -> Array[TierStatus]:
 	return list
 
 
-<<<<<<< HEAD
 ## 히든 업적 한 줄 (조건을 보여 준다, E42). 달성하면 캐릭터가 바로 해금되므로 받을 것은 없다 (claimed = done).
 func hidden_status(item: HiddenAchievement) -> TierStatus:
 	var status: TierStatus = TierStatus.new()
@@ -189,8 +173,6 @@ func hidden_status(item: HiddenAchievement) -> TierStatus:
 	return status
 
 
-=======
->>>>>>> Choi
 ## 공통 업적의 지금 값.
 func common_value(stat: StringName, best: int) -> int:
 	match stat:
@@ -225,7 +207,6 @@ func _advance_chain(chain: CharacterAchievementChain, character_name: String, me
 		_complete(id, "%s %s" % [character_name, book.chain_tier_names[tier]], tier, out)
 
 
-<<<<<<< HEAD
 func _advance_hidden(item: HiddenAchievement, metrics: RunMetrics, out: Array[Completion]) -> void:
 	var id: String = item.id()
 	if store.is_done(id):
@@ -239,8 +220,6 @@ func _advance_hidden(item: HiddenAchievement, metrics: RunMetrics, out: Array[Co
 	out.append(Completion.new(item.name, book.hidden_reward, false))
 
 
-=======
->>>>>>> Choi
 func _check_common(best: int) -> Array[Completion]:
 	var out: Array[Completion] = []
 	for item: CommonAchievement in book.common:

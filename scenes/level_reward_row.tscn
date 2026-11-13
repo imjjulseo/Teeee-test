@@ -68,11 +68,7 @@ visible = false
 layout_mode = 2
 theme_type_variation = &"WarmAccentLabel"
 theme_override_font_sizes/font_size = 36
-<<<<<<< HEAD
 text = "받기"
-=======
-text = "보상받기"
->>>>>>> Choi
 horizontal_alignment = 1
 
 [node name="Stem" type="ColorRect" parent="Tower"]

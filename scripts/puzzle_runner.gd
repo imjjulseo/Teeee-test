@@ -1,10 +1,6 @@
 class_name PuzzleRunner
 extends RefCounted
-<<<<<<< HEAD
 ## 블록 모으기 퍼즐 한 판을 진행한다 (연습 화면·튜토리얼이 함께 쓴다): 수를 BlockPuzzle에 넘기고 판 그림 이벤트를
-=======
-## 블럭 모으기 퍼즐 한 판을 진행한다 (연습 화면·튜토리얼이 함께 쓴다): 수를 BlockPuzzle에 넘기고 판 그림 이벤트를
->>>>>>> Choi
 ## BoardChannel로 보낸다. 풀리면 solved를 보내고(매치 처리는 주인이: 연습 = 연출만, 튜토리얼 = 본게임 매치),
 ## 잠깐 뒤 결과를 정한다 — quick이면 finished, 아니면 result_ready (★ 하나로 처음 풀면 정답 다시 보기 먼저).
 ## 시간은 주인이 advance(delta)로 넘긴다.
@@ -167,11 +163,7 @@ func start_replay() -> void:
 	_paused_at_diverge = false
 	_channel.board_created.emit(puzzle.board)
 	_channel.marks_changed.emit(_window_marks())
-<<<<<<< HEAD
 	tip_override = "가장 짧은 길을 보여 줄게요" if _replay.diverge < 0 else "내가 간 길을 따라가다가, 처음 엇갈린 곳에서 멈출게요"
-=======
-	tip_override = "최소 수 길을 보여 줄게요" if _replay.diverge < 0 else "내가 둔 길을 따라가다가, 처음 벗어난 곳에서 멈춰요"
->>>>>>> Choi
 	phase = Phase.REPLAY
 	_wait = _book.replay_step + 0.1
 	changed.emit()
@@ -206,13 +198,8 @@ static func result_head(stars: int, over: int, replayed: bool) -> String:
 	if stars == 3:
 		return "최소 수로 성공!"
 	if stars == 2:
-<<<<<<< HEAD
 		return "%d수 더 짧은 길이 있어요" % over
 	return "정답 길을 봤어요" if replayed else "다음엔 더 짧게 풀어 보세요"
-=======
-		return "%d수 더 짧은 길이 있어요" % over if over > 0 else "최소 수예요! 되돌리기 없이 하면 ★★★"
-	return "정답 길을 봤어요" if replayed else "다음엔 더 짧게 해 봐요"
->>>>>>> Choi
 
 
 func _redraw() -> void:
@@ -268,11 +255,7 @@ func _replay_step() -> void:
 	var dir: Vector2i = _replay.path[_replay_index]
 	if _replay_index == _replay.diverge and not _paused_at_diverge:
 		_paused_at_diverge = true
-<<<<<<< HEAD
 		tip_override = "여기서는 %s 쪽이 빨라요" % ARROW_TEXT.get(dir, "")
-=======
-		tip_override = "여기서는 %s 쪽이 더 좋아요 · 내가 둔 수는 %s였어요" % [ARROW_TEXT.get(dir, ""), ARROW_TEXT.get(_replay.my_move, "")]
->>>>>>> Choi
 		var marks: Array[BoardMark] = _window_marks()
 		var arrow: BoardMark = BoardMark.at_cell(BoardMark.Kind.ARROW, puzzle.board.player_pos + dir)
 		arrow.direction = dir

@@ -17,12 +17,9 @@ extends Resource
 @export var tutorial_name: String = "규칙 익히기"
 @export var tutorial_coins: int = 50
 
-<<<<<<< HEAD
 ## 히든 업적 보상 칸 문구 (달성하면 그 캐릭터를 바로 해금한다, E39).
 @export var hidden_reward: String = "히든 캐릭터"
 
-=======
->>>>>>> Choi
 ## 히든 업적 "직선 이동 뒤 매치"로 치는 같은 방향 연속 칸 수 (8.7장 파키케팔로사우르스 조건 초안).
 @export var straight_run: int = 5
 

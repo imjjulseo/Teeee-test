@@ -14,12 +14,8 @@ grade = 2
 ability = SubResource("Ability_1")
 ability_name = "물감"
 ability_description = "물감: 지나온 길의 블록 최대 5개를 가장 많이 진행된 족보의 다음 색으로 칠함"
-<<<<<<< HEAD
 summary = "지나온 길의 블록 5개를 다음에 필요한 색으로 칠해요"
 detail_effect = "캐릭터 족보를 완성하면 바로 발동해요.\n지나온 길의 블록을 5개까지, 가장 많이 찬 족보의 다음 색으로 칠해요.\n지나온 칸이 씨앗이면 내 주변 블록을 칠해요."
-=======
-detail_effect = "고정 족보를 완성하면 바로 발동해요. 지나온 길의 블럭 최대 5개를 가장 많이 진행된 족보의 다음 색으로 칠해요. 지나온 칸이 씨앗이면 내 주변 블럭을 칠해요."
->>>>>>> Choi
 condition_colors = PackedInt32Array(0, 2, 1, 3)
 accent_color = Color(1, 0.560784, 0.694118, 1)
 player_fill = Color(0.22, 0.123373, 0.152706, 1)

@@ -124,11 +124,7 @@ func _on_result_ready(info: PuzzleRunner.ResultInfo) -> void:
 	var coins: int = _record(info.stars)
 	var note: String = "첫 클리어 보상 ● %d" % coins if coins > 0 else ""
 	_next = menu.next_after(runner.puzzle.def.id)
-<<<<<<< HEAD
 	_result.show_result(info, "다음 퍼즐" if _next != null else "", note, true)
-=======
-	_result.show_result(info, "다음 퍼즐" if _next != null else "목록으로", note)
->>>>>>> Choi
 
 
 ## 결과 기록은 퍼즐마다 처음 결과에서 한 번 (정답 보기·다시 해 보기 뒤에는 다시 세지 않는다).
@@ -167,13 +163,8 @@ func _refresh_labels() -> void:
 	var puzzle_now: BlockPuzzle = runner.puzzle
 	var replaying: bool = runner.phase == PuzzleRunner.Phase.REPLAY
 	_name_label.text = "정답 다시 보기" if replaying else _label
-<<<<<<< HEAD
 	_sub_label.text = _sub + (" / 되돌리기 %d번" % puzzle_now.undos if puzzle_now.undos > 0 and not replaying else "")
 	_count_label.text = "%d수 / 최소 %d수" % [runner.shown_moves(), puzzle_now.min_moves]
-=======
-	_sub_label.text = _sub + (" · 되돌리기 %d번" % puzzle_now.undos if puzzle_now.undos > 0 and not replaying else "")
-	_count_label.text = "%d수 · 최소 %d수" % [runner.shown_moves(), puzzle_now.min_moves]
->>>>>>> Choi
 	_tip_label.text = runner.tip_text()
 	_tip_label.add_theme_color_override("font_color", theme_data.puzzle_pull_color if runner.tip_emphasized() else Color.WHITE)
 	var playing: bool = runner.is_playing()

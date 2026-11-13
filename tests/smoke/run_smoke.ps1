@@ -29,13 +29,10 @@ $runs = @(
     @{ Script = "smoke_input.gd"; Args = @("dpad") },
     @{ Script = "smoke_input.gd"; Args = @("swipe") },
     @{ Script = "smoke_swipe_soak.gd"; Args = @("run") },
-<<<<<<< HEAD
     @{ Script = "smoke_debug.gd"; Args = @("replay") },
     @{ Script = "smoke_debug.gd"; Args = @("unlock") },
     @{ Script = "smoke_debug.gd"; Args = @("short") },
     @{ Script = "smoke_debug.gd"; Args = @("folded") },
-=======
->>>>>>> Choi
     @{ Script = "smoke_feedback.gd"; Args = @("run") },
     @{ Script = "smoke_feedback.gd"; Args = @("audio") },
     @{ Script = "smoke_anim.gd"; Args = @("match") },

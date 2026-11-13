@@ -145,21 +145,12 @@ bg_token = &"selected"
 border_token = &"outline"
 
 [sub_resource type="StyleBoxFlat" id="Box_12"]
-<<<<<<< HEAD
 content_margin_top = 21.0
 content_margin_bottom = 21.0
 corner_radius_top_left = 21
 corner_radius_top_right = 21
 corner_radius_bottom_right = 21
 corner_radius_bottom_left = 21
-=======
-content_margin_top = 12.0
-content_margin_bottom = 12.0
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
->>>>>>> Choi
 
 [sub_resource type="Resource" id="Style_12"]
 script = ExtResource("2_style")
@@ -170,21 +161,12 @@ template = SubResource("Box_12")
 bg_token = &"control_track"
 
 [sub_resource type="StyleBoxFlat" id="Box_13"]
-<<<<<<< HEAD
 content_margin_top = 21.0
 content_margin_bottom = 21.0
 corner_radius_top_left = 21
 corner_radius_top_right = 21
 corner_radius_bottom_right = 21
 corner_radius_bottom_left = 21
-=======
-content_margin_top = 12.0
-content_margin_bottom = 12.0
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
->>>>>>> Choi
 
 [sub_resource type="Resource" id="Style_13"]
 script = ExtResource("2_style")
@@ -715,10 +697,7 @@ script = ExtResource("1_spec")
 default_font = ExtResource("3_font")
 label_variations = Dictionary[StringName, StringName]({
 &"AccentLabel": &"accent",
-<<<<<<< HEAD
 &"DiamondLabel": &"diamond",
-=======
->>>>>>> Choi
 &"DimLabel": &"text_dim",
 &"InfoLabel": &"info",
 &"MutedLabel": &"text_muted",

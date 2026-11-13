@@ -14,12 +14,8 @@ grade = 3
 ability = SubResource("Ability_1")
 ability_name = "점화"
 ability_description = "점화: 다음 매치 1번이 이어진 같은 색 블록을 모두 연쇄 폭파"
-<<<<<<< HEAD
 summary = "다음 매치 때 이어진 같은 색 블록이 모두 터지고, 터진 수만큼 족보가 차요"
 detail_effect = "다음 매치 한 번은, 그 블록과 이어진 같은 색 블록이 전부 드르륵 터져요.\n터진 블록 1개마다 가장 많이 찬 족보가 색과 상관없이 한 칸씩 차요."
-=======
-detail_effect = "다음 매치 1번이 터질 때, 그 블럭과 이어진 같은 색 블럭이 전부 드르륵 연쇄 폭파돼요. 연쇄로 터진 블럭 1개마다 가장 많이 완성된 족보가 한 칸씩 올라가요(색 무관)."
->>>>>>> Choi
 condition_colors = PackedInt32Array(0, 3, 0)
 accent_color = Color(1, 0.352941, 0.352941, 1)
 player_fill = Color(0.22, 0.077647, 0.077647, 1)

@@ -1,10 +1,6 @@
 extends "res://tests/smoke/smoke_base.gd"
 ## 캐릭터 선택과 능력 (기획서 5.2장). 모드:
-<<<<<<< HEAD
 ## - select : 메인 → 블록 → 캐릭터 정보, 등급순 32명, 능력명·족보·설명, 히든은 가림, 화살표, 다시 누르면 메인
-=======
-## - select : 메인 → 블럭 → 캐릭터 정보, 등급순 32명, 능력명·족보·설명, 히든은 가림, 화살표, 다시 누르면 메인
->>>>>>> Choi
 ## - basic / gardener / clock / gambler / fever / joker : 해당 캐릭터로 게임, 실제 매치로 능력 발동
 ##   → 배너("이름!"), 메시지 줄 결과 문구, 캐릭터 카드 둘째 줄 상태, 배경 효과, 그리고 능력별 후속 확인
 
@@ -218,11 +214,7 @@ func _tick_select() -> void:
 			if step_time > 0.2:
 				var page: CharacterInfo = select.carousel().current_page()
 				expect(page.character.id == &"gardener", "gardener page")
-<<<<<<< HEAD
 				expect(page.shown_actions() == PackedStringArray(["미보유", "튜토리얼 / 체험"]), "unowned (%s)" % [page.shown_actions()])
-=======
-				expect(page.shown_actions() == PackedStringArray(["미보유", "튜토리얼 및 체험"]), "unowned (%s)" % [page.shown_actions()])
->>>>>>> Choi
 				expect((page.get_node("%EffectLabel") as Label).text == page.character.detail_effect, "effect detail shown")
 				expect((page.get_node("%AbilityName") as Label).text == "촉진" and (page.get_node("%AbilityKind") as Label).text == "족보형", "ability name and kind")
 				var condition: RecipeView = page.get_node("%SheetCondition")
@@ -241,11 +233,7 @@ func _tick_select() -> void:
 			if step_time > 0.2:
 				var page: CharacterInfo = select.carousel().current_page()
 				expect((page.get_node("%SheetNameLabel") as Label).text == "???" and (page.get_node("%HiddenNote") as Control).visible, "hidden stays veiled")
-<<<<<<< HEAD
 				expect(not (page.get_node("%AbilityBox") as Control).visible and not (page.get_node("%EffectLabel") as Control).visible and not (page.get_node("%LessonButton") as Control).visible, "no ability, no trial")
-=======
-				expect(not (page.get_node("%EffectBox") as Control).visible and not (page.get_node("%LessonButton") as Control).visible, "no ability, no trial")
->>>>>>> Choi
 				shot("select_hidden")
 				for character: CharacterData in select.collection.sorted():
 					select.show_character(character.id)  # 32명 모두 그려진다
@@ -366,29 +354,17 @@ func _check_triggered() -> void:
 		"seer":
 			expect(_seeds_revealed(), "seeds show their next color")
 		"sewer":
-<<<<<<< HEAD
 			expect(_card().begins_with("12칸 / ") and _card().ends_with("초"), "card shows rope and time (%s)" % _card())
-=======
-			expect(_card().begins_with("12칸 · ") and _card().ends_with("초"), "card shows rope and time (%s)" % _card())
->>>>>>> Choi
 			expect(_marks().size() == 1 and _marks()[0].kind == BoardMark.Kind.PATH, "rope drawn")
 		"zeus":
 			expect(session().is_input_locked(), "no input during the strikes")
 			expect(session().is_clock_stopped(), "time stopped")
-<<<<<<< HEAD
 			expect(_card().begins_with("낙뢰 "), "card shows strikes left (%s)" % _card())
-=======
-			expect(_card().begins_with("⚡"), "card shows strikes left (%s)" % _card())
->>>>>>> Choi
 		"photo":
 			expect((session().ability as PhotoAbility).planning, "photo taken")
 			expect(_marks().size() == 1 and _marks()[0].kind == BoardMark.Kind.PATH, "plan path drawn")
 		"madan":
-<<<<<<< HEAD
 			expect(_card().begins_with("6발 / "), "card shows bullets (%s)" % _card())
-=======
-			expect(_card().begins_with("6발 · "), "card shows bullets (%s)" % _card())
->>>>>>> Choi
 			expect(session().is_clock_stopped(), "time stopped")
 
 
@@ -547,11 +523,7 @@ func _check_followup() -> void:
 			elif step_time > 0.3:
 				expect(madan.shots_used == 1, "a real key fired one shot")
 				expect(session().board.player_pos == (_snap as Vector2i) + Vector2i.DOWN, "moved into the shot cell")
-<<<<<<< HEAD
 				expect(_card().begins_with("5발 / "), "card counts bullets (%s)" % _card())
-=======
-				expect(_card().begins_with("5발 · "), "card counts bullets (%s)" % _card())
->>>>>>> Choi
 				shot("madan_shot")
 				finish()
 		"sewer":

@@ -28,13 +28,10 @@ var _character: CharacterData
 var _trial: bool = false
 ## 규칙 튜토리얼 판 (튜토리얼을 아직 안 끝냈다): 남은 시간이 흐르지 않고 보상·기록·업적 없음. 끝나면 실전 판으로.
 var _tutorial: bool = false
-<<<<<<< HEAD
 ## 규칙 튜토리얼 다시 보기 (PlayRequest.replay_tutorial): 기록·업적 없이 끝나면 메뉴로.
 var _replay: bool = false
 ## 디버그: 이 씬의 판 제한시간 (PlayRequest.game_seconds, 0 = 평소대로).
 var _debug_seconds: float = 0.0
-=======
->>>>>>> Choi
 ## 이번 판 시작 때 첫 실전 판 안내를 띄운다.
 var _show_intro: bool = false
 ## 다음 판 시작 때 캐릭터 튜토리얼을 연다 (첫 뽑기 캐릭터 · 튜토리얼 다시 하기 · 튜토리얼 판 다시 시작).
@@ -61,25 +58,16 @@ func _ready() -> void:
 	achievements = AchievementBook.ensure_valid(achievements)
 	_best_store = BestScoreStore.new(save_path)
 	_progress = ProgressStore.new(save_path)
-<<<<<<< HEAD
 	var trial_id: StringName = TrialRequest.take()
 	_replay = PlayRequest.take_replay_tutorial()
 	_debug_seconds = PlayRequest.take_game_seconds()
-=======
-	var wants_lesson: bool = TrialRequest.take_lesson()
-	var trial_id: StringName = TrialRequest.take()
->>>>>>> Choi
 	if roster != null:
 		_trial = trial_id != &""
 		# 체험 판은 해금과 무관하게 그 캐릭터, 아니면 장착한 캐릭터 (해금하지 않았으면 기본 캐릭터)
 		_character = roster.find(trial_id) if _trial else \
 			CharacterCollection.new(roster, _progress, CharacterStore.new(save_path)).equipped_character()
 	_setup_tutorial()
-<<<<<<< HEAD
 	_setup_lesson(_trial)  # 체험 판 = 캐릭터 튜토리얼 (E38)
-=======
-	_setup_lesson(wants_lesson)
->>>>>>> Choi
 	_flow = GameFlow.new(_stage_config(), _character)
 	# 체험 판은 부활 없음 (8.4장)
 	_flow.revive_policy = RevivePolicy.new() if _trial or _tutorial else DiamondRevivePolicy.new(_progress, progression.revive_diamonds)
@@ -94,11 +82,7 @@ func _setup_tutorial() -> void:
 	_tutorial_store = TutorialStore.new(save_path)
 	if _trial or tutorial_director == null:
 		return
-<<<<<<< HEAD
 	_tutorial = _replay or not _tutorial_store.done
-=======
-	_tutorial = not _tutorial_store.done
->>>>>>> Choi
 	if _tutorial:
 		_character = roster.default_character() if roster != null else null
 		return
@@ -161,12 +145,9 @@ func _tutorial_takes_moves() -> bool:
 func _on_tutorial_finished() -> void:
 	if not _tutorial:
 		return
-<<<<<<< HEAD
 	if _replay:  # 다시 보기 (설정): 기록·업적 없이 메뉴로
 		flow_channel.quit_to_menu.emit()
 		return
-=======
->>>>>>> Choi
 	_tutorial_store.complete_rule_tutorial()
 	AchievementTracker.new(achievements, AchievementStore.new(save_path), _progress).complete_tutorial()
 	flow_channel.tutorial_finished.emit()
@@ -253,39 +234,18 @@ func _on_cell_tapped(cell: Vector2i) -> void:
 		_flow.request_move_toward(cell)
 
 
-<<<<<<< HEAD
 ## 일시정지의 다시 시작: 보상 없이 새 판. 튜토리얼 판(체험 포함)은 튜토리얼을 처음부터.
 func _on_restart_requested() -> void:
 	if not is_running():
 		return
-=======
-## 일시정지의 다시 시작: 보상 없이 새 판. 체험 판이면 캐릭터 화면으로 (9장).
-func _on_restart_requested() -> void:
-	if not is_running():
-		return
-	if _trial and not _in_lesson():
-		if _flow.abandon():
-			_leave_trial()
-		return
->>>>>>> Choi
 	_lesson_pending = _in_lesson()  # 튜토리얼 판의 다시 시작은 튜토리얼을 처음부터
 	_flow.set_config(_stage_config())
 	_flow.restart()
 
 
-<<<<<<< HEAD
 ## 결과 화면의 메뉴.
 func _on_result_menu_requested() -> void:
 	if is_running():
-=======
-## 결과 화면의 메뉴: 체험 판이면 캐릭터 화면으로.
-func _on_result_menu_requested() -> void:
-	if not is_running():
-		return
-	if _trial:
-		_leave_trial()
-	else:
->>>>>>> Choi
 		flow_channel.quit_to_menu.emit()
 
 
@@ -318,16 +278,12 @@ func _stage_config() -> GameConfig:
 	if _tutorial:
 		return tutorial_director.tutorial.apply_to(config)
 	var stage: BoardStage = progression.stage_for_level(_progress.level)
-<<<<<<< HEAD
 	var staged: GameConfig = stage.apply_to(config) if stage != null else config
 	if _debug_seconds <= 0.0:
 		return staged
 	var short: GameConfig = staged.duplicate() as GameConfig  # 디버그: 짧은 판 (PlayRequest.game_seconds)
 	short.game_duration = _debug_seconds
 	return short
-=======
-	return stage.apply_to(config) if stage != null else config
->>>>>>> Choi
 
 
 func _on_pause_requested() -> void:
@@ -335,7 +291,6 @@ func _on_pause_requested() -> void:
 		_flow.toggle_pause()
 
 
-<<<<<<< HEAD
 ## 일시정지 화면에서 조작 방법을 바꿨다 (E40): 지금 판에 바로 반영. 규칙 튜토리얼은 스와이프 그대로 (저장은 됨).
 func _on_control_mode_changed(mode: OptionsStore.ControlMode) -> void:
 	flow_channel.control_mode_ready.emit(OptionsStore.ControlMode.SWIPE if _tutorial else mode)
@@ -346,8 +301,6 @@ func _on_reduce_motion_changed(enabled: bool) -> void:
 	flow_channel.reduce_motion_ready.emit(enabled)
 
 
-=======
->>>>>>> Choi
 func _on_resume_requested() -> void:
 	if is_running():
 		_flow.resume()
@@ -383,17 +336,11 @@ func _on_flow_state_changed(state: GameFlow.GameState) -> void:
 		GameFlow.GameState.REVIVE:
 			flow_channel.revive_offered.emit(_flow.session.score, progression.revive_diamonds, _progress.diamonds, config.revive_time)
 		GameFlow.GameState.RESULT when _trial or _in_lesson():
-<<<<<<< HEAD
 			# 체험 판·캐릭터 튜토리얼 판은 남은 시간이 흐르지 않아 결과에 오지 않는다. 혹시 오면 보상·기록 없이 연 화면으로.
 			if _trial:
 				_leave_trial()
 			else:
 				flow_channel.quit_to_menu.emit()
-=======
-			# 체험 판·캐릭터 튜토리얼 판: 보상·경험치·최고 기록·플레이 기록 없음 (8.5장)
-			flow_channel.result_ready.emit(_flow.session.score, _best_store.best, false, _flow.session.collected_coins())
-			flow_channel.trial_result_ready.emit(_character.display_name if _character != null else "")
->>>>>>> Choi
 		GameFlow.GameState.RESULT:
 			var score: int = _flow.session.score
 			var is_new_best: bool = _best_store.submit(score)
@@ -429,19 +376,11 @@ func _log_playtest(end: String) -> void:
 	PlaytestLog.append(PlaytestLog.row_for(_flow.session, character_id, end, "", context))
 
 
-<<<<<<< HEAD
 ## 결과 화면 보상 목록 줄 [이름, 보상]: ["업적 블록 부수기 I", "업적에서 받기"], 히든 업적은 ["업적 돌머리", "히든 캐릭터"].
 static func achievement_lines(completions: Array[AchievementTracker.Completion]) -> Array[PackedStringArray]:
 	var lines: Array[PackedStringArray] = []
 	for completion: AchievementTracker.Completion in completions:
 		lines.append(PackedStringArray(["업적 %s" % completion.name, "업적에서 받기" if completion.needs_claim else completion.reward]))
-=======
-## 결과 화면 보상 목록 줄 [이름, 보상]: ["업적 · 블럭 부수기 I", "● 100"].
-static func achievement_lines(completions: Array[AchievementTracker.Completion]) -> Array[PackedStringArray]:
-	var lines: Array[PackedStringArray] = []
-	for completion: AchievementTracker.Completion in completions:
-		lines.append(PackedStringArray(["업적 · %s" % completion.name, "업적에서 받기"]))
->>>>>>> Choi
 	return lines
 
 

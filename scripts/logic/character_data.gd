@@ -20,15 +20,10 @@ const GRADE_LETTERS: PackedStringArray = ["", "C", "B", "A", "S", "H"]
 @export var ability: Ability
 ## 캐릭터 카드·발동 배너의 짧은 능력 이름 (예: "촉진"). 배너는 "촉진!".
 @export var ability_name: String = ""
-<<<<<<< HEAD
 ## 능력 규칙 요약 (기획서 5.2장 표의 "능력" 칸과 같다). 화면에는 summary를 쓴다.
 @export_multiline var ability_description: String = ""
 ## 화면에 보이는 한 줄 설명 (발동 배너, 뽑기 결과, 캐릭터 튜토리얼 소개). 말투는 docs/copy_guide.md.
 @export_multiline var summary: String = ""
-=======
-## 캐릭터 선택 화면과 발동 배너의 능력 설명 (기획서 5.2장 표의 "능력" 칸).
-@export_multiline var ability_description: String = ""
->>>>>>> Choi
 ## 캐릭터 상세 시트 (8.1장)의 효과 자세한 설명. 비어 있으면 능력 설명을 쓴다.
 @export_multiline var detail_effect: String = ""
 ## 캐릭터 족보: 이 색 순서대로 블록을 깨면 능력 발동. 비어 있으면 발동형이 아니다.
@@ -43,14 +38,11 @@ const GRADE_LETTERS: PackedStringArray = ["", "C", "B", "A", "S", "H"]
 @export var player_border: Color = Color("ffffff")
 
 
-<<<<<<< HEAD
 ## 화면에 보일 한 줄 설명. summary가 비어 있으면 규칙 요약을 쓴다.
 func player_summary() -> String:
 	return summary if not summary.is_empty() else ability_description
 
 
-=======
->>>>>>> Choi
 ## 등급 문자 (기본은 빈 문자열).
 func grade_letter() -> String:
 	return GRADE_LETTERS[grade] if grade >= 0 and grade < GRADE_LETTERS.size() else ""

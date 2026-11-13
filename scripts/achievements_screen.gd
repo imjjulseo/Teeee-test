@@ -60,11 +60,7 @@ func _ready() -> void:
 	for item: HiddenAchievement in achievements.hidden:
 		var row: AchievementRow = row_scene.instantiate() as AchievementRow
 		_hidden_box.add_child(row)
-<<<<<<< HEAD
 		row.show_status(tracker.hidden_status(item))
-=======
-		row.show_hidden("히든 캐릭터")
->>>>>>> Choi
 		_hidden_rows.append(row)
 	_top_bar.setup(save_path)
 	_nav.setup(save_path)
@@ -82,19 +78,11 @@ func set_tab(p_tab: Tab) -> void:
 	_character_tab.set_pressed_no_signal(tab == Tab.CHARACTER)
 
 
-<<<<<<< HEAD
 ## 캐릭터 탭에 보이는 캐릭터: 업적이 있는 캐릭터 (미보유·히든 포함, 받은 순서 유지).
 static func chain_characters(sorted: Array[CharacterData], book: AchievementBook) -> Array[CharacterData]:
 	var list: Array[CharacterData] = []
 	for character: CharacterData in sorted:
 		if book.chain_for(character.id) != null:
-=======
-## 캐릭터 탭에 보이는 캐릭터: 업적이 있고 히든 등급이 아닌 캐릭터 (미보유 포함, 받은 순서 유지).
-static func chain_characters(sorted: Array[CharacterData], book: AchievementBook) -> Array[CharacterData]:
-	var list: Array[CharacterData] = []
-	for character: CharacterData in sorted:
-		if character.grade != CharacterData.Grade.HIDDEN and book.chain_for(character.id) != null:
->>>>>>> Choi
 			list.append(character)
 	return list
 
@@ -156,11 +144,7 @@ func _refresh_rows() -> void:
 	for i: int in _common_rows.size():
 		_common_rows[i].show_status(tracker.common_status(achievements.common[i], best))
 	for group: CharacterChainGroup in _groups:
-<<<<<<< HEAD
 		group.refresh(_progress.is_unlocked(group.character.id), tracker.chain_status(group.character.id))
-=======
-		group.refresh(tracker.chain_status(group.character.id))
->>>>>>> Choi
 
 
 func _on_common_tab_pressed() -> void:

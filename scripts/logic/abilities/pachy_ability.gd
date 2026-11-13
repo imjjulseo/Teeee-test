@@ -81,11 +81,7 @@ func headbutt_points(n: int) -> int:
 
 func status_text() -> String:
 	if dashing:
-<<<<<<< HEAD
 		return "%d칸 돌진 / +%d" % [steps, headbutt_points(steps + 1)]
-=======
-		return "%d칸 돌진 · +%d" % [steps, headbutt_points(steps + 1)]
->>>>>>> Choi
 	return "밀고 그대로 누르면 돌진"
 
 

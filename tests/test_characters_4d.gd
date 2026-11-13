@@ -141,11 +141,7 @@ func test_photo_plans_moves_while_time_and_refill_stop() -> void:
 	_run(session, 6.9)
 	assert_near(session.remaining_time(), remaining, 1e-9, "time stopped in the photo")
 	assert_eq(session.board.get_cell_type(Vector2i(0, 0)), Board.CellType.SEED, "refill stopped in the photo")
-<<<<<<< HEAD
 	assert_eq(photo.status_text(), "계획 3수 / 0.1초")
-=======
-	assert_eq(photo.status_text(), "계획 3수 · 0.1초")
->>>>>>> Choi
 
 
 func test_photo_plan_stays_inside_the_board_and_is_capped() -> void:
@@ -492,8 +488,4 @@ func test_ambi_counts_matches_per_hand() -> void:
 	_cross(board, Vector2i(7, 3), Vector2i.DOWN, 1)
 	session.request_move(Vector2i.UP, 1)
 	assert_eq(session.match_count, 1)
-<<<<<<< HEAD
 	assert_eq(session.ability.status_text(), "왼 0 / 오 1")
-=======
-	assert_eq(session.ability.status_text(), "왼 0 · 오 1")
->>>>>>> Choi

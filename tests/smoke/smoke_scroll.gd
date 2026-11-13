@@ -1,11 +1,7 @@
 extends "res://tests/smoke/smoke_base.gd"
 ## 메뉴 화면 스크롤과 일시정지 버튼 스와이프 (E36). 실제 터치 이벤트로 줄·카드·버튼 위에서 끌어 본다.
 ## 모드: level · characters · shop · puzzle · options · achievements = 그 화면의 내용 위에서 끌면 스크롤되고(캐릭터는 판이 넘어가고) 눌리지 않는다,
-<<<<<<< HEAD
 ## flick = 캐릭터 판을 빠르게 밀어도 한 장만 넘어간다 (E42),
-=======
-## flick = 캐릭터 판을 빠르게 밀면 여러 장 넘어간다,
->>>>>>> Choi
 ## tap = 스크롤 안 버튼을 그냥 누르면 눌린다, pause_swipe = 일시정지 버튼 위 스와이프는 이동이고 일시정지가 아니다,
 ## pause_tap = 일시정지 버튼을 그냥 누르면 일시정지.
 
@@ -67,11 +63,7 @@ func _pick() -> void:
 			_axis = Vector2.LEFT
 		"options":
 			_scroll = node("SafeArea/Content/Layout/Page/Box/Scroll")
-<<<<<<< HEAD
 			_target = node("%QuickOptions/%DpadButton")  # 끌어도 패드로 바뀌면 안 된다
-=======
-			_target = node("SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow/SwipeButton")
->>>>>>> Choi
 		"achievements":
 			_scroll = node("%Scroll")
 			_target = (current_scene as AchievementsScreen).common_rows()[1]
@@ -145,11 +137,7 @@ func _tick_drag() -> void:
 		3:
 			if step_time > 0.5:
 				if mode == "flick":
-<<<<<<< HEAD
 					expect(_scroll_value() == _before + 1, "a fast swipe turns exactly one page (%d → %d)" % [_before, _scroll_value()])
-=======
-					expect(_scroll_value() >= _before + 2, "a fast swipe skips pages (%d → %d)" % [_before, _scroll_value()])
->>>>>>> Choi
 				else:
 					expect(_scroll_value() != _before, "%s: dragging on content scrolls (%d → %d)" % [mode, _before, _scroll_value()])
 				_expect_no_press()
