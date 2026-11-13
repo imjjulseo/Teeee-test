@@ -76,6 +76,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 36
 
+[node name="DebugPanel" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("3_debug")]
+layout_mode = 2
+
 [node name="QuickOptions" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("4_quick")]
 unique_name_in_owner = true
 layout_mode = 2
@@ -112,9 +115,6 @@ theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 33
 text = "레벨, 재화, 캐릭터, 업적, 튜토리얼 기록을 모두 지우고 처음부터 시작해요. 설정은 그대로 남아요. 한 번 더 눌러야 지워져요"
 autowrap_mode = 3
-
-[node name="DebugPanel" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("3_debug")]
-layout_mode = 2
 
 [node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("21_bottom")]
 unique_name_in_owner = true

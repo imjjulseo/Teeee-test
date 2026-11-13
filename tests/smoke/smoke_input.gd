@@ -12,6 +12,8 @@ var _player_before: Vector2i = Vector2i.ZERO
 var _moves_before: int = 0
 
 
+var _debug_folded: bool = false
+
 func _setup() -> void:
 	config.game_duration = 1000.0
 	OptionsStore.new().set_control_mode(Mode.SWIPE)
@@ -38,7 +40,11 @@ func _tick_options() -> void:
 				click_control(node("%BottomNav/%OptionsButton"))
 				next_step()
 		1:
-			if in_scene("OptionsMenu"):
+			if in_scene("OptionsMenu") and not _debug_folded:
+				_debug_folded = true  # 개발 빌드는 맨 위 디버그 패널이 펼쳐져 있다 → 접어서 배포 빌드처럼
+				click_control(current_scene.find_child("DebugToggle", true, false) as Control)
+				step_time = 0.0
+			elif in_scene("OptionsMenu"):
 				expect((node("%QuickOptions/%SwipeButton") as Button).button_pressed, "swipe selected by default")
 				expect(not (node("%QuickOptions/%ReduceMotionToggle") as CheckButton).button_pressed, "reduce motion off by default")
 				click_control(node("%QuickOptions/%DpadButton") if mode == "dpad" else node("%QuickOptions/%ReduceMotionToggle"))

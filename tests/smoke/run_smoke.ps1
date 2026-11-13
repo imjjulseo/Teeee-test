@@ -32,6 +32,7 @@ $runs = @(
     @{ Script = "smoke_debug.gd"; Args = @("replay") },
     @{ Script = "smoke_debug.gd"; Args = @("unlock") },
     @{ Script = "smoke_debug.gd"; Args = @("short") },
+    @{ Script = "smoke_debug.gd"; Args = @("folded") },
     @{ Script = "smoke_feedback.gd"; Args = @("run") },
     @{ Script = "smoke_feedback.gd"; Args = @("audio") },
     @{ Script = "smoke_anim.gd"; Args = @("match") },

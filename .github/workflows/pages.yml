@@ -57,6 +57,13 @@ jobs:
       - name: Locate Godot
         run: echo "GODOT_BIN=$(ls ~/godot/Godot_v*_linux.x86_64)" >> "$GITHUB_ENV"
 
+      - name: Stamp build name
+        # 설정 화면의 디버그 버튼에 보인다 (기기에 옛 판이 남아 있는지 확인용)
+        run: |
+          STAMP="$(TZ=Asia/Seoul date +%m%d-%H%M) ${GITHUB_SHA::7}"
+          sed -i "s|^config/name=|config/version=\"$STAMP\"\nconfig/name=|" project.godot
+          grep '^config/version=' project.godot
+
       - name: Import project
         run: |
           "$GODOT_BIN" --headless --path . --import || true

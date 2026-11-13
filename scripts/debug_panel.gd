@@ -1,6 +1,7 @@
 class_name DebugPanel
 extends VBoxContainer
-## 설정 화면의 디버그 (기획서 8.1장): "디버그" 버튼을 누르면 펼쳐진다 (개발 빌드는 펼친 채로 시작).
+## 설정 화면 맨 위의 디버그 (기획서 8.1장): "디버그" 버튼을 누르면 펼쳐진다 (개발 빌드는 펼친 채로 시작).
+## 버튼에는 배포 빌드 이름(application/config/version, 배포 워크플로가 날짜와 커밋으로 적는다)이 함께 보인다.
 ## 재화 지급, 레벨 올리기, 캐릭터 전부 해금, 튜토리얼 단계 이동, 튜토리얼 건너뛰고 메뉴 모두 열기,
 ## 메뉴에서 바로 갈 수 없는 화면 열기(인트로, 규칙 튜토리얼, 짧은 판 = 결과·부활 화면, 레벨 보상).
 ## 테스트 기간이라 배포 빌드(웹)에도 보인다. 출시 전에 show_in_release를 끈다. 진행 저장은 각 Store로만 한다.
@@ -28,8 +29,15 @@ signal game_requested
 func _ready() -> void:
 	visible = OS.is_debug_build() or show_in_release
 	_toggle.set_pressed_no_signal(OS.is_debug_build())
+	_toggle.text = toggle_text()
 	_show_body(_toggle.button_pressed)
 	_refresh()
+
+
+## 펼침 버튼 글: 배포할 때 적어 넣은 빌드 이름이 있으면 함께 보인다 (기기에 옛 판이 남아 있는지 확인용).
+static func toggle_text() -> String:
+	var build: String = str(ProjectSettings.get_setting("application/config/version", ""))
+	return "디버그" if build.is_empty() else "디버그 (빌드 %s)" % build
 
 
 ## 펼쳐져 있는지 (테스트/디버그용).
