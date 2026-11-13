@@ -1,6 +1,10 @@
 class_name PuzzleMenuScreen
 extends Control
+<<<<<<< HEAD
 ## 메뉴 > 퍼즐 (기획서 8.1 · 8.8장, E28·E38): 블록 모으기 판 카드(가로 스크롤, 단계 구분 없이 I번부터, PuzzleMenu).
+=======
+## 메뉴 > 퍼즐 (기획서 8.1 · 8.8장, E28·E38): 블럭 모으기 판 카드(가로 스크롤, 단계 구분 없이 I번부터, PuzzleMenu).
+>>>>>>> Choi
 ## 판마다 미리보기 + 별 + 첫 클리어 코인. 앞 판을 풀어야 다음 판이 열린다. 풀기는 PuzzleRequest를 적고 play_requested
 ## (puzzle_menu.tscn에서 씬 전환). 처음 열면 스포트라이트로 한 번 안내한다 (HTML spotOnce _pz, 튜토리얼 흐름의 마지막 단계).
 

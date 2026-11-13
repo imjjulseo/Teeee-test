@@ -9,15 +9,24 @@
 script = ExtResource("4_diff")
 id = &"easy"
 name = "쉬움"
+<<<<<<< HEAD
 description = "최소 3~5수, 목표 모양 보임"
 tip = "빈 자리에 먼저 서서, 블록 쪽으로 움직여 당겨 와요"
+=======
+description = "최소 3~5수 · 목표 모양 보임"
+tip = "빈 자리에 먼저 서서, 블럭 쪽으로 움직여 당겨 와요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Diff_normal"]
 script = ExtResource("4_diff")
 id = &"normal"
 name = "보통"
 description = "최소 6~8수"
+<<<<<<< HEAD
 tip = "가운데를 정하고, 당긴 자리에서 바로 다음 블록으로 가요"
+=======
+tip = "가운데를 정하고, 당긴 자리에서 바로 다음 블럭으로 가요"
+>>>>>>> Choi
 min_moves = 6
 max_moves = 8
 hide_goal = true
@@ -27,7 +36,11 @@ script = ExtResource("4_diff")
 id = &"hard"
 name = "어려움"
 description = "최소 9~12수"
+<<<<<<< HEAD
 tip = "멀리 있는 블록은 당기고, 돌아서 한 번 더 당겨요"
+=======
+tip = "멀리 있는 블럭은 당기고, 돌아서 한 번 더 당겨요"
+>>>>>>> Choi
 min_moves = 9
 max_moves = 12
 hide_goal = true
@@ -37,7 +50,11 @@ script = ExtResource("4_diff")
 id = &"hollow"
 name = "속 빈 모양"
 description = "가운데가 다른 색인 함정 모양"
+<<<<<<< HEAD
 tip = "가운데가 다른 색이면, 먼저 가운데로 들어가 그 블록을 빼내요"
+=======
+tip = "가운데가 다른 색이면, 먼저 가운데로 들어가 그 블럭을 빼내요"
+>>>>>>> Choi
 min_moves = 5
 max_moves = 11
 hollow = true
@@ -47,19 +64,31 @@ hide_goal = true
 script = ExtResource("3_def")
 id = "0a"
 rows = PackedStringArray(".....", "..T..", ".TTT.", ".....", "..P..")
+<<<<<<< HEAD
 tip = "T 모양을 찾으면 매치가 쉬워요"
+=======
+tip = "T 모양을 찾으면 쉽게 매치할 수 있어요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_0b"]
 script = ExtResource("3_def")
 id = "0b"
 rows = PackedStringArray(".....", "..T..", ".TTTP", ".....", ".....")
+<<<<<<< HEAD
 tip = "T 모양을 흐트러뜨리지 말고, 돌아서 들어가 보세요"
+=======
+tip = "T 모양을 깨지 않고 돌아서 매치해 봐요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_0c"]
 script = ExtResource("3_def")
 id = "0c"
 rows = PackedStringArray(".....", "..T..", ".TT..", "..T..", "....P")
+<<<<<<< HEAD
 tip = "T 모양이 어느 쪽으로 열려 있는지 살펴보세요"
+=======
+tip = "T 모양이 어느 쪽으로 열려 있는지 봐요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Level_0"]
 script = ExtResource("2_level")
@@ -70,19 +99,31 @@ boards = Array[ExtResource("3_def")]([SubResource("Board_0a"), SubResource("Boar
 script = ExtResource("3_def")
 id = "1a"
 rows = PackedStringArray(".....", "..T..", ".TT.P", "...T.", ".....")
+<<<<<<< HEAD
 tip = "T 모양은 직접 만들 수도 있어요.\n블록과 자리를 바꿔 만들어 보세요!"
+=======
+tip = "직접 T 모양을 만들 수 있어요. 스왑을 통해 T 모양을 만들어 봐요!"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_1b"]
 script = ExtResource("3_def")
 id = "1b"
 rows = PackedStringArray(".....", ".TP..", ".TTT.", ".....", ".....")
+<<<<<<< HEAD
 tip = "블록 하나만 옮기면 T 모양이 돼요"
+=======
+tip = "블럭 하나만 옮기면 T 모양이 돼요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_1c"]
 script = ExtResource("3_def")
 id = "1c"
 rows = PackedStringArray(".....", ".T.TT", "..PT.", ".....", ".....")
+<<<<<<< HEAD
 tip = "어떤 블록을 옮겨야 할까요?"
+=======
+tip = "어떤 블럭을 옮겨야 할까요?"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Level_1"]
 script = ExtResource("2_level")
@@ -94,19 +135,31 @@ boards = Array[ExtResource("3_def")]([SubResource("Board_1a"), SubResource("Boar
 script = ExtResource("3_def")
 id = "2a"
 rows = PackedStringArray(".....", ".T...", "..TT.", ".T...", "..P..")
+<<<<<<< HEAD
 tip = "이번엔 조금 더 어려워요"
+=======
+tip = "조금 더 어려울 거예요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_l1"]
 script = ExtResource("3_def")
 id = "l1"
 rows = PackedStringArray(".....", ".T...", ".T...", ".TT..", "...P.")
+<<<<<<< HEAD
 tip = "L 모양도 두 번 옮기면 T 모양이 돼요"
+=======
+tip = "L 모양도 두 번 옮기면 T가 돼요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_n1"]
 script = ExtResource("3_def")
 id = "n1"
 rows = PackedStringArray(".....", "TTTT.", ".....", ".....", "..P..")
+<<<<<<< HEAD
 tip = "한 줄로 누워 있으면 어떻게 할까요?"
+=======
+tip = "일자로 누워 있으면 어떻게 할까요?"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Level_2"]
 script = ExtResource("2_level")
@@ -119,13 +172,21 @@ in_menu = true
 script = ExtResource("3_def")
 id = "i1"
 rows = PackedStringArray(".....", "..T..", "..T..", "..T..", ".TP..")
+<<<<<<< HEAD
 tip = "한 줄로 서 있어도 T 모양이 돼요"
+=======
+tip = "한 줄로 서 있어도 T로 바꿀 수 있어요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_n2"]
 script = ExtResource("3_def")
 id = "n2"
 rows = PackedStringArray(".....", ".TT..", ".TT..", ".....", "..P..")
+<<<<<<< HEAD
 tip = "네모도 T 모양으로 바꿀 수 있어요"
+=======
+tip = "네모 모양도 T로 바꿀 수 있어요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_3c"]
 script = ExtResource("3_def")
@@ -150,25 +211,41 @@ tip = "가장 짧은 길은 모양을 가로질러 가요"
 script = ExtResource("3_def")
 id = "3b"
 rows = PackedStringArray(".....", "..T..", ".T.T.", "...T.", "..P..")
+<<<<<<< HEAD
 tip = "가운데부터 원하는 색으로 채워 보세요"
+=======
+tip = "가운데부터 원하는 색으로 채워야 할 거예요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_4a"]
 script = ExtResource("3_def")
 id = "4a"
 rows = PackedStringArray(".....", ".T.T.", "..T..", ".T...", "..P..")
+<<<<<<< HEAD
 tip = "블록을 모아 모아~"
+=======
+tip = "블럭을 모아모아~"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_2c"]
 script = ExtResource("3_def")
 id = "2c"
 rows = PackedStringArray(".....", ".TT..", "..TT.", ".....", "..P..")
+<<<<<<< HEAD
 tip = "보이는 대로가 정말 답일까요?"
+=======
+tip = "과연 보이는 그대로가 답일까요?"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Board_4b"]
 script = ExtResource("3_def")
 id = "4b"
 rows = PackedStringArray(".....", "..T..", ".T.T.", "..T..", ".P...")
+<<<<<<< HEAD
 tip = "초대받지 않은 블록은 빼내야 해요"
+=======
+tip = "초대받지 않은 블럭은 빼내야 해요"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Level_4"]
 script = ExtResource("2_level")

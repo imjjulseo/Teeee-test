@@ -1,7 +1,11 @@
 extends "res://tests/smoke/smoke_base.gd"
 ## 피드백: 실제 입력 경로 스와이프 → 매치 → 족보 완성 "+점수" 팝업, 효과음 요청 순서, 모든 칸 문양,
+<<<<<<< HEAD
 ## 씨앗 칸은 자랄 색을 숨기고 대기 뒤 중앙에서 차오름, 일시정지 버튼 실제 클릭은 이동이 아님,
 ## 일시정지 → 설정에서 조작을 패드로 바꾸면 계속한 판에 바로 패드가 나옴 (E40). 모드: run / audio
+=======
+## 씨앗 칸은 자랄 색을 숨기고 대기 뒤 중앙에서 차오름, 일시정지 버튼 실제 클릭은 이동이 아님. 모드: run / audio
+>>>>>>> Choi
 
 var _sfx: Array[StringName] = []
 var _growth_before: float = 0.0
@@ -55,6 +59,7 @@ func _tick() -> void:
 			if step_time > 0.4:
 				expect(flow().state == S.PAUSED, "pause button click → PAUSED")
 				expect(session().board.player_pos == _start + Vector2i.UP, "button click did not move")
+<<<<<<< HEAD
 				click_control(node("PauseOverlay/%OptionsButton"))
 				next_step()
 		5:
@@ -81,6 +86,8 @@ func _tick() -> void:
 				expect((node("VirtualDpad") as VirtualDpad).visible, "pad shows in the same game")
 				expect((node("InputRouter") as InputRouter).control_mode == OptionsStore.ControlMode.DPAD, "input follows the new mode")
 				shot("pad_after_pause")
+=======
+>>>>>>> Choi
 				finish()
 
 

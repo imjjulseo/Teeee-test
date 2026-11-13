@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://d0wbjypupwjnt"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://b8tqvufbbav4a" path="res://scripts/logic/abilities/pachy_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"pachy"
+display_name = "파키케팔로사우르스"
+grade = 5
+ability = SubResource("Ability_1")
+ability_name = "돌진"
+ability_description = "손가락·버튼·방향키를 0.18초 누르고 있으면 그 방향으로 돌진"
+summary = "밀고 손을 떼지 않으면 가속하며 돌진해요"
+detail_effect = "스와이프한 손가락을 떼지 않고 잠깐 누르고 있으면 그 방향으로 돌진해요(방향키 모드는 버튼, 키보드는 방향키를 누르고 있기).\n처음엔 0.25초에 한 칸, 달릴수록 빨라져 최대 0.04초에 한 칸.\n손을 떼거나 벽에 쿵 부딪히면 멈춰요.\n돌진하다 매치하면 쾅! 박치기 점수를 얻고 돌진이 끝나요.\n멀리서 달려올수록 커요(1칸 20 / 3칸 180 / 5칸 500, 5칸이 최대)."
+condition_colors = PackedInt32Array()
+accent_color = Color(0.721569, 0.627451, 0.415686, 1)
+player_fill = Color(0.158745, 0.138039, 0.091451, 1)
+player_border = Color(0.721569, 0.627451, 0.415686, 1)

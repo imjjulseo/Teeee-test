@@ -14,6 +14,11 @@ signal pause_requested
 ## 경고 구간에서 매 초 1회 (틱 사운드용).
 signal warning_tick
 
+<<<<<<< HEAD
+=======
+const WAITING_CUE: String = "움직이면 시작. 깨면 시간, 족보를 완성하면 점수"
+
+>>>>>>> Choi
 @export var config: GameConfig
 @export var theme_data: BoardTheme
 ## 화면 공통 이미지 (코인 아이콘).
@@ -149,7 +154,11 @@ func _on_match_point(canvas_position: Vector2) -> void:
 
 
 ## 판에서 주운 코인. amount > 0이면 방금 주운 것: 매치 자리에서 "+10"이 코인으로 날아가고(닿으면 숫자가 오름),
+<<<<<<< HEAD
 ## 연속이면 "코인 N연속!"이 떠오른다. 매치 자리는 같은 프레임 뒤에 오므로 날리기는 프레임 끝에 한다.
+=======
+## 연속이면 "금화 N연속!"이 떠오른다. 매치 자리는 같은 프레임 뒤에 오므로 날리기는 프레임 끝에 한다.
+>>>>>>> Choi
 func _on_coins_updated(total: int, amount: int, chain: int) -> void:
 	if total < _coins_real or amount <= 0 or not _animates():
 		_coins_flying = 0
@@ -170,7 +179,11 @@ func _fly_coins(amount: int, chain: int) -> void:
 	label.arrived.connect(_on_coins_arrived.bind(amount))
 	if chain > 1:
 		var chain_size: float = theme_data.float_chain_size + theme_data.float_chain_size_step * mini(chain, 4)
+<<<<<<< HEAD
 		_rise_at(_match_point - Vector2(0.0, theme_data.float_chain_offset), "코인 %d연속!" % chain, theme_data.coin_color, chain_size)
+=======
+		_rise_at(_match_point - Vector2(0.0, theme_data.float_chain_offset), "금화 %d연속!" % chain, theme_data.coin_color, chain_size)
+>>>>>>> Choi
 
 
 func _on_coins_arrived(amount: int) -> void:
@@ -294,7 +307,11 @@ func _on_ability_triggered(character: CharacterData, message: String) -> void:
 	_character_row.play_burst()
 	_flash_screen()
 	if character != null:
+<<<<<<< HEAD
 		_show_banner("%s!" % character.ability_name, character.player_summary())
+=======
+		_show_banner("%s!" % character.ability_name, character.ability_description)
+>>>>>>> Choi
 	_message_label.text = message
 
 
@@ -310,7 +327,11 @@ func message_text() -> String:
 
 func _on_state_changed(state: GameFlow.GameState) -> void:
 	_pause_button.visible = state == GameFlow.GameState.WAITING or state == GameFlow.GameState.PLAYING
+<<<<<<< HEAD
 	_message_label.text = ""
+=======
+	_message_label.text = WAITING_CUE if state == GameFlow.GameState.WAITING else ""
+>>>>>>> Choi
 	if state == GameFlow.GameState.WAITING:  # 새 판: 족보 카드가 위에서 내려온다 (HTML newGame의 cardIn)
 		for view: RecipeView in _recipe_views:
 			if view.visible:

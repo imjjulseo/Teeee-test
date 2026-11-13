@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://ddajuec17tkjg"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://c8tm8fi7lxqnb" path="res://scripts/logic/abilities/arson_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"arson"
+display_name = "방화광"
+grade = 4
+ability = SubResource("Ability_1")
+ability_name = "불"
+ability_description = "빨강 = 불: 불씨 1개로 시작, 빨강은 리필되지 않음"
+summary = "빨강은 불이라 다시 자라지 않고 번져요.\n대신 빨강 족보 칸은 2칸씩 차요"
+detail_effect = "판에 불씨(빨강) 1개로 시작하고, 빨강은 새로 자라지 않아요.\n불은 4초마다 가장자리 3칸으로 번져요.\n번질 칸은 1초 전에 점선으로 보이고, 파랑은 타지 않아요.\n족보의 다음 칸이 빨강일 때 빨강을 매치하면 2칸이 차요(족보에 ×2 표시).\n빨강을 매치한 자리엔 잔불이 남아 다시 불이 돼요.\n파랑을 매치할 때마다 물방울 +1(최대 6개).\n판을 꾹 누르면(키보드는 스페이스) 물방울 2개로 불을 절반 꺼요.\n불이 모두 꺼지면 3초 뒤 먼 곳에 다시 붙어요."
+condition_colors = PackedInt32Array()
+accent_color = Color(1, 0.478431, 0.239216, 1)
+player_fill = Color(0.22, 0.105255, 0.052627, 1)
+player_border = Color(1, 0.478431, 0.239216, 1)

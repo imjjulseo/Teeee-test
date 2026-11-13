@@ -1,7 +1,11 @@
 class_name CharacterTriggerStep
 extends TutorialStep
 ## 캐릭터 튜토리얼 "발동해 보기" (기획서 8.8장, HTML runCtLesson ③): 캐릭터 족보를 마지막 한 칸만 남기고,
+<<<<<<< HEAD
 ## 그 색으로 블록 모으기 퍼즐 한 판(실제 판처럼 채움, 결과 카드 없음). 풀면 본게임 매치로 처리되어 능력이 발동한다.
+=======
+## 그 색으로 블럭 모으기 퍼즐 한 판(실제 판처럼 채움, 결과 카드 없음). 풀면 본게임 매치로 처리되어 능력이 발동한다.
+>>>>>>> Choi
 ## CharacterTutorialBook이 공통 문구로 만든다. caption의 {target}·{target을}은 모을 색 이름.
 
 @export var puzzle: PuzzleDef

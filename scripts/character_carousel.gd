@@ -1,19 +1,28 @@
 class_name CharacterCarousel
 extends Control
 ## 캐릭터 화면의 좌우로 넘기는 판 (기획서 8.1장, E38). 한 번에 보이는 판은 많아야 둘이라 씬에 있는 CharacterInfo 3장을 돌려 쓴다.
+<<<<<<< HEAD
 ## 손가락을 끄는 대로 따라오고, 놓으면 한 번에 한 장만 넘어간다 (E42, 흔한 페이지 넘기기 방식 — Android ViewPager 기준):
 ## 튕기듯 밀었으면(속도 flick_min_speed 이상 + 거리 flick_min_distance 이상) 민 쪽으로 한 장, 아니면 절반 넘게 끌었을 때만 넘어간다.
+=======
+## 손가락을 끄는 대로 따라오고, 놓으면 가까운 판으로 맞춘다. 빠르게 밀면 속도만큼 여러 장을 넘어간다.
+>>>>>>> Choi
 ## 판 안의 버튼 위에서 끌어도 넘어가고 버튼은 눌리지 않는다 (_input에서 먼저 본다). 내용은 render(info, 번호)로 주인이 채운다.
 
 signal page_changed(index: int)
 
 ## 끌기로 치는 가로 거리(px).
 @export var drag_threshold: float = 30.0
+<<<<<<< HEAD
 ## 튕겨 넘기기로 치는 속도(px/초)와 끈 거리(px). ViewPager의 400dp/초 · 25dp를 1080 폭(1dp = 3px)으로 옮긴 값.
 @export var flick_min_speed: float = 1200.0
 @export var flick_min_distance: float = 75.0
 ## 손을 떼기 전 이 시간(초) 넘게 멈춰 있었으면 튕긴 것이 아니다.
 @export var flick_max_pause: float = 0.1
+=======
+## 놓을 때 이 속도(px/초)마다 한 장 더 넘어간다.
+@export var flick_speed_per_page: float = 1400.0
+>>>>>>> Choi
 ## 판이 제자리로 가는 시간, 판 좌우 여백 (화살표 자리).
 @export var snap_time: float = 0.22
 @export var page_margin: float = 66.0
@@ -133,6 +142,7 @@ func _on_motion(pos: Vector2) -> void:
 	get_viewport().set_input_as_handled()
 
 
+<<<<<<< HEAD
 ## 손을 뗐다: 시작한 판에서 많아야 한 장.
 func _release() -> void:
 	var dragged: float = (_position - _start_position) * size.x  # 오른쪽 판 쪽으로 끌었으면 +
@@ -143,6 +153,16 @@ func _release() -> void:
 	elif absf(_position - _start_position) > 0.5:
 		step = 1 if dragged > 0.0 else -1
 	go_to(roundi(_start_position) + step)
+=======
+## 손을 뗐다: 가까운 판 + 속도만큼 더.
+func _release() -> void:
+	var extra: int = int(absf(_velocity) / flick_speed_per_page) * (-1 if _velocity > 0.0 else 1)
+	var nearest: int = roundi(_position)
+	if extra == 0 and absf(_velocity) > flick_speed_per_page * 0.25:  # 살짝 튕기면 한 장
+		extra = -1 if _velocity > 0.0 else 1
+		nearest = index
+	go_to(nearest + extra)
+>>>>>>> Choi
 
 
 func _set_scroll(value: float) -> void:

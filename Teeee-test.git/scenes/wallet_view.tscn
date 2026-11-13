@@ -1,0 +1,58 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/wallet_view.gd" id="1_wallet"]
+[ext_resource type="Resource" path="res://resources/ui_assets.tres" id="2_assets"]
+
+[node name="WalletView" type="HBoxContainer"]
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+alignment = 2
+script = ExtResource("1_wallet")
+assets = ExtResource("2_assets")
+
+[node name="CoinIcon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CoinAmount" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"AccentLabel"
+text = "● 0"
+
+[node name="Gap" type="Control" parent="."]
+custom_minimum_size = Vector2(12, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="DiamondIcon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DiamondAmount" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"DiamondLabel"
+text = "◆ 0"
+
+[node name="DiamondButton" type="Button" parent="DiamondAmount"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+flat = true
+
+[connection signal="pressed" from="DiamondAmount/DiamondButton" to="." method="_on_diamond_button_pressed"]

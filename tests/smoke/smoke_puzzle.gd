@@ -1,5 +1,9 @@
 extends "res://tests/smoke/smoke_base.gd"
+<<<<<<< HEAD
 ## 블록 모으기 퍼즐 (기획서 8.8장, 메뉴 > 퍼즐 — 팀 결정 11/06). 모드:
+=======
+## 블럭 모으기 퍼즐 (기획서 8.8장, 메뉴 > 퍼즐 — 팀 결정 11/06). 모드:
+>>>>>>> Choi
 ## - menu  : 메인 메뉴 → 퍼즐 실제 클릭 → 목록(11판, 1~11번, 모두 열림 "● 20") → 1번 실제 클릭 → "퍼즐 1" →
 ##           실제 방향키로 최소 수 풀이 → ★★★ · "첫 클리어 보상 ● 20" → "다음 퍼즐" → "퍼즐 2" → 나가기 →
 ##           목록: 1번 별, 코인 +20 → 1번 다시 풀어도 보상 없음
@@ -154,11 +158,17 @@ func _tick_board() -> void:
 				expect((node("UI/ResultPanel").get_node("%ResultStars") as Label).text == "★★★", "minimum moves → three stars even with hints (HTML 11/04)")
 				expect((node("UI/ResultPanel").get_node("%ResultHead") as Label).text == "최소 수로 성공!", "head")
 				expect(PuzzleStore.new().stars_of(LAST_BOARD) == 3, "board stars saved")
+<<<<<<< HEAD
 				var panel: Node = node("UI/ResultPanel")
 				expect(not (panel.get_node("%NextButton") as Control).visible, "last board: no next puzzle")
 				expect((panel.get_node("%RetryButton") as Control).visible and (panel.get_node("%ExitButton") as Control).visible, "retry and exit always shown (E42)")
 				shot("board_result")
 				click_control(panel.get_node("%ExitButton"))
+=======
+				expect((node("UI/ResultPanel").get_node("%NextButton") as Button).text == "목록으로", "last board → back to the list")
+				shot("board_result")
+				click_control(node("UI/ResultPanel").get_node("%NextButton"))
+>>>>>>> Choi
 				step = 6
 				step_time = 0.0
 			elif _play().runner.phase == PuzzleRunner.Phase.REPLAY:

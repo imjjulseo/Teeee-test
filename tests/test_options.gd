@@ -202,12 +202,19 @@ func _open_options() -> OptionsMenu:
 	var menu: OptionsMenu = (load("res://scenes/options.tscn") as PackedScene).instantiate() as OptionsMenu
 	menu.save_path = TEST_SAVE
 	menu.notification(Node.NOTIFICATION_READY)
+<<<<<<< HEAD
 	(menu.get_node("%QuickOptions") as QuickOptions).notification(Node.NOTIFICATION_READY)  # 설정 부품은 자기 _ready에서 값을 읽는다
+=======
+>>>>>>> Choi
 	return menu
 
 
 func _slider(menu: OptionsMenu) -> HSlider:
+<<<<<<< HEAD
 	return menu.get_node("%QuickOptions/%MasterVolumeSlider")
+=======
+	return menu.get_node("%MasterVolumeSlider")
+>>>>>>> Choi
 
 
 ## 사용자가 슬라이더를 value로 옮긴 것처럼: 값 + value_changed (Range는 트리 밖에서 signal을 보내지 않는다).
@@ -266,7 +273,11 @@ func test_options_screen_slider_applies_immediately_and_saves_on_release() -> vo
 	_clean()
 	var menu: OptionsMenu = _open_options()
 	var slider: HSlider = _slider(menu)
+<<<<<<< HEAD
 	var label: Label = menu.get_node("%QuickOptions/%MasterVolumeLabel")
+=======
+	var label: Label = menu.get_node("%MasterVolumeLabel")
+>>>>>>> Choi
 	assert_eq(slider.min_value, 0.0)
 	assert_eq(slider.max_value, 100.0)
 	assert_eq(slider.value, 100.0, "shows the default")
@@ -290,7 +301,11 @@ func test_options_screen_mutes_at_zero_and_shows_saved_value_next_time() -> void
 	OptionsStore.apply_master_volume(100)
 	var reopened: OptionsMenu = _open_options()
 	assert_eq(_slider(reopened).value, 0.0, "slider shows the saved value")
+<<<<<<< HEAD
 	assert_eq((reopened.get_node("%QuickOptions/%MasterVolumeLabel") as Label).text, "0")
+=======
+	assert_eq((reopened.get_node("%MasterVolumeLabel") as Label).text, "0")
+>>>>>>> Choi
 	reopened.free()
 
 
@@ -324,14 +339,22 @@ func test_reduce_motion_defaults_off_and_persists() -> void:
 func test_options_screen_toggle_saves_reduce_motion() -> void:
 	_clean()
 	var menu: OptionsMenu = _open_options()
+<<<<<<< HEAD
 	var toggle: CheckButton = menu.get_node("%QuickOptions/%ReduceMotionToggle")
+=======
+	var toggle: CheckButton = menu.get_node("%ReduceMotionToggle")
+>>>>>>> Choi
 	assert_false(toggle.button_pressed)
 	toggle.toggled.emit(true)
 	assert_true(OptionsStore.new(TEST_SAVE).reduce_motion)
 	assert_true(menu.reduce_motion())
 	menu.free()
 	var reopened: OptionsMenu = _open_options()
+<<<<<<< HEAD
 	assert_true((reopened.get_node("%QuickOptions/%ReduceMotionToggle") as CheckButton).button_pressed, "shows the saved value")
+=======
+	assert_true((reopened.get_node("%ReduceMotionToggle") as CheckButton).button_pressed, "shows the saved value")
+>>>>>>> Choi
 	reopened.free()
 
 # 설정 화면의 실제 클릭(조작 방법·볼륨)은 실제 창 스모크 테스트(smoke_input)로 확인한다.
@@ -378,6 +401,7 @@ func test_reset_button_needs_a_second_press_in_time() -> void:
 	assert_eq(SaveData.new(TEST_SAVE).get_value("progress", "level", 1), 1, "progress erased")
 	menu.free()
 	_clean()
+<<<<<<< HEAD
 
 
 # --- 일시정지 화면의 설정 (E40) -------------------------------------------------------
@@ -483,3 +507,5 @@ func test_debug_panel_skips_the_tutorial_and_asks_for_special_games() -> void:
 	panel.free()
 	SaveData.path_override = ""
 	_clean()
+=======
+>>>>>>> Choi

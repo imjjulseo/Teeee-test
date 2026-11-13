@@ -106,7 +106,11 @@ extends Resource
 ## 떠오르는 글자 크기(px, 1080 기준 = HTML CSS px × 2.67). 매치 시간 "+2.5"와 그 색.
 @export var float_time_size: float = 40.0
 @export var float_time_color: Color = Color("e6f0f2")
+<<<<<<< HEAD
 ## 금화 "+10": 기본 크기 + 연속 1번마다 커지는 크기(최대 4번). "코인 N연속!" 크기·커지는 크기, 금화 위로 띄우는 거리.
+=======
+## 금화 "+10": 기본 크기 + 연속 1번마다 커지는 크기(최대 4번). "금화 N연속!" 크기·커지는 크기, 금화 위로 띄우는 거리.
+>>>>>>> Choi
 @export var float_coin_size: float = 64.0
 @export var float_coin_size_step: float = 10.7
 @export var float_chain_size: float = 53.3
@@ -204,7 +208,11 @@ extends Resource
 @export var mark_warn_hot_color: Color = Color("ff4a2a")
 
 @export_group("Puzzle")
+<<<<<<< HEAD
 ## 블록 모으기 안내: 모을 블록 테두리, 목표 가운데·빈 자리·모인 자리, 설 칸, 당길 블록, 화살표.
+=======
+## 블럭 모으기 안내: 모을 블록 테두리, 목표 가운데·빈 자리·모인 자리, 설 칸, 당길 블록, 화살표.
+>>>>>>> Choi
 @export var puzzle_target_color: Color = Color(1, 1, 1, 0.9)
 @export var puzzle_goal_color: Color = Color(1, 0.823529, 0.247059, 0.35)
 @export var puzzle_filled_color: Color = Color("6fbf5b")

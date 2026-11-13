@@ -414,7 +414,11 @@ func advance_ability_condition(color: int) -> void:
 	ability_updated.emit(ability_recipe)
 
 
+<<<<<<< HEAD
 ## 판을 바깥에서 움직인 뒤(튜토리얼 블록 모으기 퍼즐) 지금 플레이어 자리의 매치를 본게임 규칙대로 처리한다
+=======
+## 판을 바깥에서 움직인 뒤(튜토리얼 블럭 모으기 퍼즐) 지금 플레이어 자리의 매치를 본게임 규칙대로 처리한다
+>>>>>>> Choi
 ## (금화·시간·씨앗·족보·캐릭터 족보). 매치했으면 true. 이동 수로 세지 않는다.
 func resolve_player_match() -> bool:
 	start()

@@ -1,6 +1,10 @@
 extends "res://tests/smoke/smoke_base.gd"
 ## 5d 업적 (기획서 8.6 · 8.7장). 모드:
+<<<<<<< HEAD
 ## - result : 9판 해 둔 저장으로 정원사 한 판 → 결과 보상 목록에 "업적 단골 I"·"업적 정원사 입문", 보상은 아직 없음
+=======
+## - result : 9판 해 둔 저장으로 정원사 한 판 → 결과 보상 목록에 "업적 · 단골 I"·"업적 · 정원사 입문", 보상은 아직 없음
+>>>>>>> Choi
 ##            → 메뉴(업적 버튼 빨간 점) → 업적 실제 클릭 → 공통 업적 6장, 히든 3장(???) → [받기] 실제 클릭 → 코인, 단골 II 10 / 100 → 메인
 ## - sheet  : 캐릭터 탭 — 정원사(입문 달성 · 숙련 진행 · 극한 잠김), 업적 없는 캐릭터·히든 등급은 없음, 미보유 표시
 ## - trial  : 체험 판은 업적·통계가 남지 않는다
@@ -55,7 +59,11 @@ func _tick_result() -> void:
 				var names: PackedStringArray = PackedStringArray()
 				for line: PackedStringArray in result.shown_rewards():
 					names.append(line[0])
+<<<<<<< HEAD
 				expect(names.has("업적 단골 I") and names.has("업적 정원사 입문"), "achievements in the reward list (%s)" % [names])
+=======
+				expect(names.has("업적 · 단골 I") and names.has("업적 · 정원사 입문"), "achievements in the reward list (%s)" % [names])
+>>>>>>> Choi
 				_result_ready_coins = ProgressStore.new().coins
 				next_step()
 			elif step_time > 6.0:
@@ -81,7 +89,11 @@ func _tick_result() -> void:
 				var games: AchievementRow = screen.common_rows()[3]
 				expect(games.shown_name() == "단골 I" and games.can_claim(), "reached tier waits for the claim (%s)" % games.shown_name())
 				expect(not screen.common_rows()[0].can_claim(), "not reached → no claim")
+<<<<<<< HEAD
 				expect(screen.hidden_rows()[0].shown_name() == "양손 쓰기" and not screen.hidden_rows()[0].can_claim(), "hidden conditions are shown (E42)")
+=======
+				expect(screen.hidden_rows()[0].shown_name() == "???" and not screen.hidden_rows()[0].can_claim(), "hidden conditions veiled")
+>>>>>>> Choi
 				shot("achievements")
 				_result_ready_coins = ProgressStore.new().coins
 				click_control(games.claim_button())
@@ -115,17 +127,26 @@ func _tick_character_tab() -> void:
 				expect(screen.tab == AchievementsScreen.Tab.CHARACTER and (node("%CharacterTab") as Button).button_pressed, "real click switches the tab")
 				expect((node("%CharacterScroll") as Control).is_visible_in_tree() and not (node("%Scroll") as Control).visible, "character page only")
 				var groups: Array[CharacterChainGroup] = screen.character_groups()
+<<<<<<< HEAD
 				expect(groups.size() == 31, "31 characters: everyone with a chain, hidden grade too (%d)" % groups.size())
 				var ids: Array[StringName] = []
 				for group: CharacterChainGroup in groups:
 					ids.append(group.character.id)
 				expect(ids.has(&"zeus") and ids.has(&"ambi") and not ids.has(&"basic"), "every character with a chain, hidden ones too (%s)" % [ids])
+=======
+				expect(groups.size() == 25, "25 characters: chains without hidden grade (%d)" % groups.size())
+				var ids: Array[StringName] = []
+				for group: CharacterChainGroup in groups:
+					ids.append(group.character.id)
+				expect(not ids.has(&"zeus") and not ids.has(&"ambi") and not ids.has(&"basic"), "no empty chains, no hidden (%s)" % [ids])
+>>>>>>> Choi
 				expect(groups[0].character.id == &"gardener", "grade order")
 				var rows: Array[AchievementRow] = groups[0].rows()
 				expect(rows.size() == 3, "three tiers")
 				if rows.size() == 3:
 					expect(rows[0].shown_value() == "달성", "입문 done")
 					expect(rows[1].shown_value() == "6 / 15", "숙련 progress (%s)" % rows[1].shown_value())
+<<<<<<< HEAD
 					expect(rows[2].shown_value() == "" and rows[2].modulate.a < 1.0, "극한 locked (dimmed, no text)")
 					expect(rows[1].shown_reward() == "◆ 10" and not rows[1].can_claim(), "reward chip waits dimmed")
 				expect(not groups[0].shows_unowned(), "owned character")
@@ -134,6 +155,13 @@ func _tick_character_tab() -> void:
 				expect(screen.section_for(CharacterData.Grade.BASIC).is_preparing() and not screen.section_for(CharacterData.Grade.HIDDEN).is_preparing(), "일반: 준비 중, 히든은 업적이 있다")
 				var unowned: Array[AchievementRow] = groups[1].rows()
 				expect(unowned[0].modulate.a < 1.0 and not unowned[0].can_claim(), "unowned character: even 입문 is locked")
+=======
+					expect(rows[2].shown_value() == "앞 단계를 먼저", "극한 locked")
+				expect(not groups[0].shows_unowned(), "owned character")
+				expect(groups[1].shows_unowned(), "unowned characters are shown and marked")
+				expect(rows[0].can_claim(), "입문 can be claimed")
+				expect(screen.section_for(CharacterData.Grade.BASIC).is_preparing() and screen.section_for(CharacterData.Grade.HIDDEN).is_preparing(), "일반 · 히든: 준비 중")
+>>>>>>> Choi
 				expect(not screen.section_for(CharacterData.Grade.RARE).is_preparing(), "희귀 has characters")
 				shot("character_tab")
 				click_control(node("%Chips").get_child(3))  # 전설
@@ -161,6 +189,7 @@ func _tick_trial() -> void:
 	match step:
 		0:
 			if playing(0.5):
+<<<<<<< HEAD
 				expect(controller.is_trial() and controller.is_lesson(), "trial = the character tutorial")
 				session().metrics.record_max(GrowAllAbility.METRIC_GROWN_ONCE, 8)
 				auto_resume = false
@@ -175,4 +204,17 @@ func _tick_trial() -> void:
 			if in_scene("CharacterSelect", 0.3):
 				var store: AchievementStore = AchievementStore.new()
 				expect(store.stat("games") == 0 and not store.is_done("gardener_1"), "trial leaves no achievements or stats")
+=======
+				session().metrics.record_max(GrowAllAbility.METRIC_GROWN_ONCE, 8)
+				flow().request_move(Vector2i.UP)
+				next_step()
+		1:
+			if flow().state == S.RESULT and step_time > 0.4:
+				var store: AchievementStore = AchievementStore.new()
+				expect(store.stat("games") == 0 and not store.is_done("gardener_1"), "trial leaves no achievements or stats")
+				expect((node("ResultPanel") as ResultPanel).shown_rewards().is_empty(), "no reward rows")
+				finish()
+			elif step_time > 6.0:
+				fail("trial did not end")
+>>>>>>> Choi
 				finish()

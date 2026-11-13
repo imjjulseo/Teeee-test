@@ -1,6 +1,10 @@
 class_name CharacterBlockView
 extends Panel
+<<<<<<< HEAD
 ## 캐릭터 블록 그림 하나 (아래 줄 가운데, 메인, 설명창, 상점 카드, 올라오는 연출). 판 위 플레이어와 같은 색 · 테두리에 첫 글자,
+=======
+## 캐릭터 블럭 그림 하나 (아래 줄 가운데, 메인, 설명창, 상점 카드, 올라오는 연출). 판 위 플레이어와 같은 색 · 테두리에 첫 글자,
+>>>>>>> Choi
 ## CharacterData.portrait가 있으면 이미지. 얻기 전 히든 캐릭터는 "?"로 가린다.
 
 @export var theme_data: BoardTheme

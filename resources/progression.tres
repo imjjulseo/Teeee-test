@@ -11,7 +11,11 @@ recipe_lengths = PackedInt32Array(2, 3)
 refill_total_start = 10.0
 refill_total_end = 4.0
 game_duration = 40.0
+<<<<<<< HEAD
 description = "3색, 족보 2칸"
+=======
+description = "3색 · 족보 2칸"
+>>>>>>> Choi
 
 [sub_resource type="Resource" id="Stage_2"]
 script = ExtResource("2_stage")
@@ -25,7 +29,11 @@ description = "제한시간 45초"
 [sub_resource type="Resource" id="Stage_3"]
 script = ExtResource("2_stage")
 recipe_lengths = PackedInt32Array(2, 3, 4)
+<<<<<<< HEAD
 description = "4색, 4칸 족보"
+=======
+description = "4색 · 4칸 족보"
+>>>>>>> Choi
 
 [resource]
 script = ExtResource("1_progression")

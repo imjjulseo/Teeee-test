@@ -14,8 +14,12 @@ grade = 3
 ability = SubResource("Ability_1")
 ability_name = "해일"
 ability_description = "해일: 다 자란 파랑 블록이 전부 판 아래쪽에 평평하게 깔림"
+<<<<<<< HEAD
 summary = "파란 블록이 전부 판 아래로 가라앉아요"
 detail_effect = "다 자란 파란 블록이 전부 아래쪽으로 가라앉아 평평하게 깔려요.\n나머지 색은 위로 올라가고, 색마다 개수는 그대로예요."
+=======
+detail_effect = "다 자란 블럭 중 파란 블럭이 전부 아래쪽으로 가라앉아 평평하게 깔려요. 나머지 색은 위로 올라가고, 색 개수는 그대로예요."
+>>>>>>> Choi
 condition_colors = PackedInt32Array(2, 2, 0)
 accent_color = Color(0.247059, 0.662745, 0.960784, 1)
 player_fill = Color(0.054353, 0.145804, 0.211373, 1)

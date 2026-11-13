@@ -49,7 +49,11 @@ func modify_match_time(session: GameSession, seconds: float, found: MatchRule.Fo
 
 func status_text() -> String:
 	# 남은 초를 올림해 보인다 (7.0000001초가 8초로 보이지 않게 아주 작은 오차는 뺀다).
+<<<<<<< HEAD
 	return "현상금 %s / %d초" % [_color_name(), ceili(maxf(time_left - 1e-6, 0.0))]
+=======
+	return "현상금 %s · %d초" % [_color_name(), ceili(maxf(time_left - 1e-6, 0.0))]
+>>>>>>> Choi
 
 
 func effect_remaining() -> float:

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://dmbpe2iq6mk23"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://yofiv53410mj" path="res://scripts/logic/abilities/navigator_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"navigator"
+display_name = "항해사"
+grade = 2
+ability = SubResource("Ability_1")
+ability_name = "항해"
+ability_description = "판 끝과 끝이 이어짐"
+summary = "판의 끝과 끝이 이어져 있어요"
+detail_effect = "벽 밖으로 나가면 반대편 끝에서 다시 나타나요.\n매치도 판 끝을 넘어 이어져서, 가장자리에 서면 반대편 끝 칸까지 내 옆 칸으로 쳐요."
+condition_colors = PackedInt32Array()
+accent_color = Color(0.431373, 0.784314, 1, 1)
+player_fill = Color(0.094902, 0.172549, 0.22, 1)
+player_border = Color(0.431373, 0.784314, 1, 1)

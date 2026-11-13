@@ -1,0 +1,30 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/shop_grade_section.gd" id="1_section"]
+[ext_resource type="PackedScene" path="res://scenes/grade_header.tscn" id="2_header"]
+[ext_resource type="PackedScene" path="res://scenes/ticket_row.tscn" id="3_ticket"]
+[ext_resource type="PackedScene" path="res://scenes/shop_card.tscn" id="4_card"]
+
+[node name="ShopGradeSection" type="VBoxContainer"]
+theme_override_constants/separation = 15
+script = ExtResource("1_section")
+card_scene = ExtResource("4_card")
+
+[node name="Header" parent="." instance=ExtResource("2_header")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TicketRow" parent="." instance=ExtResource("3_ticket")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Characters" type="GridContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 4
+
+[connection signal="use_toggled" from="TicketRow" to="." method="_on_ticket_row_use_toggled"]
+[connection signal="fuse_requested" from="TicketRow" to="." method="_on_ticket_row_fuse_requested"]

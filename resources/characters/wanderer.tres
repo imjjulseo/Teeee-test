@@ -14,8 +14,12 @@ grade = 3
 ability = SubResource("Ability_1")
 ability_name = "떠돌이"
 ability_description = "족보 점수 ×1.5"
+<<<<<<< HEAD
 summary = "족보 점수 ×1.5.\n대신 10번 안에 매치를 못 하면 다른 곳으로 순간이동해요"
 detail_effect = "족보 점수가 모두 ×1.5예요.\n대신 10번 움직이는 동안 매치를 못 하면 판의 아무 칸으로 순간이동해요(그 칸의 블록과 자리를 바꿔요).\n매치하면 다시 10번부터 세요.\n도착한 자리가 매치 모양이면 바로 매치돼요."
+=======
+detail_effect = "항상 켜져 있어요. 족보 점수가 모두 ×1.5예요. 대신 10번 움직이는 동안 블럭을 못 깨면 판의 무작위 칸으로 순간이동해요(블럭을 깨면 다시 10번부터, 그 칸의 블럭과 자리를 바꿔요). 도착한 자리가 매치 조건이면 바로 매치돼요."
+>>>>>>> Choi
 condition_colors = PackedInt32Array()
 accent_color = Color(0.878431, 0.545098, 1, 1)
 player_fill = Color(0.193255, 0.119922, 0.22, 1)

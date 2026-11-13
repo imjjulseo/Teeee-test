@@ -26,4 +26,8 @@ func on_match(session: GameSession, _color: int, _cells: Array[Vector2i]) -> voi
 
 
 func status_text() -> String:
+<<<<<<< HEAD
 	return "왼 %d / 오 %d" % [matches[LEFT_HAND], matches[RIGHT_HAND]]
+=======
+	return "왼 %d · 오 %d" % [matches[LEFT_HAND], matches[RIGHT_HAND]]
+>>>>>>> Choi

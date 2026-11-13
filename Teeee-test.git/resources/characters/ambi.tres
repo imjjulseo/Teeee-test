@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://svhgxs4tw2cm"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://h7hs2hntjhr8" path="res://scripts/logic/abilities/ambi_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"ambi"
+display_name = "양손잡이"
+grade = 5
+ability = SubResource("Ability_1")
+ability_name = "양손"
+ability_description = "플레이어가 둘(좌우 벽 한 칸 안쪽에서 시작)"
+summary = "플레이어가 둘.\n화면 왼쪽은 왼손, 오른쪽은 오른손"
+detail_effect = "내가 둘이에요.\n왼쪽과 오른쪽 벽에서 한 칸 안쪽에서 시작해요.\n화면 가운데 점선 왼쪽을 스와이프하면 왼손(하늘색), 오른쪽을 스와이프하면 오른손(주황)이 움직여요.\n키보드는 WASD가 왼손, 방향키가 오른손이에요."
+condition_colors = PackedInt32Array()
+accent_color = Color(1, 0.701961, 0.541176, 1)
+player_fill = Color(0.22, 0.154431, 0.119059, 1)
+player_border = Color(1, 0.701961, 0.541176, 1)

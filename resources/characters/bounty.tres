@@ -14,8 +14,12 @@ grade = 2
 ability = SubResource("Ability_1")
 ability_name = "현상금"
 ability_description = "10초마다 현상금 색 변경(직전과 다른 색)"
+<<<<<<< HEAD
 summary = "배경색과 같은 색을 매치하면 +2초.\n색은 10초마다 바뀌어요"
 detail_effect = "10초마다 현상금 색이 다른 색으로 바뀌어요.\n현상금 색으로 매치하면 시간을 2초 더 얻어요.\n현상금 색은 배경색과 캐릭터 줄에 보이고, 바뀌기 2초 전부터 배경이 깜빡여요."
+=======
+detail_effect = "항상 켜져 있어요. 10초마다 현상금 색이 바뀌고(직전 색과 다른 색), 현상금 색으로 매치하면 평소 시간에 2초가 더 붙어요. 현상금 색은 배경색과 캐릭터 칸 색 칩으로 보이고, 바뀌기 2초 전부터 배경이 깜빡여요."
+>>>>>>> Choi
 condition_colors = PackedInt32Array()
 accent_color = Color(0.960784, 0.627451, 0.290196, 1)
 player_fill = Color(0.211373, 0.138039, 0.063843, 1)

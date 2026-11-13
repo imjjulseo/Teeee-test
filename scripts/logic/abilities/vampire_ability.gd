@@ -33,7 +33,11 @@ func trigger(session: GameSession) -> String:
 		target_slot = 0
 		_window.begin()
 		session.notify_display_changed()
+<<<<<<< HEAD
 	return "피의 시간: %s초 동안 모든 블록이 빨강" % Ability.format_seconds(duration)
+=======
+	return "피의 시간: %s초 동안 모든 블럭이 빨강" % Ability.format_seconds(duration)
+>>>>>>> Choi
 
 
 func canonical_color(color: int) -> int:

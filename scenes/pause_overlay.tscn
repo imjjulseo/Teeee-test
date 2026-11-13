@@ -2,7 +2,10 @@
 
 [ext_resource type="Script" path="res://scripts/pause_overlay.gd" id="1_pause"]
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+<<<<<<< HEAD
 [ext_resource type="PackedScene" path="res://scenes/quick_options.tscn" id="2_quick"]
+=======
+>>>>>>> Choi
 
 [node name="PauseOverlay" type="CanvasLayer"]
 layer = 10
@@ -24,9 +27,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -300.0
+<<<<<<< HEAD
 offset_top = -430.0
 offset_right = 300.0
 offset_bottom = 430.0
+=======
+offset_top = -330.0
+offset_right = 300.0
+offset_bottom = 330.0
+>>>>>>> Choi
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 48
@@ -52,6 +61,7 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 60
 text = "다시 시작"
 
+<<<<<<< HEAD
 [node name="OptionsButton" type="Button" parent="Center"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 144)
@@ -60,6 +70,8 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 60
 text = "설정"
 
+=======
+>>>>>>> Choi
 [node name="MainMenuButton" type="Button" parent="Center"]
 custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
@@ -67,6 +79,7 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 60
 text = "메뉴"
 
+<<<<<<< HEAD
 [node name="Options" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -101,11 +114,23 @@ layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 60
 text = "돌아가기"
+=======
+[node name="MainMenuNote" type="Label" parent="Center"]
+layout_mode = 2
+theme_type_variation = &"DimLabel"
+theme_override_font_sizes/font_size = 33
+text = "다시 시작하거나 메뉴로 나가면 이번 판 점수는 기록되지 않습니다"
+horizontal_alignment = 1
+autowrap_mode = 3
+>>>>>>> Choi
 
 [connection signal="pressed" from="Center/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="Center/RestartButton" to="." method="_on_restart_button_pressed"]
 [connection signal="pressed" from="Center/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+<<<<<<< HEAD
 [connection signal="pressed" from="Center/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="Options/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="control_mode_changed" from="Options/QuickOptions" to="." method="_on_control_mode_changed"]
 [connection signal="reduce_motion_changed" from="Options/QuickOptions" to="." method="_on_reduce_motion_changed"]
+=======
+>>>>>>> Choi

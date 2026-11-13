@@ -165,7 +165,11 @@ func test_poseidon_sinks_blue_blocks_to_the_bottom_keeping_counts() -> void:
 	var messages: Array[String] = []
 	session.ability_triggered.connect(func(m: String) -> void: messages.append(m))
 	_trigger(session)
+<<<<<<< HEAD
 	assert_eq(messages, ["해일: 파란 블록이 가라앉음"] as Array[String])
+=======
+	assert_eq(messages, ["해일: 파란 블럭이 가라앉음"] as Array[String])
+>>>>>>> Choi
 	assert_eq(board.color_counts(4), before, "color counts kept")
 	assert_eq(board.count_type(Board.CellType.COLOR_BLOCK), blocks_before)
 	assert_eq(board.get_cell_type(Vector2i(0, 4)), Board.CellType.SEED, "seed untouched")
@@ -360,7 +364,11 @@ func test_runner_stops_time_grows_seeds_and_ends_after_8_moves() -> void:
 	for i: int in 7:
 		session.request_move(Vector2i.LEFT if i % 2 == 0 else Vector2i.RIGHT)
 	assert_true(runner.active)
+<<<<<<< HEAD
 	assert_eq(runner.status_text(), "1수 / 6초")
+=======
+	assert_eq(runner.status_text(), "1수 · 6초")
+>>>>>>> Choi
 	session.request_move(Vector2i.RIGHT)
 	assert_false(runner.active, "8 moves → ends")
 	assert_eq(announced, ["수읽기 끝"] as Array[String])

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://chhd2pi37onnv"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://bkfib7v3xgspc" path="res://scripts/logic/abilities/vampire_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"vampire"
+display_name = "뱀파이어"
+grade = 4
+ability = SubResource("Ability_1")
+ability_name = "피의 시간"
+ability_description = "피의 시간: 6초 동안 모든 블록이 빨강, 리필 ×2.5"
+summary = "6초 동안 모든 블록이 빨강이 되고, 씨앗이 빨리 자라요"
+detail_effect = "6초 동안 모든 블록이 빨강이 되고 씨앗이 2.5배 빨리 자라요.\n주위 4칸이 모두 블록이면 색과 상관없이 매치돼요(시간은 얻지 못해요).\n족보는 2칸 → 3칸 → 4칸 순서로 하나씩 채워져요."
+condition_colors = PackedInt32Array(1, 1, 1, 1)
+accent_color = Color(0.878431, 0.188235, 0.290196, 1)
+player_fill = Color(0.193255, 0.041412, 0.063843, 1)
+player_border = Color(0.878431, 0.188235, 0.290196, 1)

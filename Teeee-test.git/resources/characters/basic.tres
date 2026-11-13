@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://re6dp6qwmduf"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+
+[resource]
+script = ExtResource("1_char")
+id = &"basic"
+display_name = "기본"
+ability_description = "능력 없음"
+detail_effect = "능력이 없어요.\n기본 규칙만으로 플레이해요."
+condition_colors = PackedInt32Array()
+player_fill = Color(0.113725, 0.121569, 0.14902, 1)

@@ -112,7 +112,11 @@ func bonus_for(n: int) -> int:
 
 func status_text() -> String:
 	if planning:
+<<<<<<< HEAD
 		return "계획 %d수 / %s초" % [plan.size(), Ability.format_seconds(photo_left)]
+=======
+		return "계획 %d수 · %s초" % [plan.size(), Ability.format_seconds(photo_left)]
+>>>>>>> Choi
 	if replaying:
 		return "%d연속" % hits
 	return ""

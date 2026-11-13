@@ -1,0 +1,20 @@
+# 폰트 넣는 곳
+
+게임 전체 UI 폰트를 이 폴더에 넣는다. 현재 폰트는 **Pretendard SemiBold**(`Pretendard-SemiBold.otf`, SIL OFL 1.1 — `Pretendard-LICENSE.txt`)다.
+웹 빌드에는 운영체제 폰트 폴백이 없어서, 폰트가 없으면 한글이 네모로 보인다 (11/06 웹 배포 때 넣음).
+
+## 폰트 적용 방법
+
+1. 폰트 파일(`.ttf` / `.otf` / `.woff2`)을 이 폴더에 넣는다. Godot 에디터가 `.import` 파일을 자동으로 만든다 (직접 만들지 않는다).
+2. `res://resources/ui_theme_spec.tres`(테마 설계)를 열고 Inspector의 **Default Font**에 폰트를 지정한 뒤, 테마를 다시 만든다:
+   `godot --headless --path . -s tools/build_ui_theme.gd`  (`ui_theme.tres`는 이 도구가 만드는 파일이라 직접 고치면 덮어써진다)
+   - 이 테마는 프로젝트 설정 `gui/theme/custom`으로 모든 화면에 적용되어 있으므로, 씬이나 코드를 고칠 필요가 없다.
+   - 굵기별로 여러 파일이 있으면 기본 굵기(Regular 또는 Medium)를 지정한다.
+3. 게임을 실행해 메인 메뉴·캐릭터 선택·옵션·게임 화면에서 한글과 영문이 모두 제대로 보이는지 확인한다.
+
+## 폰트 조건
+
+- **한글 전체(완성형 2,350자 이상)를 지원**해야 한다. 캐릭터 설명, 옵션 문구 등에 한글을 쓴다.
+- 기호 `▲ ▼ ◀ ▶`(가상 방향키)를 지원하는지 확인한다. 없으면 방향키만 시스템 폴백으로 보인다.
+- **상업적 사용과 앱 내장이 가능한 라이선스**여야 한다. 예: SIL Open Font License(OFL) — Noto Sans KR, Pretendard 등.
+- 라이선스 파일(`OFL.txt` 등)을 폰트와 함께 이 폴더에 넣어 둔다.

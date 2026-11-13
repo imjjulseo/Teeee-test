@@ -98,9 +98,15 @@ func next_stage_description(level: int) -> String:
 func rewards_for_level(level: int) -> PackedStringArray:
 	var lines: PackedStringArray = PackedStringArray()
 	if level == 1 and not stages.is_empty():
+<<<<<<< HEAD
 		lines.append("시작 보드 / %s" % stages[0].description)
 	elif level > 1 and level <= stages.size():
 		lines.append("보드 업그레이드 / %s" % stages[level - 1].description)
+=======
+		lines.append("시작 보드 · %s" % stages[0].description)
+	elif level > 1 and level <= stages.size():
+		lines.append("보드 업그레이드 · %s" % stages[level - 1].description)
+>>>>>>> Choi
 	if level > 1:
 		lines.append("● %d" % level_up_coins)
 		lines.append("◆ %d" % diamonds_for_level(level))
@@ -110,7 +116,11 @@ func rewards_for_level(level: int) -> PackedStringArray:
 		return lines
 	var tier: GachaTier = gacha.tier_starting_at(level)
 	if tier != null:
+<<<<<<< HEAD
 		lines.append("뽑기 머신 업그레이드, 확률 상승")
+=======
+		lines.append("뽑기 머신 업그레이드 · 확률 상승")
+>>>>>>> Choi
 	for grade: int in gacha.shop_levels:
 		if level > 1 and gacha.shop_level(grade) == level:
 			lines.append("상점 %s 열림" % CharacterData.GRADE_NAMES[grade])

@@ -14,8 +14,12 @@ grade = 2
 ability = SubResource("Ability_1")
 ability_name = "와일드"
 ability_description = "와일드: 다음 매치 2번이 색 무관하게 모든 족보를 한 칸씩"
+<<<<<<< HEAD
 summary = "다음 매치 2번은 무슨 색이든 모든 족보를 한 칸씩 채워요"
 detail_effect = "다음 매치 2번은 색과 상관없이 모든 족보를 한 칸씩 채워요.\n여러 번 쌓을 수 있어요."
+=======
+detail_effect = "다음 매치 2번이 색과 상관없이 모든 족보를 한 칸씩 진행해요. 여러 번 쌓을 수 있어요."
+>>>>>>> Choi
 condition_colors = PackedInt32Array(0, 1, 2, 3, 0)
 accent_color = Color(1, 0.435294, 0.847059, 1)
 player_fill = Color(0.22, 0.09, 0.2, 1)

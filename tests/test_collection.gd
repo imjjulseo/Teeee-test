@@ -105,6 +105,7 @@ func test_grade_counts() -> void:
 
 func test_level_reward_lines() -> void:
 	var p: ProgressionConfig = _progression()
+<<<<<<< HEAD
 	assert_eq(p.rewards_for_level(1), PackedStringArray(["시작 보드 / 3색, 족보 2칸"]))
 	assert_eq(p.rewards_for_level(2), PackedStringArray(["보드 업그레이드 / 제한시간 45초", "● 100", "◆ 10"]))
 	assert_eq(p.rewards_for_level(4), PackedStringArray(["● 100", "◆ 10"]))
@@ -113,13 +114,27 @@ func test_level_reward_lines() -> void:
 	assert_eq(p.rewards_for_level(20), PackedStringArray(["● 100", "◆ 10", "전설 선택권", "뽑기 머신 업그레이드, 확률 상승", "상점 전설 열림"]))
 	assert_eq(p.rewards_for_level(8), PackedStringArray(["● 100", "◆ 10", "뽑기 머신 업그레이드, 확률 상승", "상점 영웅 열림"]))
 	assert_eq(p.rewards_for_level(30), PackedStringArray(["● 100", "◆ 10", "신화 선택권", "뽑기 머신 업그레이드, 확률 상승", "상점 신화 열림"]))
+=======
+	assert_eq(p.rewards_for_level(1), PackedStringArray(["시작 보드 · 3색 · 족보 2칸"]))
+	assert_eq(p.rewards_for_level(2), PackedStringArray(["보드 업그레이드 · 제한시간 45초", "● 100", "◆ 10"]))
+	assert_eq(p.rewards_for_level(4), PackedStringArray(["● 100", "◆ 10"]))
+	assert_eq(p.rewards_for_level(5), PackedStringArray(["● 100", "◆ 10"]), "no milestone diamonds")
+	assert_eq(p.rewards_for_level(10), PackedStringArray(["● 100", "◆ 10", "영웅 선택권"]))
+	assert_eq(p.rewards_for_level(20), PackedStringArray(["● 100", "◆ 10", "전설 선택권", "뽑기 머신 업그레이드 · 확률 상승", "상점 전설 열림"]))
+	assert_eq(p.rewards_for_level(8), PackedStringArray(["● 100", "◆ 10", "뽑기 머신 업그레이드 · 확률 상승", "상점 영웅 열림"]))
+	assert_eq(p.rewards_for_level(30), PackedStringArray(["● 100", "◆ 10", "신화 선택권", "뽑기 머신 업그레이드 · 확률 상승", "상점 신화 열림"]))
+>>>>>>> Choi
 	assert_eq([p.levels_to_show(1), p.levels_to_show(29)], [30, 32], "at least 30, and 3 ahead")
 
 
 func test_next_stage_and_menu_hint() -> void:
 	var p: ProgressionConfig = _progression()
 	assert_eq([p.next_stage_description(1), p.next_stage_description(2), p.next_stage_description(3)],
+<<<<<<< HEAD
 		["제한시간 45초", "4색, 4칸 족보", ""])
+=======
+		["제한시간 45초", "4색 · 4칸 족보", ""])
+>>>>>>> Choi
 
 
 func test_level_row_state() -> void:
@@ -170,6 +185,27 @@ func test_main_menu_shows_level_wallet_stage_and_character() -> void:
 	menu.free()
 
 
+<<<<<<< HEAD
+=======
+func test_trial_result_hides_rewards() -> void:
+	var result: ResultPanel = (load("res://scenes/result_panel.tscn") as PackedScene).instantiate() as ResultPanel
+	result.notification(Node.NOTIFICATION_READY)
+	var flow: FlowChannel = FlowChannel.new()
+	var wired: int = SceneWiring.connect_like("res://scenes/main.tscn", {"GameController/FlowChannel": flow, "ResultPanel": result},
+		PackedStringArray(["ResultPanel"]))
+	assert_true(wired >= 4, "flow → result wired (%d)" % wired)
+	flow.result_ready.emit(700, 0, false, 2)
+	flow.trial_result_ready.emit("시계공")
+	assert_eq((result.get_node("%Title") as Label).text, "시계공 체험 끝")
+	assert_true(result.is_trial_result())
+	assert_false((result.get_node("%RewardsList") as Control).visible)
+	assert_eq((result.get_node("%MainMenuButton") as Button).text, "캐릭터", "back to the character screen")
+	assert_eq((result.get_node("%FinalScoreLabel") as Label).text, "700", "score still shown")
+	result.free()
+	flow.free()
+
+
+>>>>>>> Choi
 func test_level_stem_fills_up_to_the_next_level() -> void:
 	assert_eq([LevelRewardsScreen.stem_ratio(3, 4, 0.5), LevelRewardsScreen.stem_ratio(4, 4, 0.5), LevelRewardsScreen.stem_ratio(5, 4, 0.5), LevelRewardsScreen.stem_ratio(6, 4, 0.5)],
 		[1.0, 1.0, 0.5, 0.0])

@@ -7,6 +7,10 @@ script = ExtResource("1_char")
 id = &"basic"
 display_name = "기본"
 ability_description = "능력 없음"
+<<<<<<< HEAD
 detail_effect = "능력이 없어요.\n기본 규칙만으로 플레이해요."
+=======
+detail_effect = "능력이 없어요. 기본 규칙만으로 플레이해요."
+>>>>>>> Choi
 condition_colors = PackedInt32Array()
 player_fill = Color(0.113725, 0.121569, 0.14902, 1)

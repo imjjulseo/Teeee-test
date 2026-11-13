@@ -1,6 +1,10 @@
 class_name IntroScreen
 extends Control
+<<<<<<< HEAD
 ## 인트로 (기획서 8.1장): 로고와 "화면을 눌러 시작". 화면 어디를 눌러도, 아무 키나 눌러도 start_requested.
+=======
+## 인트로 (기획서 8.1장): 로고와 "탭하여 시작". 화면 어디를 눌러도, 아무 키나 눌러도 start_requested.
+>>>>>>> Choi
 ## 씬 전환은 intro.tscn에서 SceneNavigator에 연결한다.
 
 signal start_requested
@@ -8,7 +12,11 @@ signal start_requested
 ## 로고 이미지 자리 (UiAssets.logo, 없으면 글자 로고).
 @export var ui_assets: UiAssets
 
+<<<<<<< HEAD
 ## "화면을 눌러 시작"이 숨 쉬듯 흐려졌다 돌아오는 주기(초, HTML breathe 1.8초 · 50%에 0.35)와 로고가 살짝 줄었다 커지는 주기(HTML bob 2.4초 · 0.86배).
+=======
+## "탭하여 시작"이 숨 쉬듯 흐려졌다 돌아오는 주기(초, HTML breathe 1.8초 · 50%에 0.35)와 로고가 살짝 줄었다 커지는 주기(HTML bob 2.4초 · 0.86배).
+>>>>>>> Choi
 @export var breathe_period: float = 1.8
 @export var breathe_alpha: float = 0.35
 @export var bob_period: float = 2.4

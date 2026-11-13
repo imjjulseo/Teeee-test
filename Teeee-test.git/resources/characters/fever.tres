@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="CharacterData" format=3 uid="uid://casroqvdx04sl"]
+
+[ext_resource type="Script" uid="uid://bgwe17jyq7rbk" path="res://scripts/logic/character_data.gd" id="1_char"]
+[ext_resource type="Script" uid="uid://cwd5gqr0uw4a7" path="res://scripts/logic/abilities/fever_ability.gd" id="2_ability"]
+
+[sub_resource type="Resource" id="Ability_1"]
+script = ExtResource("2_ability")
+
+[resource]
+script = ExtResource("1_char")
+id = &"fever"
+display_name = "축제꾼"
+grade = 3
+ability = SubResource("Ability_1")
+ability_name = "피버"
+ability_description = "피버 10초: 색 무관 매치마다 스택 +1, 리필 ×2"
+summary = "10초 동안 매치할수록 점수가 쌓이고 씨앗이 2배 빨리 자라요"
+detail_effect = "10초 동안 피버!\n색과 상관없이 매치할 때마다 스택이 1개씩 쌓이고(판 가운데 큰 숫자), 씨앗이 2배 빨리 자라요.\n족보는 평소처럼 채워져요.\n피버가 끝나면 쌓인 스택만큼 점수를 한 번에 받아요(5스택 750 / 10스택 2,750 / 15스택 6,000)."
+condition_colors = PackedInt32Array(3, 0, 2)
+accent_color = Color(1, 0.478431, 0.270588, 1)
+player_fill = Color(0.24, 0.12, 0.08, 1)
+player_border = Color(1, 0.478431, 0.270588, 1)

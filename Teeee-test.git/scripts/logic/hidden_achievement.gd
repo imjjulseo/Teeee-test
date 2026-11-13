@@ -1,0 +1,15 @@
+class_name HiddenAchievement
+extends Resource
+## 히든 업적 (기획서 8.7장, E12): 조건은 달성 전까지 숨기고, 달성하면 히든 캐릭터를 얻는다.
+## 한 판의 지표가 goal 이상이면 달성하고 character_id 캐릭터를 바로 해금한다 (E39).
+
+@export var character_id: StringName = &""
+@export var name: String = ""
+@export var text: String = ""
+## RunMetrics 지표 이름과 목표 (한 판에서 가장 큰 값).
+@export var metric: StringName = &""
+@export var goal: int = 1
+
+
+func id() -> String:
+	return "h_%s" % character_id

@@ -79,7 +79,11 @@ func _tick_stage() -> void:
 			if step_time > 1.5:  # 연출이 끝난 뒤
 				var result: ResultPanel = _result()
 				expect((result.get_node("%CoinLabel") as Label).text == "보유 코인 ● %d" % ProgressStore.new().coins, "coins counted up to the held amount (%s)" % (result.get_node("%CoinLabel") as Label).text)
+<<<<<<< HEAD
 				expect((result.get_node("%LevelLabel") as Label).text == "Lv 2 / 다음 4색, 4칸 족보", "level and next stage (%s)" % (result.get_node("%LevelLabel") as Label).text)
+=======
+				expect((result.get_node("%LevelLabel") as Label).text == "Lv 2 · 다음 4색 · 4칸 족보", "level and next stage (%s)" % (result.get_node("%LevelLabel") as Label).text)
+>>>>>>> Choi
 				expect((result.get_node("%LevelUpLabel") as Control).visible, "level up shown")
 				shot("result_levelup")
 				click_control(result.get_node("Center/RetryButton"))

@@ -68,8 +68,11 @@ const THEME_TYPE: StringName = &"Tokens"
 @export var hot: Color = Color(0.94902, 0.482353, 0.313726, 1)
 ## 정보 (진행 막대 채움·소제목·상태).
 @export var info: Color = Color(0.560784, 0.890196, 1, 1)
+<<<<<<< HEAD
 ## 다이아 (코인의 강조색과 구분).
 @export var diamond: Color = Color(0.45, 0.82, 1, 1)
+=======
+>>>>>>> Choi
 ## 되돌릴 수 없는 행동의 글자 (설정의 진행 초기화, HTML .sbtn.warn = --c1).
 @export var warn: Color = Color(0.886275, 0.333333, 0.431373, 1)
 

@@ -74,13 +74,22 @@ func _names(completions: Array[AchievementTracker.Completion]) -> PackedStringAr
 func test_book_is_valid_and_covers_the_roster() -> void:
 	var book: AchievementBook = _book()
 	assert_true(book.validate().is_empty(), "%s" % [book.validate()])
+<<<<<<< HEAD
 	assert_eq([book.common.size(), book.chains.size(), book.hidden.size()], [6, 31, 3])
+=======
+	assert_eq([book.common.size(), book.chains.size(), book.hidden.size()], [6, 26, 3])
+>>>>>>> Choi
 	var pending: Array[StringName] = []
 	for character: CharacterData in _roster().characters:
 		if book.chain_for(character.id) == null:
 			pending.append(character.id)
+<<<<<<< HEAD
 	assert_eq(pending, [&"basic"] as Array[StringName],
 		"only the basic character has no achievements (E42)")
+=======
+	assert_eq(pending, [&"basic", &"seer", &"zeus", &"arson", &"racer", &"pachy"] as Array[StringName],
+		"characters without achievements show 준비 중 (별첨 B 미정 + 기본)")
+>>>>>>> Choi
 
 
 ## 업적이 보는 지표는 모두 누군가 남기는 지표다 (능력의 METRIC_* 또는 RunMetrics의 판 공통 지표).
@@ -174,7 +183,11 @@ func test_common_achievements_accumulate_over_games() -> void:
 		if i == 9:
 			assert_true(_names(completions).has("단골 I"), "10 games")
 		if i == 7:
+<<<<<<< HEAD
 			assert_true(_names(completions).has("블록 부수기 I"), "320 blocks ≥ 300 on the 8th game (%s)" % [_names(completions)])
+=======
+			assert_true(_names(completions).has("블럭 부수기 I"), "320 blocks ≥ 300 on the 8th game (%s)" % [_names(completions)])
+>>>>>>> Choi
 	var store: AchievementStore = AchievementStore.new(TEST_SAVE)
 	assert_eq([store.stat("games"), store.stat("blocks")], [10, 400])
 	var tracker: AchievementTracker = _tracker()
@@ -202,16 +215,26 @@ func test_best_score_and_owned_characters() -> void:
 	assert_eq([best.name, best.value, best.goal, best.done], ["최고 기록 III", 12000, 20000, false], "next tier after II")
 
 
+<<<<<<< HEAD
 func test_hidden_achievement_below_goal_only_records_progress() -> void:
 	var session: GameSession = _session(&"basic")
 	session.metrics.add(RunMetrics.STRAIGHT_MATCHES, 4)
 	assert_eq(_tracker().record_game(session, 0).size(), 0, "4 of 5")
 	var store: AchievementStore = AchievementStore.new(TEST_SAVE)
 	assert_eq(store.progress_of("h_pachy"), 4)
+=======
+func test_hidden_achievements_only_record_progress() -> void:
+	var session: GameSession = _session(&"basic")
+	session.metrics.add(RunMetrics.STRAIGHT_MATCHES, 9)
+	assert_eq(_tracker().record_game(session, 0).size(), 0, "no hidden completion yet (5a)")
+	var store: AchievementStore = AchievementStore.new(TEST_SAVE)
+	assert_eq(store.progress_of("h_pachy"), 9)
+>>>>>>> Choi
 	assert_false(store.is_done("h_pachy"))
 	assert_false(ProgressStore.new(TEST_SAVE).is_unlocked(&"pachy"))
 
 
+<<<<<<< HEAD
 func test_hidden_achievement_unlocks_its_character_once() -> void:
 	var session: GameSession = _session(&"basic")
 	session.metrics.add(RunMetrics.STRAIGHT_MATCHES, 5)
@@ -230,6 +253,11 @@ func test_hidden_achievement_unlocks_its_character_once() -> void:
 func test_result_lines() -> void:
 	var completions: Array[AchievementTracker.Completion] = [AchievementTracker.Completion.new("단골 I", "● 100")]
 	assert_eq(GameController.achievement_lines(completions), [PackedStringArray(["업적 단골 I", "업적에서 받기"])] as Array[PackedStringArray], "the reward is claimed on the achievement screen")
+=======
+func test_result_lines() -> void:
+	var completions: Array[AchievementTracker.Completion] = [AchievementTracker.Completion.new("단골 I", "● 100")]
+	assert_eq(GameController.achievement_lines(completions), [PackedStringArray(["업적 · 단골 I", "업적에서 받기"])] as Array[PackedStringArray], "the reward is claimed on the achievement screen")
+>>>>>>> Choi
 	assert_eq([AchievementTracker.format_count(30000), AchievementTracker.format_count(500), AchievementTracker.format_count(1234567)],
 		["30,000", "500", "1,234,567"])
 

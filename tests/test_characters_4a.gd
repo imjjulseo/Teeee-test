@@ -205,7 +205,11 @@ func test_marathon_flag_needs_a_match_first_then_gives_time() -> void:
 	assert_eq(marathon.target, 0)
 	session.request_move(Vector2i.RIGHT)
 	marathon.on_match(session, 0, [] as Array[Vector2i])  # 매치했다
+<<<<<<< HEAD
 	assert_eq(marathon.status_text(), "깃발 ↖ 준비 / +2초")
+=======
+	assert_eq(marathon.status_text(), "깃발 ↖ 준비 · +2초")
+>>>>>>> Choi
 	session.request_move(Vector2i.LEFT)
 	assert_eq(gained, [2.0] as Array[float], "+2 s")
 	assert_eq(marathon.target, 1, "next corner")
@@ -287,7 +291,11 @@ func test_bounty_background_is_the_bounty_color_and_blinks_two_seconds_before() 
 	assert_near(bounty.effect_remaining(), 7.0, 1e-6)
 	assert_eq(bounty.effect_block_color(), bounty.bounty_color)
 	assert_near(bounty.effect_blink_window(), 2.0)
+<<<<<<< HEAD
 	assert_eq(bounty.status_text(), "현상금 %s / 7초" % Board.COLOR_NAMES[bounty.bounty_color])
+=======
+	assert_eq(bounty.status_text(), "현상금 %s · 7초" % Board.COLOR_NAMES[bounty.bounty_color])
+>>>>>>> Choi
 
 
 # --- 화가 ---------------------------------------------------------------------
@@ -310,7 +318,11 @@ func test_painter_paints_the_trail_first_with_the_most_advanced_recipe_color() -
 	var matches: int = session.match_count
 	for color: int in session.character.condition_colors:
 		session.advance_ability_condition(color)
+<<<<<<< HEAD
 	assert_eq(messages, ["칠하기: 블록 5개"] as Array[String])
+=======
+	assert_eq(messages, ["칠하기: 블럭 5개"] as Array[String])
+>>>>>>> Choi
 	assert_eq(changed.size(), 5)
 	var painted_trail: int = 0
 	for pos: Vector2i in trail:

@@ -15,4 +15,8 @@ func modify_outcome(_session: GameSession, outcome: RecipeSet.ClearOutcome) -> v
 
 
 func status_text() -> String:
+<<<<<<< HEAD
 	return "족보 %d장 / ×%s" % [lengths.size(), Ability.format_number(multiplier)]
+=======
+	return "족보 %d장 · ×%s" % [lengths.size(), Ability.format_number(multiplier)]
+>>>>>>> Choi

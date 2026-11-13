@@ -12,4 +12,8 @@ func setup(p_grade: int, grade_color: Color) -> void:
 
 func show_shop(open: bool, open_level: int) -> void:
 	var grade_name: String = CharacterData.GRADE_NAMES[grade]
+<<<<<<< HEAD
 	text = grade_name if open else "%s / Lv %d에 열림" % [grade_name, open_level]
+=======
+	text = grade_name if open else "%s · Lv %d에 열림" % [grade_name, open_level]
+>>>>>>> Choi

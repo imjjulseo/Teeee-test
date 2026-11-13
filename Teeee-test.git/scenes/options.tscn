@@ -1,0 +1,123 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/options_menu.gd" id="1_options"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="2_nav"]
+[ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
+[ext_resource type="PackedScene" path="res://scenes/debug_panel.tscn" id="3_debug"]
+[ext_resource type="PackedScene" path="res://scenes/quick_options.tscn" id="4_quick"]
+[ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
+[ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="20_top"]
+[ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="21_bottom"]
+
+[node name="OptionsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_options")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("95_token_rect")
+token = &"background_settings"
+
+[node name="SafeArea" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("90_safe")
+
+[node name="Content" type="Control" parent="SafeArea"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="SafeArea/Content"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 24
+
+[node name="TopBar" parent="SafeArea/Content/Layout" instance=ExtResource("20_top")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Page" type="MarginContainer" parent="SafeArea/Content/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_right = 60
+
+[node name="Box" type="VBoxContainer" parent="SafeArea/Content/Layout/Page"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Scroll" type="ScrollContainer" parent="SafeArea/Content/Layout/Page/Box"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Inner" type="VBoxContainer" parent="SafeArea/Content/Layout/Page/Box/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 36
+
+[node name="DebugPanel" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("3_debug")]
+layout_mode = 2
+
+[node name="QuickOptions" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("4_quick")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="TutorialButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 144)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 48
+text = "튜토리얼 다시 보기"
+
+[node name="ResetButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 144)
+layout_mode = 2
+focus_mode = 0
+theme_type_variation = &"WarnButton"
+theme_override_font_sizes/font_size = 48
+text = "진행 초기화"
+
+[node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("21_bottom")]
+unique_name_in_owner = true
+layout_mode = 2
+current = 5
+top_bar = NodePath("../TopBar")
+
+[node name="GameNavigator" type="Node" parent="."]
+script = ExtResource("2_nav")
+target_scene = "res://scenes/main.tscn"
+
+[node name="MenuNavigator" type="Node" parent="."]
+script = ExtResource("2_nav")
+target_scene = "res://scenes/main_menu.tscn"
+
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="progress_reset" from="." to="MenuNavigator" method="go"]
+[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/TutorialButton" to="." method="_on_tutorial_button_pressed"]
+[connection signal="tutorial_replay_requested" from="." to="GameNavigator" method="go"]
+[connection signal="progress_changed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/DebugPanel" to="." method="_on_debug_progress_changed"]

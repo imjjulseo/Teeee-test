@@ -15,6 +15,7 @@ script = ExtResource("4_level")
 hold_seeds_after = true
 rule = true
 first_delay = 0.8
+<<<<<<< HEAD
 first_caption = "스와이프해서 옆 칸과 자리를 바꿔요"
 swipe_first = true
 hold_text = "내 위아래와 양옆이 모두 같은 색이면 매치!"
@@ -22,13 +23,26 @@ hold_text = "내 위아래와 양옆이 모두 같은 색이면 매치!"
 [sub_resource type="Resource" id="Step_Seeds"]
 script = ExtResource("3_say")
 text = "매치한 자리에는 씨앗이 남고, 곧 새 블록으로 자라요"
+=======
+first_caption = "스와이프해서 옆칸과 바꿔요"
+swipe_first = true
+hold_text = "주변이 같은 색으로 둘러싸이면 매치!"
+
+[sub_resource type="Resource" id="Step_Seeds"]
+script = ExtResource("3_say")
+text = "매치한 자리에는 다시 블럭이 무작위로 자라나요"
+>>>>>>> Choi
 holes = PackedStringArray("seeds")
 release_seeds = true
 icon = 5
 
 [sub_resource type="Resource" id="Step_TimeSay"]
 script = ExtResource("3_say")
+<<<<<<< HEAD
 text = "시간이 다 되면 끝나요.\n매치할 때마다 시간이 늘어요"
+=======
+text = "시간 안에 매치해야 하고, 뭐든 매치하면 추가 시간을 얻어요"
+>>>>>>> Choi
 holes = PackedStringArray("time")
 icon = 4
 
@@ -42,13 +56,21 @@ rule_cards = true
 
 [sub_resource type="Resource" id="Step_Recipe1"]
 script = ExtResource("3_say")
+<<<<<<< HEAD
 text = "점수는 족보를 완성해야 얻어요"
+=======
+text = "점수를 얻으려면 족보를 완성해야 해요"
+>>>>>>> Choi
 holes = PackedStringArray("cards")
 icon = 2
 
 [sub_resource type="Resource" id="Step_Recipe2"]
 script = ExtResource("3_say")
+<<<<<<< HEAD
 text = "족보에 적힌 색 순서대로 매치해요.\n흰 테두리가 다음에 매치할 색이에요"
+=======
+text = "족보의 색 순서대로 매치하면 완성돼요. 흰 테두리가 다음 색이에요"
+>>>>>>> Choi
 holes = PackedStringArray("cards")
 icon = 2
 
@@ -66,7 +88,11 @@ icon = 2
 
 [sub_resource type="Resource" id="Step_Coin1"]
 script = ExtResource("7_coin")
+<<<<<<< HEAD
 caption = "코인 블록을 매치해서 코인을 얻어 보세요"
+=======
+caption = "코인 블럭을 매치해서 코인을 얻어 보세요"
+>>>>>>> Choi
 rule = true
 target_recipe = true
 
@@ -77,7 +103,11 @@ script = ExtResource("8_wait")
 script = ExtResource("7_coin")
 board_id = "0b"
 coins = 3
+<<<<<<< HEAD
 caption = "코인 블록 여러 개를 한 번에 매치해 보세요"
+=======
+caption = "코인 블럭을 한 번에 여러 개 먹어 보세요"
+>>>>>>> Choi
 rule = true
 target_recipe = true
 reset_chain = true

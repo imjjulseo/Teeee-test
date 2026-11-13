@@ -1,0 +1,198 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/debug_panel.gd" id="1_debug"]
+[ext_resource type="Resource" path="res://resources/character_roster.tres" id="2_roster"]
+[ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="3_nav"]
+
+[node name="DebugPanel" type="VBoxContainer"]
+theme_override_constants/separation = 15
+script = ExtResource("1_debug")
+roster = ExtResource("2_roster")
+
+[node name="DebugToggle" type="Button" parent="."]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 36
+toggle_mode = true
+text = "디버그"
+
+[node name="DebugStatusLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 36
+text = "Lv 1 · ● 0 · ◆ 0 · 해금 1"
+
+[node name="DebugRow" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="GrantButton" type="Button" parent="DebugRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 36
+text = "● +1000 ◆ +100"
+
+[node name="LevelButton" type="Button" parent="DebugRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 36
+text = "레벨 +1"
+
+[node name="UnlockAllButton" type="Button" parent="DebugRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 36
+text = "전부 해금"
+
+[node name="TutorialRow" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="TutorialRestartButton" type="Button" parent="TutorialRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "튜토리얼
+처음부터"
+
+[node name="TutorialFinishButton" type="Button" parent="TutorialRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "튜토리얼
+끝냄"
+
+[node name="TutorialGachaButton" type="Button" parent="TutorialRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "첫 뽑기
+직전"
+
+[node name="TutorialCharacterButton" type="Button" parent="TutorialRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "첫 캐릭터
+받음"
+
+[node name="UnlockMenusButton" type="Button" parent="."]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+focus_mode = 0
+theme_override_font_sizes/font_size = 36
+text = "튜토리얼 건너뛰고 메뉴 모두 열기"
+
+[node name="ScreenHeading" type="Label" parent="."]
+layout_mode = 2
+theme_type_variation = &"DimLabel"
+theme_override_font_sizes/font_size = 33
+text = "화면 바로 열기"
+
+[node name="ScreenRow" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="IntroButton" type="Button" parent="ScreenRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "인트로"
+
+[node name="RuleTutorialButton" type="Button" parent="ScreenRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "규칙
+튜토리얼"
+
+[node name="ShortGameButton" type="Button" parent="ScreenRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "짧은 판
+(결과, 부활)"
+
+[node name="LevelScreenButton" type="Button" parent="ScreenRow"]
+mouse_filter = 1
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 108)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 30
+text = "레벨
+보상"
+
+[node name="IntroNavigator" type="Node" parent="."]
+script = ExtResource("3_nav")
+target_scene = "res://scenes/intro.tscn"
+
+[node name="GameNavigator" type="Node" parent="."]
+script = ExtResource("3_nav")
+target_scene = "res://scenes/main.tscn"
+
+[node name="LevelNavigator" type="Node" parent="."]
+script = ExtResource("3_nav")
+target_scene = "res://scenes/level_rewards.tscn"
+
+[connection signal="pressed" from="TutorialRow/TutorialRestartButton" to="." method="_on_tutorial_restart_pressed"]
+[connection signal="pressed" from="TutorialRow/TutorialFinishButton" to="." method="_on_tutorial_finish_pressed"]
+[connection signal="pressed" from="TutorialRow/TutorialGachaButton" to="." method="_on_tutorial_gacha_pressed"]
+[connection signal="pressed" from="TutorialRow/TutorialCharacterButton" to="." method="_on_tutorial_character_pressed"]
+[connection signal="pressed" from="DebugRow/GrantButton" to="." method="_on_grant_button_pressed"]
+[connection signal="pressed" from="DebugRow/LevelButton" to="." method="_on_level_button_pressed"]
+[connection signal="pressed" from="DebugRow/UnlockAllButton" to="." method="_on_unlock_all_button_pressed"]
+[connection signal="pressed" from="DebugToggle" to="." method="_on_toggle_pressed"]
+[connection signal="pressed" from="UnlockMenusButton" to="." method="_on_tutorial_finish_pressed"]
+[connection signal="pressed" from="ScreenRow/IntroButton" to="IntroNavigator" method="go"]
+[connection signal="pressed" from="ScreenRow/RuleTutorialButton" to="." method="_on_rule_tutorial_pressed"]
+[connection signal="pressed" from="ScreenRow/ShortGameButton" to="." method="_on_short_game_pressed"]
+[connection signal="pressed" from="ScreenRow/LevelScreenButton" to="LevelNavigator" method="go"]
+[connection signal="game_requested" from="." to="GameNavigator" method="go"]

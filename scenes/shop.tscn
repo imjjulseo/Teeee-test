@@ -141,7 +141,11 @@ size_flags_horizontal = 4
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 39
+<<<<<<< HEAD
 text = "신화 0.1% / 전설 0.9% / 영웅 34% / 희귀 65%"
+=======
+text = "신화 0.1% · 전설 0.9% · 영웅 34% · 희귀 65%"
+>>>>>>> Choi
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -160,7 +164,11 @@ custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 54
+<<<<<<< HEAD
 text = "뽑기 ● 500"
+=======
+text = "뽑기 · ● 500"
+>>>>>>> Choi
 
 [node name="AdButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/GachaPage/VBox"]
 mouse_filter = 1
@@ -170,7 +178,11 @@ custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 39
+<<<<<<< HEAD
 text = "광고 보고 ◆ 5 (오늘 0/3)"
+=======
+text = "광고 보고 ◆ 5 · 오늘 0/3"
+>>>>>>> Choi
 
 [node name="ShopPage" type="ScrollContainer" parent="SafeArea/Content/Layout/Page/Box"]
 unique_name_in_owner = true

@@ -1,7 +1,12 @@
 class_name BlockGesture
 extends Control
+<<<<<<< HEAD
 ## 아래 줄 가운데 캐릭터 블록의 입력 (E38): 누르면 tapped, 위로 swipe_distance만큼 끌면 swiped_up (메인에서만 게임 시작).
 ## 끄는 동안 블록(자식 %Block)이 손가락을 따라 올라온다. 무엇을 할지는 정하지 않고 signal로만 알린다.
+=======
+## 아래 줄 가운데 캐릭터 블럭의 입력 (E38): 누르면 tapped, 위로 swipe_distance만큼 끌면 swiped_up (메인에서만 게임 시작).
+## 끄는 동안 블럭(자식 %Block)이 손가락을 따라 올라온다. 무엇을 할지는 정하지 않고 signal로만 알린다.
+>>>>>>> Choi
 
 signal tapped
 signal swiped_up
@@ -64,6 +69,10 @@ func _lift_block(amount: float) -> void:
 	(%Block as Control).position.y = _rest_y() - amount
 
 
+<<<<<<< HEAD
 ## 블록의 쉬는 자리 (가운데).
+=======
+## 블럭의 쉬는 자리 (가운데).
+>>>>>>> Choi
 func _rest_y() -> float:
 	return (size.y - (%Block as Control).size.y) / 2.0
