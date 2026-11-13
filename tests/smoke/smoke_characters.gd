@@ -233,7 +233,7 @@ func _tick_select() -> void:
 			if step_time > 0.2:
 				var page: CharacterInfo = select.carousel().current_page()
 				expect((page.get_node("%SheetNameLabel") as Label).text == "???" and (page.get_node("%HiddenNote") as Control).visible, "hidden stays veiled")
-				expect(not (page.get_node("%EffectBox") as Control).visible and not (page.get_node("%LessonButton") as Control).visible, "no ability, no trial")
+				expect(not (page.get_node("%AbilityBox") as Control).visible and not (page.get_node("%EffectLabel") as Control).visible and not (page.get_node("%LessonButton") as Control).visible, "no ability, no trial")
 				shot("select_hidden")
 				for character: CharacterData in select.collection.sorted():
 					select.show_character(character.id)  # 32명 모두 그려진다

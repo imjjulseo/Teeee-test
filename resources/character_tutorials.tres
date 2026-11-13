@@ -9,7 +9,7 @@
 [sub_resource type="Resource" id="Puzzle_trigger"]
 script = ExtResource("5_def")
 rows = PackedStringArray(".....", "..T..", ".TT.P", "...T.", ".....")
-tip = "블록은 내가 있던 칸으로 와요. 빈 자리에 먼저 서서, 블록 쪽으로 움직여요"
+tip = "블록은 내가 있던 칸으로 와요.\n빈 자리에 먼저 서서, 블록 쪽으로 움직여요"
 
 [sub_resource type="Resource" id="Lesson_1"]
 script = ExtResource("4_lesson")
@@ -39,7 +39,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_1")])
 
 [sub_resource type="Resource" id="Lesson_4"]
 script = ExtResource("4_lesson")
-text = "시간이 멈춘 4초 안에 매치해 보세요. 멈춘 동안엔 시간 걱정이 없어요"
+text = "시간이 멈춘 4초 안에 매치해 보세요.\n멈춘 동안엔 시간 걱정이 없어요"
 goal = &"clock_stop_matches"
 hint = 6
 fresh = true
@@ -50,7 +50,7 @@ practice_marks = null
 [sub_resource type="Resource" id="Moment_5"]
 script = ExtResource("3_moment")
 holes = PackedStringArray("time")
-text = "4초 동안 시간이 멈춰요. 그동안 마음껏 매치해요"
+text = "4초 동안 시간이 멈춰요.\n그동안 마음껏 매치해요"
 
 [sub_resource type="Resource" id="Tutorial_clock_6"]
 script = ExtResource("2_tutorial")
@@ -62,7 +62,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_4")])
 
 [sub_resource type="Resource" id="Lesson_7"]
 script = ExtResource("4_lesson")
-text = "×2가 붙어 있을 때 족보를 완성해 보세요. 긴 족보일수록 이득이 커요"
+text = "×2가 붙어 있을 때 족보를 완성해 보세요.\n긴 족보일수록 이득이 커요"
 goal = &"gambler_bonus"
 hint = 3
 fresh = true
@@ -73,7 +73,7 @@ practice_marks = null
 [sub_resource type="Resource" id="Moment_8"]
 script = ExtResource("3_moment")
 holes = PackedStringArray("cards")
-text = "×2가 붙었어요. 다음에 완성하는 족보는 점수가 두 배예요"
+text = "×2가 붙었어요.\n다음에 완성하는 족보는 점수가 두 배예요"
 
 [sub_resource type="Resource" id="Tutorial_gambler_9"]
 script = ExtResource("2_tutorial")
@@ -85,7 +85,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_7")])
 
 [sub_resource type="Resource" id="Lesson_11"]
 script = ExtResource("4_lesson")
-text = "피버 동안엔 색을 가리지 말고 최대한 많이 매치해요! 끝날 때 쌓인 만큼 점수를 받아요"
+text = "피버 동안엔 색을 가리지 말고 최대한 많이 매치해요!\n끝날 때 쌓인 만큼 점수를 받아요"
 goal = &"fever_end"
 hint = 1
 fresh = true
@@ -115,7 +115,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_11")])
 
 [sub_resource type="Resource" id="Lesson_14"]
 script = ExtResource("4_lesson")
-text = "아무 색이나 매치해도 모든 족보가 한 칸씩 차요. 와일드로 족보를 완성해 보세요"
+text = "아무 색이나 매치해도 모든 족보가 한 칸씩 차요.\n와일드로 족보를 완성해 보세요"
 goal = &"joker_wild_recipes"
 hint = 1
 fresh = true
@@ -170,7 +170,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_18")])
 
 [sub_resource type="Resource" id="Lesson_22"]
 script = ExtResource("4_lesson")
-text = "멈춘 판을 보고 매치가 두 번 이어지는 길을 그려 보세요. 사진이 깨지면 그린 길대로 한 번에 움직여요"
+text = "멈춘 판을 보고 매치가 두 번 이어지는 길을 그려 보세요.\n사진이 깨지면 그린 길대로 한 번에 움직여요"
 goal = &"photo_matches"
 at_least = 2
 hint = 2
@@ -184,7 +184,7 @@ retry_text = "매치를 두 번 이어 보세요"
 script = ExtResource("3_moment")
 event = &"photo_end"
 holes = PackedStringArray("board")
-text = "그린 길대로 출발! 매치할 때마다 보너스가 두 배"
+text = "그린 길대로 출발!\n매치할 때마다 보너스가 두 배"
 
 [sub_resource type="Resource" id="Moment_23"]
 script = ExtResource("3_moment")
@@ -240,7 +240,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_27")])
 
 [sub_resource type="Resource" id="Lesson_30"]
 script = ExtResource("4_lesson")
-text = "6초 동안 어디서든 매치돼요. 최대한 빠르게 세 번!"
+text = "6초 동안 어디서든 매치돼요.\n최대한 빠르게 세 번!"
 goal = &"vampire_matches"
 at_least = 3
 fresh = true
@@ -251,7 +251,7 @@ practice_marks = null
 [sub_resource type="Resource" id="Moment_31"]
 script = ExtResource("3_moment")
 holes = PackedStringArray("board")
-text = "전부 빨강! 어디서든 매치돼요"
+text = "전부 빨강!\n어디서든 매치돼요"
 
 [sub_resource type="Resource" id="Tutorial_vampire_32"]
 script = ExtResource("2_tutorial")
@@ -263,7 +263,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_30")])
 
 [sub_resource type="Resource" id="Lesson_34"]
 script = ExtResource("4_lesson")
-text = "움직이는 쪽 블록을 쏘면 그 색으로 족보가 차요. 필요한 색을 골라 6발을 쏴 보세요"
+text = "움직이는 쪽 블록을 쏘면 그 색으로 족보가 차요.\n필요한 색을 골라 6발을 쏴 보세요"
 goal = &"madan_end"
 practice_rows = null
 practice_marks = null
@@ -336,7 +336,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_40")])
 
 [sub_resource type="Resource" id="Lesson_43"]
 script = ExtResource("4_lesson")
-text = "같은 색으로 보이는 두 색을 섞어 T 모양을 만들어 매치해 보세요. 문양은 그대로예요"
+text = "같은 색으로 보이는 두 색을 섞어 T 모양을 만들어 매치해 보세요.\n문양은 그대로예요"
 goal = &"colorblind_mixed_matches"
 hint = 1
 fresh = true
@@ -347,7 +347,7 @@ practice_marks = null
 [sub_resource type="Resource" id="Moment_44"]
 script = ExtResource("3_moment")
 holes = PackedStringArray("board")
-text = "두 색이 하나가 됐어요. 문양은 그대로예요"
+text = "두 색이 하나가 됐어요.\n문양은 그대로예요"
 
 [sub_resource type="Resource" id="Tutorial_colorblind_45"]
 script = ExtResource("2_tutorial")
@@ -359,7 +359,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_43")])
 
 [sub_resource type="Resource" id="Lesson_46"]
 script = ExtResource("4_lesson")
-text = "흑백인 동안 족보를 완성하면 점수 ×2. 색 대신 문양을 보세요"
+text = "흑백인 동안 족보를 완성하면 점수 ×2.\n색 대신 문양을 보세요"
 goal = &"retro_recipes"
 hint = 3
 fresh = true
@@ -383,7 +383,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_46")])
 
 [sub_resource type="Resource" id="Lesson_49"]
 script = ExtResource("4_lesson")
-text = "한 칸 늘어난 족보를 완성해 보세요. 늘어난 만큼 점수도 커져요"
+text = "한 칸 늘어난 족보를 완성해 보세요.\n늘어난 만큼 점수도 커져요"
 goal = &"architect_extended_recipes"
 hint = 3
 fresh = true
@@ -393,7 +393,7 @@ practice_marks = null
 [sub_resource type="Resource" id="Moment_50"]
 script = ExtResource("3_moment")
 holes = PackedStringArray("cards")
-text = "족보가 길어졌어요. 길수록 점수가 커요"
+text = "족보가 길어졌어요.\n길수록 점수가 커요"
 
 [sub_resource type="Resource" id="Tutorial_architect_51"]
 script = ExtResource("2_tutorial")
@@ -435,7 +435,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_53")])
 
 [sub_resource type="Resource" id="Lesson_57"]
 script = ExtResource("4_lesson")
-text = "흡수한 노랑 수만큼 족보가 차요. 판에 노랑이 많을 때 발동할수록 많이 채워요"
+text = "흡수한 노랑 수만큼 족보가 차요.\n판에 노랑이 많을 때 발동할수록 많이 채워요"
 goal = &"zeus_end"
 practice_rows = null
 practice_marks = null
@@ -463,7 +463,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_57")])
 
 [sub_resource type="Resource" id="Lesson_60"]
 script = ExtResource("4_lesson")
-text = "씨앗이 자랄 색이 보여요. 같은 색 T 모양이 여러 개일 때 발동하면 한꺼번에 매치돼요"
+text = "씨앗이 자랄 색이 보여요.\n같은 색 T 모양이 여러 개일 때 발동하면 한꺼번에 매치돼요"
 goal = &"seer_shapes_once"
 at_least = 2
 hint = 2
@@ -489,7 +489,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_60")])
 
 [sub_resource type="Resource" id="Lesson_64"]
 script = ExtResource("4_lesson")
-text = "벽에 붙은 칸에서는 세 방향만 같은 색이어도 매치돼요. 벽 쪽으로 가 보세요"
+text = "벽에 붙은 칸에서는 세 방향만 같은 색이어도 매치돼요.\n벽 쪽으로 가 보세요"
 goal = &"wall_matches"
 practice_rows = PackedStringArray(".AAA.", "..P..", ".....", ".....", ".....")
 practice_marks = PackedStringArray(".SCS.", "..S..")
@@ -498,7 +498,7 @@ practice_at_top = true
 
 [sub_resource type="Resource" id="Lesson_65"]
 script = ExtResource("4_lesson")
-text = "벽 매치로 얻는 시간은 절반이에요. 판 가장자리를 돌며 한 번 더 해 보세요"
+text = "벽 매치로 얻는 시간은 절반이에요.\n판 가장자리를 돌며 한 번 더 해 보세요"
 goal = &"wall_matches"
 fresh = true
 practice_rows = null
@@ -520,7 +520,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_64"), SubResource(
 
 [sub_resource type="Resource" id="Lesson_68"]
 script = ExtResource("4_lesson")
-text = "매치를 한 번 하면 깃발이 금색으로 빛나요. 그 모서리 칸에 들어가면 +2초"
+text = "매치를 한 번 하면 깃발이 금색으로 빛나요.\n그 모서리 칸에 들어가면 +2초"
 goal = &"marathon_flags"
 hint = 1
 practice_rows = null
@@ -542,7 +542,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_68")])
 
 [sub_resource type="Resource" id="Lesson_71"]
 script = ExtResource("4_lesson")
-text = "배경색이 현상금 색이에요. 그 색으로 매치하면 +2초"
+text = "배경색이 현상금 색이에요.\n그 색으로 매치하면 +2초"
 goal = &"bounty_hunts"
 hint = 6
 practice_rows = null
@@ -564,7 +564,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_71")])
 
 [sub_resource type="Resource" id="Lesson_74"]
 script = ExtResource("4_lesson")
-text = "벽 밖으로 움직이면 반대편 끝에서 나와요. 넘어가 보세요"
+text = "벽 밖으로 움직이면 반대편 끝에서 나와요.\n넘어가 보세요"
 goal = &"navigator_wraps"
 practice_rows = null
 practice_marks = null
@@ -645,14 +645,14 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_82")])
 
 [sub_resource type="Resource" id="Lesson_85"]
 script = ExtResource("4_lesson")
-text = "10번 움직이는 동안 매치를 못 하면 순간이동해요. 매치하지 말고 움직여 보세요"
+text = "10번 움직이는 동안 매치를 못 하면 순간이동해요.\n매치하지 말고 움직여 보세요"
 goal = &"wanderer_teleports"
 practice_rows = null
 practice_marks = null
 
 [sub_resource type="Resource" id="Lesson_86"]
 script = ExtResource("4_lesson")
-text = "대신 족보 점수는 ×1.5예요. 족보를 완성해 보세요"
+text = "대신 족보 점수는 ×1.5예요.\n족보를 완성해 보세요"
 hint = 3
 cards_near = true
 practice_rows = null
@@ -681,7 +681,7 @@ practice_marks = null
 
 [sub_resource type="Resource" id="Lesson_90"]
 script = ExtResource("4_lesson")
-text = "거울세계에선 족보를 뒤에서부터 채워요. 족보를 완성해 보세요"
+text = "거울세계에선 족보를 뒤에서부터 채워요.\n족보를 완성해 보세요"
 hint = 3
 cards_near = true
 practice_rows = null
@@ -703,7 +703,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_89"), SubResource(
 
 [sub_resource type="Resource" id="Lesson_93"]
 script = ExtResource("4_lesson")
-text = "파랑을 매치하면 물방울이 생겨요. 두 개 모아 보세요"
+text = "파랑을 매치하면 물방울이 생겨요.\n두 개 모아 보세요"
 goal = &"arson_water"
 count = 2
 progress_text = "{done} / {count}"
@@ -735,7 +735,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_93"), SubResource(
 
 [sub_resource type="Resource" id="Lesson_97"]
 script = ExtResource("4_lesson")
-text = "방향만 바꿀 수 있어요. 길게 직진하다 매치하면 시간이 더 붙어요"
+text = "방향만 바꿀 수 있어요.\n길게 직진하다 매치하면 시간이 더 붙어요"
 goal = &"racer_streak_matches"
 practice_rows = null
 practice_marks = null
@@ -756,7 +756,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_97")])
 
 [sub_resource type="Resource" id="Lesson_100"]
 script = ExtResource("4_lesson")
-text = "밀고 손을 떼지 않으면 돌진! 돌진하다 매치하면 박치기 점수"
+text = "밀고 손을 떼지 않으면 돌진!\n돌진하다 매치하면 박치기 점수"
 goal = &"pachy_headbutts"
 practice_rows = null
 practice_marks = null
@@ -777,7 +777,7 @@ lessons = Array[ExtResource("4_lesson")]([SubResource("Lesson_100")])
 
 [sub_resource type="Resource" id="Lesson_102"]
 script = ExtResource("4_lesson")
-text = "화면 왼쪽은 왼손, 오른쪽은 오른손. 양손으로 한 번씩 매치해 보세요"
+text = "화면 왼쪽은 왼손, 오른쪽은 오른손.\n양손으로 한 번씩 매치해 보세요"
 goal = &"ambi_both_hands"
 practice_rows = null
 practice_marks = null

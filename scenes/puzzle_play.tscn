@@ -219,3 +219,4 @@ target_scene = "res://scenes/puzzle_menu.tscn"
 [connection signal="replay_pressed" from="UI/ResultPanel" to="." method="_on_result_replay"]
 [connection signal="retry_pressed" from="UI/ResultPanel" to="." method="_on_result_retry"]
 [connection signal="next_pressed" from="UI/ResultPanel" to="." method="_on_result_next"]
+[connection signal="exit_pressed" from="UI/ResultPanel" to="." method="_on_exit_pressed"]

@@ -67,14 +67,6 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 60
 text = "메뉴"
 
-[node name="MainMenuNote" type="Label" parent="Center"]
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "다시 시작하거나 메뉴로 나가면 이번 판 점수는 남지 않아요"
-horizontal_alignment = 1
-autowrap_mode = 3
-
 [node name="Options" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -101,7 +93,6 @@ horizontal_alignment = 1
 [node name="QuickOptions" parent="Options" instance=ExtResource("2_quick")]
 unique_name_in_owner = true
 layout_mode = 2
-show_notes = false
 
 [node name="BackButton" type="Button" parent="Options"]
 unique_name_in_owner = true

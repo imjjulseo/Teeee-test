@@ -28,7 +28,7 @@ icon = 5
 
 [sub_resource type="Resource" id="Step_TimeSay"]
 script = ExtResource("3_say")
-text = "시간이 다 되면 끝나요. 매치할 때마다 시간이 늘어요"
+text = "시간이 다 되면 끝나요.\n매치할 때마다 시간이 늘어요"
 holes = PackedStringArray("time")
 icon = 4
 
@@ -48,7 +48,7 @@ icon = 2
 
 [sub_resource type="Resource" id="Step_Recipe2"]
 script = ExtResource("3_say")
-text = "족보에 적힌 색 순서대로 매치해요. 흰 테두리가 다음에 맞출 색이에요"
+text = "족보에 적힌 색 순서대로 매치해요.\n흰 테두리가 다음에 매치할 색이에요"
 holes = PackedStringArray("cards")
 icon = 2
 

@@ -154,9 +154,11 @@ func _tick_board() -> void:
 				expect((node("UI/ResultPanel").get_node("%ResultStars") as Label).text == "★★★", "minimum moves → three stars even with hints (HTML 11/04)")
 				expect((node("UI/ResultPanel").get_node("%ResultHead") as Label).text == "최소 수로 성공!", "head")
 				expect(PuzzleStore.new().stars_of(LAST_BOARD) == 3, "board stars saved")
-				expect((node("UI/ResultPanel").get_node("%NextButton") as Button).text == "목록으로", "last board → back to the list")
+				var panel: Node = node("UI/ResultPanel")
+				expect(not (panel.get_node("%NextButton") as Control).visible, "last board: no next puzzle")
+				expect((panel.get_node("%RetryButton") as Control).visible and (panel.get_node("%ExitButton") as Control).visible, "retry and exit always shown (E42)")
 				shot("board_result")
-				click_control(node("UI/ResultPanel").get_node("%NextButton"))
+				click_control(panel.get_node("%ExitButton"))
 				step = 6
 				step_time = 0.0
 			elif _play().runner.phase == PuzzleRunner.Phase.REPLAY:

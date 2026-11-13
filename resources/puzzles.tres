@@ -70,7 +70,7 @@ boards = Array[ExtResource("3_def")]([SubResource("Board_0a"), SubResource("Boar
 script = ExtResource("3_def")
 id = "1a"
 rows = PackedStringArray(".....", "..T..", ".TT.P", "...T.", ".....")
-tip = "T 모양은 직접 만들 수도 있어요. 블록과 자리를 바꿔서 만들어 보세요!"
+tip = "T 모양은 직접 만들 수도 있어요.\n블록과 자리를 바꿔 만들어 보세요!"
 
 [sub_resource type="Resource" id="Board_1b"]
 script = ExtResource("3_def")

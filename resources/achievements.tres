@@ -187,6 +187,41 @@ texts = PackedStringArray("순간이동하자마자 매치", "한 판에 순간�
 metrics = PackedStringArray("wanderer_teleport_matches", "wanderer_teleports", "score")
 goals = PackedInt32Array(1, 8, 10000)
 
+[sub_resource type="Resource" id="Chain_zeus"]
+script = ExtResource("3_chain")
+character_id = &"zeus"
+texts = PackedStringArray("낙뢰 한 번에 노랑 5개 흡수", "낙뢰 한 번에 노랑 10개 흡수", "한 판에 노랑 40개 흡수")
+metrics = PackedStringArray("zeus_absorbed_once", "zeus_absorbed_once", "zeus_absorbed")
+goals = PackedInt32Array(5, 10, 40)
+
+[sub_resource type="Resource" id="Chain_arson"]
+script = ExtResource("3_chain")
+character_id = &"arson"
+texts = PackedStringArray("물방울 2개 모으기", "한 판에 불 끄기 3회", "한 판에 불 끄기 6회")
+metrics = PackedStringArray("arson_water", "arson_douses", "arson_douses")
+goals = PackedInt32Array(2, 3, 6)
+
+[sub_resource type="Resource" id="Chain_seer"]
+script = ExtResource("3_chain")
+character_id = &"seer"
+texts = PackedStringArray("예언 한 번에 모양 2개 매치", "예언 한 번에 모양 4개 매치", "한 판에 예언으로 모양 20개 매치")
+metrics = PackedStringArray("seer_shapes_once", "seer_shapes_once", "seer_shapes")
+goals = PackedInt32Array(2, 4, 20)
+
+[sub_resource type="Resource" id="Chain_racer"]
+script = ExtResource("3_chain")
+character_id = &"racer"
+texts = PackedStringArray("달리다가 매치", "한 판에 달리다가 매치 10회", "한 판에 달리다가 매치 25회")
+metrics = PackedStringArray("racer_streak_matches", "racer_streak_matches", "racer_streak_matches")
+goals = PackedInt32Array(1, 10, 25)
+
+[sub_resource type="Resource" id="Chain_pachy"]
+script = ExtResource("3_chain")
+character_id = &"pachy"
+texts = PackedStringArray("박치기 1회", "한 판에 박치기 8회", "한 판에 박치기 20회")
+metrics = PackedStringArray("pachy_headbutts", "pachy_headbutts", "pachy_headbutts")
+goals = PackedInt32Array(1, 8, 20)
+
 [sub_resource type="Resource" id="Common_blocks"]
 script = ExtResource("2_common")
 stat = &"blocks"
@@ -260,5 +295,5 @@ common_tier_names = null
 tier_coins = PackedInt32Array(100, 0, 0)
 tier_diamonds = PackedInt32Array(0, 10, 30)
 common = Array[ExtResource("2_common")]([SubResource("Common_blocks"), SubResource("Common_recipes"), SubResource("Common_best"), SubResource("Common_games"), SubResource("Common_coins"), SubResource("Common_owned")])
-chains = Array[ExtResource("3_chain")]([SubResource("Chain_gardener"), SubResource("Chain_wall"), SubResource("Chain_marathon"), SubResource("Chain_sewer"), SubResource("Chain_gambler"), SubResource("Chain_clock"), SubResource("Chain_bomber"), SubResource("Chain_fever"), SubResource("Chain_joker"), SubResource("Chain_photo"), SubResource("Chain_mirror"), SubResource("Chain_vampire"), SubResource("Chain_madan"), SubResource("Chain_ambi"), SubResource("Chain_painter"), SubResource("Chain_poseidon"), SubResource("Chain_colorblind"), SubResource("Chain_retro"), SubResource("Chain_navigator"), SubResource("Chain_twins"), SubResource("Chain_bounty"), SubResource("Chain_explorer"), SubResource("Chain_architect"), SubResource("Chain_artisan"), SubResource("Chain_runner"), SubResource("Chain_wanderer")])
+chains = Array[ExtResource("3_chain")]([SubResource("Chain_gardener"), SubResource("Chain_wall"), SubResource("Chain_marathon"), SubResource("Chain_sewer"), SubResource("Chain_gambler"), SubResource("Chain_clock"), SubResource("Chain_bomber"), SubResource("Chain_fever"), SubResource("Chain_joker"), SubResource("Chain_photo"), SubResource("Chain_mirror"), SubResource("Chain_vampire"), SubResource("Chain_madan"), SubResource("Chain_ambi"), SubResource("Chain_painter"), SubResource("Chain_poseidon"), SubResource("Chain_colorblind"), SubResource("Chain_retro"), SubResource("Chain_navigator"), SubResource("Chain_twins"), SubResource("Chain_bounty"), SubResource("Chain_explorer"), SubResource("Chain_architect"), SubResource("Chain_artisan"), SubResource("Chain_runner"), SubResource("Chain_wanderer"), SubResource("Chain_zeus"), SubResource("Chain_arson"), SubResource("Chain_seer"), SubResource("Chain_racer"), SubResource("Chain_pachy")])
 hidden = Array[ExtResource("4_hidden")]([SubResource("Hidden_ambi"), SubResource("Hidden_racer"), SubResource("Hidden_pachy")])

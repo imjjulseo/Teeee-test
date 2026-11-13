@@ -9,8 +9,9 @@ signal reduce_motion_changed(enabled: bool)
 
 ## 저장 파일. 비어 있으면 SaveData 기본 경로 (테스트·스모크는 SaveData.path_override).
 @export var save_path: String = ""
-## 항목 아래 설명 글을 보인다 (설정 화면). 일시정지 화면은 좁아서 끈다.
-@export var show_notes: bool = true
+## 슬라이더 손잡이 지름, 스위치 크기 (1080×1920 기준 px, 엔진 기본 그림은 너무 작다).
+@export var grabber_size: int = 84
+@export var switch_size: Vector2i = Vector2i(168, 90)
 
 var _store: OptionsStore
 ## 저장하지 않은 볼륨 변경이 있음.
@@ -24,7 +25,21 @@ var _volume_dirty: bool = false
 
 
 func _ready() -> void:
+	_draw_controls()
 	reload()
+
+
+## 슬라이더 손잡이와 스위치를 화면 크기에 맞는 그림으로 바꾼다 (색은 디자인 토큰).
+func _draw_controls() -> void:
+	var on: Color = get_theme_color(&"selected", DesignTokens.THEME_TYPE)
+	var off: Color = get_theme_color(&"control_track", DesignTokens.THEME_TYPE)
+	var knob: Color = get_theme_color(&"outline", DesignTokens.THEME_TYPE)
+	for slot: StringName in [&"grabber", &"grabber_highlight"]:
+		_master_slider.add_theme_icon_override(slot, DrawnIcons.disc(grabber_size, knob))
+	for slot: StringName in [&"checked", &"checked_disabled"]:
+		_reduce_motion_toggle.add_theme_icon_override(slot, DrawnIcons.switch(switch_size, true, on, knob))
+	for slot: StringName in [&"unchecked", &"unchecked_disabled"]:
+		_reduce_motion_toggle.add_theme_icon_override(slot, DrawnIcons.switch(switch_size, false, off, knob))
 
 
 func _exit_tree() -> void:
@@ -36,8 +51,6 @@ func reload() -> void:
 	_store = OptionsStore.new(save_path)
 	if _swipe_button == null:  # 아직 준비 전 (부모가 먼저 부름): _ready에서 다시 읽는다
 		return
-	for note: Control in [%ControlNote, %VolumeNote, %ReduceMotionNote]:
-		note.visible = show_notes
 	_refresh()
 
 

@@ -74,13 +74,13 @@ func _names(completions: Array[AchievementTracker.Completion]) -> PackedStringAr
 func test_book_is_valid_and_covers_the_roster() -> void:
 	var book: AchievementBook = _book()
 	assert_true(book.validate().is_empty(), "%s" % [book.validate()])
-	assert_eq([book.common.size(), book.chains.size(), book.hidden.size()], [6, 26, 3])
+	assert_eq([book.common.size(), book.chains.size(), book.hidden.size()], [6, 31, 3])
 	var pending: Array[StringName] = []
 	for character: CharacterData in _roster().characters:
 		if book.chain_for(character.id) == null:
 			pending.append(character.id)
-	assert_eq(pending, [&"basic", &"seer", &"zeus", &"arson", &"racer", &"pachy"] as Array[StringName],
-		"characters without achievements show 준비 중 (별첨 B 미정 + 기본)")
+	assert_eq(pending, [&"basic"] as Array[StringName],
+		"only the basic character has no achievements (E42)")
 
 
 ## 업적이 보는 지표는 모두 누군가 남기는 지표다 (능력의 METRIC_* 또는 RunMetrics의 판 공통 지표).

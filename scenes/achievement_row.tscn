@@ -66,26 +66,9 @@ theme_override_font_sizes/font_size = 33
 text = "0 / 1"
 horizontal_alignment = 2
 
-[node name="RewardBox" type="PanelContainer" parent="HBox"]
-custom_minimum_size = Vector2(150, 96)
-layout_mode = 2
-size_flags_vertical = 4
-mouse_filter = 2
-theme_type_variation = &"RewardPreviewPanel"
-
-[node name="AchReward" type="Label" parent="HBox/RewardBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"AccentLabel"
-theme_override_font_sizes/font_size = 33
-text = "● 100"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-
 [node name="ClaimButton" type="Button" parent="HBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(135, 96)
+custom_minimum_size = Vector2(180, 108)
 layout_mode = 2
 size_flags_vertical = 4
 focus_mode = 0
@@ -93,6 +76,6 @@ mouse_filter = 1
 theme_type_variation = &"HotButton"
 theme_override_font_sizes/font_size = 36
 disabled = true
-text = "받기"
+text = "● 100"
 
 [connection signal="pressed" from="HBox/ClaimButton" to="." method="_on_claim_button_pressed"]

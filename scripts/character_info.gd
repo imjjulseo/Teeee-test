@@ -1,6 +1,7 @@
 class_name CharacterInfo
 extends PanelContainer
-## 캐릭터 정보 한 장 (기획서 8.1 · 8.5장, E37·E38): 블록, 이름, 등급, 캐릭터 최고점, 능력명 + 족보형(족보 카드) / 상시형, 효과 설명,
+## 캐릭터 정보 한 장 (기획서 8.1 · 8.5장, E37·E38·E42): 왼쪽 위에 블록·이름·등급, 오른쪽 위에 캐릭터 최고점·능력명 + 족보형/상시형·족보 카드,
+## 가운데 아래에 효과 설명,
 ## 장착 자리(장착 / 구매), 튜토리얼 · 체험. 캐릭터 화면의 넘기는 판과 상점 설명창이 함께 쓴다.
 ## 무엇을 할지는 정하지 않고 signal로만 알린다.
 
@@ -20,7 +21,7 @@ var character: CharacterData
 @onready var _ability_name: Label = %AbilityName
 @onready var _ability_kind: Label = %AbilityKind
 @onready var _effect_label: Label = %EffectLabel
-@onready var _effect_box: Control = %EffectBox
+@onready var _ability_box: Control = %AbilityBox
 @onready var _hidden_note: Label = %HiddenNote
 @onready var _equip_button: Button = %EquipButton
 @onready var _purchase_button: Button = %PurchaseButton
@@ -78,8 +79,8 @@ func _show_common(data: CharacterData, veiled: bool, best: int, has_lesson: bool
 	if data.has_recipe() and not veiled:
 		_condition.show_recipe(RecipeSet.Recipe.new(data.condition_colors, 0))
 	_effect_label.text = data.detail_effect if not data.detail_effect.is_empty() else data.ability_description
-	_effect_label.visible = not _effect_label.text.is_empty()
-	_effect_box.visible = not veiled
+	_effect_label.visible = not veiled and not _effect_label.text.is_empty()
+	_ability_box.visible = not veiled
 	_hidden_note.visible = veiled
 	_lesson_button.visible = has_lesson and not veiled
 

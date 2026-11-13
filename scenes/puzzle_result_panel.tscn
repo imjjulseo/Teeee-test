@@ -72,21 +72,36 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 42
 text = "정답 보기"
 
-[node name="RetryButton" type="Button" parent="Card/VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 126)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 42
-text = "다시 해 보기"
-
 [node name="NextButton" type="Button" parent="Card/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 126)
+custom_minimum_size = Vector2(0, 138)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 45
+theme_type_variation = &"HotButton"
+theme_override_font_sizes/font_size = 48
 text = "다음"
+
+[node name="Row" type="HBoxContainer" parent="Card/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="RetryButton" type="Button" parent="Card/VBox/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 126)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 42
+text = "다시 하기"
+
+[node name="ExitButton" type="Button" parent="Card/VBox/Row"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 126)
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 42
+text = "나가기"
 
 [node name="TapHint" type="Label" parent="Card/VBox"]
 unique_name_in_owner = true
@@ -100,5 +115,6 @@ horizontal_alignment = 1
 [connection signal="gui_input" from="Dim" to="." method="_on_tap_area_input"]
 [connection signal="gui_input" from="Card" to="." method="_on_tap_area_input"]
 [connection signal="pressed" from="Card/VBox/ReplayButton" to="." method="_on_replay_button_pressed"]
-[connection signal="pressed" from="Card/VBox/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="Card/VBox/Row/RetryButton" to="." method="_on_retry_button_pressed"]
+[connection signal="pressed" from="Card/VBox/Row/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="Card/VBox/NextButton" to="." method="_on_next_button_pressed"]

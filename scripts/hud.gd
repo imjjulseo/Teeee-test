@@ -14,8 +14,6 @@ signal pause_requested
 ## 경고 구간에서 매 초 1회 (틱 사운드용).
 signal warning_tick
 
-const WAITING_CUE: String = "움직이면 시작! 매치하면 시간, 족보를 완성하면 점수"
-
 @export var config: GameConfig
 @export var theme_data: BoardTheme
 ## 화면 공통 이미지 (코인 아이콘).
@@ -312,7 +310,7 @@ func message_text() -> String:
 
 func _on_state_changed(state: GameFlow.GameState) -> void:
 	_pause_button.visible = state == GameFlow.GameState.WAITING or state == GameFlow.GameState.PLAYING
-	_message_label.text = WAITING_CUE if state == GameFlow.GameState.WAITING else ""
+	_message_label.text = ""
 	if state == GameFlow.GameState.WAITING:  # 새 판: 족보 카드가 위에서 내려온다 (HTML newGame의 cardIn)
 		for view: RecipeView in _recipe_views:
 			if view.visible:

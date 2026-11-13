@@ -14,34 +14,80 @@ theme_data = ExtResource("2_theme")
 layout_mode = 2
 theme_override_constants/separation = 21
 
-[node name="InfoBlock" parent="VBox" instance=ExtResource("4_block")]
+[node name="Top" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 30
+
+[node name="Left" type="VBoxContainer" parent="VBox/Top"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 9
+
+[node name="InfoBlock" parent="VBox/Top/Left" instance=ExtResource("4_block")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(210, 210)
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 
-[node name="SheetNameLabel" type="Label" parent="VBox"]
+[node name="SheetNameLabel" type="Label" parent="VBox/Top/Left"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 66
+theme_override_font_sizes/font_size = 54
 text = "Name"
-horizontal_alignment = 1
 
-[node name="SheetGradeLabel" type="Label" parent="VBox"]
+[node name="SheetGradeLabel" type="Label" parent="VBox/Top/Left"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MutedLabel"
 theme_override_font_sizes/font_size = 39
 text = "희귀"
-horizontal_alignment = 1
 
-[node name="CharacterBestLabel" type="Label" parent="VBox"]
+[node name="Right" type="VBoxContainer" parent="VBox/Top"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 15
+
+[node name="CharacterBestLabel" type="Label" parent="VBox/Top/Right"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"AccentLabel"
-theme_override_font_sizes/font_size = 45
+theme_override_font_sizes/font_size = 42
 text = "최고점 0"
-horizontal_alignment = 1
+horizontal_alignment = 2
+
+[node name="AbilityBox" type="VBoxContainer" parent="VBox/Top/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="AbilityRow" type="HBoxContainer" parent="VBox/Top/Right/AbilityBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+alignment = 2
+
+[node name="AbilityName" type="Label" parent="VBox/Top/Right/AbilityBox/AbilityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"InfoLabel"
+theme_override_font_sizes/font_size = 48
+text = "능력"
+
+[node name="AbilityKind" type="Label" parent="VBox/Top/Right/AbilityBox/AbilityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"MutedLabel"
+theme_override_font_sizes/font_size = 36
+text = "족보형"
+
+[node name="SheetCondition" parent="VBox/Top/Right/AbilityBox" instance=ExtResource("3_recipe")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+hide_points = true
 
 [node name="Scroll" type="ScrollContainer" parent="VBox"]
 layout_mode = 2
@@ -51,42 +97,12 @@ horizontal_scroll_mode = 0
 [node name="Details" type="VBoxContainer" parent="VBox/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 21
-
-[node name="EffectBox" type="VBoxContainer" parent="VBox/Scroll/Details"]
-unique_name_in_owner = true
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 12
-
-[node name="AbilityRow" type="HBoxContainer" parent="VBox/Scroll/Details/EffectBox"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 24
 alignment = 1
 
-[node name="AbilityName" type="Label" parent="VBox/Scroll/Details/EffectBox/AbilityRow"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"InfoLabel"
-theme_override_font_sizes/font_size = 48
-text = "능력"
-
-[node name="AbilityKind" type="Label" parent="VBox/Scroll/Details/EffectBox/AbilityRow"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 39
-text = "족보형"
-
-[node name="SheetCondition" parent="VBox/Scroll/Details/EffectBox/AbilityRow" instance=ExtResource("3_recipe")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-hide_points = true
-
-[node name="EffectLabel" type="Label" parent="VBox/Scroll/Details/EffectBox"]
+[node name="EffectLabel" type="Label" parent="VBox/Scroll/Details"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 39
@@ -98,7 +114,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 39
-text = "히든 업적을 달성하면 얻어요. 조건은 비밀이에요."
+text = "업적 화면의 히든 업적을 달성하면 얻어요."
 horizontal_alignment = 1
 autowrap_mode = 3
 

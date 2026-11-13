@@ -159,9 +159,18 @@ func chain_status(character_id: StringName) -> Array[TierStatus]:
 	return list
 
 
-## 히든 업적을 달성했는지 (달성 전에는 업적 화면이 이름·조건을 숨긴다).
-func is_hidden_done(item: HiddenAchievement) -> bool:
-	return store.is_done(item.id())
+## 히든 업적 한 줄 (조건을 보여 준다, E42). 달성하면 캐릭터가 바로 해금되므로 받을 것은 없다 (claimed = done).
+func hidden_status(item: HiddenAchievement) -> TierStatus:
+	var status: TierStatus = TierStatus.new()
+	status.id = item.id()
+	status.name = item.name
+	status.text = item.text
+	status.goal = item.goal
+	status.done = store.is_done(status.id)
+	status.claimed = status.done
+	status.value = status.goal if status.done else mini(store.progress_of(status.id), status.goal)
+	status.reward = book.hidden_reward
+	return status
 
 
 ## 공통 업적의 지금 값.

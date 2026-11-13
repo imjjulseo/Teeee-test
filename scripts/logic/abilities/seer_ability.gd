@@ -14,6 +14,8 @@ const ARMS: Array[Array] = [
 
 ## 지표: 예언 한 번에 매치한 모양 수 (캐릭터 튜토리얼 목표).
 const METRIC_SHAPES_ONCE: StringName = &"seer_shapes_once"
+## 업적 지표: 한 판에 예언으로 매치한 모양 수.
+const METRIC_SHAPES: StringName = &"seer_shapes"
 
 ## 예언으로 매치한 모양 수 (판 전체).
 var shapes_matched: int = 0
@@ -29,6 +31,7 @@ func trigger(session: GameSession) -> String:
 		session.award_match_time()
 	shapes_matched += shapes.size()
 	session.metrics.record_max(METRIC_SHAPES_ONCE, shapes.size())
+	session.metrics.add(METRIC_SHAPES, shapes.size())
 	var recipes: RecipeSet = session.recipes
 	var outcome: RecipeSet.ClearOutcome = RecipeSet.ClearOutcome.new()
 	for slot: int in recipes.slot_count():

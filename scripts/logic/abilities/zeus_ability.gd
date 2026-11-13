@@ -14,6 +14,9 @@ extends Ability
 
 ## 낙뢰가 끝났다 (시간이 다시 흐른다).
 const MOMENT_END: StringName = &"zeus_end"
+## 업적 지표: 낙뢰 한 번에 흡수한 노랑 수, 한 판에 흡수한 노랑 수.
+const METRIC_ABSORBED_ONCE: StringName = &"zeus_absorbed_once"
+const METRIC_ABSORBED: StringName = &"zeus_absorbed"
 
 var active: bool = false
 ## 남은 낙뢰 수.
@@ -36,6 +39,8 @@ func trigger(session: GameSession) -> String:
 	active = true
 	strikes_left = cells.size()
 	absorbed += cells.size()
+	session.metrics.record_max(METRIC_ABSORBED_ONCE, cells.size())
+	session.metrics.add(METRIC_ABSORBED, cells.size())
 	_order_index = 0
 	_next_in = first_delay if not cells.is_empty() else empty_delay
 	if cells.is_empty():

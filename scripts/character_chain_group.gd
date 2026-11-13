@@ -22,6 +22,7 @@ func show_chain(data: CharacterData, grade_color: Color, owned: bool, tiers: Arr
 	_grade_label.text = CharacterData.GRADE_NAMES[data.grade]
 	_grade_label.add_theme_color_override("font_color", grade_color)
 	_owned_label.visible = not owned
+	CharacterChainGroup._lock_if_unowned(owned, tiers)
 	for status: AchievementTracker.TierStatus in tiers:
 		var row: AchievementRow = row_scene.instantiate() as AchievementRow
 		_list.add_child(row)
@@ -31,7 +32,9 @@ func show_chain(data: CharacterData, grade_color: Color, owned: bool, tiers: Arr
 
 
 ## 줄을 지금 값으로 다시 보인다.
-func refresh(tiers: Array[AchievementTracker.TierStatus]) -> void:
+func refresh(owned: bool, tiers: Array[AchievementTracker.TierStatus]) -> void:
+	_owned_label.visible = not owned
+	CharacterChainGroup._lock_if_unowned(owned, tiers)
 	for i: int in mini(tiers.size(), _rows.size()):
 		_rows[i].show_status(tiers[i])
 
@@ -47,3 +50,11 @@ func shows_unowned() -> bool:
 
 func _on_row_claim_requested(status: AchievementTracker.TierStatus) -> void:
 	claim_requested.emit(status)
+
+
+## 없는 캐릭터의 업적은 깰 수 없으니 입문부터 잠긴 모습으로 (이미 달성한 단계는 그대로).
+static func _lock_if_unowned(owned: bool, tiers: Array[AchievementTracker.TierStatus]) -> void:
+	if owned:
+		return
+	for status: AchievementTracker.TierStatus in tiers:
+		status.open = false

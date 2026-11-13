@@ -37,15 +37,7 @@ focus_mode = 0
 theme_override_font_sizes/font_size = 45
 theme_type_variation = &"ChoiceButton"
 toggle_mode = true
-text = "패드"
-
-[node name="ControlNote" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "스와이프는 밀거나 옆 칸을 눌러 움직이고, 패드는 누르고 있으면 계속 움직여요. 키보드(방향키, WASD)는 언제나 쓸 수 있어요"
-autowrap_mode = 3
+text = "방향키"
 
 [node name="VolumeHeading" type="Label" parent="."]
 layout_mode = 2
@@ -58,7 +50,7 @@ theme_override_constants/separation = 36
 
 [node name="MasterVolumeSlider" type="HSlider" parent="MasterRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -76,30 +68,14 @@ theme_override_font_sizes/font_size = 54
 text = "100"
 horizontal_alignment = 2
 
-[node name="VolumeNote" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "효과음과 배경음 크기예요. 0이면 소리가 꺼져요"
-autowrap_mode = 3
-
 [node name="ReduceMotionToggle" type="CheckButton" parent="."]
 mouse_filter = 1
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 144)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 45
+theme_override_font_sizes/font_size = 48
 text = "효과 줄이기"
-
-[node name="ReduceMotionNote" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "흔들림, 파편, 떠오르는 숫자를 꺼요"
-autowrap_mode = 3
 
 [connection signal="pressed" from="ControlRow/SwipeButton" to="." method="_on_swipe_button_pressed"]
 [connection signal="pressed" from="ControlRow/DpadButton" to="." method="_on_dpad_button_pressed"]

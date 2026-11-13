@@ -97,6 +97,7 @@ func _pop_current() -> void:
 	if button == null or _popped:
 		return
 	_popped = true
+	button.z_index = 1  # 커진 버튼이 옆 버튼 위에 그려지게
 	button.pivot_offset = Vector2(button.size.x / 2.0, button.size.y)
 	var target: Vector2 = Vector2.ONE * active_scale
 	if not is_inside_tree() or OptionsStore.new(_save_path).reduce_motion:

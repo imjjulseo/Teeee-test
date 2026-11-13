@@ -124,7 +124,7 @@ func _on_result_ready(info: PuzzleRunner.ResultInfo) -> void:
 	var coins: int = _record(info.stars)
 	var note: String = "첫 클리어 보상 ● %d" % coins if coins > 0 else ""
 	_next = menu.next_after(runner.puzzle.def.id)
-	_result.show_result(info, "다음 퍼즐" if _next != null else "목록으로", note)
+	_result.show_result(info, "다음 퍼즐" if _next != null else "", note, true)
 
 
 ## 결과 기록은 퍼즐마다 처음 결과에서 한 번 (정답 보기·다시 해 보기 뒤에는 다시 세지 않는다).
