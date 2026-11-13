@@ -14,12 +14,8 @@ grade = 4
 ability = SubResource("Ability_1")
 ability_name = "피의 시간"
 ability_description = "피의 시간: 6초 동안 모든 블록이 빨강, 리필 ×2.5"
-<<<<<<< HEAD
 summary = "6초 동안 모든 블록이 빨강이 되고, 씨앗이 빨리 자라요"
 detail_effect = "6초 동안 모든 블록이 빨강이 되고 씨앗이 2.5배 빨리 자라요.\n주위 4칸이 모두 블록이면 색과 상관없이 매치돼요(시간은 얻지 못해요).\n족보는 2칸 → 3칸 → 4칸 순서로 하나씩 채워져요."
-=======
-detail_effect = "6초 동안 모든 블럭이 빨강이고 리필이 2.5배 빨라요. 주위 4칸이 모두 블럭이면 색과 상관없이 매치(시간은 얻지 못해요). 족보는 2칸 → 3칸 → 4칸 순서로 하나씩 채워져요."
->>>>>>> Choi
 condition_colors = PackedInt32Array(1, 1, 1, 1)
 accent_color = Color(0.878431, 0.188235, 0.290196, 1)
 player_fill = Color(0.193255, 0.041412, 0.063843, 1)

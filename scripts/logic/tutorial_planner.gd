@@ -1,15 +1,9 @@
 class_name TutorialPlanner
 extends RefCounted
 ## 규칙 튜토리얼 자유 매치의 "배운 모양" 계산 (HTML tutPlans · bestPlan · tutEnsure · tutAssist · makeShape).
-<<<<<<< HEAD
 ## - 길 찾기: 되돌아가는 수 없이 최대 depth수, 처음 매치에서 멈춘다. built = 매치된 4블록 중 내가 옮긴 적이 있는 블록 수
 ##   (튜토리얼 동안 옮긴 기록 + 이번 길, 마지막 수에 가운데로 밀린 블록은 빼고). 배운 모양 = built ≤ 단계(0: 있는 T로 들어가기).
 ## - 보장(ensure): 지금 필요한 색을 배운 모양으로 만들 수 있게 씨앗 색 → 가까운 모양의 블록 색 → 새 T 모양 순서로 고친다.
-=======
-## - 길 찾기: 되돌아가는 수 없이 최대 depth수, 처음 매치에서 멈춘다. built = 매치된 4블럭 중 내가 옮긴 적이 있는 블럭 수
-##   (튜토리얼 동안 옮긴 기록 + 이번 길, 마지막 수에 가운데로 밀린 블럭은 빼고). 배운 모양 = built ≤ 단계(0: 있는 T로 들어가기).
-## - 보장(ensure): 지금 필요한 색을 배운 모양으로 만들 수 있게 씨앗 색 → 가까운 모양의 블럭 색 → 새 T 모양 순서로 고친다.
->>>>>>> Choi
 ## 판 칸(BoardCell)을 직접 바꾸는 곳은 ensure·make_shape·idle_plan뿐이고, 바뀐 칸 위치를 돌려준다 (화면이 다시 그린다).
 
 ## 길 하나.
@@ -17,11 +11,7 @@ class Plan:
 	var path: Array[Vector2i] = []
 	var built: int = 0
 	var color: int = Board.NO_COLOR
-<<<<<<< HEAD
 	## 매치되는 4블록 (그때 위치 기준 칸 객체).
-=======
-	## 매치되는 4블럭 (그때 위치 기준 칸 객체).
->>>>>>> Choi
 	var cells: Array[BoardCell] = []
 	## 매치하는 순간 내가 서는 칸.
 	var center: Vector2i = Vector2i.ZERO
@@ -31,11 +21,7 @@ const NODE_CAP: int = 60000
 
 var board: Board
 var color_count: int = 3
-<<<<<<< HEAD
 ## 블록(칸 객체) → 튜토리얼 동안 옮긴 횟수.
-=======
-## 블럭(칸 객체) → 튜토리얼 동안 옮긴 횟수.
->>>>>>> Choi
 var moved: Dictionary = {}
 ## 배운 단계 (0 = 있는 T로 들어가기, 1 = 하나 당겨 T 만들기).
 var level: int = 0
@@ -67,31 +53,19 @@ func _init(p_board: Board, p_color_count: int, p_pick: HtmlRng) -> void:
 	pick = p_pick
 
 
-<<<<<<< HEAD
 ## 플레이어가 한 칸 움직였다: from 칸으로 밀려온 블록을 옮긴 블록으로 센다 (HTML tut.mv).
-=======
-## 플레이어가 한 칸 움직였다: from 칸으로 밀려온 블럭을 옮긴 블럭으로 센다 (HTML tut.mv).
->>>>>>> Choi
 func note_move(from: Vector2i) -> void:
 	var cell: BoardCell = board.get_cell(from)
 	moved[cell] = int(moved.get(cell, 0)) + 1
 
 
-<<<<<<< HEAD
 ## 블록이 새로 생겼다 (매치로 깨진 칸·퍼즐로 깐 칸): 옮긴 기록을 지운다.
-=======
-## 블럭이 새로 생겼다 (매치로 깨진 칸·퍼즐로 깐 칸): 옮긴 기록을 지운다.
->>>>>>> Choi
 func forget(cells: Array[Vector2i]) -> void:
 	for pos: Vector2i in cells:
 		moved.erase(board.get_cell(pos))
 
 
-<<<<<<< HEAD
 ## 지금 판에서 매치까지 가는 길 모두 (HTML tutPlans). seeds_grown이면 씨앗을 자랄 색 블록으로 친다 (HTML seedsAs).
-=======
-## 지금 판에서 매치까지 가는 길 모두 (HTML tutPlans). seeds_grown이면 씨앗을 자랄 색 블럭으로 친다 (HTML seedsAs).
->>>>>>> Choi
 func plans(depth: int, seeds_grown: bool = false) -> Array[Plan]:
 	var n: int = board.size
 	var count: int = n * n
@@ -236,11 +210,7 @@ func _best_per_seed_combo(seeds: Array[Vector2i], combos: int, depth: int) -> Ar
 	_var_at.fill(-1)
 	for i: int in seeds.size():
 		_var_at[seeds[i].y * n + seeds[i].x] = i
-<<<<<<< HEAD
 		_colors[seeds[i].y * n + seeds[i].x] = -1  # 색은 조합이 정한다 (블록으로 친다)
-=======
-		_colors[seeds[i].y * n + seeds[i].x] = -1  # 색은 조합이 정한다 (블럭으로 친다)
->>>>>>> Choi
 	_words = (combos + 63) / 64
 	_eq.resize(seeds.size() * color_count * _words)
 	_eq.fill(0)
@@ -392,11 +362,7 @@ static func _bit_index(single_bit: int) -> int:
 	return i
 
 
-<<<<<<< HEAD
 ## 쓸 만한 모양이 아예 없을 때: 근처에 T를 만들고, 단계만큼 팔 블록을 한 칸씩 밖으로 밀어 둔다 (HTML makeShape).
-=======
-## 쓸 만한 모양이 아예 없을 때: 근처에 T를 만들고, 단계만큼 팔 블럭을 한 칸씩 밖으로 밀어 둔다 (HTML makeShape).
->>>>>>> Choi
 ## 실제로 풀리는 것만 남긴다. 바꾼 칸 위치 (못 만들면 빈 배열).
 func make_shape() -> Array[Vector2i]:
 	var colors: Array[int] = []
@@ -473,11 +439,7 @@ func idle_plan() -> Array:
 	return [plan, changed]
 
 
-<<<<<<< HEAD
 ## 이 길의 4블록 지금 위치.
-=======
-## 이 길의 4블럭 지금 위치.
->>>>>>> Choi
 func plan_cells(plan: Plan) -> Array[Vector2i]:
 	var out: Array[Vector2i] = []
 	for cell: BoardCell in plan.cells:
@@ -539,11 +501,7 @@ func _ensure_steps(n: int) -> void:
 
 
 ## 깊이 우선 탐색 (HTML tutPlans와 같은 순서: 방향 DIRS 순, 바로 되돌아가는 수 없음, 매치하면 그 길에서 멈춤, 노드 NODE_CAP까지).
-<<<<<<< HEAD
 ## 판은 칸 번호 배열로 (_cells · _colors · 칸에 있는 블록이 옮겨진 횟수 _moved_at) — 매치 뒤마다 여러 번 돌아서
-=======
-## 판은 칸 번호 배열로 (_cells · _colors · 칸에 있는 블럭이 옮겨진 횟수 _moved_at) — 매치 뒤마다 여러 번 돌아서
->>>>>>> Choi
 ## 사전·Vector2i 계산·함수 호출을 피한다 (튜토리얼 판 고치기 때 화면이 끊기던 원인).
 func _search(at: int, depth: int, last: int) -> void:
 	if depth <= 0 or _nodes > NODE_CAP:
@@ -563,11 +521,7 @@ func _search(at: int, depth: int, last: int) -> void:
 		_colors[to] = -1
 		_moved_at[to] = 0
 		_ks.append(k)
-<<<<<<< HEAD
 		# 매치 판정: to의 4이웃이 모두 같은 색 블록
-=======
-		# 매치 판정: to의 4이웃이 모두 같은 색 블럭
->>>>>>> Choi
 		var c0: int = -1
 		var n0: int = _step[to]
 		if n0 >= 0:
@@ -596,11 +550,7 @@ func _search(at: int, depth: int, last: int) -> void:
 		_moved_at[at] = 0
 
 
-<<<<<<< HEAD
 ## 찾은 길 하나를 남긴다. built = 4블록 중 옮긴 적이 있는 블록 수 (마지막 수에 가운데로 밀린 블록 = pushed는 이번 한 번을 뺀다).
-=======
-## 찾은 길 하나를 남긴다. built = 4블럭 중 옮긴 적이 있는 블럭 수 (마지막 수에 가운데로 밀린 블럭 = pushed는 이번 한 번을 뺀다).
->>>>>>> Choi
 func _record(center: int, color: int, pushed: int) -> void:
 	var plan: Plan = Plan.new()
 	for k: int in _ks:

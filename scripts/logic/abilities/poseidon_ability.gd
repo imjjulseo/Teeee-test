@@ -41,8 +41,4 @@ func trigger(session: GameSession) -> String:
 			changed.append(pos)
 	if not changed.is_empty():
 		session.cells_changed.emit(changed)
-<<<<<<< HEAD
 	return "해일: 파란 블록이 가라앉음"
-=======
-	return "해일: 파란 블럭이 가라앉음"
->>>>>>> Choi

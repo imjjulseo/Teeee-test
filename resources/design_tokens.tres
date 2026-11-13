@@ -26,8 +26,5 @@ accent = Color(1, 0.823529, 0.247059, 1)
 accent_warm = Color(0.96, 0.78, 0.26, 1)
 accent_line = Color(1, 0.823529, 0.247059, 0.8)
 info = Color(0.560784, 0.890196, 1, 1)
-<<<<<<< HEAD
 diamond = Color(0.45, 0.82, 1, 1)
-=======
->>>>>>> Choi
 warn = Color(0.886275, 0.333333, 0.431373, 1)

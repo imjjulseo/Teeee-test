@@ -46,31 +46,11 @@ func _ready() -> void:
 	visible = false
 
 
-<<<<<<< HEAD
-=======
-## 체험 판 결과: 보상·기록이 없으므로 최고점·코인·경험치·보상 목록을 숨기고, 메뉴 버튼은 캐릭터 화면으로 (8.5장).
-func _on_trial_result_ready(character_name: String) -> void:
-	_title_label.text = "%s 체험 끝" % character_name
-	_new_best_label.visible = false
-	for node: CanvasItem in [_best_label, _character_best_label, _coin_label, _level_label, _level_up_label, _exp_bar, _rewards_list]:
-		node.visible = false
-	_menu_button.text = "상점" if TrialRequest.back_to_shop else "캐릭터"
-
-
->>>>>>> Choi
 ## 튜토리얼 흐름: 첫 실전 판 뒤에는 다시 하기를 숨겨 메뉴로 이끈다.
 func _on_result_guided(menu_only: bool) -> void:
 	(%RetryButton as Button).visible = not menu_only
 
 
-<<<<<<< HEAD
-=======
-## 체험 판 결과로 보이고 있는지 (테스트/디버그용).
-func is_trial_result() -> bool:
-	return not _coin_label.visible
-
-
->>>>>>> Choi
 func _on_result_ready(score: int, best: int, is_new_best: bool, _picked_coins: int) -> void:
 	_best_label.text = "전체 최고점\n%d" % best
 	_new_best_label.visible = is_new_best
@@ -155,11 +135,7 @@ func _on_bar_filled(level: int) -> void:
 
 
 func _finish_exp() -> void:
-<<<<<<< HEAD
 	var next: String = " / 다음 %s" % _rewards.next_stage_description if not _rewards.next_stage_description.is_empty() else ""
-=======
-	var next: String = " · 다음 %s" % _rewards.next_stage_description if not _rewards.next_stage_description.is_empty() else ""
->>>>>>> Choi
 	_level_label.text = "Lv %d%s" % [_rewards.level_after, next]
 	_level_up_label.visible = not _rewards.level_ups.is_empty()
 	_set_exp_fill(_rewards.bar_steps.back().to)

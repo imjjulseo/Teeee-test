@@ -386,11 +386,7 @@ func test_fever_stacks_on_every_match_and_pays_at_the_end() -> void:
 	for color: int in [0, 1, 2, 3, 1]:  # 색 무관 매치 5번
 		_fever(session).on_match(session, color, [] as Array[Vector2i])
 	assert_eq(_fever(session).stacks, 5)
-<<<<<<< HEAD
 	assert_eq(_fever(session).status_text(), "10초 / 5스택")
-=======
-	assert_eq(_fever(session).status_text(), "10초 · 5스택")
->>>>>>> Choi
 	session.apply_clear_to_recipes(1)
 	assert_eq(session.recipes.recipes[0].progress, 1, "recipes progress as usual during fever")
 	_run(session, 9.9)

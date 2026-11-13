@@ -14,12 +14,8 @@ grade = 3
 ability = SubResource("Ability_1")
 ability_name = "흑백"
 ability_description = "흑백: 10초 동안 판·족보 흑백(문양으로만 구분), 족보 점수 ×2"
-<<<<<<< HEAD
 summary = "10초 동안 화면이 흑백이 돼요.\n대신 족보 점수 ×2"
 detail_effect = "10초 동안 판과 족보가 흑백으로 바뀌어요.\n문양만 보고 구분해야 하는 대신 족보 점수 ×2."
-=======
-detail_effect = "10초 동안 판과 족보가 흑백으로 바뀌어요. 블럭 문양으로만 구분해야 하는 대신 족보 점수 ×2."
->>>>>>> Choi
 condition_colors = PackedInt32Array(3, 0, 1, 2)
 accent_color = Color(0.85098, 0.85098, 0.85098, 1)
 player_fill = Color(0.187216, 0.187216, 0.187216, 1)

@@ -78,11 +78,7 @@ func remaining() -> float:
 
 
 func status_text() -> String:
-<<<<<<< HEAD
 	return "%d수 / %s초" % [moves_left, Ability.format_seconds(remaining())] if active else ""
-=======
-	return "%d수 · %s초" % [moves_left, Ability.format_seconds(remaining())] if active else ""
->>>>>>> Choi
 
 
 func effect_remaining() -> float:

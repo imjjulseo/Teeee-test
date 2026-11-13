@@ -35,11 +35,7 @@ func _tick_result() -> void:
 		1:
 			if playing(1.0):
 				expect(flow().state == S.WAITING and session().remaining_time() == 11.0, "clock waits for the first move")
-<<<<<<< HEAD
 				expect((node("Hud/%MessageLabel") as Label).text.is_empty(), "no message before the first move")
-=======
-				expect((node("Hud/%MessageLabel") as Label).text == Hud.WAITING_CUE, "waiting message shown")
->>>>>>> Choi
 				prepare_match_above(1)
 				_points = prime_recipe(0, 1)
 				flow().request_move(Vector2i.UP)

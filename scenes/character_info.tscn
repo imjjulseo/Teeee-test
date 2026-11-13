@@ -14,7 +14,6 @@ theme_data = ExtResource("2_theme")
 layout_mode = 2
 theme_override_constants/separation = 21
 
-<<<<<<< HEAD
 [node name="Top" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 mouse_filter = 2
@@ -38,28 +37,11 @@ theme_override_font_sizes/font_size = 54
 text = "Name"
 
 [node name="SheetGradeLabel" type="Label" parent="VBox/Top/Left"]
-=======
-[node name="InfoBlock" parent="VBox" instance=ExtResource("4_block")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(210, 210)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="SheetNameLabel" type="Label" parent="VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 66
-text = "Name"
-horizontal_alignment = 1
-
-[node name="SheetGradeLabel" type="Label" parent="VBox"]
->>>>>>> Choi
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"MutedLabel"
 theme_override_font_sizes/font_size = 39
 text = "희귀"
-<<<<<<< HEAD
 
 [node name="Right" type="VBoxContainer" parent="VBox/Top"]
 layout_mode = 2
@@ -76,36 +58,11 @@ text = "최고점 0"
 horizontal_alignment = 2
 
 [node name="AbilityBox" type="VBoxContainer" parent="VBox/Top/Right"]
-=======
-horizontal_alignment = 1
-
-[node name="CharacterBestLabel" type="Label" parent="VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"AccentLabel"
-theme_override_font_sizes/font_size = 45
-text = "최고점 0"
-horizontal_alignment = 1
-
-[node name="Scroll" type="ScrollContainer" parent="VBox"]
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="Details" type="VBoxContainer" parent="VBox/Scroll"]
-layout_mode = 2
-size_flags_horizontal = 3
-mouse_filter = 2
-theme_override_constants/separation = 21
-
-[node name="EffectBox" type="VBoxContainer" parent="VBox/Scroll/Details"]
->>>>>>> Choi
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 12
 
-<<<<<<< HEAD
 [node name="AbilityRow" type="HBoxContainer" parent="VBox/Top/Right/AbilityBox"]
 layout_mode = 2
 mouse_filter = 2
@@ -113,22 +70,12 @@ theme_override_constants/separation = 18
 alignment = 2
 
 [node name="AbilityName" type="Label" parent="VBox/Top/Right/AbilityBox/AbilityRow"]
-=======
-[node name="AbilityRow" type="HBoxContainer" parent="VBox/Scroll/Details/EffectBox"]
-layout_mode = 2
-mouse_filter = 2
-theme_override_constants/separation = 24
-alignment = 1
-
-[node name="AbilityName" type="Label" parent="VBox/Scroll/Details/EffectBox/AbilityRow"]
->>>>>>> Choi
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"InfoLabel"
 theme_override_font_sizes/font_size = 48
 text = "능력"
 
-<<<<<<< HEAD
 [node name="AbilityKind" type="Label" parent="VBox/Top/Right/AbilityBox/AbilityRow"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -156,22 +103,6 @@ theme_override_constants/separation = 21
 alignment = 1
 
 [node name="EffectLabel" type="Label" parent="VBox/Scroll/Details"]
-=======
-[node name="AbilityKind" type="Label" parent="VBox/Scroll/Details/EffectBox/AbilityRow"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"MutedLabel"
-theme_override_font_sizes/font_size = 39
-text = "족보형"
-
-[node name="SheetCondition" parent="VBox/Scroll/Details/EffectBox/AbilityRow" instance=ExtResource("3_recipe")]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_vertical = 4
-hide_points = true
-
-[node name="EffectLabel" type="Label" parent="VBox/Scroll/Details/EffectBox"]
->>>>>>> Choi
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 39
@@ -183,11 +114,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"DimLabel"
 theme_override_font_sizes/font_size = 39
-<<<<<<< HEAD
 text = "업적 화면의 히든 업적을 달성하면 얻어요."
-=======
-text = "히든 업적을 달성하면 얻을 수 있어요. 조건은 숨겨져 있어요."
->>>>>>> Choi
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -216,11 +143,7 @@ custom_minimum_size = Vector2(0, 120)
 layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 45
-<<<<<<< HEAD
 text = "튜토리얼 / 체험"
-=======
-text = "튜토리얼 및 체험"
->>>>>>> Choi
 
 [connection signal="pressed" from="VBox/EquipButton" to="." method="_on_equip_button_pressed"]
 [connection signal="pressed" from="VBox/PurchaseButton" to="." method="_on_purchase_button_pressed"]

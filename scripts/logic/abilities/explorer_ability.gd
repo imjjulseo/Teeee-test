@@ -70,11 +70,7 @@ func has_zone() -> bool:
 
 
 func status_text() -> String:
-<<<<<<< HEAD
 	return "구역 안에서 매치" if has_zone() else "새 구역까지 %s초" % Ability.format_seconds(respawn_left)
-=======
-	return "구역을 찾아가세요" if has_zone() else "새 구역까지 %s초" % Ability.format_seconds(respawn_left)
->>>>>>> Choi
 
 
 func board_marks() -> Array[BoardMark]:

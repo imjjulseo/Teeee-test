@@ -14,12 +14,8 @@ grade = 3
 ability = SubResource("Ability_1")
 ability_name = "증축"
 ability_description = "증축: 가장 많이 진행된 족보 하나 끝에 무작위 색 1칸"
-<<<<<<< HEAD
 summary = "가장 많이 진행된 족보에 한 칸을 덧붙여 점수를 키워요"
 detail_effect = "캐릭터 족보(2칸)를 완성하면 가장 많이 찬 족보 끝에 아무 색이나 한 칸이 붙어요(최대 5칸).\n칸이 늘어난 만큼 점수도 크게 올라요."
-=======
-detail_effect = "캐릭터 족보(2칸)를 완성하면 가장 많이 진행된 족보 하나의 끝에 무작위 색을 한 칸 덧붙여요(최대 5칸). 칸이 늘어난 만큼 점수도 다시 계산돼서 크게 올라요."
->>>>>>> Choi
 condition_colors = PackedInt32Array(3, 1)
 accent_color = Color(0.72549, 0.760784, 0.811765, 1)
 player_fill = Color(0.159608, 0.167373, 0.178588, 1)

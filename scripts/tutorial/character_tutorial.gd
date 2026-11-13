@@ -7,10 +7,6 @@ extends Resource
 @export var character_id: StringName = &""
 ## 한 줄 소개 제목 (예: "시간 정지").
 @export var cap: String = ""
-<<<<<<< HEAD
-=======
-@export_multiline var description: String = ""
->>>>>>> Choi
 ## 소개 때 밝힐 곳 (캐릭터 카드는 늘 함께 밝힌다).
 @export var intro_holes: PackedStringArray = PackedStringArray()
 ## 처음 발동했을 때 (발동형만).

@@ -375,7 +375,6 @@ content_margin_bottom = 24.0
 bg_color = Color(0.0745098, 0.176471, 0.211765, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lt47f"]
-<<<<<<< HEAD
 content_margin_top = 21.0
 content_margin_bottom = 21.0
 bg_color = Color(0.184314, 0.435294, 0.839216, 1)
@@ -392,24 +391,6 @@ corner_radius_top_left = 21
 corner_radius_top_right = 21
 corner_radius_bottom_right = 21
 corner_radius_bottom_left = 21
-=======
-content_margin_top = 12.0
-content_margin_bottom = 12.0
-bg_color = Color(0.184314, 0.435294, 0.839216, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d34kf"]
-content_margin_top = 12.0
-content_margin_bottom = 12.0
-bg_color = Color(0.3, 0.3, 0.34, 1)
-corner_radius_top_left = 12
-corner_radius_top_right = 12
-corner_radius_bottom_right = 12
-corner_radius_bottom_left = 12
->>>>>>> Choi
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_to7w7"]
 content_margin_left = 24.0
@@ -471,11 +452,8 @@ ChipButton/styles/pressed = SubResource("StyleBoxFlat_yjimd")
 ChoiceButton/base_type = &"Button"
 ChoiceButton/styles/hover_pressed = SubResource("StyleBoxFlat_ungle")
 ChoiceButton/styles/pressed = SubResource("StyleBoxFlat_ungle")
-<<<<<<< HEAD
 DiamondLabel/base_type = &"Label"
 DiamondLabel/colors/font_color = Color(0.45, 0.82, 1, 1)
-=======
->>>>>>> Choi
 DimButton/base_type = &"Button"
 DimButton/styles/hover = SubResource("StyleBoxFlat_itu41")
 DimButton/styles/normal = SubResource("StyleBoxFlat_itu41")
@@ -573,10 +551,7 @@ Tokens/colors/background_settings = Color(0.113725, 0.121569, 0.14902, 1)
 Tokens/colors/banner = Color(0.0392157, 0.101961, 0.12549, 0.86)
 Tokens/colors/caption = Color(0.101961, 0.227451, 0.270588, 0.92)
 Tokens/colors/control_track = Color(0.3, 0.3, 0.34, 1)
-<<<<<<< HEAD
 Tokens/colors/diamond = Color(0.45, 0.82, 1, 1)
-=======
->>>>>>> Choi
 Tokens/colors/hot = Color(0.94902, 0.482353, 0.313726, 1)
 Tokens/colors/info = Color(0.560784, 0.890196, 1, 1)
 Tokens/colors/line = Color(0.152941, 0.313726, 0.360784, 1)

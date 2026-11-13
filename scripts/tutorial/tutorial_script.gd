@@ -17,11 +17,7 @@ extends Resource
 @export var gift_first_pull: bool = true
 ## 첫 실전 판 안내.
 @export var real_game_head: String = "실전"
-<<<<<<< HEAD
 @export_multiline var real_game_text: String = "시간 안에 족보를 완성해 점수를 모아 보세요.\n움직이면 시작!"
-=======
-@export_multiline var real_game_text: String = "이제 시간 안에 족보를 완성해 점수를 얻어요. 움직이면 시간이 흘러요"
->>>>>>> Choi
 
 
 ## base 설정의 사본에 튜토리얼 판 규칙을 덮어쓴 설정.

@@ -3,11 +3,7 @@ extends "res://tests/smoke/smoke_base.gd"
 ## - gacha  : 메인 → 상점 실제 클릭 → 뽑기 탭(머신 단계·가격·확률) → 상자 실제 클릭 → 흔들림·열림 → 결과 카드(NEW)
 ##            → 확인 → 뽑기 버튼으로 한 번 더 → 코인 부족 안내, 광고는 숨김
 ## - store  : 선택 탭(등급 구역, 4열 카드) → 합성 확인창(취소·합성) → 카드 → 설명창 가격 → 구매 확인 → 보유(비활성) → [사용] 켜고 끄기(카드 문구) → 선택권 사용 → 해금
-<<<<<<< HEAD
 ## - trial_back : 상점 설명창의 튜토리얼 / 체험을 건너뛰면 선택 탭으로
-=======
-## - trial_back : 상점 설명창의 튜토리얼 및 체험을 건너뛰면 선택 탭으로
->>>>>>> Choi
 ## - reduce : 효과 줄이기면 상자를 누르자마자 결과 카드
 const Grade = CharacterData.Grade
 
@@ -63,13 +59,8 @@ func _tick_gacha() -> void:
 				next_step()
 		1:
 			if in_scene("Shop", 0.4):
-<<<<<<< HEAD
 				expect((node("%PullButton") as Button).text == "뽑기 ● 500", "fixed price")
 				expect((node("%RateLabel") as Label).text == "신화 0.1% / 전설 0.9% / 영웅 34% / 희귀 65%", "rates (%s)" % (node("%RateLabel") as Label).text)
-=======
-				expect((node("%PullButton") as Button).text == "뽑기 · ● 500", "fixed price")
-				expect((node("%RateLabel") as Label).text == "신화 0.1% · 전설 0.9% · 영웅 34% · 희귀 65%", "rates (%s)" % (node("%RateLabel") as Label).text)
->>>>>>> Choi
 				expect((node("%TierLabel") as Label).text == "뽑기 머신 1단계", "tier (%s)" % (node("%TierLabel") as Label).text)
 				expect(not (node("%AdButton") as Control).visible, "ad hidden for now")
 				shot("gacha")
@@ -141,11 +132,7 @@ func _tick_store() -> void:
 				expect(_screen().ticket_rows().size() == 4 and not (_screen().ticket_rows()[3].get_node("%FuseButton") as Control).visible, "no fuse above myth")
 				expect((_screen().ticket_rows()[1].get_node("%FuseButton") as Button).disabled, "under 5 → fuse disabled")
 				expect((node("%Sections").get_child(0).get_node("%Header") as Label).text == "희귀", "no price on the header (%s)" % (node("%Sections").get_child(0).get_node("%Header") as Label).text)
-<<<<<<< HEAD
 				expect((node("%Sections").get_child(1).get_node("%Header") as Label).text == "영웅 / Lv 8에 열림", "closed grade (%s)" % (node("%Sections").get_child(1).get_node("%Header") as Label).text)
-=======
-				expect((node("%Sections").get_child(1).get_node("%Header") as Label).text == "영웅 · Lv 8에 열림", "closed grade (%s)" % (node("%Sections").get_child(1).get_node("%Header") as Label).text)
->>>>>>> Choi
 				shot("store")
 				click_control(rare.get_node("%FuseButton"))
 				next_step()
@@ -175,11 +162,7 @@ func _tick_store() -> void:
 		6:
 			if step_time > 0.3:
 				expect(_sheet().visible and _sheet().character.id == &"gardener", "row opens the sheet")
-<<<<<<< HEAD
 				expect(_sheet().shown_actions() == PackedStringArray(["◆ 80", "튜토리얼 / 체험"]), "price where equip was (%s)" % [_sheet().shown_actions()])
-=======
-				expect(_sheet().shown_actions() == PackedStringArray(["◆ 80", "튜토리얼 및 체험"]), "price where equip was (%s)" % [_sheet().shown_actions()])
->>>>>>> Choi
 				shot("sheet_price")
 				click_control(_sheet().info().get_node("%PurchaseButton"))
 				next_step()
@@ -193,11 +176,7 @@ func _tick_store() -> void:
 			if step_time > 0.3:
 				var progress: ProgressStore = ProgressStore.new()
 				expect(progress.is_unlocked(&"gardener") and progress.diamonds == 20, "bought with ◆ 80")
-<<<<<<< HEAD
 				expect(_sheet().shown_actions() == PackedStringArray(["보유", "튜토리얼 / 체험"]), "owned in the shop (%s)" % [_sheet().shown_actions()])
-=======
-				expect(_sheet().shown_actions() == PackedStringArray(["보유", "튜토리얼 및 체험"]), "owned in the shop (%s)" % [_sheet().shown_actions()])
->>>>>>> Choi
 				expect((_sheet().info().get_node("%PurchaseButton") as Button).disabled, "owned button is disabled")
 				expect(_screen().shop_card_for(&"gardener").shows_owned() and _screen().shop_card_for(&"gardener").price_text() == "보유", "card shows owned")
 				expect((node("%TopBar/%WalletLabel") as WalletView).text == "● 0  ◆ 20", "wallet updated")
@@ -228,11 +207,7 @@ func _tick_store() -> void:
 		13:
 			if step_time > 0.3:
 				expect(_sheet().character.id == &"wall", "wall sheet")
-<<<<<<< HEAD
 				expect(_sheet().shown_actions() == PackedStringArray(["선택권 사용", "튜토리얼 / 체험"]), "ticket instead of the price, before the shop opens (%s)" % [_sheet().shown_actions()])
-=======
-				expect(_sheet().shown_actions() == PackedStringArray(["선택권 사용", "튜토리얼 및 체험"]), "ticket instead of the price, before the shop opens (%s)" % [_sheet().shown_actions()])
->>>>>>> Choi
 				expect((_sheet().info().get_node("%AbilityKind") as Label).text == "상시형" and not (_sheet().info().get_node("%SheetCondition") as Control).visible, "passive character: no recipe")
 				shot("sheet_ticket")
 				click_control(_sheet().info().get_node("%PurchaseButton"))
@@ -252,11 +227,7 @@ func _tick_store() -> void:
 				finish()
 
 
-<<<<<<< HEAD
 ## 상점 설명창의 튜토리얼 / 체험 → 건너뛰면 선택 탭으로 돌아온다.
-=======
-## 상점 설명창의 튜토리얼 및 체험 → 건너뛰면 선택 탭으로 돌아온다.
->>>>>>> Choi
 func _tick_trial_back() -> void:
 	match step:
 		0:

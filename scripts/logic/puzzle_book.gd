@@ -1,10 +1,6 @@
 class_name PuzzleBook
 extends Resource
-<<<<<<< HEAD
 ## 블록 모으기 퍼즐 데이터와 규칙 수치 (기획서 8.8장, HTML 블록 모으기 엔진). 튜토리얼 담당이 판·문구를 바꿀 수 있게 데이터로 둔다.
-=======
-## 블럭 모으기 퍼즐 데이터와 규칙 수치 (기획서 8.8장, HTML 블럭 모으기 엔진). 튜토리얼 담당이 판·문구를 바꿀 수 있게 데이터로 둔다.
->>>>>>> Choi
 
 ## 퍼즐 단계 (Lv.0·1 = 규칙 튜토리얼, in_menu 단계 = 메뉴 > 퍼즐).
 @export var levels: Array[PuzzleLevel] = []

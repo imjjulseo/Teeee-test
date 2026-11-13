@@ -187,7 +187,6 @@ texts = PackedStringArray("순간이동하자마자 매치", "한 판에 순간�
 metrics = PackedStringArray("wanderer_teleport_matches", "wanderer_teleports", "score")
 goals = PackedInt32Array(1, 8, 10000)
 
-<<<<<<< HEAD
 [sub_resource type="Resource" id="Chain_zeus"]
 script = ExtResource("3_chain")
 character_id = &"zeus"
@@ -227,12 +226,6 @@ goals = PackedInt32Array(1, 8, 20)
 script = ExtResource("2_common")
 stat = &"blocks"
 name = "블록 부수기"
-=======
-[sub_resource type="Resource" id="Common_blocks"]
-script = ExtResource("2_common")
-stat = &"blocks"
-name = "블럭 부수기"
->>>>>>> Choi
 text = "블록 누적 제거"
 goals = PackedInt32Array(300, 3000, 30000)
 
@@ -260,13 +253,8 @@ goals = PackedInt32Array(10, 100, 1000)
 [sub_resource type="Resource" id="Common_coins"]
 script = ExtResource("2_common")
 stat = &"coins"
-<<<<<<< HEAD
 name = "코인 줍기"
 text = "판에서 주운 코인"
-=======
-name = "금화 줍기"
-text = "판에서 주운 금화"
->>>>>>> Choi
 goals = PackedInt32Array(300, 3000, 30000)
 
 [sub_resource type="Resource" id="Common_owned"]
@@ -307,9 +295,5 @@ common_tier_names = null
 tier_coins = PackedInt32Array(100, 0, 0)
 tier_diamonds = PackedInt32Array(0, 10, 30)
 common = Array[ExtResource("2_common")]([SubResource("Common_blocks"), SubResource("Common_recipes"), SubResource("Common_best"), SubResource("Common_games"), SubResource("Common_coins"), SubResource("Common_owned")])
-<<<<<<< HEAD
 chains = Array[ExtResource("3_chain")]([SubResource("Chain_gardener"), SubResource("Chain_wall"), SubResource("Chain_marathon"), SubResource("Chain_sewer"), SubResource("Chain_gambler"), SubResource("Chain_clock"), SubResource("Chain_bomber"), SubResource("Chain_fever"), SubResource("Chain_joker"), SubResource("Chain_photo"), SubResource("Chain_mirror"), SubResource("Chain_vampire"), SubResource("Chain_madan"), SubResource("Chain_ambi"), SubResource("Chain_painter"), SubResource("Chain_poseidon"), SubResource("Chain_colorblind"), SubResource("Chain_retro"), SubResource("Chain_navigator"), SubResource("Chain_twins"), SubResource("Chain_bounty"), SubResource("Chain_explorer"), SubResource("Chain_architect"), SubResource("Chain_artisan"), SubResource("Chain_runner"), SubResource("Chain_wanderer"), SubResource("Chain_zeus"), SubResource("Chain_arson"), SubResource("Chain_seer"), SubResource("Chain_racer"), SubResource("Chain_pachy")])
-=======
-chains = Array[ExtResource("3_chain")]([SubResource("Chain_gardener"), SubResource("Chain_wall"), SubResource("Chain_marathon"), SubResource("Chain_sewer"), SubResource("Chain_gambler"), SubResource("Chain_clock"), SubResource("Chain_bomber"), SubResource("Chain_fever"), SubResource("Chain_joker"), SubResource("Chain_photo"), SubResource("Chain_mirror"), SubResource("Chain_vampire"), SubResource("Chain_madan"), SubResource("Chain_ambi"), SubResource("Chain_painter"), SubResource("Chain_poseidon"), SubResource("Chain_colorblind"), SubResource("Chain_retro"), SubResource("Chain_navigator"), SubResource("Chain_twins"), SubResource("Chain_bounty"), SubResource("Chain_explorer"), SubResource("Chain_architect"), SubResource("Chain_artisan"), SubResource("Chain_runner"), SubResource("Chain_wanderer")])
->>>>>>> Choi
 hidden = Array[ExtResource("4_hidden")]([SubResource("Hidden_ambi"), SubResource("Hidden_racer"), SubResource("Hidden_pachy")])

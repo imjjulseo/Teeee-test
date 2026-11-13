@@ -14,12 +14,8 @@ grade = 2
 ability = SubResource("Ability_1")
 ability_name = "벽 타기"
 ability_description = "벽에 붙은 칸에서는 벽 쪽 1칸을 빼고 3칸만 같아도 매치"
-<<<<<<< HEAD
 summary = "벽에 붙어 있으면 세 방향만 같은 색이어도 매치돼요"
 detail_effect = "벽에 붙은 칸에서는 벽 쪽을 뺀 세 방향만 같은 색이어도 매치돼요(얻는 시간은 절반).\n벽 매치를 연달아 해도 돼요."
-=======
-detail_effect = "항상 켜져 있어요. 벽에 붙은 칸에서는 벽 쪽 한 방향을 빼고 3방향만 같은 색이어도 매치돼요(얻는 시간은 절반). 연속으로 벽 매치를 해도 돼요."
->>>>>>> Choi
 condition_colors = PackedInt32Array()
 accent_color = Color(0.498039, 0.878431, 0.658824, 1)
 player_fill = Color(0.109569, 0.193255, 0.144941, 1)

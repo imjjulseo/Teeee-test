@@ -4,10 +4,7 @@
 [ext_resource type="Script" path="res://scripts/scene_navigator.gd" id="2_nav"]
 [ext_resource type="Script" path="res://scripts/safe_area.gd" id="90_safe"]
 [ext_resource type="PackedScene" path="res://scenes/debug_panel.tscn" id="3_debug"]
-<<<<<<< HEAD
 [ext_resource type="PackedScene" path="res://scenes/quick_options.tscn" id="4_quick"]
-=======
->>>>>>> Choi
 [ext_resource type="Script" path="res://scripts/theme/token_rect.gd" id="95_token_rect"]
 [ext_resource type="PackedScene" path="res://scenes/top_bar.tscn" id="20_top"]
 [ext_resource type="PackedScene" path="res://scenes/bottom_nav.tscn" id="21_bottom"]
@@ -79,7 +76,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 36
 
-<<<<<<< HEAD
 [node name="DebugPanel" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("3_debug")]
 layout_mode = 2
 
@@ -95,101 +91,6 @@ layout_mode = 2
 focus_mode = 0
 theme_override_font_sizes/font_size = 48
 text = "튜토리얼 다시 보기"
-=======
-[node name="ControlHeading" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "조작"
-
-[node name="ControlRow" type="HBoxContainer" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="SwipeButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow"]
-mouse_filter = 1
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 180)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 45
-theme_type_variation = &"ChoiceButton"
-toggle_mode = true
-text = "스와이프
-밀거나 옆 칸 탭"
-
-[node name="DpadButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow"]
-mouse_filter = 1
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 180)
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 45
-theme_type_variation = &"ChoiceButton"
-toggle_mode = true
-text = "패드
-누르고 있으면 반복"
-
-[node name="ControlNote" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "키보드(방향키 / WASD)는 항상 사용할 수 있습니다"
-autowrap_mode = 3
-
-[node name="VolumeHeading" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "소리"
-
-[node name="MasterRow" type="HBoxContainer" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_override_constants/separation = 36
-
-[node name="MasterVolumeSlider" type="HSlider" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner/MasterRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-focus_mode = 0
-theme_type_variation = &"VolumeSlider"
-max_value = 100.0
-rounded = true
-value = 100.0
-
-[node name="MasterVolumeLabel" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner/MasterRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(135, 0)
-layout_mode = 2
-theme_override_font_sizes/font_size = 54
-text = "100"
-horizontal_alignment = 2
-
-[node name="VolumeNote" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "게임의 모든 소리(효과음·배경음)의 크기입니다. 0이면 소리가 나지 않습니다"
-autowrap_mode = 3
-
-[node name="ReduceMotionToggle" type="CheckButton" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-mouse_filter = 1
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
-layout_mode = 2
-focus_mode = 0
-theme_override_font_sizes/font_size = 48
-text = "효과 줄이기"
-
-[node name="ReduceMotionNote" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "흔들림·파편·떠오르는 숫자를 끕니다"
-autowrap_mode = 3
->>>>>>> Choi
 
 [node name="ResetButton" type="Button" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
 mouse_filter = 1
@@ -201,48 +102,22 @@ theme_type_variation = &"WarnButton"
 theme_override_font_sizes/font_size = 48
 text = "진행 초기화"
 
-<<<<<<< HEAD
-=======
-[node name="ResetNote" type="Label" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner"]
-layout_mode = 2
-theme_type_variation = &"DimLabel"
-theme_override_font_sizes/font_size = 33
-text = "레벨·재화·캐릭터·업적·튜토리얼 기록을 지우고 처음부터 시작합니다 (설정은 남김). 한 번 더 눌러야 지워집니다"
-autowrap_mode = 3
-
-[node name="DebugPanel" parent="SafeArea/Content/Layout/Page/Box/Scroll/Inner" instance=ExtResource("3_debug")]
-layout_mode = 2
-
->>>>>>> Choi
 [node name="BottomNav" parent="SafeArea/Content/Layout" node_paths=PackedStringArray("top_bar") instance=ExtResource("21_bottom")]
 unique_name_in_owner = true
 layout_mode = 2
 current = 5
 top_bar = NodePath("../TopBar")
 
-<<<<<<< HEAD
 [node name="GameNavigator" type="Node" parent="."]
 script = ExtResource("2_nav")
 target_scene = "res://scenes/main.tscn"
 
-=======
->>>>>>> Choi
 [node name="MenuNavigator" type="Node" parent="."]
 script = ExtResource("2_nav")
 target_scene = "res://scenes/main_menu.tscn"
 
-<<<<<<< HEAD
 [connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="progress_reset" from="." to="MenuNavigator" method="go"]
 [connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/TutorialButton" to="." method="_on_tutorial_button_pressed"]
 [connection signal="tutorial_replay_requested" from="." to="GameNavigator" method="go"]
 [connection signal="progress_changed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/DebugPanel" to="." method="_on_debug_progress_changed"]
-=======
-[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow/SwipeButton" to="." method="_on_swipe_button_pressed"]
-[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ControlRow/DpadButton" to="." method="_on_dpad_button_pressed"]
-[connection signal="value_changed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/MasterRow/MasterVolumeSlider" to="." method="_on_master_volume_changed"]
-[connection signal="drag_ended" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/MasterRow/MasterVolumeSlider" to="." method="_on_master_volume_drag_ended"]
-[connection signal="toggled" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ReduceMotionToggle" to="." method="_on_reduce_motion_toggled"]
-[connection signal="pressed" from="SafeArea/Content/Layout/Page/Box/Scroll/Inner/ResetButton" to="." method="_on_reset_button_pressed"]
-[connection signal="progress_reset" from="." to="MenuNavigator" method="go"]
->>>>>>> Choi

@@ -81,17 +81,10 @@ func test_steps_follow_the_html_lesson_order() -> void:
 	var steps: Array[TutorialStep] = book.steps_for(book.find(&"clock"), clock)
 	# 소개 → 캐릭터 족보 → 발동해 보기 → 활용 1개 → 준비 끝
 	assert_eq(steps.size(), 5)
-<<<<<<< HEAD
 	assert_true(steps[0] is SayStep and (steps[0] as SayStep).head == "시계공 / 시간 정지")
 	assert_eq((steps[1] as SayStep).head, "캐릭터 족보")
 	assert_true(steps[2] is CharacterTriggerStep)
 	assert_eq((steps[2] as CharacterTriggerStep).label, "시계공 발동해 보기")
-=======
-	assert_true(steps[0] is SayStep and (steps[0] as SayStep).head == "시계공 · 시간 정지")
-	assert_eq((steps[1] as SayStep).head, "캐릭터 족보")
-	assert_true(steps[2] is CharacterTriggerStep)
-	assert_eq((steps[2] as CharacterTriggerStep).label, "시계공 · 발동해 보기")
->>>>>>> Choi
 	assert_true(steps[3] is CharacterLessonStep)
 	assert_eq([(steps[4] as SayStep).head, (steps[4] as SayStep).button], ["시계공 준비 끝", ""])
 	var wall: CharacterData = _roster().find(&"wall")
@@ -210,7 +203,6 @@ func test_character_seen_is_saved() -> void:
 	assert_true(TutorialStore.new(TEST_SAVE).has_seen_character(&"fever"), "finished saves never ask")
 
 
-<<<<<<< HEAD
 func test_play_requests_are_taken_once() -> void:
 	PlayRequest.replay_tutorial = true
 	PlayRequest.game_seconds = 5.0
@@ -220,11 +212,3 @@ func test_play_requests_are_taken_once() -> void:
 	assert_near(PlayRequest.take_game_seconds(), 5.0, 1e-9)
 	assert_near(PlayRequest.take_game_seconds(), 0.0, 1e-9)
 	assert_false(PlayRequest.is_pending())
-=======
-func test_lesson_request_is_taken_once() -> void:
-	TrialRequest.character_id = &"clock"
-	TrialRequest.with_lesson = true
-	assert_true(TrialRequest.take_lesson())
-	assert_false(TrialRequest.take_lesson())
-	assert_eq(TrialRequest.take(), &"clock")
->>>>>>> Choi

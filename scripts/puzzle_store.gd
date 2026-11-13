@@ -1,10 +1,6 @@
 class_name PuzzleStore
 extends RefCounted
-<<<<<<< HEAD
 ## 블록 모으기 기록 (기획서 8.8 · 8.9장 연습 별점). 저장 파일 입출력은 SaveData가 한다
-=======
-## 블럭 모으기 기록 (기획서 8.8 · 8.9장 연습 별점). 저장 파일 입출력은 SaveData가 한다
->>>>>>> Choi
 ## ([puzzle] stars · solved · star_total · perfect · difficulty · rewarded).
 ## 튜토리얼 판(id 있음)은 판마다 가장 좋은 별, 연습 문제는 푼 수·모은 별·최소 수 성공 수를 센다.
 
